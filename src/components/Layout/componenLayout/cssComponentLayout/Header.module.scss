@@ -1,0 +1,54 @@
+.header {
+  background-color: #f4f4f4;
+  height: 80px;
+}
+.wrap_header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  // align-items: center;
+  padding-left: 40px;
+  padding-right: 40px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.wrap_find {
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  height: 45px;
+  width: 70%;
+  margin: auto;
+}
+.input_find {
+  padding: 10px 10px;
+  width: 100%;
+  align-items: center;
+}
+.search_button {
+  padding: 10px 20px;
+  font-weight: 600;
+}
+.header_logo {
+  height: 50px;
+  width: 30%;
+}
+.header_logo img {
+  width: 30%;
+  vertical-align: middle;
+}
+
+.wrap_button {
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  width: 25%;
+}
+.button_guess {
+  margin-right: 20px;
+  background: none;
+  border: none;
+  color: #00483d;
+  text-transform: capitalize;
+  font-weight: 600;
+}

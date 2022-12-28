@@ -1,0 +1,21 @@
+.wrap_comtact_infomation {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: #00483d;
+  height: 50px;
+}
+.wrap_social_network {
+  display: flex;
+  align-items: center;
+  padding-right: 40px;
+}
+.phoneNumber {
+  color: white;
+  padding-left: 40px;
+  //   padding-bottom: 10px;
+}
+.wrap_social_network_icon {
+  padding-right: 10px;
+  color: white;
+}
