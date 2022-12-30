@@ -1,0 +1,44 @@
+.wrap_info_account {
+  align-items: center;
+}
+.wrap_form_account {
+  box-shadow: 0 1px 11px rgb(168 168 168 / 27%);
+  width: 33.33333333%;
+  display: inline-block;
+  padding: 20px;
+  padding-top: 50px;
+  margin-top: 40px;
+  border-radius: 5px;
+}
+.info_account {
+  display: flex;
+}
+.info_account_label {
+  width: 20%;
+}
+.info_account_input {
+  //   flex: 1;
+  width: 80%;
+  padding: 10px 15px;
+  margin-bottom: 15px;
+  //   margin-top: 10px;
+  border: 1.8px solid #e4e4e4;
+  border-radius: 5px;
+  color: #8a8a8a;
+}
+.wrap_button {
+}
+.button_login {
+  width: 100%;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  padding: 15px 0;
+  border: 0;
+  background-color: #00483d;
+  border-radius: 5px;
+  text-transform: uppercase;
+  color: white;
+}
+.button_other {
+  padding: 10px;
+}
