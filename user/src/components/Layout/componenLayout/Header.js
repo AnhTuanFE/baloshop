@@ -12,11 +12,14 @@ const Header = (props) => {
   const classes = clsx(styles.header, {
     [styles.primary]: true,
   });
-  return (
+  const handleClickLogin = ()=> {
+    
+  }
+   return (
     <div className={classes}>
       <div className={clsx(styles.wrap_header)}>
         <div className={clsx(styles.header_logo)}>
-          <img src="/images/logo2.png" alt="LOGO" />
+          <a href="/"><img src="/images/logo2.png" alt="LOGO"/></a>
         </div>
 
         <div className={clsx(styles.wrap_find)}>
