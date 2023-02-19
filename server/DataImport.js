@@ -35,4 +35,14 @@ ImportData.post(
 //         res.send({ importSlider });
 //     }),
 // );
+
+// ImportData.post(
+//     '/news',
+//     asyncHandler(async (req, res) => {
+//         await News.remove({});
+//         const importNews = await News.insertMany(news);
+//         res.send({ importNews });
+//     }),
+// );
+
 export default ImportData;

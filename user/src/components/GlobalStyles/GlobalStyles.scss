@@ -13,6 +13,15 @@ body {
   box-sizing: border-box;
   background-color: #ffffff;
 }
+.col-lg-3 {
+  padding: 0 4px;
+}
+.col-md-6 {
+  padding: 0 4px;
+}
+.col-sm-12 {
+  padding: 0 4px;
+}
 a {
   text-decoration: none;
   color: black;
@@ -37,6 +46,37 @@ input:focus,
 select:focus,
 textarea:focus {
   outline: 0px;
+}
+.row,
+.col-6,
+.col-4 {
+    margin: 0;
+    padding: 0;
+}
+.Announcement {
+  background-color: #00483d;
+  padding: 15px 0;
+}
+.Announcement .container {
+  padding-left: 0;
+  padding-right: 0;
+}
+.Announcement .col-md-6 p {
+  color: white;
+  margin-right: 6rem;
+  font-size: 15px;
+}
+.Announcement .col-12 a {
+  color: white;
+  /* margin-right: 2rem; */
+  padding: 0 15px;
+  font-size: 15px;
+}
+.Announcement .col-12 a:first-child {
+  padding-left: 0;
+}
+.Announcement .col-12 a:last-child {
+  padding-right: 0;
 }
 button,
 input,
