@@ -1,10 +1,11 @@
 // // import React, { useEffect, useState } from "react";
 // // import { Link, useHistory } from "react-router-dom";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import {} from "@fortawesome/free-brands-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import clsx from "clsx";
-import styles from "./cssComponentLayout/Header.module.scss";
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import {} from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import clsx from 'clsx';
+import styles from './cssComponentLayout/Header.module.scss';
+import NavBar from '~/components/HomeComponent/Navbar';
 
 // const Header = (props) => {
 //   // clsx cho phép tạo 1 class lúc có lúc ko
@@ -47,7 +48,7 @@ import styles from "./cssComponentLayout/Header.module.scss";
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout,  getUserDetails } from '~/redux/Actions/userActions';//updateUserProfile,
+import { logout, getUserDetails } from '~/redux/Actions/userActions'; //updateUserProfile,
 // import { listCart } from '~/redux/Actions/cartActions';
 // import { ListAvatar } from '~/redux/Actions/avatarAction';
 // import NavBar from '~/components/Layout/componenLayout/navbar.js';
@@ -169,7 +170,11 @@ const Header = (props) => {
                                     </Link>
                                 </div>
                                 <div className="col-md-6 col-8 header-nav__search">
-                                    <form /*onSubmit={submitHandler}*/ /* className="input-group__search"*/className={clsx(styles.input_group)}  >
+                                    <form
+                                        /*onSubmit={submitHandler}*/ /* className="input-group__search"*/ className={clsx(
+                                            styles.input_group,
+                                        )}
+                                    >
                                         <input
                                             type="search"
                                             placeholder="Tìm kiếm"
@@ -181,12 +186,14 @@ const Header = (props) => {
                                             // aria-expanded="false"
                                         />
                                         <button type="submit" className={clsx(styles.search_button)}>
-                                            <FontAwesomeIcon icon={faMagnifyingGlass} className={clsx(styles.submit_search)}/>
+                                            <FontAwesomeIcon
+                                                icon={faMagnifyingGlass}
+                                                className={clsx(styles.submit_search)}
+                                            />
                                         </button>
-                                        <div className="dropdown-menu input-group__search">
-                                            {/* <Suggestions /> */}
-                                        </div>
+                                        <div className="dropdown-menu input-group__search">{/* <Suggestions /> */}</div>
                                     </form>
+                                    <NavBar />
                                     {/* <NavBar></NavBar> */}
                                 </div>
                                 <div className="col-md-3 d-flex align-items-center justify-content-end Login-Register">
@@ -239,22 +246,22 @@ const Header = (props) => {
                                             </div>
                                         </div>
                                     ) : ( */}
-                                        <>
-                                            <Link
-                                                to="/register"
-                                                style={{ textTransform: 'capitalize', fontWeight: '600' }}
-                                                className={clsx(styles.user_Button)}
-                                            >
-                                                Đăng kí
-                                            </Link>
-                                            <Link
-                                                to="/login"
-                                                style={{ textTransform: 'capitalize', fontWeight: '600' }}
-                                                className={clsx(styles.user_Button)}
-                                            >
-                                                Đăng nhập
-                                            </Link>
-                                        </>
+                                    <>
+                                        <Link
+                                            to="/register"
+                                            style={{ textTransform: 'capitalize', fontWeight: '600' }}
+                                            className={clsx(styles.user_Button)}
+                                        >
+                                            Đăng kí
+                                        </Link>
+                                        <Link
+                                            to="/login"
+                                            style={{ textTransform: 'capitalize', fontWeight: '600' }}
+                                            className={clsx(styles.user_Button)}
+                                        >
+                                            Đăng nhập
+                                        </Link>
+                                    </>
                                     {/* )} */}
 
                                     <Link to="/cart" className={clsx(styles.user_Button)}>
@@ -275,6 +282,3 @@ const Header = (props) => {
 };
 
 export default Header;
-
-
-

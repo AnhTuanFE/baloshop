@@ -3,25 +3,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import { ListCategory } from '~/redux/Actions/categoryActions';
 // import { listProduct } from '~/redux/Actions/ProductActions';
-
-
+import clsx from 'clsx';
+import styles from './HomeComponentCSS/Navbar.module.scss';
 export default function NavBar({ onRemove }) {
     const dispatch = useDispatch();
-
     const lcategories = useSelector((state) => state.CategoryList);
     const { categories } = lcategories;
-    console.log("đây là data thể loại", categories)
-    console.log("chào mn")
+    console.log('đây là data thể loại', categories);
     useEffect(() => {
         dispatch(ListCategory());
     }, []);
     return (
         <>
             {/* Pc-navbar */}
-            <div className="navbar-menu">
-                <ul className="navbar-list">
+            <div className={clsx(styles.navbar_menu)}>
+                <ul className={clsx(styles.navbar_list)}>
                     {categories.map((category) => (
-                        <li className="navbar-list__li">
+                        <li className={clsx(styles.navbar_list_li)}>
                             <Link to={`/category/${category._id}`}>{category.name}</Link>
                         </li>
                     ))}
