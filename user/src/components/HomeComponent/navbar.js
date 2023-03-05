@@ -9,7 +9,6 @@ export default function NavBar({ onRemove }) {
     const dispatch = useDispatch();
     const lcategories = useSelector((state) => state.CategoryList);
     const { categories } = lcategories;
-    console.log('đây là data thể loại', categories);
     useEffect(() => {
         dispatch(ListCategory());
     }, []);
