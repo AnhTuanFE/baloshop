@@ -1,19 +1,5 @@
 import axios from 'axios';
-import {
-    CART_CLEAR_SUCCESS,
-    CART_CREATE_FAIL,
-    CART_CREATE_REQUEST,
-    CART_CREATE_SUCCESS,
-    CART_DELETE_FAIL,
-    CART_DELETE_REQUEST,
-    CART_DELETE_SUCCESS,
-    CART_LIST_FAIL,
-    CART_LIST_REQUEST,
-    CART_LIST_SUCCESS,
-    CART_REMOVE_ITEM,
-    CART_SAVE_PAYMENT_METHOD,
-    CART_SAVE_SHIPPING_ADDRESS,
-} from '../Constants/CartConstants';
+import * as types from '../Constants/CartConstants';
 import { logout } from './userActions';
 
 // ADD TO CART OLD
@@ -21,7 +7,7 @@ import { logout } from './userActions';
 //   const { data } = await axios.get(`/api/products/${id}`);
 
 //   dispatch({
-//     type: CART_ADD_ITEM,
+//     type: types.CART_ADD_ITEM,
 //     payload: {
 //       product: data._id,
 //       name: data.name,
@@ -34,11 +20,10 @@ import { logout } from './userActions';
 
 //   localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
 // };
- 
 
 export const listCart = () => async (dispatch, getState) => {
     try {
-        dispatch({ type: CART_LIST_REQUEST });
+        dispatch({ type: types.CART_LIST_REQUEST });
 
         const {
             userLogin: { userInfo },
@@ -53,14 +38,14 @@ export const listCart = () => async (dispatch, getState) => {
         const { data } = await axios.get(`/api/cart/${userInfo._id}`, config);
         localStorage.setItem('cartItems', JSON.stringify(data));
 
-        dispatch({ type: CART_LIST_SUCCESS, payload: data });
+        dispatch({ type: types.CART_LIST_SUCCESS, payload: data });
     } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;
         if (message === 'Not authorized, token failed') {
             dispatch(logout());
         }
         dispatch({
-            type: CART_LIST_FAIL,
+            type: types.CART_LIST_FAIL,
             payload: message,
         });
     }
@@ -68,7 +53,7 @@ export const listCart = () => async (dispatch, getState) => {
 //ADD TO CART NEW
 export const addToCart = (productId, color, qty) => async (dispatch, getState) => {
     try {
-        dispatch({ type: CART_CREATE_REQUEST });
+        dispatch({ type: types.CART_CREATE_REQUEST });
 
         const {
             userLogin: { userInfo },
@@ -81,14 +66,14 @@ export const addToCart = (productId, color, qty) => async (dispatch, getState) =
         };
 
         const { data } = await axios.post(`/api/cart/`, { productId, color, qty, _id }, config);
-        dispatch({ type: CART_CREATE_SUCCESS });
+        dispatch({ type: types.CART_CREATE_SUCCESS });
     } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;
         if (message === 'Not authorized, token failed') {
             dispatch(logout());
         }
         dispatch({
-            type: CART_CREATE_FAIL,
+            type: types.CART_CREATE_FAIL,
             payload: message,
         });
     }
@@ -97,7 +82,7 @@ export const addToCart = (productId, color, qty) => async (dispatch, getState) =
 // REMOVE PRODUCT FROM CART
 export const removefromcart = (pr) => async (dispatch, getState) => {
     try {
-        dispatch({ type: CART_DELETE_REQUEST });
+        dispatch({ type: types.CART_DELETE_REQUEST });
 
         const {
             userLogin: { userInfo },
@@ -118,14 +103,14 @@ export const removefromcart = (pr) => async (dispatch, getState) => {
             config,
         );
 
-        dispatch({ type: CART_DELETE_SUCCESS, payload: pr });
+        dispatch({ type: types.CART_DELETE_SUCCESS, payload: pr });
     } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;
         if (message === 'Not authorized, token failed') {
             dispatch(logout());
         }
         dispatch({
-            type: CART_DELETE_FAIL,
+            type: types.CART_DELETE_FAIL,
             payload: message,
         });
     }
@@ -136,7 +121,7 @@ export const removefromcart = (pr) => async (dispatch, getState) => {
 //Delete all item from cart
 export const clearFromCart = () => async (dispatch, getState) => {
     try {
-        dispatch({ type: CART_DELETE_REQUEST });
+        dispatch({ type: types.CART_DELETE_REQUEST });
 
         const {
             userLogin: { userInfo },
@@ -150,14 +135,14 @@ export const clearFromCart = () => async (dispatch, getState) => {
         const user = userInfo._id;
         await axios.delete(`/api/cart/${user}`, config);
 
-        dispatch({ type: CART_CLEAR_SUCCESS });
+        dispatch({ type: types.CART_CLEAR_SUCCESS });
     } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;
         if (message === 'Not authorized, token failed') {
             dispatch(logout());
         }
         dispatch({
-            type: CART_DELETE_FAIL,
+            type: types.CART_DELETE_FAIL,
             payload: message,
         });
     }
@@ -167,7 +152,7 @@ export const clearFromCart = () => async (dispatch, getState) => {
 // SAVE SHIPPING ADDRESS
 export const saveShippingAddress = (data) => (dispatch) => {
     dispatch({
-        type: CART_SAVE_SHIPPING_ADDRESS,
+        type: types.CART_SAVE_SHIPPING_ADDRESS,
         payload: data,
     });
 
@@ -177,7 +162,7 @@ export const saveShippingAddress = (data) => (dispatch) => {
 // SAVE PAYMENT METHOD
 export const savePaymentMethod = (data) => (dispatch) => {
     dispatch({
-        type: CART_SAVE_PAYMENT_METHOD,
+        type: types.CART_SAVE_PAYMENT_METHOD,
         payload: data,
     });
 

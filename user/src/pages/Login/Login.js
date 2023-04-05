@@ -1,0 +1,134 @@
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import isEmpty from 'validator/lib/isEmpty';
+import Message from '~/components/HomeComponent/LoadingError/Error';
+import Loading from '~/components/HomeComponent/LoadingError/Loading';
+import Header from '~/components/Layout/componenLayout/Header';
+import { login, getUserDetails } from '~/redux/Actions/userActions';
+import ContactInformation from '~/components/Layout/componenLayout/ContactInformation';
+import './LoginCSS/Login.css';
+//{ location, navigate }
+const Login = () => {
+    let location = useLocation();
+    let navigate = useNavigate();
+    // window.scrollTo(0, 0);//bỏ
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [loginCheck, setLoginCheck] = useState('');
+
+    const dispatch = useDispatch();
+    const redirect = location.search ? location.search.split('=')[1] : '/';
+    const userLogin = useSelector((state) => state.userLogin);
+    const { error, loading, userInfo } = userLogin;
+
+    useEffect(() => {
+        if (userInfo) {
+            navigate(redirect);
+        }
+    }, [userInfo, navigate, redirect]);
+
+    const funtionCheck = () => {
+        const msg = {};
+        let re = /\S+@\S+\.\S+/;
+        if (isEmpty(email)) {
+            msg.email = 'Vui lòng nhập email của bạn';
+            msg.borderRed1 = 'border-red';
+            msg.colorRed1 = 'color-red';
+        } else {
+            if (!re.test(email)) {
+                msg.email = 'Email không hợp lệ';
+                msg.borderRed1 = 'border-red';
+                msg.colorRed1 = 'color-red';
+            }
+        }
+        if (isEmpty(password)) {
+            msg.password = 'Vui lòng nhập mật khẩu';
+            msg.borderRed2 = 'border-red';
+            msg.colorRed2 = 'color-red';
+        } else {
+            if (password.length < 6) {
+                msg.password = 'Mật khẩu phải có it nhất 6 ký tự';
+                msg.borderRed2 = 'border-red';
+                msg.colorRed2 = 'color-red';
+            }
+        }
+        setLoginCheck(msg);
+        if (Object.keys(msg).length > 0) return false;
+        return true;
+    };
+
+    const submitHandler = (e) => {
+        e.preventDefault();
+        const isEmptyLogin = funtionCheck();
+        if (!isEmptyLogin) return;
+        dispatch(login(email, password));
+    };
+
+    return (
+        <>
+            <ContactInformation />
+            <Header />
+            <div className="container d-flex flex-column justify-content-center align-items-center login-center">
+                {error && <Message variant="alert-danger">{error}</Message>}
+                {loading && <Loading />}
+                <form className="Login col-md-6 col-lg-4 col-10" onSubmit={submitHandler}>
+                    <div className="Login-from from-login">
+                        <input
+                            type="text"
+                            className={loginCheck.borderRed1}
+                            value={email}
+                            onClick={() => {
+                                setLoginCheck((object) => {
+                                    const x = { ...object };
+                                    x.borderRed1 = ' ';
+                                    x.colorRed1 = ' ';
+                                    x.email = ' ';
+                                    return x;
+                                });
+                            }}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                        <p className="from-login__email-pass noti-validate">{loginCheck.email}</p>
+                        <p className={`from-login__email-pass-color Login-from__email ${loginCheck.colorRed1}`}>
+                            Email
+                        </p>
+                    </div>
+                    <div className="Login-from from-login">
+                        <input
+                            type="password"
+                            //placeholder="Password"
+                            className={loginCheck.borderRed2}
+                            value={password}
+                            onClick={() => {
+                                setLoginCheck((object) => {
+                                    const x = { ...object };
+                                    x.borderRed2 = ' ';
+                                    x.colorRed2 = ' ';
+                                    x.password = ' ';
+                                    return x;
+                                });
+                            }}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                        <p className="from-login__email-pass noti-validate">{loginCheck.password}</p>
+                        <p className={`from-login__email-pass-color1 Login-from__password ${loginCheck.colorRed2}`}>
+                            Mật khẩu
+                        </p>
+                    </div>
+                    <button type="submit">Đăng nhập</button>
+                    <p>
+                        <Link to={'/reset'}>Quên mật khẩu</Link>
+                    </p>
+                    <p>
+                        <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>Tạo tài khoản mới</Link>
+                        {/* <Link to={'/register'}>Tạo tài khoản mới</Link> */}
+                    </p>
+                </form>
+            </div>
+        </>
+    );
+};
+
+export default Login;

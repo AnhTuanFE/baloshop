@@ -36,7 +36,19 @@
         transform: rotate(360deg);
     }
 }
-/* start slider */
+
+/* START CSS CHUNG*/
+.Announcement .container {
+    padding-left: 0;
+    padding-right: 0;
+}
+/* END CSS CHUNG*/
+
+/* ==================================STATR LOGIN=========================*/
+
+/* ==================================END LOGIN=========================*/
+
+/*======================================== start slider ==============================================*/
 .slick-next::before {
     color: #00483d !important;
     font-size: 30px !important;

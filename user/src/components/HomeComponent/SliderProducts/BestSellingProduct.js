@@ -92,11 +92,6 @@ export default function BestSellingProduct() {
                     </Slider>
                 </div>
             </div>
-            <h2 className="section-title container mt-5">
-                <b></b>
-                <span className="section-title-main">Tất Cả Sản Phẩm</span>
-                <b></b>
-            </h2>
         </>
     );
 }

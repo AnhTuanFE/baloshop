@@ -58,6 +58,11 @@ const AllProducts_Filter = (props) => {
     return (
         <>
             <div className="container mt-2">
+                <h2 className="section-title container mt-5">
+                    <b></b>
+                    <span className="section-title-main">Tất Cả Sản Phẩm</span>
+                    <b></b>
+                </h2>
                 <div className=" pt-0">
                     <div className={clsx(styles.wrapFilter)}>
                         <div className="">

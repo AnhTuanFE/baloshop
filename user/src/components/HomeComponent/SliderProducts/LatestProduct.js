@@ -9,6 +9,7 @@ import { ListProductAll } from '~/redux/Actions/ProductActions';
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import styles from './SliderProductsCSS/LatestProduct.module.scss';
+
 export default function LatestProduct() {
     const allProduct = useSelector((state) => state.productAll);
     const { products, loading } = allProduct;

@@ -14,19 +14,20 @@ import path from 'path';
 import Upload from './Routes/Upload.js';
 import newsRouter from './Routes/newsRouter.js';
 import forgotPassRouter from './Routes/forgotPassRouter.js';
+import createUserRouter from './Routes/createUserRouter.js';
 
 dotenv.config();
 import { Server } from 'http';
 import imageProfile from './Routes/imageProfile.js';
 connectDatabase();
 const app = express();
-app.use(express.json());
+app.use(express.json()); // gửi data dưới dạng javascrip thì nó sẽ xử lý
 
 // API
 
 // cấu hình định danh file ejs bên express
 app.set('view engine', 'ejs');
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false })); //gửi data dưới dạng form thì nó sẽ xử lý
 app.use('/public', express.static('public'));
 
 app.use('/api/cart', cartRoutes);
@@ -44,6 +45,7 @@ app.use('/api/uploadAvatar', Upload);
 app.use('/api/imageProfile', imageProfile);
 // forgot
 app.use('/api/forgotPass', forgotPassRouter);
+app.use('/api/verifiedEmail', createUserRouter);
 
 app.use(express.static('public'));
 // ERROR HANDLER
