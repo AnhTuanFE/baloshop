@@ -1,8 +1,9 @@
+import { memo } from 'react';
 import { faPhone, faLocationDot, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { faFacebook, faInstagramSquare } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import clsx from 'clsx';
-import styles from './cssComponentLayout/Footer.module.scss';
+import styles from './Footer.module.scss';
 function Footer() {
     return (
         <div className={clsx(styles.wrap_footer)}>
@@ -47,4 +48,4 @@ function Footer() {
     );
 }
 
-export default Footer;
+export default memo(Footer);

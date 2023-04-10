@@ -5,10 +5,8 @@ import { Link } from 'react-router-dom';
 import isEmpty from 'validator/lib/isEmpty';
 import Message from '~/components/HomeComponent/LoadingError/Error';
 import Loading from '~/components/HomeComponent/LoadingError/Loading';
-import Header from '~/components/Layout/componenLayout/Header';
 import { login, getUserDetails } from '~/redux/Actions/userActions';
-import ContactInformation from '~/components/Layout/componenLayout/ContactInformation';
-import './LoginCSS/Login.css';
+import './Login.css';
 //{ location, navigate }
 const Login = () => {
     let location = useLocation();
@@ -68,8 +66,6 @@ const Login = () => {
 
     return (
         <>
-            <ContactInformation />
-            <Header />
             <div className="container d-flex flex-column justify-content-center align-items-center login-center">
                 {error && <Message variant="alert-danger">{error}</Message>}
                 {loading && <Loading />}

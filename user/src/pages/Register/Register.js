@@ -5,10 +5,9 @@ import isEmpty from 'validator/lib/isEmpty';
 import Message from '~/components/HomeComponent/LoadingError/Error';
 import Loading from '~/components/HomeComponent/LoadingError/Loading';
 import { register, createUser } from '~/redux/Actions/userActions';
-import Header from '~/components/Layout/componenLayout/Header';
-import ContactInformation from '~/components/Layout/componenLayout/ContactInformation';
 import clsx from 'clsx';
 import styles from './RegisterCSS/Register.module.scss';
+
 function Register() {
     const location = useLocation();
     const navigate = useNavigate();
@@ -106,8 +105,6 @@ function Register() {
     };
     return (
         <>
-            <ContactInformation />
-            <Header />
             <div className="container d-flex flex-column justify-content-center align-items-center login-center">
                 {error && <Message variant="alert-danger">{error}</Message>}
                 {loading && <Loading />}

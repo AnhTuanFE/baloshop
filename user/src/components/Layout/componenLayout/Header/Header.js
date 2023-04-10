@@ -1,13 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
+import clsx from 'clsx';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import {} from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import clsx from 'clsx';
-import styles from './cssComponentLayout/Header.module.scss';
+import styles from './Header.module.scss';
 import NavBar from '~/components/HomeComponent/Navbar';
-import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+
 import { logout, getUserDetails } from '~/redux/Actions/userActions'; //updateUserProfile,
+import ContactInformation from '../ContactInformation';
+
 // import { listCart } from '~/redux/Actions/cartActions'; //bỏ
 // import { ListAvatar } from '~/redux/Actions/avatarAction'; //bỏ
 // import Suggestions from "~/components/HomeComponent/Suggestions"; // tạm thời ko dùng
@@ -23,7 +26,6 @@ const Header = (props) => {
     const { cartItems } = cart;
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
-    const { error } = userLogin;
     const userDetail = useSelector((state) => state.userDetails);
     const { user } = userDetail;
 
@@ -75,7 +77,7 @@ const Header = (props) => {
     useEffect(() => {
         if (user?.disabled) {
             alert(
-                'Tài khoản đã bị khóa, vui lòng liên hệ sđt 0946402578 hay email balostore.owner@gmail.com để liên hệ lấy lại.',
+                'Tài khoản đã bị khóa, vui lòng liên hệ sđt 0946402578 hay email balostore.owner@gmail.com để mở khóa.',
             );
             dispatch(logout());
             navigate('/');
@@ -118,6 +120,7 @@ const Header = (props) => {
     return (
         <>
             <div>
+                <ContactInformation />
                 <div className={clsx(styles.header)}>
                     <div className={clsx(styles.container)}>
                         <div className={clsx(styles.pc_header)}>
@@ -238,4 +241,4 @@ const Header = (props) => {
     );
 };
 
-export default Header;
+export default memo(Header);

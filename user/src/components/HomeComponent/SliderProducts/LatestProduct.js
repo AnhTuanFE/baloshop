@@ -1,13 +1,13 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
-import Rating from '../Rating';
+import clsx from 'clsx';
+import { useDispatch, useSelector } from 'react-redux';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+
+import Rating from '../Rating';
 import { ListProductAll } from '~/redux/Actions/ProductActions';
-import { useEffect, useState } from 'react';
-import clsx from 'clsx';
 import styles from './SliderProductsCSS/LatestProduct.module.scss';
 
 export default function LatestProduct() {
@@ -59,8 +59,8 @@ export default function LatestProduct() {
         ],
     };
     return (
-        // <div className={clsx(styles.corousel_container)}>
-        <div className="container corousel-container">
+        // <div className="container corousel-container">
+        <div className={clsx('container', 'corousel-container', styles.wrap_product)}>
             <h2 className={clsx(styles.section_title)}>
                 <b></b>
                 <span className={clsx(styles.section_title_main)}>Sản Phẩm Mới Nhất</span>
@@ -70,8 +70,8 @@ export default function LatestProduct() {
                 <Slider {...settings}>
                     {products?.map((product, index) => {
                         return (
-                            <div key={index} className={clsx(styles.corousel_div)}>
-                                <Link to={`/products/${product._id}`} className={clsx(styles.corousel_link)}>
+                            <div key={product._id} className={clsx(styles.corousel_div)}>
+                                <Link to={`/product/${product._id}`} className={clsx(styles.corousel_link)}>
                                     <img
                                         src={`/productImage/${product?.image[0]?.image}`}
                                         className={clsx(styles.corousel_img)}
