@@ -9,8 +9,11 @@ import Sliders from '~/components/HomeComponent/Sliders';
 import LatestProduct from '~/components/HomeComponent/SliderProducts/LatestProduct'; //  Corousel
 import BestSellingProduct from '~/components/HomeComponent/SliderProducts/BestSellingProduct'; // CorouselOder
 
+import { useSelector } from 'react-redux';
 //{ match, location }
 function Home() {
+    const userRegister = useSelector((state) => state.userRegister);
+    console.log('userRegister =  ', userRegister);
     // let location = useLocation();
     // let params = useParams();
     // const keyword = params.keyword;

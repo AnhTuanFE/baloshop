@@ -34,7 +34,6 @@ function DetailProduct() {
 
     // state
     const [qty, setQty] = useState(1);
-
     const [category, setCategory] = useState('');
     const [keyword, setKeyword] = useState('');
     const [pageNumber, setPageNumber] = useState('');
@@ -45,7 +44,7 @@ function DetailProduct() {
     const [optionIndex, setOptionIndex] = useState(0);
     const [optionsArrColor, setOptionArrColor] = useState('');
     const [color, setColor] = useState('');
-    const [rating, setRating] = useState(0);
+    // const [rating, setRating] = useState(0);
 
     // Lấy state từ store redux
     const productDetail = useSelector((state) => state.productDetails);
@@ -54,21 +53,16 @@ function DetailProduct() {
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
 
-    const optionColor = product?.optionColor?.sort(({ color: b }, { color: a }) => (a > b ? 1 : a < b ? -1 : 0));
-
     // start chức năng khác
     const productList = useSelector((state) => state.productList);
     const { products, page, pages } = productList;
-
     // end chức năng khác
 
     const cartCreate = useSelector((state) => state.cartCreate);
     const { success: successAddCart, loading: loadingAddCart, error: errorAddCart } = cartCreate;
 
-    // gọi action để lấy data
-    // useEffect(() => {
-    //     dispatch(listProductDetails(productId));
-    // }, []);
+    const optionColor = product?.optionColor?.sort(({ color: b }, { color: a }) => (a > b ? 1 : a < b ? -1 : 0));
+
     useEffect(() => {
         dispatch(listProductDetails(productId));
     }, [dispatch, productId]);
@@ -98,7 +92,7 @@ function DetailProduct() {
 
     useEffect(() => {
         if (product !== undefined && maxPrice) {
-            dispatch(listProduct(category, keyword, pageNumber, rating, minPrice, maxPrice, sortProducts));
+            dispatch(listProduct(category, keyword, pageNumber, minPrice, maxPrice, sortProducts)); // rating,
         }
     }, [category, maxPrice]);
 
@@ -120,118 +114,118 @@ function DetailProduct() {
         } else navigate('/login');
     };
 
+    const handleRender = () => {
+        return (
+            <>
+                <div className="row">
+                    <div className="col-md-12 product-avatar">
+                        <div className="row">
+                            <div className="col-md-5">
+                                <div className="single-image">
+                                    <SliderImageProducts images={product.image} />
+                                </div>
+                            </div>
+                            <div className="col-md-7 product-postion">
+                                <div className="product-dtl">
+                                    <div className="product-info">
+                                        <div className="product-name">{product.name}</div>
+                                    </div>
+
+                                    <div className="product-baner">
+                                        <img
+                                            style={{ width: '100%' }}
+                                            src="http://balo.giaodienwebmau.com/wp-content/uploads/2021/06/ant_index_bottom_banner_big_2.jpg"
+                                            alt=""
+                                        />
+                                    </div>
+                                    <div className="product-count col-lg-12 ">
+                                        <div className="flex-box d-flex justify-content-between align-items-center">
+                                            <h6>Giá</h6>
+                                            <span>{product?.price?.toLocaleString('de-DE')}đ</span>
+                                        </div>
+                                        <div className="flex-box d-flex justify-content-between align-items-center">
+                                            <h6>Trạng thái</h6>
+                                            {optionsArrColor?.countInStock > 0 ? (
+                                                <span>Còn hàng</span>
+                                            ) : (
+                                                <span>Hết hàng</span>
+                                            )}
+                                        </div>
+                                        <div className="flex-box d-flex justify-content-between align-items-center">
+                                            <h6>Đánh giá</h6>
+                                            <Rating value={product.rating} text={`${product.numReviews} đánh giá`} />
+                                        </div>
+                                        <div className="flex-box d-flex justify-content-between align-items-center">
+                                            <h6>Màu sắc</h6>
+                                            <div>
+                                                {optionColor?.map((option, index) => (
+                                                    <button
+                                                        type="button"
+                                                        key={option._id}
+                                                        onClick={() => {
+                                                            setOptionIndex(index);
+                                                            setColor(option.color);
+                                                        }}
+                                                        class={
+                                                            optionIndex === index
+                                                                ? 'btn btn-outline-primary mx-1 active'
+                                                                : 'btn btn-outline-primary mx-1'
+                                                        }
+                                                        style={{ marginTop: '8px' }}
+                                                    >
+                                                        {option.color}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        {optionsArrColor?.countInStock > 0 ? (
+                                            <>
+                                                <div className="flex-box d-flex justify-content-between align-items-center">
+                                                    <h6>Số lượng</h6>
+                                                    <select value={qty} onChange={(e) => setQty(e.target.value)}>
+                                                        {[...Array(optionsArrColor.countInStock).keys()].map((x) => (
+                                                            <option key={x + 1} value={x + 1}>
+                                                                {x + 1}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                                <button onClick={AddToCartHandle} className="round-black-btn">
+                                                    Thêm vào giỏ
+                                                </button>
+                                            </>
+                                        ) : null}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="product-description">
+                                <h2 className="product-description__h2">Chi Tiết Sản Phẩm</h2>
+                                <div dangerouslySetInnerHTML={{ __html: product.description }}></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <EvaluateProduct productId={productId} />
+                <AskAndAnswer productId={productId} />
+                <OfferProduct products={products} />
+            </>
+        );
+    };
+
+    let content;
+    if (loading) {
+        content = <Loading />;
+    } else if (error) {
+        content = <Message>{error}</Message>;
+    } else {
+        content = handleRender();
+    }
     return (
         <>
             <div className="container single-product">
                 <Toast />
                 {loadingAddCart && <Loading />}
-                {loading ? (
-                    <Loading />
-                ) : error ? (
-                    <Message variant="alert-danger">{error}</Message>
-                ) : (
-                    <>
-                        <div className="row">
-                            <div className="col-md-12 product-avatar">
-                                <div className="row">
-                                    <div className="col-md-5">
-                                        <div className="single-image">
-                                            <SliderImageProducts images={product.image} />
-                                        </div>
-                                    </div>
-                                    <div className="col-md-7 product-postion">
-                                        <div className="product-dtl">
-                                            <div className="product-info">
-                                                <div className="product-name">{product.name}</div>
-                                            </div>
-
-                                            <div className="product-baner">
-                                                <img
-                                                    style={{ width: '100%' }}
-                                                    src="http://balo.giaodienwebmau.com/wp-content/uploads/2021/06/ant_index_bottom_banner_big_2.jpg"
-                                                    alt=""
-                                                ></img>
-                                            </div>
-                                            <div className="product-count col-lg-12 ">
-                                                <div className="flex-box d-flex justify-content-between align-items-center">
-                                                    <h6>Giá</h6>
-                                                    <span>{product?.price?.toLocaleString('de-DE')}đ</span>
-                                                </div>
-                                                <div className="flex-box d-flex justify-content-between align-items-center">
-                                                    <h6>Trạng thái</h6>
-                                                    {optionsArrColor?.countInStock > 0 ? (
-                                                        <span>Còn hàng</span>
-                                                    ) : (
-                                                        <span>Hết hàng</span>
-                                                    )}
-                                                </div>
-                                                <div className="flex-box d-flex justify-content-between align-items-center">
-                                                    <h6>Đánh giá</h6>
-                                                    <Rating
-                                                        value={product.rating}
-                                                        text={`${product.numReviews} đánh giá`}
-                                                    />
-                                                </div>
-                                                <div className="flex-box d-flex justify-content-between align-items-center">
-                                                    <h6>Màu sắc</h6>
-                                                    <div>
-                                                        {optionColor?.map((option, index) => (
-                                                            <button
-                                                                type="button"
-                                                                key={option._id}
-                                                                onClick={() => {
-                                                                    setOptionIndex(index);
-                                                                    setColor(option.color);
-                                                                }}
-                                                                class={
-                                                                    optionIndex === index
-                                                                        ? 'btn btn-outline-primary mx-1 active'
-                                                                        : 'btn btn-outline-primary mx-1'
-                                                                }
-                                                                style={{ marginTop: '8px' }}
-                                                            >
-                                                                {option.color}
-                                                            </button>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                                {optionsArrColor?.countInStock > 0 ? (
-                                                    <>
-                                                        <div className="flex-box d-flex justify-content-between align-items-center">
-                                                            <h6>Số lượng</h6>
-                                                            <select
-                                                                value={qty}
-                                                                onChange={(e) => setQty(e.target.value)}
-                                                            >
-                                                                {[...Array(optionsArrColor.countInStock).keys()].map(
-                                                                    (x) => (
-                                                                        <option key={x + 1} value={x + 1}>
-                                                                            {x + 1}
-                                                                        </option>
-                                                                    ),
-                                                                )}
-                                                            </select>
-                                                        </div>
-                                                        <button onClick={AddToCartHandle} className="round-black-btn">
-                                                            Thêm vào giỏ
-                                                        </button>
-                                                    </>
-                                                ) : null}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="product-description">
-                                        <h2 className="product-description__h2">Chi Tiết Sản Phẩm</h2>
-                                        <div dangerouslySetInnerHTML={{ __html: product.description }}></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <EvaluateProduct productId={productId} />
-                        <AskAndAnswer productId={productId} />
-                        <OfferProduct products={products} />
-                    </>
-                )}
+                {content}
             </div>
         </>
     );

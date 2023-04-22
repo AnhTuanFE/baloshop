@@ -28,27 +28,24 @@ function AskAndAnswer({ productId }) {
     const { userInfo } = userLogin;
 
     const productCommentCreate = useSelector((state) => state.productCommentCreate); //comment
-    const productCommentChildCreate = useSelector((state) => state.productCommentChildCreate); //comment child
-
-    const listAllComments = useSelector((state) => state.getAllCommentsProduct);
-    const { comments } = listAllComments;
-
-    const userList = useSelector((state) => state.userAll);
-    const { users } = userList;
-
-    //comment
     const {
         loading: loadingCreateComment,
         error: errorCreateComment,
         success: successCreateComment,
     } = productCommentCreate;
 
-    //comment child
+    const productCommentChildCreate = useSelector((state) => state.productCommentChildCreate); //comment child
     const {
         loading: loadingCreateCommentChild,
         error: errorCreateCommentChild,
         success: successCreateCommentChild,
     } = productCommentChildCreate;
+
+    const listAllComments = useSelector((state) => state.getAllCommentsProduct);
+    const { comments } = listAllComments;
+
+    const userList = useSelector((state) => state.userAll);
+    const { users } = userList;
 
     //comment
     const submitComment = (e) => {

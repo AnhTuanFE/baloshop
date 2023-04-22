@@ -22,8 +22,10 @@ function EvaluateProduct({ productId }) {
 
     const listAllReviews = useSelector((state) => state.getAllReviewsProduct);
     const { reviews } = listAllReviews;
+    const reviewCart = reviews;
 
-    const productReviewCreate = useSelector((state) => state.productReviewCreate); //lấy r
+    //bên detail product cũng có
+    const productReviewCreate = useSelector((state) => state.productReviewCreate);
 
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
@@ -40,7 +42,6 @@ function EvaluateProduct({ productId }) {
     } = productReviewCreate;
 
     const arrStar = [5, 4, 3, 2, 1];
-    const reviewCart = reviews;
 
     const returnStar = arrStar.map((star) => {
         let review = reviewCart?.filter((rev) => {
@@ -98,7 +99,6 @@ function EvaluateProduct({ productId }) {
         e.preventDefault();
         dispatch(createProductReview(productId, rating, reviewColor, comment));
     };
-
     return (
         <div
             style={{
@@ -124,9 +124,9 @@ function EvaluateProduct({ productId }) {
                         <div class="col-md-8 col-sm-7">
                             <div class="rating-bar0 justify-content-center">
                                 <table class="text-left mx-auto">
-                                    {returnStar.map((star) => {
+                                    {returnStar.map((star, index) => {
                                         return (
-                                            <tr>
+                                            <tr key={index}>
                                                 <td class="rating-label">
                                                     {star.rating}
                                                     <span class="fa fa-star star-active mx-1"></span>

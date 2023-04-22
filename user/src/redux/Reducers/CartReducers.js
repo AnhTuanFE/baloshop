@@ -67,6 +67,7 @@ export const CreateCartReducer = (state = {}, action) => {
             return {
                 loading: false,
                 success: true,
+                dataAddProductToCard: action.payload,
             };
         case CART_CREATE_FAIL:
             return {

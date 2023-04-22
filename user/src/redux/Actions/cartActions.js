@@ -58,6 +58,7 @@ export const addToCart = (productId, color, qty) => async (dispatch, getState) =
         const {
             userLogin: { userInfo },
         } = getState();
+
         const { _id } = userInfo;
         const config = {
             headers: {
@@ -66,7 +67,8 @@ export const addToCart = (productId, color, qty) => async (dispatch, getState) =
         };
 
         const { data } = await axios.post(`/api/cart/`, { productId, color, qty, _id }, config);
-        dispatch({ type: types.CART_CREATE_SUCCESS });
+
+        dispatch({ type: types.CART_CREATE_SUCCESS, payload: data });
     } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;
         if (message === 'Not authorized, token failed') {
