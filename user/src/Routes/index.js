@@ -1,18 +1,20 @@
+// layout
+import HeaderLayout from '~/components/Layout/HeaderLayout/HeaderLayout';
+import FooterLayout from '~/components/Layout/FooterLayout/FooterLayout';
+//pages
 import Home from '~/pages/Home/Home';
 import DetailProduct from '~/pages/Products/DetailProduct';
 import Login from '~/pages/Login/Login';
 import Register from '~/pages/Register/Register';
 import Cart from '~/pages/Cart';
 
-// layout
-import HeaderLayout from '~/components/Layout/HeaderLayout/HeaderLayout';
-import FooterLayout from '~/components/Layout/FooterLayout/FooterLayout';
 import DeliveryAddress from '~/pages/DeliveryAddress';
 import Payment from '~/pages/Payment/Payment';
 import PlaceOrder from '~/pages/PlaceOrder/PlaceOrder';
 import Order from '~/pages/Order/Order';
 import Profile from '~/pages/Profile/Profile';
 import PurchaseHistory from '~/pages/PurchaseHistory';
+import NotFound from '~/pages/NotFound/NotFound';
 // test private route tý xóa
 import TestPage from '~/pages/TestPage/TestPage';
 
@@ -36,6 +38,7 @@ const publicRoutes = [
     { path: '/product/:id', component: DetailProduct },
     { path: '/login', component: Login, layout: HeaderLayout },
     { path: '/register', component: Register, layout: HeaderLayout },
+    { path: '*', component: NotFound, layout: HeaderLayout },
 ];
 
 const privateRoutes = [
