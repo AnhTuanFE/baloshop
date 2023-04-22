@@ -53,7 +53,7 @@ function Cart() {
     const { userInfo } = userLogin;
 
     const checkOutHandler = () => {
-        navigate('/login?redirect=shipping');
+        navigate('/deliveryaddress');
     };
     useEffect(() => {
         if (errorCreate === 'account lock up') {

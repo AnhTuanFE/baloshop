@@ -152,7 +152,6 @@ function EvaluateProduct({ productId }) {
                 </div>
                 <div className="buttonReview" style={{ textAlign: 'center', marginTop: '10px' }}>
                     <p>Bạn đánh giá sao sản phẩm này</p>
-                    {/* to="/byproduct" */}
                     <Link className="text-white">
                         <button>Đánh giá ngay</button>
                     </Link>

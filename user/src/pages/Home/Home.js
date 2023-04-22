@@ -1,4 +1,4 @@
-// import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import clsx from 'clsx';
 import styles from './Home.module.scss';
 // import NewsMain from '../components/news/NewsMain';// tin tức sự kiện
@@ -10,17 +10,23 @@ import LatestProduct from '~/components/HomeComponent/SliderProducts/LatestProdu
 import BestSellingProduct from '~/components/HomeComponent/SliderProducts/BestSellingProduct'; // CorouselOder
 
 import { useSelector } from 'react-redux';
-//{ match, location }
+
 function Home() {
     const userRegister = useSelector((state) => state.userRegister);
     console.log('userRegister =  ', userRegister);
-    // let location = useLocation();
-    // let params = useParams();
-    // const keyword = params.keyword;
-    // const pageNumber = params.pageNumber;
-    // const category = params.category;
-    // const rating = params.rating;
-    // const sortProducts = params.sortProducts;
+
+    const location = useLocation();
+    const params = useParams();
+
+    console.log('location = ', location);
+    console.log('params = ', params);
+
+    const keyword = params.keyword;
+    const pageNumber = params.pageNumber;
+    const category = params.category;
+    const rating = params.rating;
+    const sortProducts = params.sortProducts;
+
     // console.log('keyword', keyword);
     // console.log('pageNumber', pageNumber);
     // console.log('category', category);
@@ -29,13 +35,6 @@ function Home() {
 
     return (
         <div className={clsx(styles.wrap_home_page)}>
-            <Header />
-            <Sliders />
-            <LatestProduct />
-            <BestSellingProduct />
-            <AllProductsFilter />
-
-            {/* <Header keysearch={keyword} />
             {!keyword && !category ? <Sliders /> : ''}
             {!keyword && !category ? <LatestProduct /> : ''}
             {!keyword && !category ? <BestSellingProduct /> : ''}
@@ -45,7 +44,7 @@ function Home() {
                 pageNumber={pageNumber}
                 sortProducts={sortProducts}
                 rating={rating}
-            /> */}
+            />
         </div>
     );
 }

@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import clsx from 'clsx';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+
 import Rating from './Rating';
 import Pagination from './Pagination';
-import { useDispatch, useSelector } from 'react-redux';
 import { listProduct } from '~/redux/Actions/ProductActions';
 import Loading from './LoadingError/Loading';
 import Message from './LoadingError/Error';
 import { listCart } from '~/redux/Actions/cartActions';
-// import FilterSection from './FilterSection';
-import clsx from 'clsx';
+
 import styles from './HomeComponentCSS/AllProductsFilter.module.scss';
 
 const AllProducts_Filter = (props) => {

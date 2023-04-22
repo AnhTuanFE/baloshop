@@ -228,3 +228,27 @@
     color: #fb5533;
 }
 /*========================================= end phân trang================================*/
+.noti-validate {
+    margin: 5px 0 0 0 !important;
+    font-size: 15px;
+    height: 25px;
+    overflow: hidden;
+    color: red;
+    padding-left: 2px;
+    text-align: left;
+}
+
+.button-submit {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 15px;
+}
+.button-submit button {
+    margin-top: 0 !important;
+    width: 100%;
+    border-radius: 7px;
+    border: 0.5px solid rgba(0, 0, 0, 0.05) !important;
+}
+.button-submit button:hover {
+    background-color: #1cb803;
+}
