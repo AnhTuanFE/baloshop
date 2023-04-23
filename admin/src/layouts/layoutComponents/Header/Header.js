@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import $ from 'jquery';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout, login } from '../Redux/Actions/userActions';
+import { logout, login } from '~/Redux/Actions/userActions';
 
 const Header = () => {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.userLogin);
     const { userInfo } = user;
+
     useEffect(() => {
         $('[data-trigger]').on('click', function (e) {
             e.preventDefault();

@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { DeleteCategory, ListCategory } from '../../Redux/Actions/categoryActions';
+import { DeleteCategory, ListCategory } from '~/Redux/Actions/categoryActions';
 import Loading from '../LoadingError/Loading';
 import { toast } from 'react-toastify';
 import Toast from '../LoadingError/Toast';
-import { CATEGORY_DELETE_RESET } from '../../Redux/Constants/CategoryConstants';
+import { CATEGORY_DELETE_RESET } from '~/Redux/Constants/CategoryConstants';
 
 const CategoriesTable = ({ handleEditInfo, handleCurrentCategory }) => {
     const ToastObjects = {

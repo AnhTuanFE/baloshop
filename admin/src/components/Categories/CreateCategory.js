@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Toast from '../LoadingError/Toast';
-import { addCategory } from '../../Redux/Actions/categoryActions';
+import { addCategory } from '~/Redux/Actions/categoryActions';
 import Loading from '../LoadingError/Loading';
 import { toast } from 'react-toastify';
-import { CATEGORY_ADD_RESET } from '../../Redux/Constants/CategoryConstants';
+import { CATEGORY_ADD_RESET } from '~/Redux/Constants/CategoryConstants';
 import isEmpty from 'validator/lib/isEmpty';
 
 const ToastObjects = {

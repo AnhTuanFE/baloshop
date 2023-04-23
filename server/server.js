@@ -16,12 +16,14 @@ import newsRouter from './Routes/newsRouter.js';
 import forgotPassRouter from './Routes/forgotPassRouter.js';
 import createUserRouter from './Routes/createUserRouter.js';
 
+import cors from 'cors';
 dotenv.config();
 import { Server } from 'http';
 import imageProfile from './Routes/imageProfile.js';
 connectDatabase();
 const app = express();
 app.use(express.json()); // gửi data dưới dạng javascrip thì nó sẽ xử lý
+app.use(express.static('public'));
 
 // API
 
@@ -29,6 +31,7 @@ app.use(express.json()); // gửi data dưới dạng javascrip thì nó sẽ x�
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: false })); //gửi data dưới dạng form thì nó sẽ xử lý
 app.use('/public', express.static('public'));
+app.use(cors());
 
 app.use('/api/cart', cartRoutes);
 app.use('/api/slider', SliderRouter);
@@ -47,7 +50,6 @@ app.use('/api/imageProfile', imageProfile);
 app.use('/api/forgotPass', forgotPassRouter);
 app.use('/api/verifiedEmail', createUserRouter);
 
-app.use(express.static('public'));
 // ERROR HANDLER
 app.use(notFound);
 app.use(errorHandler);

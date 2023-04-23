@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function NewsStatistics() {
     return (
         <div className="col-xl-4 col-lg-12">
@@ -7,6 +5,7 @@ export default function NewsStatistics() {
                 <article className="card-body">
                     <h5 className="card-title">Thống kê tin tức</h5>
                     <iframe
+                        title="Chart"
                         style={{
                             background: '#FFFFFF',
                             border: 'none',

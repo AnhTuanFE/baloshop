@@ -28,6 +28,7 @@ export const login = (email, password) => async (dispatch) => {
         const config = {
             headers: {
                 'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
             },
         };
 

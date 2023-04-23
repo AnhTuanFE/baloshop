@@ -1,5 +1,3 @@
-import React from 'react';
-
 const TopTotal = (props) => {
     const { orders, countProducts, countUsers } = props;
     let totalSale = 0;

@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Loading from '../components/LoadingError/Loading';
-import Toast from '../components/LoadingError/Toast';
-import { login } from '../Redux/Actions/userActions';
-import Message from './../components/LoadingError/Error';
+import { useNavigate } from 'react-router-dom';
 
-const Login = ({ history }) => {
+import Loading from '~/components/LoadingError/Loading';
+import Toast from '~/components/LoadingError/Toast';
+import { login } from '~/Redux/Actions/userActions';
+import Message from '~/components/LoadingError/Error';
+
+const Login = () => {
     window.scrollTo(0, 0);
+    const navigate = useNavigate();
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -17,9 +21,9 @@ const Login = ({ history }) => {
 
     useEffect(() => {
         if (userInfo) {
-            history.push('/');
+            navigate('/');
         }
-    }, [userInfo, history]);
+    }, [userInfo]);
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -33,7 +37,8 @@ const Login = ({ history }) => {
                     {error && <Message variant="alert-danger">{error}</Message>}
                     {loading && <Loading />}
                     <h4 className="card-title mb-4 text-center">Sign in</h4>
-                    <form onSubmit={submitHandler}>
+                    {/* onSubmit={submitHandler} */}
+                    <form>
                         <div className="mb-3">
                             <input
                                 className="form-control"
@@ -54,7 +59,8 @@ const Login = ({ history }) => {
                         </div>
 
                         <div className="mb-4">
-                            <button type="submit" className="btn btn-primary w-100">
+                            {/* type="submit" */}
+                            <button onClick={submitHandler} className="btn btn-primary w-100">
                                 Login
                             </button>
                         </div>

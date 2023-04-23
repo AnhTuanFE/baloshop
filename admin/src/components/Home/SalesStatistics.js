@@ -1,5 +1,3 @@
-import React from 'react';
-
 const SaleStatistics = () => {
     return (
         <div className="col-xl-4 col-lg-12">

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { listUser, disabledUser } from '../../Redux/Actions/userActions';
-import { USER_DISABLED_RESET } from '../../Redux/Constants/UserContants';
+import { listUser, disabledUser } from '~/Redux/Actions/userActions';
+import { USER_DISABLED_RESET } from '~/Redux/Constants/UserContants';
 import { toast } from 'react-toastify';
 import Toast from '../LoadingError/Toast';
 import Loading from '../LoadingError/Loading';

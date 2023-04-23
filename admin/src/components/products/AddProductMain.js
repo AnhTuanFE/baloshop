@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuill } from 'react-quilljs';
 import 'react-quill/dist/quill.snow.css';
@@ -8,12 +8,12 @@ import {
     PRODUCT_CREATE_RESET,
     PRODUCT_OPTIONCOLOR_RESET,
     PRODUCT_CREATE_IMAGE_RESET,
-} from '../../Redux/Constants/ProductConstants';
-import { createProduct, createOptionColor, editProduct, createImageProduct } from '../../Redux/Actions/ProductActions';
+} from '~/Redux/Constants/ProductConstants';
+import { createProduct, createOptionColor, editProduct, createImageProduct } from '~/Redux/Actions/ProductActions';
 import Toast from '../LoadingError/Toast';
 import Message from '../LoadingError/Error';
 import Loading from '../LoadingError/Loading';
-import { ListCategory } from '../../Redux/Actions/categoryActions';
+import { ListCategory } from '~/Redux/Actions/categoryActions';
 import isEmpty from 'validator/lib/isEmpty';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';

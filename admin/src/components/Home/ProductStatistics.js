@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function ProductStatistics() {
     return (
         <div className="col-xl-4 col-lg-12">

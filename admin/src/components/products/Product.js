@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { deleteProduct } from '../../Redux/Actions/ProductActions';
+import { deleteProduct } from '~/Redux/Actions/ProductActions';
 
 const Product = (props) => {
     const { product, index } = props;

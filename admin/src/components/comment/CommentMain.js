@@ -1,18 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import {
     ListProductCommentAll,
     createProductCommentChild,
     deleteCommentsProduct,
     deleteCommentsChildProduct,
-} from '../../Redux/Actions/ProductActions';
-import {
-    PRODUCT_DELETE_COMMENTCHILD_RESET,
-    PRODUCT_DELETE_COMMENT_RESET,
-} from '../../Redux/Constants/ProductConstants';
+} from '~/Redux/Actions/ProductActions';
+import { PRODUCT_DELETE_COMMENTCHILD_RESET, PRODUCT_DELETE_COMMENT_RESET } from '~/Redux/Constants/ProductConstants';
 import moment from 'moment';
-import { listUser } from '../../Redux/Actions/userActions';
+import { listUser } from '~/Redux/Actions/userActions';
 import './style.css';
 import Message from '../LoadingError/Error';
 import Loading from '../LoadingError/Loading';

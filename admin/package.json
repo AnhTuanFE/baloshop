@@ -22,7 +22,7 @@
         "react-scripts": "5.0.1",
         "react-toastify": "^8.1.0",
         "redux": "^4.2.0",
-        "redux-devtools-extension": "^2.13.9",
+        "@redux-devtools/extension": "^3.2.5",
         "redux-thunk": "^2.4.2",
         "sas": "^3.0.4",
         "uuid": "^9.0.0",
@@ -31,7 +31,7 @@
     },
     "scripts": {
         "start": "react-app-rewired start",
-        "build": "react-app-rewired build",
+        "build": "react-app-rewired --openssl-legacy-provider build",
         "test": "react-app-rewired test",
         "eject": "react-app-rewired eject"
     },
@@ -54,9 +54,9 @@
         ]
     },
     "devDependencies": {
-        "sass": "^1.55.0",
         "babel-plugin-module-resolver": "^4.1.0",
         "customize-cra": "^1.0.0",
-        "react-app-rewired": "^2.2.1"
+        "react-app-rewired": "^2.2.1",
+        "sass": "^1.55.0"
     }
 }

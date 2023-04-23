@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ListCategory } from '~/redux/Actions/categoryActions';
 // import { listProduct } from '~/redux/Actions/ProductActions';
 import clsx from 'clsx';

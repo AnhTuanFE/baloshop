@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import Toast from '../LoadingError/Toast';
 import Loading from '../LoadingError/Loading';
 import { useDispatch, useSelector } from 'react-redux';
-import { UpdateCurrentCategory } from '../../Redux/Actions/categoryActions';
+import { UpdateCurrentCategory } from '~/Redux/Actions/categoryActions';
 import { toast } from 'react-toastify';
-import { CATEGORY_UPDATE_RESET } from '../../Redux/Constants/CategoryConstants';
+import { CATEGORY_UPDATE_RESET } from '~/Redux/Constants/CategoryConstants';
 
 const ToastObjects = {
     pauseOnFocusLoss: false,
@@ -86,4 +86,4 @@ const UpdateCategory = ({ currentCategory }) => {
         </>
     );
 };
-export default React.memo(UpdateCategory);
+export default memo(UpdateCategory);

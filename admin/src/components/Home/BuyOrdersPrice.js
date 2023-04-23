@@ -1,5 +1,3 @@
-import React from 'react';
-
 const BuyOrdersPrice = () => {
     return (
         <div className="col-xl-4 col-lg-12">
@@ -7,6 +5,7 @@ const BuyOrdersPrice = () => {
                 <article className="card-body">
                     <h5 className="card-title">Thống kê tổng số tiền đã Orders</h5>
                     <iframe
+                        title="chart"
                         style={{
                             background: '#FFFFFF',
                             border: 'none',

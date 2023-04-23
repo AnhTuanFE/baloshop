@@ -1,17 +1,13 @@
-import React from 'react';
-import Sidebar from './../components/sidebar';
-import Header from './../components/Header';
-import EditNews from './../components/news/EditNews';
+import { useParams } from 'react-router-dom';
 
-const EditNewsScreen = ({ match }) => {
-    const idNews = match.params.id;
+import EditNews from '~/components/news/EditNews';
+
+const EditNewsScreen = () => {
+    const params = useParams();
+    const idNews = params.id;
     return (
         <>
-            <Sidebar />
-            <main className="main-wrap">
-                <Header />
-                <EditNews idNews={idNews} />
-            </main>
+            <EditNews idNews={idNews} />
         </>
     );
 };

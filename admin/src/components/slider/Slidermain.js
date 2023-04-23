@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { createSlider, deleteSlider, ListSlider } from '../../Redux/Actions/SliderAction';
+import { createSlider, deleteSlider, ListSlider } from '~/Redux/Actions/SliderAction';
 import AddSlider from './AddSlider';
 
 export default function Slidermain() {

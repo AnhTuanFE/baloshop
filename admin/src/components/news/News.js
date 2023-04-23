@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { ListNews, deleteNews } from '../../Redux/Actions/NewsAction';
-import { NEWS_DELETE_RESET } from '../../Redux/Constants/NewsConstants';
+import { ListNews, deleteNews } from '~/Redux/Actions/NewsAction';
+import { NEWS_DELETE_RESET } from '~/Redux/Constants/NewsConstants';
 import Message from '../LoadingError/Error';
 import Loading from '../LoadingError/Loading';
 import Toast from '../LoadingError/Toast';

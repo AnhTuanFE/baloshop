@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import Message from '../LoadingError/Error';
 import Loading from '../LoadingError/Loading';
-import { listOrders } from '../../Redux/Actions/OrderActions';
+import { listOrders } from '~/Redux/Actions/OrderActions';
 import { useSelector, useDispatch } from 'react-redux';
 import PaginatorOrder from './PaginatorOrder';
 
 const Orders = (props) => {
     const { keyword, status, pageNumber } = props;
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
     const orderList = useSelector((state) => state.orderList);
     const { loading, error, orders, page, pages } = orderList;
 
@@ -22,17 +22,17 @@ const Orders = (props) => {
 
     const handleStatus = (value) => {
         if (keyword) {
-            history.push(`/orders/search/${keyword}/status/${value.target.value}`);
+            navigate(`/orders/search/${keyword}/status/${value.target.value}`);
         } else {
-            history.push(`/orders/status/${value.target.value}`);
+            navigate(`/orders/status/${value.target.value}`);
         }
     };
     const handleSearch = (e) => {
         e.preventDefault();
         if (kewywordSearch.trim() && kewywordSearch) {
-            history.push(`/orders/search/${kewywordSearch}`);
+            navigate(`/orders/search/${kewywordSearch}`);
         } else {
-            history.push(`/orders`);
+            navigate(`/orders`);
         }
     };
     return (

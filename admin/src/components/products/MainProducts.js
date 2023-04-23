@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Product from './Product';
 import { useDispatch, useSelector } from 'react-redux';
-import { listProducts } from '../../Redux/Actions/ProductActions';
+import { listProducts } from '~/Redux/Actions/ProductActions';
 import Loading from '../LoadingError/Loading';
 import Message from '../LoadingError/Error';
-import { ListCategory } from '../../Redux/Actions/categoryActions';
+import { ListCategory } from '~/Redux/Actions/categoryActions';
 import Pagination from '../Home/pagination';
 
 const MainProducts = (props) => {
     const { category, keyword, pageNumber } = props;
     const dispatch = useDispatch();
-    let history = useHistory();
+    let navigate = useNavigate();
 
     const productList = useSelector((state) => state.productList);
     const { loading, error, products, page, pages } = productList;
@@ -27,9 +27,9 @@ const MainProducts = (props) => {
         e.preventDefault();
         if (kewywordSearch !== undefined) {
             if (kewywordSearch.trim() && kewywordSearch) {
-                history.push(`/products/search/${kewywordSearch}`);
+                navigate(`/products/search/${kewywordSearch}`);
             } else {
-                history.push(`/products`);
+                navigate(`/products`);
             }
         }
     };
@@ -37,9 +37,9 @@ const MainProducts = (props) => {
         e.preventDefault();
         if (e.target.value !== undefined) {
             if (e.target.value.trim() && e.target.value) {
-                history.push(`/products/category/${e.target.value}`);
+                navigate(`/products/category/${e.target.value}`);
             } else {
-                history.push(`/products`);
+                navigate(`/products`);
             }
         }
     };

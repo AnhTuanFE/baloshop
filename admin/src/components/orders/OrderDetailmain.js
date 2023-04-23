@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import OrderDetailProducts from './OrderDetailProducts';
 import OrderDetailInfo from './OrderDetailInfo';
 import { Link } from 'react-router-dom';
@@ -10,7 +10,7 @@ import {
     paidOrder,
     waitConfirmationOrder,
     completeAdminOrder,
-} from '../../Redux/Actions/OrderActions';
+} from '~/Redux/Actions/OrderActions';
 import Loading from '../LoadingError/Loading';
 import Message from '../LoadingError/Error';
 import moment from 'moment';

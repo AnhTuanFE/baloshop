@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { createSlider, ListSlider } from '../../Redux/Actions/SliderAction';
-import { SLIDER_CREATE_RESET } from '../../Redux/Constants/SliderConstants';
+import { createSlider, ListSlider } from '~/Redux/Actions/SliderAction';
+import { SLIDER_CREATE_RESET } from '~/Redux/Constants/SliderConstants';
 import Message from '../LoadingError/Error';
 import Loading from '../LoadingError/Loading';
 import Toast from '../LoadingError/Toast';

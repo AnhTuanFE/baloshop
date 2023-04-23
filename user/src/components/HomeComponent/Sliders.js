@@ -1,4 +1,4 @@
-// import React from "react";
+//  ;
 // import { useState, useEffect } from "react";
 // import clsx from "clsx";
 // import styles from "./HomeComponentCSS/Sliders.module.scss";
@@ -93,7 +93,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import clsx from 'clsx';
 import styles from './HomeComponentCSS/Sliders.module.scss';
-// import { listCart } from '../Redux/Actions/cartActions';
+// import { listCart } from '~/Redux/Actions/cartActions';
 
 export default function Sliders() {
     const sliderList = useSelector((state) => state.sliderLoad);

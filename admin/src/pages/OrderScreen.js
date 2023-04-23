@@ -1,19 +1,16 @@
-import React from 'react';
-import Sidebar from './../components/sidebar';
-import Header from './../components/Header';
-import OrderMain from '../components/orders/OrderMain';
+import { useParams } from 'react-router-dom';
 
-const OrderScreen = ({ match }) => {
-    const keyword = match.params.keyword;
-    const pageNumber = match.params.pageNumber;
-    const status = match.params.status;
+import OrderMain from '~/components/orders/OrderMain';
+
+const OrderScreen = () => {
+    const params = useParams();
+
+    const keyword = params.keyword;
+    const pageNumber = params.pageNumber;
+    const status = params.status;
     return (
         <>
-            <Sidebar />
-            <main className="main-wrap">
-                <Header />
-                <OrderMain keyword={keyword} status={status} pageNumber={pageNumber} />
-            </main>
+            <OrderMain keyword={keyword} status={status} pageNumber={pageNumber} />
         </>
     );
 };

@@ -1,7 +1,7 @@
 import { useLocation, useParams } from 'react-router-dom';
 import clsx from 'clsx';
 import styles from './Home.module.scss';
-// import NewsMain from '../components/news/NewsMain';// tin tức sự kiện
+// import NewsMain from '~/components/news/NewsMain';// tin tức sự kiện
 // =======bên trên chưa dùng tới
 import Header from '~/components/Layout/componenLayout/Header';
 import AllProductsFilter from '~/components/HomeComponent/AllProductsFilter'; // ShopSection

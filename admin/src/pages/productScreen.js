@@ -1,19 +1,20 @@
-import React from 'react';
-import Sidebar from './../components/sidebar';
-import Header from './../components/Header';
-import MainProducts from './../components/products/MainProducts';
+import { useParams } from 'react-router-dom';
 
-const ProductScreen = ({ match }) => {
-    const keyword = match.params.keyword;
-    const pageNumber = match.params.pageNumber;
-    const category = match.params.category;
+import MainProducts from '~/components/products/MainProducts';
+
+const ProductScreen = () => {
+    const params = useParams();
+
+    const keyword = params.keyword;
+    const pageNumber = params.pageNumber;
+    const category = params.category;
+    console.log('keyword = ', keyword);
+    console.log('pageNumber = ', pageNumber);
+    console.log('category = ', category);
+
     return (
         <>
-            <Sidebar />
-            <main className="main-wrap">
-                <Header />
-                <MainProducts keyword={keyword} category={category} pageNumber={pageNumber} />
-            </main>
+            <MainProducts keyword={keyword} category={category} pageNumber={pageNumber} />
         </>
     );
 };

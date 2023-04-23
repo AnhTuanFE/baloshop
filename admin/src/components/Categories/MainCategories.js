@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import CreateCategory from './CreateCategory';
 import UpdateCategory from './UpdateCategory';
 import CategoriesTable from './CategoriesTable';

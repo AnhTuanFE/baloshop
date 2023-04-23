@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Toast from './../LoadingError/Toast';
 import { Link } from 'react-router-dom';
 import ReactQuill from 'react-quill';
@@ -13,7 +13,7 @@ import {
     deleteOptionProduct,
     createImageProduct,
     deleteImageProduct,
-} from './../../Redux/Actions/ProductActions';
+} from '~/Redux/Actions/ProductActions';
 import {
     PRODUCT_UPDATE_RESET,
     PRODUCT_UPDATE_OPTION_RESET,
@@ -21,11 +21,11 @@ import {
     PRODUCT_DELETE_OPTION_RESET,
     PRODUCT_CREATE_IMAGE_RESET,
     PRODUCT_DELETE_IMAGE_RESET,
-} from '../../Redux/Constants/ProductConstants';
+} from '~/Redux/Constants/ProductConstants';
 import { toast } from 'react-toastify';
 import Message from '../LoadingError/Error';
 import Loading from '../LoadingError/Loading';
-import { ListCategory } from '../../Redux/Actions/categoryActions';
+import { ListCategory } from '~/Redux/Actions/categoryActions';
 import { v4 as uuidv4 } from 'uuid';
 
 const ToastObjects = {

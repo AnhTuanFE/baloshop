@@ -1,11 +1,11 @@
-import { Link, useHistory } from 'react-router-dom';
-import clsx from "clsx";
-import styles from "./HomeComponentCSS/Suggestions.module.scss";
+import { Link, useNavigate } from 'react-router-dom';
+import clsx from 'clsx';
+import styles from './HomeComponentCSS/Suggestions.module.scss';
 export default function Suggestions() {
     const keySearch = JSON.parse(localStorage.getItem('keySearch'));
-    let history = useHistory();
+    const navigate = useNavigate();
     const handSearch = (keyword) => {
-        history.push(`/search/${keyword}`);
+        navigate(`/search/${keyword}`);
     };
     return (
         <>

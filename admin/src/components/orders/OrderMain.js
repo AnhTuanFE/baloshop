@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import Orders from './Orders';
 
 const OrderMain = (props) => {

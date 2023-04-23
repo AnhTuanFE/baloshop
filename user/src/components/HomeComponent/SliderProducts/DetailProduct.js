@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Carousel } from 'primereact/carousel';
 import { Button } from 'primereact/button';
 

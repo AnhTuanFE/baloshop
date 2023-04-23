@@ -25,6 +25,7 @@ userRouter.post(
     '/login',
     asyncHandler(async (req, res) => {
         const { email, password } = req.body;
+
         const user = await User.findOne({ email });
         if (user?.disabled) {
             res.status(400);
