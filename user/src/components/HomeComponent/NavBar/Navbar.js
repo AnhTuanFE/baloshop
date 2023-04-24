@@ -17,8 +17,8 @@ export default function NavBar({ onRemove }) {
             {/* Pc-navbar */}
             <div className={clsx(styles.navbar_menu)}>
                 <ul className={clsx(styles.navbar_list)}>
-                    {categories.map((category) => (
-                        <li className={clsx(styles.navbar_list_li)}>
+                    {categories.map((category, index) => (
+                        <li key={index} className={clsx(styles.navbar_list_li)}>
                             <Link to={`/category/${category._id}`}>{category.name}</Link>
                         </li>
                     ))}

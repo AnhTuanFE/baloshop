@@ -1,6 +1,6 @@
-import HeaderOnly from '~/layouts/headerOnly/HeaderOnly';
+import HeaderOnly from '~/layouts/headerOnly';
 // import FooterOnly from '~/layouts/footerOnly/FooterOnly';
-import Home from '~/pages/Home/Home';
+import Home from '~/pages/Home';
 import DetailProduct from '~/pages/Products/DetailProduct/DetailProduct';
 import Login from '~/pages/Login/Login';
 import Register from '~/pages/Register/Register';

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
 import clsx from 'clsx';
@@ -12,12 +12,13 @@ import styles from './LatestProduct.module.scss';
 
 export default function LatestProduct() {
     const allProduct = useSelector((state) => state.productAll);
-    const { products, loading } = allProduct;
+    const { products } = allProduct;
 
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(ListProductAll());
     }, []);
+    console.log('products = ', products);
 
     const settings = {
         dots: false,
@@ -59,7 +60,6 @@ export default function LatestProduct() {
         ],
     };
     return (
-        // <div className="container corousel-container">
         <div className={clsx('container', 'corousel-container', styles.wrap_product)}>
             <h2 className={clsx(styles.section_title)}>
                 <b></b>

@@ -11,15 +11,9 @@ import NavBar from '~/components/HomeComponent/NavBar/Navbar';
 import { logout, getUserDetails } from '~/redux/Actions/userActions'; //updateUserProfile,
 import ContactInformation from '../ContactInformation';
 
-// import { listCart } from '~/redux/Actions/cartActions'; //bỏ
-// import { ListAvatar } from '~/redux/Actions/avatarAction'; //bỏ
-// import Suggestions from "~/components/HomeComponent/Suggestions"; // tạm thời ko dùng
-// import './suggestions/style.css'; // tạm thời ko dùng
-
 const Header = (props) => {
     const { keysearch } = props;
     const [keyword, setKeyword] = useState('');
-    const [navbar, setNavbar] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const cart = useSelector((state) => state.cart);
@@ -48,12 +42,6 @@ const Header = (props) => {
         setKeyword(keysearch);
     }, [keysearch]);
 
-    const clickIconNavBar = () => {
-        setNavbar(true);
-    };
-    const removeNavBar = () => {
-        setNavbar(false);
-    };
     const logoutHandler = () => {
         dispatch(logout());
         navigate('/');

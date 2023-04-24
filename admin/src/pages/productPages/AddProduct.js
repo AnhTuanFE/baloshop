@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useQuill } from 'react-quilljs';
-import 'react-quill/dist/quill.snow.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import isEmpty from 'validator/lib/isEmpty';
 import { v4 as uuidv4 } from 'uuid';
+
+import { useQuill } from 'react-quilljs';
+// import 'react-quill/dist/quill.snow.css';
+import 'quill/dist/quill.snow.css';
 
 import {
     PRODUCT_CREATE_RESET,
@@ -27,6 +29,7 @@ const ToastObjects = {
 };
 const AddProduct = () => {
     let uuId = uuidv4();
+
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     const [category, setCategory] = useState('');
@@ -38,23 +41,32 @@ const AddProduct = () => {
     const [color, setColor] = useState('');
     const [productId, setProducId] = useState('');
     const [validate, setValidate] = useState({});
-    const { quill, quillRef } = useQuill();
     const [ble, setBle] = useState(false);
     const [check, setCheck] = useState(0);
     const [disabledOptionColor, setDisabledOptionColor] = useState(false);
     const [disabledProduct, setDisabledProduct] = useState(true);
+
+    const { quill, quillRef } = useQuill();
+    console.log('quill = ', quill);
+    console.log('quillRef = ', quillRef);
+
     const dispatch = useDispatch();
 
     const productCreate = useSelector((state) => state.productCreate);
     const { loading, error, product } = productCreate;
+
     const productColor = useSelector((state) => state.optionColorCreate);
     const { loading: loadingOption, error: errorOption, success: successOption } = productColor;
+
     const lcategories = useSelector((state) => state.CategoryList);
     const { categories } = lcategories;
+
     const productEdit = useSelector((state) => state.productEdit);
     const { product: productOption } = productEdit;
+
     const productCreateImage = useSelector((state) => state.productCreateImage);
     const { urlImages, success: successCreactImage } = productCreateImage;
+
     useEffect(() => {
         if (product) {
             toast.success('Thêm sản phẩm thành công', ToastObjects);
@@ -88,6 +100,7 @@ const AddProduct = () => {
             }
         }
     }, [urlImages]);
+    // ========================================================================
     useEffect(() => {
         if (quill) {
             quill.on('text-change', () => {
@@ -95,6 +108,8 @@ const AddProduct = () => {
             });
         }
     }, [quill]);
+    // ========================================================================
+
     const isEmptyCheckEdit = () => {
         const msg = {};
         if (isEmpty(category)) {
@@ -131,7 +146,6 @@ const AddProduct = () => {
         e.preventDefault();
         const isEmptyValidate = isEmptyCheckEdit();
         if (!isEmptyValidate) return;
-        // console.log(category);
         if (category !== -1) {
             dispatch(createProduct(name, price, description, category, image, countInStock));
             setDisabledProduct(false);
@@ -293,6 +307,7 @@ const AddProduct = () => {
                                                                                       )}`
                                                                                     : ''
                                                                             }
+                                                                            alt="product img"
                                                                         ></img>
                                                                         <p
                                                                             className="product_image_p"
@@ -373,7 +388,6 @@ const AddProduct = () => {
                                                         Màu bị trùng hoặc số lượng chưa đúng vui lòng nhập lại
                                                     </Message>
                                                 )}
-                                                {/* {loadingOption && <Loading />} */}
                                                 <form>
                                                     <div className="mb-0">
                                                         <label htmlFor="product_price" className="form-label">
@@ -448,7 +462,7 @@ const AddProduct = () => {
                                                     <tbody>
                                                         {productOption?.optionColor &&
                                                             productOption?.optionColor?.map((option, index) => (
-                                                                <tr>
+                                                                <tr key={index}>
                                                                     <td>{index + 1}</td>
                                                                     <td>
                                                                         <b>{option.color}</b>
