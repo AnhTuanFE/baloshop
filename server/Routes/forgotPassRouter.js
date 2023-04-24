@@ -1,7 +1,4 @@
 import express from 'express';
-import asyncHandler from 'express-async-handler';
-import multer from 'multer';
-import path from 'path';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
@@ -24,7 +21,7 @@ forgotPassRouter.post('/forgotPassword', async (req, res) => {
         const token1 = jwt.sign({ email: oldUser.email, id: oldUser._id }, secret, {
             expiresIn: '5m',
         });
-        const link = `http://localhost:9000/api/forgotPass/reset-password/${oldUser._id}/${token1}`;
+        const link = `http://localhost:9001/api/forgotPass/reset-password/${oldUser._id}/${token1}`;
         var transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {

@@ -3,11 +3,10 @@ import clsx from 'clsx';
 import styles from './Home.module.scss';
 // import NewsMain from '~/components/news/NewsMain';// tin tức sự kiện
 // =======bên trên chưa dùng tới
-import Header from '~/components/Layout/componenLayout/Header';
-import AllProductsFilter from '~/components/HomeComponent/AllProductsFilter'; // ShopSection
-import Sliders from '~/components/HomeComponent/Sliders';
-import LatestProduct from '~/components/HomeComponent/SliderProducts/LatestProduct'; //  Corousel
-import BestSellingProduct from '~/components/HomeComponent/SliderProducts/BestSellingProduct'; // CorouselOder
+import AllProductsFilter from '~/components/HomeComponent/AllProductsFilter/AllProductsFilter'; // ShopSection
+import Sliders from '~/components/HomeComponent/Sliders/Sliders';
+import LatestProduct from '~/components/HomeComponent/SliderProducts/LatestProduct/LatestProduct'; //  Corousel
+import BestSellingProduct from '~/components/HomeComponent/SliderProducts/BestSellingProduct/BestSellingProduct'; // CorouselOder
 
 import { useSelector } from 'react-redux';
 

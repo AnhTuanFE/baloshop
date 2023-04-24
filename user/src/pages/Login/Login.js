@@ -115,7 +115,7 @@ const Login = () => {
                     </div>
                     <button type="submit">Đăng nhập</button>
                     <p>
-                        <Link to={'/reset'}>Quên mật khẩu</Link>
+                        <Link to={'/resetpassword'}>Quên mật khẩu</Link>
                     </p>
                     <p>
                         <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>Tạo tài khoản mới</Link>

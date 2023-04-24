@@ -6,7 +6,7 @@ import Message from '~/components/HomeComponent/LoadingError/Error';
 import Loading from '~/components/HomeComponent/LoadingError/Loading';
 import { register, createUser } from '~/redux/Actions/userActions';
 import clsx from 'clsx';
-import styles from './RegisterCSS/Register.module.scss';
+import styles from './Register.module.scss';
 
 function Register() {
     const location = useLocation();
