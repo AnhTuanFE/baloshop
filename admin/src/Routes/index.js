@@ -1,26 +1,28 @@
-// layout
-// import HeaderLayout from '~/components/Layout/HeaderLayout/HeaderLayout';
-// import FooterLayout from '~/components/Layout/FooterLayout/FooterLayout';
-
-import HomeScreen from '~/pages/HomeScreen';
-import ProductScreen from '~/pages/productScreen';
-import CategoriesScreen from '~/pages/CategoriesScreen';
-import OrderScreen from '~/pages/OrderScreen';
-import OrderDetailScreen from '~/pages/OrderDetailScreen';
-import AddProduct from '~/pages/AddProduct';
 import Login from '~/pages/LoginScreen';
+import HomeScreen from '~/pages/HomeScreen';
+
+// import ProductScreen from '~/pages/productPages/ProductScreen';
+import ProductScreen from '~/pages/productPages/ProductScreen';
+import AddProduct from '~/pages/productPages/AddProduct';
+import ProductEditScreen from '~/pages/productPages/ProductEditScreen';
+
+import CategoriesScreen from '~/pages/CategoriesScreen';
+
+import OrderScreen from '~/pages/orderPages/OrderScreen';
+import OrderDetailScreen from '~/pages/orderPages/OrderDetailScreen';
+
 import UsersScreen from '~/pages/UsersScreen';
-import ProductEditScreen from '~/pages/ProductEditScreen';
-import NotFound from '~/pages/NotFound';
 import SliderScreen from '~/pages/SliderScreen';
-import AddNewsScreen from '~/pages/AddNewsScreen';
-import EditNewsScreen from '~/pages/EditNewsScreen';
-import NewsScreen from '~/pages/NewsScreen';
-import CommentScreen from '~/pages/CommentScreen';
+import CommentScreen from '~/pages/comment/CommentScreen';
+
+import AddNewsScreen from '~/pages/news/AddNewsScreen';
+import EditNewsScreen from '~/pages/news/EditNewsScreen';
+import NewsScreen from '~/pages/news/NewsScreen';
+
+import NotFound from '~/pages/NotFound';
 
 const privateRoutes = [
     { path: '/', component: HomeScreen },
-    { path: '/login', component: Login },
 
     { path: '/products', component: ProductScreen },
     { path: '/products/page/:pageNumber', component: ProductScreen },
@@ -55,6 +57,6 @@ const privateRoutes = [
     { path: '*', component: NotFound },
 ];
 
-const publicRoutes = [];
+const publicRoutes = [{ path: '/login', component: Login, layout: null }];
 
 export { publicRoutes, privateRoutes };

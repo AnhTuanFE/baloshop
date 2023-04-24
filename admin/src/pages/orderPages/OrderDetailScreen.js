@@ -1,8 +1,8 @@
+import { useParams, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import OrderDetailProducts from './OrderDetailProducts';
-import OrderDetailInfo from './OrderDetailInfo';
-import { Link } from 'react-router-dom';
+import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
+
 import {
     cancelOrder,
     deliverOrder,
@@ -11,14 +11,18 @@ import {
     waitConfirmationOrder,
     completeAdminOrder,
 } from '~/Redux/Actions/OrderActions';
-import Loading from '../LoadingError/Loading';
-import Message from '../LoadingError/Error';
-import moment from 'moment';
-// modal
-import CancelModal from '../Modal/CancelModal';
 
-const OrderDetailmain = (props) => {
-    const { orderId } = props;
+import OrderDetailInfo from '~/components/orders/OrderDetailInfo';
+import OrderDetailProducts from '~/components/orders/OrderDetailProducts';
+
+import Loading from '~/components/LoadingError/Loading';
+import Message from '~/components/LoadingError/Error';
+import CancelModal from '~/components/Modal/CancelModal';
+
+const OrderDetailScreen = () => {
+    const params = useParams();
+    const orderId = params.id;
+
     const dispatch = useDispatch();
     // modal
     const [cancel, setCancel] = useState(false);
@@ -224,4 +228,4 @@ const OrderDetailmain = (props) => {
     );
 };
 
-export default OrderDetailmain;
+export default OrderDetailScreen;

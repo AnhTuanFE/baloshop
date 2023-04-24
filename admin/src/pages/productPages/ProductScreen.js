@@ -1,17 +1,24 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import Product from './Product';
 import { useDispatch, useSelector } from 'react-redux';
-import { listProducts } from '~/Redux/Actions/ProductActions';
-import Loading from '../LoadingError/Loading';
-import Message from '../LoadingError/Error';
-import { ListCategory } from '~/Redux/Actions/categoryActions';
-import Pagination from '../Home/pagination';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
-const MainProducts = (props) => {
-    const { category, keyword, pageNumber } = props;
+import { listProducts } from '~/Redux/Actions/ProductActions';
+import { ListCategory } from '~/Redux/Actions/categoryActions';
+
+import Product from '~/components/products/Product';
+import Loading from '~/components/LoadingError/Loading';
+import Message from '~/components/LoadingError/Error';
+import Pagination from '~/components/Home/pagination';
+
+const ProductScreen = () => {
+    const params = useParams();
+
+    const keyword = params.keyword;
+    const pageNumber = params.pageNumber;
+    const category = params.category;
+
     const dispatch = useDispatch();
-    let navigate = useNavigate();
+    const navigate = useNavigate();
 
     const productList = useSelector((state) => state.productList);
     const { loading, error, products, page, pages } = productList;
@@ -140,4 +147,4 @@ const MainProducts = (props) => {
     );
 };
 
-export default MainProducts;
+export default ProductScreen;

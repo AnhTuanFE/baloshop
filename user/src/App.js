@@ -41,9 +41,8 @@ function App() {
                             }
                             const Page = route.component;
                             return (
-                                <Route element={<RouteConfirmation />}>
+                                <Route key={index} element={<RouteConfirmation />}>
                                     <Route
-                                        key={index}
                                         path={route.path}
                                         element={
                                             <Layout>

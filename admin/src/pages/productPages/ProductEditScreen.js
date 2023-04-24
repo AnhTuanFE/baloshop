@@ -1,10 +1,11 @@
+import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import Toast from './../LoadingError/Toast';
-import { Link } from 'react-router-dom';
 import ReactQuill from 'react-quill';
-import { useQuill } from 'react-quilljs';
 import 'react-quill/dist/quill.snow.css';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { v4 as uuidv4 } from 'uuid';
+
 import {
     editProduct,
     createOptionColor,
@@ -22,11 +23,11 @@ import {
     PRODUCT_CREATE_IMAGE_RESET,
     PRODUCT_DELETE_IMAGE_RESET,
 } from '~/Redux/Constants/ProductConstants';
-import { toast } from 'react-toastify';
-import Message from '../LoadingError/Error';
-import Loading from '../LoadingError/Loading';
 import { ListCategory } from '~/Redux/Actions/categoryActions';
-import { v4 as uuidv4 } from 'uuid';
+
+import Message from '~/components/LoadingError/Error';
+import Loading from '~/components/LoadingError/Loading';
+import Toast from '~/components/LoadingError/Toast';
 
 const ToastObjects = {
     pauseOnFocusLoss: false,
@@ -35,8 +36,9 @@ const ToastObjects = {
     autoClose: 2000,
 };
 
-const EditproductMain = (props) => {
-    const { productId } = props;
+const ProductEditScreen = () => {
+    const params = useParams();
+    const productId = params.id;
     const [category, setCategory] = useState('');
     const [name, setName] = useState('');
     const [price, setPrice] = useState(0);
@@ -599,5 +601,4 @@ const EditproductMain = (props) => {
         </>
     );
 };
-
-export default EditproductMain;
+export default ProductEditScreen;

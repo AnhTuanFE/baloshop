@@ -1,8 +1,13 @@
-import { useEffect } from 'react';
-import Orders from './Orders';
+import { useParams } from 'react-router-dom';
+import Orders from '~/components/orders/Orders';
 
-const OrderMain = (props) => {
-    const { keyword, status, pageNumber } = props;
+const OrderScreen = () => {
+    const params = useParams();
+
+    const keyword = params.keyword;
+    const pageNumber = params.pageNumber;
+    const status = params.status;
+
     return (
         <section className="content-main">
             <div className="content-header">
@@ -20,4 +25,4 @@ const OrderMain = (props) => {
     );
 };
 
-export default OrderMain;
+export default OrderScreen;

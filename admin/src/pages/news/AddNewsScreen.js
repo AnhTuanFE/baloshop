@@ -1,23 +1,24 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { createNews, ListNews } from '~/Redux/Actions/NewsAction';
-import { NEWS_CREATE_RESET } from '~/Redux/Constants/NewsConstants';
-import Message from '../LoadingError/Error';
-import Loading from '../LoadingError/Loading';
-import Toast from '../LoadingError/Toast';
-import isEmpty from 'validator/lib/isEmpty';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import './style.css';
 
+import { createNews, ListNews } from '~/Redux/Actions/NewsAction';
+import { NEWS_CREATE_RESET } from '~/Redux/Constants/NewsConstants';
+
+import Message from '~/components/LoadingError/Error';
+import Loading from '~/components/LoadingError/Loading';
+import Toast from '~/components/LoadingError/Toast';
+
+import './style.css';
 const ToastObjects = {
     pauseOnFocusLoss: false,
     draggable: false,
     pauseOnHover: false,
     autoClose: 2000,
 };
-export default function AddNews() {
+const AddNewsScreen = () => {
     const dispatch = useDispatch();
     const [nameUser, setNameUser] = useState('');
     const [title, setTitle] = useState('');
@@ -84,7 +85,6 @@ export default function AddNews() {
         dispatch(createNews({ nameUser, title, image, content }));
         setRetult('');
     };
-
     return (
         <div className="content-main" style={{ backgroundColor: '#fff' }}>
             <Toast />
@@ -151,4 +151,6 @@ export default function AddNews() {
             </form>
         </div>
     );
-}
+};
+
+export default AddNewsScreen;

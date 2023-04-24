@@ -4,19 +4,20 @@ import { useQuill } from 'react-quilljs';
 import 'react-quill/dist/quill.snow.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import isEmpty from 'validator/lib/isEmpty';
+import { v4 as uuidv4 } from 'uuid';
+
 import {
     PRODUCT_CREATE_RESET,
     PRODUCT_OPTIONCOLOR_RESET,
     PRODUCT_CREATE_IMAGE_RESET,
 } from '~/Redux/Constants/ProductConstants';
 import { createProduct, createOptionColor, editProduct, createImageProduct } from '~/Redux/Actions/ProductActions';
-import Toast from '../LoadingError/Toast';
-import Message from '../LoadingError/Error';
-import Loading from '../LoadingError/Loading';
 import { ListCategory } from '~/Redux/Actions/categoryActions';
-import isEmpty from 'validator/lib/isEmpty';
-import { v4 as uuidv4 } from 'uuid';
-import axios from 'axios';
+
+import Toast from '~/components/LoadingError/Toast';
+import Message from '~/components/LoadingError/Error';
+import Loading from '~/components/LoadingError/Loading';
 
 const ToastObjects = {
     pauseOnFocusLoss: false,
@@ -24,7 +25,7 @@ const ToastObjects = {
     pauseOnHover: false,
     autoClose: 2000,
 };
-const AddProductMain = () => {
+const AddProduct = () => {
     let uuId = uuidv4();
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
@@ -472,4 +473,4 @@ const AddProductMain = () => {
     );
 };
 
-export default AddProductMain;
+export default AddProduct;

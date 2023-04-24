@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+
 import { ListNews, deleteNews } from '~/Redux/Actions/NewsAction';
 import { NEWS_DELETE_RESET } from '~/Redux/Constants/NewsConstants';
-import Message from '../LoadingError/Error';
-import Loading from '../LoadingError/Loading';
-import Toast from '../LoadingError/Toast';
+import Toast from '~/components/LoadingError/Toast';
+
 import './style.css';
-import { Link } from 'react-router-dom';
 
 const ToastObjects = {
     pauseOnFocusLoss: false,
@@ -15,7 +15,7 @@ const ToastObjects = {
     pauseOnHover: false,
     autoClose: 2000,
 };
-export default function News() {
+const NewsScreen = () => {
     const newsList = useSelector((state) => state.newsList);
     const { news } = newsList;
     const newsDelete = useSelector((state) => state.deleteNews);
@@ -60,7 +60,7 @@ export default function News() {
                     <tbody>
                         {news &&
                             news.map((newcontent, index) => (
-                                <tr>
+                                <tr key={index}>
                                     <td>{index + 1}</td>
                                     <td>
                                         <b>{newcontent.nameUser}</b>
@@ -95,4 +95,6 @@ export default function News() {
             </div>
         </div>
     );
-}
+};
+
+export default NewsScreen;

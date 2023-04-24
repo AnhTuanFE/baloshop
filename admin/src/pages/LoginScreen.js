@@ -8,7 +8,7 @@ import { login } from '~/Redux/Actions/userActions';
 import Message from '~/components/LoadingError/Error';
 
 const Login = () => {
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
     const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
@@ -23,10 +23,9 @@ const Login = () => {
         if (userInfo) {
             navigate('/');
         }
-    }, [userInfo]);
+    }, [userInfo, dispatch]);
 
-    const submitHandler = (e) => {
-        e.preventDefault();
+    const handleLogin = () => {
         dispatch(login(email, password));
     };
     return (
@@ -37,12 +36,11 @@ const Login = () => {
                     {error && <Message variant="alert-danger">{error}</Message>}
                     {loading && <Loading />}
                     <h4 className="card-title mb-4 text-center">Sign in</h4>
-                    {/* onSubmit={submitHandler} */}
                     <form>
                         <div className="mb-3">
                             <input
                                 className="form-control"
-                                placeholder="Email: admin@gmail.com"
+                                placeholder="Email"
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
@@ -51,7 +49,7 @@ const Login = () => {
                         <div className="mb-3">
                             <input
                                 className="form-control"
-                                placeholder="Password: 123456"
+                                placeholder="Password"
                                 type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
@@ -60,7 +58,7 @@ const Login = () => {
 
                         <div className="mb-4">
                             {/* type="submit" */}
-                            <button onClick={submitHandler} className="btn btn-primary w-100">
+                            <button onClick={handleLogin} className="btn btn-primary w-100">
                                 Login
                             </button>
                         </div>

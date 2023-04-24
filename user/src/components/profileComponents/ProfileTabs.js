@@ -40,7 +40,7 @@ const ProfileTabs = () => {
     const [checkbox, setCheckbox] = useState('0');
     const [checkFile, setCheckFile] = useState(true);
     const [checkImage, setCheckImage] = useState(false);
-    const toastId = React.useRef(null);
+    const toastId = useRef(null);
     const refProfile = useRef(); /// ghi chú
     const refSetPassword = useRef(); /// ghi chú
 

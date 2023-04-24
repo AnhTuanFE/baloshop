@@ -1,14 +1,18 @@
+// import EditNews from '~/pages/news/EditNews';
+import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { editNews, updateNews } from '~/Redux/Actions/NewsAction';
-import { NEWS_UPDATE_RESET } from '~/Redux/Constants/NewsConstants';
-import Message from '../LoadingError/Error';
-import Loading from '../LoadingError/Loading';
-import Toast from '../LoadingError/Toast';
-import isEmpty from 'validator/lib/isEmpty';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+
+import { editNews, updateNews } from '~/Redux/Actions/NewsAction';
+import { NEWS_UPDATE_RESET } from '~/Redux/Constants/NewsConstants';
+
+import Message from '~/components/LoadingError/Error';
+import Loading from '~/components/LoadingError/Loading';
+import Toast from '~/components/LoadingError/Toast';
+
 import './style.css';
 
 const ToastObjects = {
@@ -17,8 +21,10 @@ const ToastObjects = {
     pauseOnHover: false,
     autoClose: 2000,
 };
-export default function EditNews(props) {
-    const { idNews } = props;
+const EditNewsScreen = () => {
+    const params = useParams();
+    const idNews = params.id;
+    // const { idNews } = props;
     const dispatch = useDispatch();
     const [nameUser, setNameUser] = useState('');
     const [title, setTitle] = useState('');
@@ -93,6 +99,9 @@ export default function EditNews(props) {
         setRetult('');
     };
     return (
+        // <>
+        //     <EditNews idNews={idNews} />
+        // </>
         <div className="content-main" style={{ backgroundColor: '#fff' }}>
             <Toast />
             <form onSubmit={submitHandlerUpload} class="needs-validation" novalidate>
@@ -162,4 +171,5 @@ export default function EditNews(props) {
             </form>
         </div>
     );
-}
+};
+export default EditNewsScreen;

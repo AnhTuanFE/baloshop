@@ -4,7 +4,6 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import GlobalStyles from './components/GlobalStyles/GlobalStyles';
-// import store from './Redux/store';
 import store from './redux/store';
 import { Provider } from 'react-redux';
 
