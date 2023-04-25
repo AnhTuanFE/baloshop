@@ -5,7 +5,6 @@ import { deleteProduct } from '~/Redux/Actions/ProductActions';
 
 const Product = (props) => {
     const { product, index } = props;
-    // console.log(product);
     const dispatch = useDispatch();
 
     const deletehandler = (id) => {
@@ -21,7 +20,8 @@ const Product = (props) => {
                     <td style={{ width: '10%' }}>{index + 1}</td>
                     <td style={{ width: '20%' }}>
                         <img
-                            src={`/productImage/${product?.image[0]?.image}`}
+                            // src={`/productImage/${product?.image[0]?.image}`}
+                            src={`${product?.image[0]}`}
                             alt="Product"
                             style={{ height: '40px', width: '40px' }}
                         />

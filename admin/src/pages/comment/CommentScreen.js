@@ -44,11 +44,13 @@ const CommentScreen = () => {
     useEffect(() => {
         dispatch(listUser());
     }, [dispatch]);
+
     function findProductUser(data) {
         const findUser = users?.find((user) => user._id === data.user);
         return (
             <img
-                src={`/userProfile/${findUser?.image}` || '/images/logo2.png'} // upload ảnh
+                // src={`/userProfile/${findUser?.image}` || '/images/logo2.png'} // upload ảnh
+                src="./images/user.png"
                 alt=""
                 style={{
                     height: '40px',
@@ -115,7 +117,8 @@ const CommentScreen = () => {
                                                 <tr>
                                                     <td>
                                                         <img
-                                                            src={`/productImage/${product?.imageProduct}`}
+                                                            // src={`/productImage/${product?.imageProduct}`}
+                                                            src={`${product?.imageProduct}`}
                                                             alt=""
                                                             style={{ height: '40px', width: '40px' }}
                                                         />
@@ -141,7 +144,8 @@ const CommentScreen = () => {
                                         >
                                             <div className="rating-review__flex">
                                                 <img
-                                                    src={`/userProfile/${product?.user?.image}` || '/images/logo.png'} // upload ảnh
+                                                    // src={`/userProfile/${product?.user?.image}` || '/images/logo.png'} // upload ảnh
+                                                    src="./images/logo.png"
                                                     alt=""
                                                     style={{
                                                         height: '40px',

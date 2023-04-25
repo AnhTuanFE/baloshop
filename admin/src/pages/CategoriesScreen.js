@@ -5,7 +5,6 @@ import CategoriesTable from '~/components/Categories/CategoriesTable';
 const CategoriesScreen = () => {
     const [editInfo, setEditInfo] = useState(false);
     const [currentCategory, setCurrentCategory] = useState('');
-    console.log(currentCategory);
     const handleEditInfo = () => {
         setEditInfo(true);
     };

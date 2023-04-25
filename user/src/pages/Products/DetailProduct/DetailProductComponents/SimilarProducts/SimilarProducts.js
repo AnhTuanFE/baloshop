@@ -1,12 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Slider from 'react-slick';
 import Rating from '~/components/HomeComponent/Rating/Rating';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { Link } from 'react-router-dom';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { ListProductAll } from '~/redux/Actions/ProductActions';
+
 function SimilarProducts(data) {
-    const { products } = data;
+    //
+    // const { products } = data;
+    // console.log('products = ', products);
+    // console.log('data = ', data);
+    const dispatch = useDispatch();
+
+    const allProduct = useSelector((state) => state.productAll);
+    const { products } = allProduct;
+
+    useEffect(() => {
+        dispatch(ListProductAll());
+    }, []);
+
     const settings = {
         dots: false,
         infinite: true,
@@ -60,7 +75,8 @@ function SimilarProducts(data) {
                                 <div key={index} className="corousel-div" style={{ maxHeight: '300px' }}>
                                     <Link to={`/products/${product._id}`} className="corousel-link">
                                         <img
-                                            src={`/productImage/${product?.image[0]?.image}`}
+                                            // src={`/productImage/${product?.image[0]?.image}`}
+                                            src={`${product?.image[0]}`}
                                             className="corousel-img"
                                             alt=""
                                         ></img>

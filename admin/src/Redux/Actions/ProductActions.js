@@ -329,6 +329,7 @@ export const createProductCommentChild = (productId, question) => async (dispatc
     }
 };
 
+// nhận vào 1 dữ liệu là mảng các image sau đó lưu vào db
 export const createImageProduct = (images) => async (dispatch) => {
     try {
         dispatch({ type: PRODUCT_CREATE_IMAGE_REQUEST });

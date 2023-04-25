@@ -18,8 +18,10 @@ function Cart() {
         pauseOnHover: false,
         autoClose: 2000,
     };
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
     const param = useParams();
     const location = useLocation();
 
@@ -27,17 +29,16 @@ function Cart() {
     const qty = location.search ? Number(location.search.split('?qty=')[1].split('?')[0]) : 1;
     const color = location.search && location.search.split('?color=')[1].split('?')[0];
     // search: '?qty=1?color=xanh%20%C4%91en';
-    // console.log('location = ', location);
-    // console.log('productId = ', productId);
-    // console.log('qty = ', qty);
-    // console.log('color = ', color);
 
     const cart = useSelector((state) => state.cart);
     const { cartItems } = cart;
+
     const cartDel = useSelector((state) => state.cartDelete);
     const { loading: loa, success: suc, mesage: mes } = cartDel;
+
     const cartCreate = useSelector((state) => state.cartCreate);
     const { loading: loadingCreate, success: successCreate, error: errorCreate } = cartCreate;
+
     const total = cartItems
         ? cartItems
               .filter((item) => {
@@ -179,7 +180,8 @@ function Cart() {
                                     {findCartCountInStock(item)}
                                     <div className="cart-image col-md-1 col-4">
                                         <img
-                                            src={`/productImage/${item.product?.image[0].image}`}
+                                            // src={`/productImage/${item.product?.image[0].image}`}
+                                            src={`${item.product?.image[0]}`}
                                             alt={item.product?.name}
                                         />
                                     </div>

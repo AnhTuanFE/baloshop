@@ -33,7 +33,6 @@ const OrderDetailScreen = () => {
     const { loading, error, order } = orderDetails;
 
     // const orderUser = useSelector((state) => state.orderPaid);
-    // console.log(orderUser);
     const orderwaitGetConfirmation = useSelector((state) => state.orderwaitGetConfirmation);
     const { success: successwaitGetConfirmation } = orderwaitGetConfirmation;
     const orderDeliver = useSelector((state) => state.orderDeliver);

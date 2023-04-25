@@ -157,11 +157,12 @@ const Header = (props) => {
                                                 }}
                                             >
                                                 <img
-                                                    src={`/${
-                                                        userInfo?.image === undefined
-                                                            ? 'images/user.png'
-                                                            : `userProfile/${userInfo?.image}`
-                                                    }`} // upload ảnh
+                                                    // src={`/${
+                                                    //     userInfo?.image === undefined
+                                                    //         ? 'images/user.png'
+                                                    //         : `userProfile/${userInfo?.image}`
+                                                    // }`} // upload ảnh
+                                                    src="./images/user.png" // upload ảnh
                                                     alt=""
                                                     style={{
                                                         height: '45px',
@@ -214,7 +215,7 @@ const Header = (props) => {
 
                                     <Link to="/cart" className={clsx(styles.user_Button)}>
                                         <i className="fas fa-shopping-bag"></i>
-                                        <span className="badge">{cartItems ? cartItems?.length : 0}</span>
+                                        <span className={clsx(styles.badge)}>{cartItems ? cartItems?.length : 0}</span>
                                     </Link>
                                 </div>
                             </div>

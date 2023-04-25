@@ -5,7 +5,8 @@ function SliderImageProducts({ images }) {
     const [imageOne, setImageOne] = useState();
     useEffect(() => {
         if (images) {
-            setImageOne(images[0]?.image);
+            // setImageOne(images[0]?.image);
+            setImageOne(images[0]);
         }
     }, [images]);
     return (
@@ -14,7 +15,8 @@ function SliderImageProducts({ images }) {
                 <div class="carousel-item active">
                     <img
                         class="d-block w-100"
-                        src={imageOne !== undefined ? `/productImage/${imageOne}` : ''}
+                        // src={imageOne !== undefined ? `/productImage/${imageOne}` : ''}
+                        src={imageOne !== undefined ? `${imageOne}` : ''}
                         alt=""
                     ></img>
                 </div>

@@ -72,9 +72,10 @@ export default function BestSellingProduct() {
                             products?.map((product, index) => {
                                 return (
                                     <div key={index} className={clsx(styles.corousel_div)}>
-                                        <Link to={`/products/${product._id}`} className={clsx(styles.corousel_link)}>
+                                        <Link to={`/product/${product._id}`} className={clsx(styles.corousel_link)}>
                                             <img
-                                                src={`/productImage/${product?.image[0]?.image}`}
+                                                // src={`/productImage/${product?.image[0]?.image}`}
+                                                src={`${product?.image[0]}`}
                                                 className={clsx(styles.corousel_img)}
                                                 alt=""
                                             ></img>

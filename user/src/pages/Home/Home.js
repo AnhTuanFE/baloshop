@@ -11,13 +11,9 @@ import styles from './Home.module.scss';
 
 function Home() {
     const userRegister = useSelector((state) => state.userRegister);
-    console.log('userRegister =  ', userRegister);
 
     const location = useLocation();
     const params = useParams();
-
-    console.log('location = ', location);
-    console.log('params = ', params);
 
     const keyword = params.keyword;
     const pageNumber = params.pageNumber;

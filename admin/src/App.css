@@ -1,4 +1,8 @@
 @charset "UTF-8";
+
+/* .quill > .ql-toolbar:first-child {
+    display: none !important;
+} */
 /* ==== CUSTOM UI ELEMENTS AND STYLES ====*/
 /* ========================
 INCLUDE STYLES AND COMPONENTS

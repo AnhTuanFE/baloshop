@@ -3,6 +3,7 @@ import multer from 'multer';
 import path from 'path';
 
 const imageProfile = express.Router();
+
 //Upload file
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -13,6 +14,7 @@ const storage = multer.diskStorage({
         cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
     },
 });
+
 // app.use(express.static('/public'));
 imageProfile.post('/', async (req, res) => {
     let inputImage = multer({ storage: storage }).array('image');

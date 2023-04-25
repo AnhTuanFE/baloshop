@@ -50,7 +50,8 @@ const Header = () => {
                                     borderRadius: '50%',
                                     border: '1px solid #ccc',
                                 }}
-                                src={`/userProfile/${userInfo?.image}` || '/images/user.png'}
+                                // src={`/userProfile/${userInfo?.image}` || '/images/user.png'}
+                                src="./images/user.png"
                                 alt="User"
                             />
                         </Link>

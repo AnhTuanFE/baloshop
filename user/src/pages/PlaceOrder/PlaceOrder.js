@@ -12,19 +12,23 @@ import Message from '~/components/HomeComponent/LoadingError/Error';
 import Loading from '~/components/HomeComponent/LoadingError/Loading';
 import Toast from '~/components/HomeComponent/LoadingError/Toast';
 import './PlaceOrder.css';
-const Toastobjects = {
-    pauseOnFocusLoss: false,
-    draggable: false,
-    pauseOnHover: false,
-    autoClose: 2000,
-};
+
 function PlaceOrder() {
+    const Toastobjects = {
+        pauseOnFocusLoss: false,
+        draggable: false,
+        pauseOnHover: false,
+        autoClose: 2000,
+    };
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
     // const userDetails = useSelector((state) => state.userDetails);
     // const { loading, user } = userDetails;
+
     const cart = useSelector((state) => state.cart);
     const { cartItems } = cart;
+
     const currenCartItems = cartItems
         .filter((item) => {
             const findCart = item?.product?.optionColor?.find((option) => option.color === item.color);
@@ -37,12 +41,14 @@ function PlaceOrder() {
                 name: pro.product.name,
                 color: pro.color,
                 qty: pro.qty,
-                image: pro.product.image[0].image,
+                // image: pro.product.image[0].image,
+                image: pro.product.image[0],
                 price: pro.product.price,
                 product: pro.product._id,
             });
             return arr;
         }, []);
+
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
 
@@ -127,7 +133,8 @@ function PlaceOrder() {
                     </div>
                 ) : (
                     <div className="col-md-2 col-6">
-                        <img src={`/productImage/${item.product?.image[0].image}`} alt={item.name} />
+                        {/* <img src={`/productImage/${item.product?.image[0].image}`} alt={item.name} /> */}
+                        <img src={`${item.product?.image[0]}`} alt={item.name} />
                     </div>
                 )}
                 {findCart?.countInStock < item?.qty ? (

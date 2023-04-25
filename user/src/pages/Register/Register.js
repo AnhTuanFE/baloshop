@@ -95,7 +95,6 @@ function Register() {
         if (Object.keys(msg).length > 0) return false;
         return true;
     };
-    // console.log(checkValidate);
 
     const submitHandler = (e) => {
         e.preventDefault();

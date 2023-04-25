@@ -111,7 +111,6 @@ const ProductScreen = () => {
                         <Message variant="alert-danger">{error}</Message>
                     ) : (
                         <div className="row">
-                            {/* Products */}
                             <div className="col-md-12 col-sm-12 col-lg-12">
                                 <table className="table slider-data">
                                     <thead>

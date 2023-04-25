@@ -42,7 +42,9 @@ const ProductEditScreen = () => {
     const [category, setCategory] = useState('');
     const [name, setName] = useState('');
     const [price, setPrice] = useState(0);
-    const [image, setImage] = useState([]);
+    // const [image, setImage] = useState([]);
+    const [image, setImage] = useState('');
+
     const [inputImage, setInputImage] = useState([]);
     const [arrImage, setArrImage] = useState([]);
     const [countInStock, setCountInStock] = useState('');
@@ -306,7 +308,7 @@ const ProductEditScreen = () => {
 
                                             <div className="mb-0">
                                                 <label className="form-label">Ảnh</label>
-                                                {/* <input
+                                                <input
                                                     className={`form-control `}
                                                     type="text"
                                                     placeholder="URL"
@@ -314,8 +316,9 @@ const ProductEditScreen = () => {
                                                     //required
 
                                                     onChange={(e) => setImage(e.target.value)}
-                                                /> */}
-                                                <div className="row">
+                                                />
+                                                {/* ============cũ */}
+                                                {/* <div className="row">
                                                     {image &&
                                                         image?.map((img) => {
                                                             return (
@@ -327,6 +330,7 @@ const ProductEditScreen = () => {
                                                                         <img
                                                                             className="img_css col-10 col-sm-10 col-md-10 col-lg-10"
                                                                             src={`/productImage/${img?.image}`}
+                                                                            alt=""
                                                                         ></img>
                                                                         <p
                                                                             className="product_image_p"
@@ -381,7 +385,7 @@ const ProductEditScreen = () => {
                                                                 </div>
                                                             );
                                                         })}
-                                                </div>
+                                                </div> 
                                                 <div style={{ display: 'flex' }}>
                                                     <label
                                                         for="inputFile"
@@ -403,7 +407,7 @@ const ProductEditScreen = () => {
                                                         onClick={handlerSubmitImage}
                                                         value="Lưu tệp"
                                                     ></input>
-                                                </div>
+                                                </div>*/}
                                             </div>
                                             <div className="mb-0">
                                                 <label className="form-label">Nội dung</label>

@@ -19,6 +19,7 @@ const AllProducts_Filter = (props) => {
 
     const productList = useSelector((state) => state.productList);
     const { loading, error, products, page, pages } = productList;
+
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
 
@@ -145,10 +146,11 @@ const AllProducts_Filter = (props) => {
                                             products?.map((product) => (
                                                 <div className="shop col-lg-3 col-md-4 col-sm-12" key={product?._id}>
                                                     <div className="border-product text-center">
-                                                        <Link to={`/products/${product?._id}`}>
+                                                        <Link to={`/product/${product?._id}`}>
                                                             <div className={clsx(styles.shopBack)}>
                                                                 <img
-                                                                    src={`/productImage/${product?.image[0]?.image}`}
+                                                                    // src={`/productImage/${product?.image[0]?.image}`}
+                                                                    src={`${product?.image[0]}`}
                                                                     alt={product?.name}
                                                                 />
                                                             </div>

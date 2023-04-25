@@ -58,6 +58,7 @@ function DetailProduct() {
     // start chức năng khác
     const productList = useSelector((state) => state.productList);
     const { products, page, pages } = productList;
+
     // end chức năng khác
 
     const cartCreate = useSelector((state) => state.cartCreate);
