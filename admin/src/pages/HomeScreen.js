@@ -12,25 +12,31 @@ import ProductStatistics from '~/components/Home/ProductStatistics';
 
 const HomeScreen = () => {
     const dispatch = useDispatch();
+
     const orderListComplete = useSelector((state) => state.orderListComplete);
-    const { orders: AllOrders } = orderListComplete;
+    // const { orders: AllOrders } = orderListComplete;
+    const { orders } = orderListComplete;
+
     const productList = useSelector((state) => state.productList);
     const { countProducts } = productList;
+
     const userList = useSelector((state) => state.userList);
     const { users } = userList;
+
     useEffect(() => {
         dispatch(listProducts());
         dispatch(listOrders());
         dispatch(listUser());
         dispatch(getOrderCompleteAll());
     }, [dispatch]);
+
     return (
         <>
             <section className="content-main">
                 <div className="content-header">
                     <h2 className="content-title"> Trang chủ </h2>
                 </div>
-                <TopTotal orders={AllOrders} countProducts={countProducts} countUsers={users ? users.length : 0} />
+                <TopTotal orders={orders} countProducts={countProducts} countUsers={users ? users.length : 0} />
 
                 <div className="row">
                     <SaleStatistics />

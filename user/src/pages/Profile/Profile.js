@@ -37,12 +37,12 @@ function Profile() {
                                     }}
                                 >
                                     <img
-                                        // src={
-                                        //     userInfo?.image !== undefined
-                                        //         ? `/userProfile/${userInfo?.image}`
-                                        //         : './images/user.png'
-                                        // }
-                                        src="./images/user.png"
+                                        src={
+                                            userInfo?.image !== undefined
+                                                ? `/userProfile/${userInfo?.image}`
+                                                : '/images/user.png'
+                                        }
+                                        // src="./images/user.png"
                                         alt=""
                                         style={{
                                             height: '100px',

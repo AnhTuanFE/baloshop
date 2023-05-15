@@ -157,12 +157,12 @@ const Header = (props) => {
                                                 }}
                                             >
                                                 <img
-                                                    // src={`/${
-                                                    //     userInfo?.image === undefined
-                                                    //         ? 'images/user.png'
-                                                    //         : `userProfile/${userInfo?.image}`
-                                                    // }`} // upload ảnh
-                                                    src="./images/user.png" // upload ảnh
+                                                    src={`/${
+                                                        userInfo?.image === undefined
+                                                            ? 'images/user.png'
+                                                            : `userProfile/${userInfo?.image}`
+                                                    }`} // upload ảnh
+                                                    // src="/images/user.png" // upload ảnh
                                                     alt=""
                                                     style={{
                                                         height: '45px',

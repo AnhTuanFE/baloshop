@@ -14,7 +14,7 @@ import { updateUserPassword, updateUserProfile } from '~/redux/Actions/userActio
 import { USER_UPDATE_PROFILE_RESET } from '~/redux/Constants/UserContants';
 import { ListProvince } from '~/redux/Actions/AdressProvinceActions';
 import getCroppedImg from '../editAvatar/cropImage';
-
+import { Alert, Space } from 'antd';
 // import { listCart } from '~/redux/Actions/cartActions';
 // import { ListAvatar } from '~/redux/Actions/avatarAction';
 // import { EditAvatart as App } from '../editAvatar/EditAvatart';
@@ -24,6 +24,23 @@ import getCroppedImg from '../editAvatar/cropImage';
 import '../editAvatar/style.css';
 import './ProfileTabs.css';
 const ProfileTabs = () => {
+    const [visible, setVisible] = useState(false);
+    const handleClose = () => {
+        setVisible(false);
+    };
+
+    const handleAlertClose = () => {
+        setTimeout(() => {
+            handleClose();
+        }, 2000);
+    };
+    <Space
+        direction="vertical"
+        style={{
+            width: '100%',
+        }}
+    ></Space>;
+
     const [distric, setDistric] = useState([]);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -285,7 +302,17 @@ const ProfileTabs = () => {
 
     return (
         <>
-            <Toast />
+            {/* <Toast /> */}
+            {visible && (
+                <Alert
+                    message="Cập nhật thông tin thành công"
+                    type="success"
+                    closable
+                    onClose={handleAlertClose}
+                    afterClose={handleClose}
+                    showIcon
+                />
+            )}
             {error && <Message variant="alert-danger">{error}</Message>}
             {loading && <Loading />}
             {updateLoading && <Loading />}
