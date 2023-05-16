@@ -1,0 +1,8 @@
+{
+    "version": 2,
+    "github": {
+        "auto_alias": true,
+        "silent": true,
+        "default_branch": "tuan_deploy"
+    }
+}
