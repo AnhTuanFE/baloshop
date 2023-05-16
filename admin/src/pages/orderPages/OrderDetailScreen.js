@@ -17,17 +17,22 @@ import OrderDetailProducts from '~/components/orders/OrderDetailProducts';
 
 import Loading from '~/components/LoadingError/Loading';
 import Message from '~/components/LoadingError/Error';
-import CancelModal from '~/components/Modal/CancelModal';
+import ConfirmModal from '~/components/Modal/ConfirmModal';
 
 const OrderDetailScreen = () => {
     const params = useParams();
     const orderId = params.id;
-
     const dispatch = useDispatch();
+
+    const [status, setStatus] = useState('0');
+
     // modal
     const [cancel, setCancel] = useState(false);
-
-    // const [hiden, setHiden] = useState(true);
+    const [confirm, setConfirm] = useState(false);
+    const [deliver, setDeliver] = useState(false);
+    const [paid, setPaid] = useState(false);
+    const [complete, setComplete] = useState(false);
+    const [recal, setRecal] = useState(false);
 
     const orderDetails = useSelector((state) => state.orderDetails);
     const { loading, error, order } = orderDetails;
@@ -55,48 +60,71 @@ const OrderDetailScreen = () => {
         successCompleteAdmin,
     ]);
 
-    // const cancelOrderHandler = () => {
-    //     if (window.confirm('Bạn có chắc muốn hủy đơn hàng này??')) {
-    //         dispatch(cancelOrder(order));
-    //     }
-    // };
     const setTrueCancel = () => {
         setCancel(true);
     };
-    const setFalseCancel = () => {
+
+    // ======================
+    const hanldeCancelOrder = () => {
         setCancel(false);
     };
-    const [status, setStatus] = useState('0');
+    const noConFirm = () => {
+        setConfirm(false);
+        setStatus('0');
+    };
+    const noDeliver = () => {
+        setDeliver(false);
+        setStatus('1');
+    };
+    const noPaid = () => {
+        setPaid(false);
+        setStatus('2');
+    };
+    const noComplete = () => {
+        setComplete(false);
+        setStatus('3');
+    };
+    const handleConfirm = () => {
+        dispatch(waitConfirmationOrder(order._id, true));
+        setConfirm(!confirm);
+    };
+    const handleDelivered = () => {
+        dispatch(deliverOrder(order));
+        setDeliver(!deliver);
+    };
+    const handlePaid = () => {
+        dispatch(paidOrder(order));
+        setPaid(!paid);
+    };
+    const handleComppleted = () => {
+        dispatch(completeAdminOrder(order._id));
+        setComplete(!complete);
+    };
+    const handleRecall = () => {
+        setStatus('0');
+        setRecal(false);
+        dispatch(waitConfirmationOrder(order._id, false));
+    };
+    const noRecall = () => {
+        setRecal(false);
+        setStatus('1');
+    };
+    // ==========================
     useEffect(() => {
         if (status === '1' && order?.waitConfirmation !== true) {
-            if (window.confirm('Đồng ý xác nhận')) {
-                dispatch(waitConfirmationOrder(order._id, true));
-            } else {
-                setStatus('0');
-            }
+            setConfirm(true);
         }
         if (status === '2' && order?.isDelivered !== true) {
-            if (window.confirm('Đồng ý giao hàng')) {
-                dispatch(deliverOrder(order));
-            } else {
-                setStatus('1');
-            }
+            setDeliver(!deliver);
         }
         if (status === '3' && order?.isPaid !== true) {
-            if (window.confirm('Đồng ý thanh toán')) {
-                dispatch(paidOrder(order));
-            } else {
-                setStatus('2');
-            }
+            setPaid(!paid);
         }
         if (status === '4' && order?.completeAdmin !== true) {
-            if (window.confirm('Đồng ý hoàn tất')) {
-                dispatch(completeAdminOrder(order._id));
-            } else {
-                setStatus('3');
-            }
+            setComplete(!complete);
         }
     }, [status]);
+
     useEffect(() => {
         if (order?.waitConfirmation === true && order?.isDelivered !== true) {
             setStatus('1');
@@ -111,21 +139,71 @@ const OrderDetailScreen = () => {
             setStatus('4');
         }
     }, [order]);
+
     const cancelOrderHandler1 = () => {
         setCancel(false);
         dispatch(cancelOrder(order));
     };
     return (
         <section className="content-main">
-            {cancel && (
-                <CancelModal
-                    Title="Hủy đơn hàng"
-                    Body="Bạn có chắc chắn hủy đơn hàng này không?"
-                    HandleSubmit={cancelOrderHandler1}
-                    Close="modal"
-                    setFalseCancel={setFalseCancel}
-                />
-            )}
+            <div>
+                {cancel && (
+                    <ConfirmModal
+                        Title="Hủy đơn hàng"
+                        Body="Bạn có chắc chắn hủy đơn hàng này không?"
+                        HandleSubmit={cancelOrderHandler1}
+                        Close="modal"
+                        hidenModal={hanldeCancelOrder}
+                    />
+                )}
+                {confirm && (
+                    <>
+                        <ConfirmModal
+                            Title="Xác nhận"
+                            Body="Đồng ý Xác nhận đơn hàng?"
+                            HandleSubmit={handleConfirm}
+                            Close="modal"
+                            hidenModal={noConFirm}
+                        />
+                    </>
+                )}
+                {deliver && (
+                    <ConfirmModal
+                        Title="Giao hàng"
+                        Body="Đồng ý giao hàng?"
+                        HandleSubmit={handleDelivered}
+                        Close="modal"
+                        hidenModal={noDeliver}
+                    ></ConfirmModal>
+                )}
+                {paid && (
+                    <ConfirmModal
+                        Title="Thanh toán"
+                        Body="Đồng ý thanh toán?"
+                        HandleSubmit={handlePaid}
+                        Close="modal"
+                        hidenModal={noPaid}
+                    ></ConfirmModal>
+                )}
+                {complete && (
+                    <ConfirmModal
+                        Title="Hoàn tất"
+                        Body="Đồng ý hoàn tất?"
+                        HandleSubmit={handleComppleted}
+                        Close="modal"
+                        hidenModal={noComplete}
+                    ></ConfirmModal>
+                )}
+                {recal && (
+                    <ConfirmModal
+                        Title="Thu hồi"
+                        Body="Đồng ý Thu hồi?"
+                        HandleSubmit={handleRecall}
+                        Close="modal"
+                        hidenModal={noRecall}
+                    ></ConfirmModal>
+                )}
+            </div>
             <div className="content-header">
                 <div className="col-lg-6 col-md-6">
                     <Link to="/orders" className="btn btn-dark text-white">
@@ -137,12 +215,7 @@ const OrderDetailScreen = () => {
                         <button
                             className="btn btn-success text-white"
                             onClick={() => {
-                                if (window.confirm('Đồng ý thu hồi')) {
-                                    dispatch(waitConfirmationOrder(order._id, false));
-                                    setStatus('0');
-                                } else {
-                                    setStatus('1');
-                                }
+                                setRecal(true);
                             }}
                         >
                             Thu hồi
