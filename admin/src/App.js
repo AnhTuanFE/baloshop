@@ -11,6 +11,7 @@ import './App.css';
 import './responsive.css';
 
 axios.defaults.baseURL = 'https://baloshop-api.vercel.app/';
+
 // axios.defaults.baseURL = 'http://localhost:9001/';
 
 function App() {
