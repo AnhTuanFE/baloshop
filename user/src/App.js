@@ -4,7 +4,9 @@ import DefaulLayout from './layouts/defaulLayout/defaulLayout';
 import './App.css';
 import { Fragment } from 'react';
 import RouteConfirmation from './Routes/RouteConfirmation';
-
+import axios from 'axios';
+axios.defaults.baseURL = 'https://baloshop-api.vercel.app/';
+// axios.defaults.baseURL = 'http://localhost:7000/';
 function App() {
     return (
         <div>

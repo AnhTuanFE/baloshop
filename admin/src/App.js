@@ -10,8 +10,8 @@ import RouteConfirmation from './Routes/RouteConfirmation';
 import './App.css';
 import './responsive.css';
 
-// axios.defaults.baseURL = "https://dp-balo-store-api.vercel.app"
-axios.defaults.baseURL = 'http://localhost:9001/';
+axios.defaults.baseURL = 'https://baloshop-api.vercel.app/';
+// axios.defaults.baseURL = 'http://localhost:9001/';
 
 function App() {
     return (
