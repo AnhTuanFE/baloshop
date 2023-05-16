@@ -1,14 +1,17 @@
+import clsx from 'clsx';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { ListCategory } from '~/redux/Actions/categoryActions';
+import { ListCategory } from '~/redux/Actions/ProductActions';
 // import { listProduct } from '~/redux/Actions/ProductActions';
-import clsx from 'clsx';
+import { productsRemainingSelector } from '~/redux/Selector/productsSelector';
+
 import styles from './Navbar.module.scss';
+
 export default function NavBar({ onRemove }) {
     const dispatch = useDispatch();
-    const lcategories = useSelector((state) => state.CategoryList);
-    const { categories } = lcategories;
+    const { CategoryList } = useSelector(productsRemainingSelector);
+    const { categories } = CategoryList;
     useEffect(() => {
         dispatch(ListCategory());
     }, []);

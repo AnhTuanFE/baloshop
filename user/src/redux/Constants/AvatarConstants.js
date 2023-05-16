@@ -1,3 +1,0 @@
-export const AVATAR_REQUEST = 'AVATAR_REQUEST';
-export const AVATAR_SUCCESS = 'AVATAR_SUCCESS';
-export const AVATAR_FAIL = 'AVATAR_FAIL';

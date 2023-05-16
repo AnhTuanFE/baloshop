@@ -6,9 +6,8 @@ import { getOrderCompleteAll, listOrders } from '~/Redux/Actions/OrderActions';
 import { listUser } from '~/Redux/Actions/userActions';
 
 import TopTotal from '~/components/Home/TopTotal';
-import SaleStatistics from '~/components/Home/SalesStatistics';
-import NewsStatistics from '~/components/Home/NewsStatistics';
-import ProductStatistics from '~/components/Home/ProductStatistics';
+import ListOrderStatistics from '~/components/Home/ListOrderStatistics';
+import TotalPriceStatistics from '~/components/Home/TotalPriceStatistics';
 
 const HomeScreen = () => {
     const dispatch = useDispatch();
@@ -39,9 +38,8 @@ const HomeScreen = () => {
                 <TopTotal orders={orders} countProducts={countProducts} countUsers={users ? users.length : 0} />
 
                 <div className="row">
-                    <SaleStatistics />
-                    <ProductStatistics />
-                    <NewsStatistics />
+                    <ListOrderStatistics />
+                    <TotalPriceStatistics />
                 </div>
             </section>
         </>

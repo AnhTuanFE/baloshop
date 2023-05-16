@@ -197,3 +197,31 @@ export const createUser =
             });
         }
     };
+
+// PROVINCE
+export const ListProvince = () => async (dispatch) => {
+    try {
+        // dispatch({ type: PROVINCE_REQUEST })
+        const { data } = await axios.get(`https://provinces.open-api.vn/api/?depth=3`);
+        dispatch({ type: types.PROVINCE_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({
+            type: types.PROVINCE_FAIL,
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+        });
+    }
+};
+
+// AVATAR
+export const ListAvatar = () => async (dispatch) => {
+    try {
+        dispatch({ type: types.AVATAR_REQUEST });
+        const { data } = await axios.get(`/api/avatar`);
+        dispatch({ type: types.AVATAR_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({
+            type: types.AVATAR_FAIL,
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+        });
+    }
+};

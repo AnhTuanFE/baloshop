@@ -11,6 +11,7 @@ import {
     productListAllReducer,
     getAllCommentsReducer,
     getAllReviewsReducer,
+    categoryListReducer,
 } from './Reducers/ProductReducers';
 import { cartReducer, CreateCartReducer, DeleteCartReducer } from './Reducers/CartReducers';
 import {
@@ -19,6 +20,8 @@ import {
     userRegisterReducer,
     userUpdateProfileReducer,
     userListReducer,
+    ProvinceReducer,
+    Avatarload,
 } from './Reducers/userReducers';
 import {
     orderAddressMyReducer,
@@ -34,10 +37,7 @@ import {
     returnAmountProductReducer,
 } from './Reducers/OrderReducres';
 import { Sliderload } from './Reducers/SliderReducer';
-import { Avatarload } from './Reducers/AvatarReducer';
-import { Province } from './Reducers/AdressProvinceReducers';
 import { getNewsReducer, newsListReducer } from './Reducers/NewsReducer';
-import { categoryListReducer } from './Reducers/CategoryReducers';
 
 const reducer = combineReducers({
     listAllOrder: productbestseller,
@@ -70,7 +70,7 @@ const reducer = combineReducers({
     sliderLoad: Sliderload,
     CategoryList: categoryListReducer,
     avatarLoad: Avatarload,
-    province: Province,
+    province: ProvinceReducer,
     listNews: newsListReducer,
     getDetailNews: getNewsReducer,
 });

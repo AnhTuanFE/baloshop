@@ -95,3 +95,35 @@ export const createUserReducer = (state = [], action) => {
             return state;
     }
 };
+
+// GET PROVINCE
+export const ProvinceReducer = (state = { province: [] }, action) => {
+    switch (action.type) {
+        case types.PROVINCE_SUCCESS:
+            return {
+                ...state,
+                province: action.payload,
+            };
+        case types.PROVINCE_FAIL:
+            return { ...state, error: action.payload };
+        default:
+            return state;
+    }
+};
+
+// AVATAR
+export const Avatarload = (state = { avatar: [] }, action) => {
+    switch (action.type) {
+        case types.AVATAR_REQUEST:
+            return { loading: true, avatar: [] };
+        case types.AVATAR_SUCCESS:
+            return {
+                loading: false,
+                avatar: action.payload,
+            };
+        case types.AVATAR_FAIL:
+            return { loading: false, error: action.payload };
+        default:
+            return state;
+    }
+};

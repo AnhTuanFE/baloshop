@@ -1,4 +1,3 @@
-import React from 'react';
 import { SLIDER_FAIL, SLIDER_REQUEST, SLIDER_SUCCESS } from '../Constants/SliderConstants';
 
 export const Sliderload = (state = { slider: [] }, action) => {

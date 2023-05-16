@@ -9,10 +9,11 @@ import 'slick-carousel/slick/slick-theme.css';
 import Rating from '../../Rating/Rating';
 import { ListProductAll } from '~/redux/Actions/ProductActions';
 import styles from './LatestProduct.module.scss';
+import { productsRemainingSelector } from '~/redux/Selector/productsSelector';
 
 export default function LatestProduct() {
-    const allProduct = useSelector((state) => state.productAll);
-    const { products } = allProduct;
+    const { productAll } = useSelector(productsRemainingSelector);
+    const { products } = productAll;
 
     const dispatch = useDispatch();
     useEffect(() => {

@@ -94,10 +94,13 @@ import 'slick-carousel/slick/slick-theme.css';
 import clsx from 'clsx';
 import styles from './Sliders.module.scss';
 // import { listCart } from '~/Redux/Actions/cartActions';
+import { slidersRemainingSelector } from '~/redux/Selector/slidersReducer';
 
 export default function Sliders() {
-    const sliderList = useSelector((state) => state.sliderLoad);
-    const { slider } = sliderList;
+    // const sliderList = useSelector((state) => state.sliderLoad);
+    const { sliderLoad } = useSelector(slidersRemainingSelector);
+    // console.log('sliderLoad = ', sliderLoad);
+    const { slider } = sliderLoad;
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(ListSlider());

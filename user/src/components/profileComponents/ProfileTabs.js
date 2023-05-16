@@ -12,7 +12,7 @@ import Loading from '../HomeComponent/LoadingError/Loading';
 
 import { updateUserPassword, updateUserProfile } from '~/redux/Actions/userActions';
 import { USER_UPDATE_PROFILE_RESET } from '~/redux/Constants/UserContants';
-import { ListProvince } from '~/redux/Actions/AdressProvinceActions';
+import { ListProvince } from '~/redux/Actions/userActions';
 import getCroppedImg from '../editAvatar/cropImage';
 import { Alert, Space } from 'antd';
 // import { listCart } from '~/redux/Actions/cartActions';

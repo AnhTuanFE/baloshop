@@ -9,6 +9,7 @@ import { listProduct } from '~/redux/Actions/ProductActions';
 import Loading from '../LoadingError/Loading';
 import Message from '../LoadingError/Error';
 import { listCart } from '~/redux/Actions/cartActions';
+import { productsRemainingSelector } from '~/redux/Selector/productsSelector';
 
 import styles from './AllProductsFilter.module.scss';
 
@@ -17,7 +18,7 @@ const AllProducts_Filter = (props) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const productList = useSelector((state) => state.productList);
+    const { productList } = useSelector(productsRemainingSelector);
     const { loading, error, products, page, pages } = productList;
 
     const [minPrice, setMinPrice] = useState('');

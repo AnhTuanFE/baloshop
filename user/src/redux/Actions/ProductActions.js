@@ -167,3 +167,17 @@ export const createProductCommentChild = (productId, question) => async (dispatc
         });
     }
 };
+
+// CATEGORY
+export const ListCategory = () => async (dispatch) => {
+    try {
+        dispatch({ type: types.CATEGORY_REQUEST });
+        const { data } = await axios.get(`/api/category/`);
+        dispatch({ type: types.CATEGORY_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({
+            type: types.CATEGORY_FAIL,
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+        });
+    }
+};

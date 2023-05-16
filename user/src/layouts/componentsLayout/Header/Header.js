@@ -7,21 +7,26 @@ import {} from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './Header.module.scss';
 import NavBar from '~/components/HomeComponent/NavBar/Navbar';
+import ContactInformation from '../ContactInformation';
 
 import { logout, getUserDetails } from '~/redux/Actions/userActions'; //updateUserProfile,
-import ContactInformation from '../ContactInformation';
+
+import { usersRemainingSelector } from '~/redux/Selector/usersSelector';
+import { cartsRemainingSelector } from '~/redux/Selector/cartsSelector';
 
 const Header = (props) => {
     const { keysearch } = props;
-    const [keyword, setKeyword] = useState('');
     const dispatch = useDispatch();
+
+    const [keyword, setKeyword] = useState('');
     const navigate = useNavigate();
-    const cart = useSelector((state) => state.cart);
+
+    const { cart } = useSelector(cartsRemainingSelector);
     const { cartItems } = cart;
-    const userLogin = useSelector((state) => state.userLogin);
+
+    const { userLogin, userDetails } = useSelector(usersRemainingSelector);
     const { userInfo } = userLogin;
-    const userDetail = useSelector((state) => state.userDetails);
-    const { user } = userDetail;
+    const { user } = userDetails;
 
     const [checkScroll, setCheckScroll] = useState(false);
     const [key, setKey] = useState([]);

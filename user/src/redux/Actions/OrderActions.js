@@ -218,7 +218,7 @@ export const orderGetItemOrder = (id) => async (dispatch, getState) => {
 };
 
 // ODERS LIST ALL
-export const listAllOrder = () => async (dispatch) => {
+export const listAllOrderAction = () => async (dispatch) => {
     try {
         dispatch({ type: types.ORDER_LIST_ALL_REQUEST });
         const { data } = await axios.get(`/api/orders/productbestseller`);

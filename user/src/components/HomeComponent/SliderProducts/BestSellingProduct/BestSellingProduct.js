@@ -1,21 +1,23 @@
-import React from 'react';
-import Slider from 'react-slick';
-import Rating from '../../Rating/Rating';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { listAllOrder } from '~/redux/Actions/OrderActions';
-import { useEffect, useState } from 'react';
 import clsx from 'clsx';
+import Slider from 'react-slick';
+import { useEffect, useState } from 'react';
+import 'slick-carousel/slick/slick.css';
+import { Link } from 'react-router-dom';
+import 'slick-carousel/slick/slick-theme.css';
+import { useDispatch, useSelector } from 'react-redux';
+
+import Rating from '../../Rating/Rating';
+import { listAllOrderAction } from '~/redux/Actions/OrderActions';
+import { ordersRemainingSelector } from '~/redux/Selector/ordersSelector';
+
 import styles from './BestSellingProduct.module.scss';
 
 export default function BestSellingProduct() {
-    const orderAllList = useSelector((state) => state.listAllOrder);
-    const { products, loading } = orderAllList;
+    const { listAllOrder } = useSelector(ordersRemainingSelector);
+    const { products } = listAllOrder;
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(listAllOrder());
+        dispatch(listAllOrderAction());
     }, []);
 
     const settings = {

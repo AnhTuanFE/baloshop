@@ -6,7 +6,8 @@ import { Navigate, useNavigate } from 'react-router-dom';
 // import { listCart, saveShippingAddress } from '~/redux/Actions/cartActions';
 import { listCart, saveShippingAddress } from '~/redux/Actions/cartActions';
 import { getUserDetails, updateUserProfile } from '~/redux/Actions/userActions';
-import { ListProvince } from '~/redux/Actions/AdressProvinceActions';
+import { ListProvince } from '~/redux/Actions/userActions';
+
 import { ORDER_ADDRESS_MY_RESET } from '~/redux/Constants/OrderConstants';
 import { USER_UPDATE_PROFILE_RESET } from '~/redux/Constants/UserContants';
 
