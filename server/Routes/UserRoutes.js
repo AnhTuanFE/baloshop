@@ -136,9 +136,9 @@ userRouter.put(
                 if (err) console.log('Delete old avatar have err:', err);
             });
         }
+        // user.email = req.body.email || user.email;
         if (user) {
             user.name = req.body.name || user.name;
-            user.email = req.body.email || user.email;
             user.phone = req.body.phone || user.phone;
             user.address = req.body.address || user.address;
             user.city = req.body.city || user.city;

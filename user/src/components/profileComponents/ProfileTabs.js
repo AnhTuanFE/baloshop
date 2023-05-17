@@ -7,7 +7,7 @@ import Cropper from 'react-easy-crop';
 import { Button } from '@mui/material';
 
 import Message from '../HomeComponent/LoadingError/Error';
-import Toast from '../HomeComponent/LoadingError/Toast';
+// import Toast from '../HomeComponent/LoadingError/Toast';
 import Loading from '../HomeComponent/LoadingError/Loading';
 
 import { updateUserPassword, updateUserProfile } from '~/redux/Actions/userActions';
@@ -209,7 +209,8 @@ const ProfileTabs = () => {
     const submitUpdateProfile = (e) => {
         e.preventDefault();
         if (!checkObjProfile()) return;
-        dispatch(updateUserProfile({ id: user._id, name, email, phone, country, city, address, image }));
+        // email,
+        dispatch(updateUserProfile({ id: user._id, name, phone, country, city, address, image }));
     };
     const submitUpdatePassword = (e) => {
         e.preventDefault();
@@ -376,7 +377,7 @@ const ProfileTabs = () => {
                                     disabled
                                     value={email}
                                     // required
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    // onChange={(e) => setEmail(e.target.value)}
                                 />
                                 <p className="noti-validate"></p>
                             </div>

@@ -25,7 +25,12 @@ function SliderImageProducts({ images }) {
                         <>
                             {product.id !== images[0].id && (
                                 <div key={product?.key} class={`carousel-item`}>
-                                    <img class="d-block w-100" src={`/productImage/${product?.image}`} alt=""></img>
+                                    <img
+                                        class="d-block w-100"
+                                        // src={`/productImage/${product?.image}`}
+                                        src={`${product?.image}`}
+                                        alt=""
+                                    ></img>
                                 </div>
                             )}
                         </>

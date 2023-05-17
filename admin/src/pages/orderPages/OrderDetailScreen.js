@@ -232,10 +232,10 @@ const OrderDetailScreen = () => {
                                 {order?.waitConfirmation && order?.isDelivered && (
                                     <option value={'3'}>Thanh toán</option>
                                 )}
-                                {order?.waitConfirmation &&
-                                    order?.isDelivered &&
-                                    order?.isPaid &&
-                                    order?.completeUser && <option value={'4'}>Hoàn tất</option>}
+                                {order?.waitConfirmation && order?.isDelivered && order?.isPaid && (
+                                    <option value={'4'}>Hoàn tất</option>
+                                )}
+                                {/* order?.completeUser && */}
                             </>
                         )}
                     </select>

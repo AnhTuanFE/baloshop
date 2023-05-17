@@ -129,7 +129,11 @@ function PlaceOrder() {
                 )}
                 {findCart?.countInStock < item?.qty ? (
                     <div className="col-md-2 col-5">
-                        <img src={`/productImage/${item.product?.image[0].image}`} alt={item.name} />
+                        <img
+                            // src={`/productImage/${item.product?.image[0].image}`}
+                            src={`${item.product?.image[0]}`}
+                            alt={item.name}
+                        />
                     </div>
                 ) : (
                     <div className="col-md-2 col-6">

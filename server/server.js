@@ -9,8 +9,8 @@ import orderRouter from './Routes/orderRoutes.js';
 import SliderRouter from './Routes/SliderRouter.js';
 import cartRoutes from './Routes/cartRoutes.js';
 import categoryRoute from './Routes/categoryRouter.js';
-import multer from 'multer';
-import path from 'path';
+// import multer from 'multer';
+// import path from 'path';
 import Upload from './Routes/Upload.js';
 import newsRouter from './Routes/newsRouter.js';
 import forgotPassRouter from './Routes/forgotPassRouter.js';
@@ -18,19 +18,18 @@ import createUserRouter from './Routes/createUserRouter.js';
 
 import cors from 'cors';
 dotenv.config();
-import { Server } from 'http';
+import { Server } from 'http'; //deploy thì comment
 import imageProfile from './Routes/imageProfile.js';
 connectDatabase();
 const app = express();
 app.use(express.json()); // gửi data dưới dạng javascrip thì nó sẽ xử lý
-app.use(express.static('public'));
 
 // API
-
 // cấu hình định danh file ejs bên express
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: false })); //gửi data dưới dạng form thì nó sẽ xử lý
-app.use('/public', express.static('public'));
+// app.use('/public', express.static('public'));
+app.use(express.static('public'));
 app.use(cors());
 
 app.use('/api/cart', cartRoutes);

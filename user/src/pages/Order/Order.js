@@ -459,8 +459,8 @@ function Order() {
                                                     }
                                                 >
                                                     <img
-                                                        // src={item.image}
-                                                        src={`/productImage/${item.image}`}
+                                                        src={item.image}
+                                                        // src={`/productImage/${item.image}`}
                                                         alt={item.name}
                                                     />
                                                 </div>
@@ -669,7 +669,8 @@ function Order() {
                                                 <form>
                                                     <div style={{ textAlign: 'center' }}>
                                                         <img
-                                                            src={`/productImage/${product?.image}`}
+                                                            // src={`/productImage/${product?.image}`}
+                                                            src={`${product?.image}`}
                                                             style={{ height: '120px', width: '120px' }}
                                                             alt=""
                                                         ></img>

@@ -2,6 +2,7 @@
     "name": "admin-dashboard",
     "version": "0.1.0",
     "private": true,
+    "proxy": "http://localhost:9001/",
     "dependencies": {
         "@redux-devtools/extension": "^3.2.5",
         "@testing-library/jest-dom": "^5.15.0",
@@ -32,7 +33,7 @@
         "web-vitals": "^2.1.4"
     },
     "scripts": {
-        "start": "react-app-rewired start",
+        "start": " set PORT=4000 && react-app-rewired start",
         "build": "react-app-rewired --openssl-legacy-provider build",
         "test": "react-app-rewired test",
         "eject": "react-app-rewired eject"
