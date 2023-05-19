@@ -19,6 +19,7 @@ import AddNewsScreen from '~/pages/news/AddNewsScreen';
 import EditNewsScreen from '~/pages/news/EditNewsScreen';
 import NewsScreen from '~/pages/news/NewsScreen';
 
+import UploadImgCloudinary from '~/pages/uploadImgCloudinary/UploadImgCloudinary';
 import NotFound from '~/pages/NotFound';
 
 const privateRoutes = [
@@ -53,6 +54,7 @@ const privateRoutes = [
     { path: '/addnews', component: AddNewsScreen },
     { path: '/editnews/:id/edit', component: EditNewsScreen },
     { path: '/product/:id/edit', component: ProductEditScreen },
+    { path: '/uploadimage', component: UploadImgCloudinary },
 
     { path: '*', component: NotFound },
 ];
