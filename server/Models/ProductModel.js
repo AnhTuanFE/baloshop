@@ -73,6 +73,13 @@ const productSchema = mongoose.Schema(
             type: Array,
             required: true,
         },
+        // image: [
+        //     {
+        //         urlImage: { type: String, required: true },
+        //         nameCloudinary: { type: String, required: true },
+        //         nameProduct: { type: String, required: true },
+        //     },
+        // ],
         description: {
             type: String,
             required: true,

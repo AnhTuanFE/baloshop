@@ -1,14 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import AxiosAPI from './AxiosAPI';
 import './UploadImgCloudinary.css';
 
 function UploadImgCloudinary() {
     const [title, setTitle] = useState('');
     const [image, setImage] = useState();
-    console.log('title = ', title);
-    console.log('image = ', image);
     const user = useSelector((state) => state.userLogin);
     const { userInfo } = user;
 
@@ -40,7 +37,6 @@ function UploadImgCloudinary() {
                     className="input_item"
                     onChange={(e) => {
                         setImage(e.target.files[0]);
-                        // setImage(e.target.value);
                     }}
                     type="file"
                     placeholder="hình ảnh"

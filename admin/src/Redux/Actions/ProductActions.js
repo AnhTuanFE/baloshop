@@ -141,7 +141,8 @@ export const deleteOptionProduct = (productId, optionId) => async (dispatch, get
 
 // CREATE PRODUCT
 export const createProduct =
-    (name, price, description, category, image, countInStock) => async (dispatch, getState) => {
+    // (name, price, description, category, image, countInStock) => async (dispatch, getState) => {
+    (formData) => async (dispatch, getState) => {
         try {
             dispatch({ type: PRODUCT_CREATE_REQUEST });
 
@@ -157,7 +158,8 @@ export const createProduct =
 
             const { data } = await axios.post(
                 `/api/products/`,
-                { name, price, description, category, image, countInStock },
+                // { name, price, description, category, image, countInStock },
+                formData,
                 config,
             );
 

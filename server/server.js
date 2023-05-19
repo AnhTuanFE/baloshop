@@ -11,8 +11,6 @@ import SliderRouter from './Routes/SliderRouter.js';
 import cartRoutes from './Routes/cartRoutes.js';
 import categoryRoute from './Routes/categoryRouter.js';
 import ImageUploadCloudinaryRouter from './Routes/uploadImageCloudinary.js';
-import multer from 'multer';
-import path from 'path';
 import Upload from './Routes/Upload.js';
 import newsRouter from './Routes/newsRouter.js';
 import forgotPassRouter from './Routes/forgotPassRouter.js';
@@ -23,8 +21,6 @@ import cors from 'cors';
 dotenv.config();
 import { Server } from 'http'; //deploy thì comment
 import imageProfile from './Routes/imageProfile.js';
-import cloudinary from 'cloudinary';
-import imageCloudinary from './Models/ImageCloudinaryModel.js';
 
 connectDatabase();
 connectCloudinary();
@@ -60,13 +56,10 @@ app.get('/api/config/paypal', (req, res) => {
 });
 app.use('/api/uploadAvatar', Upload);
 app.use('/api/imageProfile', imageProfile);
+app.use('/api/uploadimagecloudinary', ImageUploadCloudinaryRouter);
 // forgot
 app.use('/api/forgotPass', forgotPassRouter);
 app.use('/api/verifiedEmail', createUserRouter);
-
-// =================== start upload image on cloudinary
-app.use('/api/uploadimagecloudinary', ImageUploadCloudinaryRouter);
-// ================== End upload image on cloudinary
 
 // ERROR HANDLER
 app.use(notFound);

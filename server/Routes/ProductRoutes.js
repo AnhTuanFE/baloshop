@@ -2,11 +2,14 @@ import express from 'express';
 import asyncHandler from 'express-async-handler';
 import Product from './../Models/ProductModel.js';
 import { admin, protect } from './../Middleware/AuthMiddleware.js';
-import Category from '../Models/CategoryModel.js';
+// import Category from '../Models/CategoryModel.js';
 import Order from './../Models/OrderModel.js';
 import Cart from '../Models/CartModel.js';
 import path from 'path';
 import fs from 'fs';
+//
+import multer from 'multer';
+import cloudinary from 'cloudinary';
 
 const __dirname = path.resolve();
 const productRoute = express.Router();
@@ -307,12 +310,30 @@ productRoute.post(
 );
 
 // CREATE PRODUCT
+const storage = multer.diskStorage({
+    filename: function (req, file, callback) {
+        callback(null, Date.now() + file.originalname);
+    },
+});
+const imageFilter = function (req, file, cb) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png|gif|jfif)$/i)) {
+        return cb(new Error('Only image files are accepted!'), false);
+    }
+    cb(null, true);
+};
+const upload = multer({ storage: storage, fileFilter: imageFilter });
+
 productRoute.post(
     '/',
     protect,
     admin,
+    upload.single('image'),
     asyncHandler(async (req, res) => {
-        const { name, price, description, category, image } = req.body;
+        const { name, price, description, category } = req.body;
+        const imagePath = req.file.path;
+        console.log('req.body = ', req.body);
+        console.log('imagePath = ', imagePath);
+
         const productExist = await Product.findOne({ name });
         if (price <= 0) {
             res.status(400);
@@ -322,21 +343,44 @@ productRoute.post(
             res.status(400);
             throw new Error('Product name already exist');
         } else {
-            const product = new Product({
-                name,
-                price,
-                description,
-                category,
-                image,
-                user: req.user._id,
+            cloudinary.v2.uploader.upload(imagePath, function (err, result) {
+                if (err) {
+                    req.json(err.message);
+                }
+                req.body.image = result.secure_url;
+                req.body.imageId = result.public_id; //name image trong cloudinary
+
+                const product = new Product({
+                    name,
+                    price,
+                    description,
+                    category,
+                    image: { urlImage: req.body.image, nameCloudinary: req.body.imageId },
+                    // user: req.user._id,
+                });
+                if (product) {
+                    const createdproduct = Product.create(product);
+                    res.status(201).json(createdproduct);
+                } else {
+                    res.status(400);
+                    throw new Error("Can't upload image");
+                }
             });
-            if (product) {
-                const createdproduct = await product.save();
-                res.status(201).json(createdproduct);
-            } else {
-                res.status(400);
-                throw new Error('Invalid product data');
-            }
+            // const product = new Product({
+            //     name,
+            //     price,
+            //     description,
+            //     category,
+            //     image: req.body.image,
+            //     user: req.user._id,
+            // });
+            // if (product) {
+            //     const createdproduct = await product.save();
+            //     res.status(201).json(createdproduct);
+            // } else {
+            //     res.status(400);
+            //     throw new Error('Invalid product data');
+            // }
         }
     }),
 );

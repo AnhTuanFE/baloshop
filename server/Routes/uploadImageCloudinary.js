@@ -26,7 +26,6 @@ const imageFilter = function (req, file, cb) {
 const upload = multer({ storage: storage, fileFilter: imageFilter });
 
 ImageUploadCloudinaryRouter.post('/add', upload.single('image'), (req, res) => {
-    const { title } = req.body;
     const imagePath = req.file.path;
 
     cloudinary.v2.uploader.upload(imagePath, function (err, result) {
