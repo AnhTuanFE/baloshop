@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 
 import ProfileTabs from '~/components/profileComponents/ProfileTabs';
+import imageDefaul from '~/utils/data';
 import './Profile.css';
 
 function Profile() {
@@ -37,12 +38,7 @@ function Profile() {
                                     }}
                                 >
                                     <img
-                                        src={
-                                            userInfo?.image !== undefined
-                                                ? `/userProfile/${userInfo?.image}`
-                                                : '/images/user.png'
-                                        }
-                                        // src="./images/user.png"
+                                        src={userInfo?.image !== undefined ? userInfo?.image : imageDefaul}
                                         alt=""
                                         style={{
                                             height: '100px',

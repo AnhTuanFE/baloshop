@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import $ from 'jquery';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, login } from '~/Redux/Actions/userActions';
-
+import imageDefaul from '~/data/data';
 const Header = () => {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.userLogin);
@@ -50,9 +50,7 @@ const Header = () => {
                                     borderRadius: '50%',
                                     border: '1px solid #ccc',
                                 }}
-                                src={`/${
-                                    userInfo?.image === undefined ? 'images/user.png' : `userProfile/${userInfo?.image}`
-                                }`}
+                                src={`${userInfo?.image === undefined ? imageDefaul : userInfo?.image}`}
                                 alt="User"
                             />
                         </Link>

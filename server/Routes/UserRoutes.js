@@ -5,7 +5,6 @@ import { protect, admin } from '../Middleware/AuthMiddleware.js';
 import generateToken from '../utils/generateToken.js';
 import User from './../Models/UserModel.js';
 import path from 'path';
-import fs from 'fs';
 
 const __dirname = path.resolve();
 const userRouter = express.Router();
@@ -131,11 +130,11 @@ userRouter.put(
             res.status(400);
             throw new Error('account lock up');
         }
-        if (!!user?.image && req.body.image !== user.image) {
-            fs.unlink(path.join(__dirname, 'public/userProfile', user.image), (err) => {
-                if (err) console.log('Delete old avatar have err:', err);
-            });
-        }
+        // if (!!user?.image && req.body.image !== user.image) {
+        //     fs.unlink(path.join(__dirname, 'public/userProfile', user.image), (err) => {
+        //         if (err) console.log('Delete old avatar have err:', err);
+        //     });
+        // }
         // user.email = req.body.email || user.email;
         if (user) {
             user.name = req.body.name || user.name;

@@ -15,6 +15,7 @@ import { USER_UPDATE_PROFILE_RESET } from '~/redux/Constants/UserContants';
 import { ListProvince } from '~/redux/Actions/userActions';
 import getCroppedImg from '../editAvatar/cropImage';
 import { Alert, Space } from 'antd';
+import imageDefaul from '~/utils/data';
 // import { listCart } from '~/redux/Actions/cartActions';
 // import { ListAvatar } from '~/redux/Actions/avatarAction';
 // import { EditAvatart as App } from '../editAvatar/EditAvatart';
@@ -60,13 +61,6 @@ const ProfileTabs = () => {
     const toastId = useRef(null);
     const refProfile = useRef(); /// ghi chú
     const refSetPassword = useRef(); /// ghi chú
-
-    const Toastobjects = {
-        pauseOnFocusLoss: false,
-        draggable: false,
-        pauseOnHover: false,
-        autoClose: 2000,
-    };
 
     const dispatch = useDispatch();
 
@@ -167,30 +161,34 @@ const ProfileTabs = () => {
         if (Object.keys(passObj).length > 0) return false;
         return true;
     }
+
     useEffect(() => {
         if (!toast.isActive(toastId.current)) {
             if (updatesuccessPass === true) {
-                toastId.current = toast.success('Mật khẩu cập nhật thành công', Toastobjects);
+                toastId.current = toast.success('Mật khẩu cập nhật thành công');
                 dispatch({ type: USER_UPDATE_PROFILE_RESET });
             }
         }
     }, [dispatch, updatesuccessPass]);
+
     useEffect(() => {
         if (updatesuccess) {
-            toast.success('Cập nhật thông tin thành công', Toastobjects);
+            toast.success('Cập nhật thông tin thành công');
             dispatch({ type: USER_UPDATE_PROFILE_RESET });
         }
     }, [dispatch, updatesuccess]);
+
     useEffect(() => {
         if (errorProfile === 'account lock up') {
-            toast.error('Tài khoản của bạn đã bị khóa', Toastobjects);
+            toast.error('Tài khoản của bạn đã bị khóa');
             dispatch({ type: USER_UPDATE_PROFILE_RESET });
         }
         if (errorProfile !== undefined && errorProfile !== 'account lock up') {
-            toast.error('Cập nhật không thành công', Toastobjects);
+            toast.error('Cập nhật không thành công');
             dispatch({ type: USER_UPDATE_PROFILE_RESET });
         }
     }, [dispatch, errorProfile]);
+
     useEffect(() => {
         if (user) {
             setName(user.name);
@@ -202,7 +200,7 @@ const ProfileTabs = () => {
             setImage(user.image);
         }
         if (errorProfile) {
-            toastId.current = toast.error(error, Toastobjects);
+            toastId.current = toast.error(error);
         }
     }, [dispatch, user, successDetail]);
 
@@ -230,22 +228,21 @@ const ProfileTabs = () => {
     const [rotation, setRotation] = useState(0);
     const [zoom, setZoom] = useState(1);
     const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
-    const [croppedImage, setCroppedImage] = useState(null);
     const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
         setCroppedAreaPixels(croppedAreaPixels);
     }, []);
+    const [fileHinh, setFileHinh] = useState();
 
     const showCroppedImage = useCallback(async () => {
         try {
             const croppedImage = await getCroppedImg(imgAvatar, croppedAreaPixels, rotation);
-            setCroppedImage(croppedImage);
             let response = await fetch(croppedImage);
             let data = await response.blob();
             let metadata = {
                 type: 'image/jpeg',
             };
-            let newFile = new File([data], 'test.jpg', metadata);
-            // ... do something with the file or return it
+            // let newFile = new File([data], 'test.jpg', metadata);
+            let newFile = new File([data], `${fileHinh.name}`, metadata);
             setFile(newFile);
             setCheckImage(false);
             setCheckFile(true);
@@ -254,13 +251,11 @@ const ProfileTabs = () => {
         }
     }, [croppedAreaPixels, rotation]);
 
-    const onClose = useCallback(() => {
-        setCroppedImage(null);
-    }, []);
     useEffect(() => {
         if (file) {
             let newImage = new FormData();
             newImage.append('image', file);
+            // newImage.append('image', fileHinh);
             axios
                 .post('/api/uploadAvatar', newImage, {
                     headers: {
@@ -272,9 +267,10 @@ const ProfileTabs = () => {
                 });
         }
     }, [file]);
+
     useEffect(() => {
         if (url !== undefined) {
-            setImage(url.filename);
+            setImage(url);
         }
     }, [url]);
 
@@ -530,13 +526,7 @@ const ProfileTabs = () => {
                         style={checkFile === true ? {} : { display: 'none' }}
                     >
                         <img
-                            src={
-                                url?.filename === undefined
-                                    ? user?.image === undefined
-                                        ? '/images/user.png'
-                                        : `/userProfile/${image}`
-                                    : `/userProfile/${url?.filename}`
-                            }
+                            src={url === undefined ? (user?.image === undefined ? imageDefaul : image) : url}
                             style={{
                                 height: '120px',
                                 width: '120px',
@@ -545,7 +535,7 @@ const ProfileTabs = () => {
                                 flexShrink: '0',
                             }}
                             alt=""
-                        ></img>
+                        />
                         <div className="text-center">
                             <input
                                 id="id_file"
@@ -555,6 +545,7 @@ const ProfileTabs = () => {
                                     setImgAvatar(URL.createObjectURL(e.target.files[0]));
                                     setCheckFile(false);
                                     setCheckImage(true);
+                                    setFileHinh(e.target.files[0]);
                                 }}
                             ></input>
                             <label

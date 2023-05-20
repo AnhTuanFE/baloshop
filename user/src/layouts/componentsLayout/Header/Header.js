@@ -13,7 +13,7 @@ import { logout, getUserDetails } from '~/redux/Actions/userActions'; //updateUs
 
 import { usersRemainingSelector } from '~/redux/Selector/usersSelector';
 import { cartsRemainingSelector } from '~/redux/Selector/cartsSelector';
-
+import imageDefaul from '~/utils/data';
 const Header = (props) => {
     const { keysearch } = props;
     const dispatch = useDispatch();
@@ -162,12 +162,9 @@ const Header = (props) => {
                                                 }}
                                             >
                                                 <img
-                                                    src={`/${
-                                                        userInfo?.image === undefined
-                                                            ? 'images/user.png'
-                                                            : `userProfile/${userInfo?.image}`
-                                                    }`} // upload ảnh
-                                                    // src="/images/user.png" // upload ảnh
+                                                    src={`${
+                                                        userInfo?.image === undefined ? imageDefaul : userInfo?.image
+                                                    }`}
                                                     alt=""
                                                     style={{
                                                         height: '45px',

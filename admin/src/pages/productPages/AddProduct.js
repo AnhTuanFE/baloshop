@@ -42,7 +42,6 @@ const AddProduct = () => {
             URL.revokeObjectURL(image);
             let url = URL.createObjectURL(image);
             setImgUrl(url);
-            console.log('image = ', image);
         }
     }, [image]);
     // const [arrImage, setArrImage] = useState([]);

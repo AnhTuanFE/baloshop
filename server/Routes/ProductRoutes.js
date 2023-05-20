@@ -331,8 +331,6 @@ productRoute.post(
     asyncHandler(async (req, res) => {
         const { name, price, description, category } = req.body;
         const imagePath = req.file.path;
-        console.log('req.body = ', req.body);
-        console.log('imagePath = ', imagePath);
 
         const productExist = await Product.findOne({ name });
         if (price <= 0) {
@@ -343,7 +341,7 @@ productRoute.post(
             res.status(400);
             throw new Error('Product name already exist');
         } else {
-            cloudinary.v2.uploader.upload(imagePath, function (err, result) {
+            cloudinary.v2.uploader.upload(imagePath, { folder: 'baloshopImage' }, function (err, result) {
                 if (err) {
                     req.json(err.message);
                 }
@@ -363,24 +361,9 @@ productRoute.post(
                     res.status(201).json(createdproduct);
                 } else {
                     res.status(400);
-                    throw new Error("Can't upload image");
+                    throw new Error("Invalid product data or Can't upload image");
                 }
             });
-            // const product = new Product({
-            //     name,
-            //     price,
-            //     description,
-            //     category,
-            //     image: req.body.image,
-            //     user: req.user._id,
-            // });
-            // if (product) {
-            //     const createdproduct = await product.save();
-            //     res.status(201).json(createdproduct);
-            // } else {
-            //     res.status(400);
-            //     throw new Error('Invalid product data');
-            // }
         }
     }),
 );
