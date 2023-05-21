@@ -216,7 +216,6 @@ const ProfileTabs = () => {
     };
 
     //port avatar
-    const [url, setUrl] = useState();
     const [imgAvatar, setImgAvatar] = useState();
     const [crop, setCrop] = useState({ x: 0, y: 0 });
     const [rotation, setRotation] = useState(0);
@@ -236,10 +235,7 @@ const ProfileTabs = () => {
             let metadata = {
                 type: 'image/jpeg',
             };
-            // let newFile = new File([data], 'test.jpg', metadata);
             let newFile = new File([data], `${fileHinh.name}`, metadata);
-            // lưu vào một file
-            // setFile(newFile);
             setImage(newFile);
             setCheckImage(false);
             setCheckFile(true);

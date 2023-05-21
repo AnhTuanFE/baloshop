@@ -22,6 +22,9 @@ import {
     userListReducer,
     ProvinceReducer,
     Avatarload,
+    userForgotPassWord,
+    userVerifyResetPassWordReducer,
+    ResetPassWordReducer,
 } from './Reducers/userReducers';
 import {
     orderAddressMyReducer,
@@ -73,6 +76,9 @@ const reducer = combineReducers({
     province: ProvinceReducer,
     listNews: newsListReducer,
     getDetailNews: getNewsReducer,
+    forgotPassWordState: userForgotPassWord,
+    verifyState: userVerifyResetPassWordReducer,
+    resetPasswordState: ResetPassWordReducer,
 });
 
 const cartItemsFromLocalStorage = localStorage.getItem('cartItems')

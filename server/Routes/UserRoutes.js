@@ -128,61 +128,97 @@ userRouter.put(
     protect, //lỗi tại mày, t ko dủ quyền truy cập
     upload,
     asyncHandler(async (req, res) => {
-        const imagePath = req.file?.path;
-        console.log('req.body = ', req.body);
-        console.log('imagePath = ', req.file.path);
-
-        cloudinary.v2.uploader.upload(imagePath, { folder: 'baloshopAvatar' }, async function (err, result) {
-            if (err) {
-                req.json(err.message);
-            }
-            req.body.image = result.secure_url; //url image
-            req.body.imageId = result.public_id; //name image trong cloudinary
-
+        try {
+            const imagePath = req?.file?.path;
+            // console.log('req.body = ', req.body);
+            // console.log('imagePath = ', req.file?.path);
             const user = await User.findById(req.user._id);
 
-            if (user?.disabled) {
-                res.status(400);
-                throw new Error('account lock up');
-            }
             if (user) {
-                user.name = req.body.name || user.name;
-                user.phone = req.body.phone || user.phone;
-                user.address = req.body.address || user.address;
-                user.city = req.body.city || user.city;
-                user.country = req.body.country || user.country;
-                user.image = req.body.image || user.image;
-
-                if (req.body.password) {
+                if (user?.disabled) {
+                    res.status(400);
+                    throw new Error('account lock up');
+                } else if (imagePath) {
+                    cloudinary.v2.uploader.upload(
+                        imagePath,
+                        { folder: 'baloshopAvatar' },
+                        async function (err, result) {
+                            if (err) {
+                                req.json(err.message);
+                            }
+                            const imageURL = result.secure_url; //url image
+                            req.body.imageId = result.public_id; //name image trong cloudinary
+                            user.image = imageURL || user.image;
+                            const updatedUser = await user.save();
+                            res.json({
+                                _id: updatedUser._id,
+                                name: updatedUser.name,
+                                phone: updatedUser.phone,
+                                isAdmin: updatedUser.isAdmin,
+                                createdAt: updatedUser.createdAt,
+                                token: generateToken(updatedUser._id),
+                                email: user.email,
+                                address: user.address,
+                                city: user.city,
+                                country: user.country,
+                                image: updatedUser.image,
+                                disabled: user.disabled,
+                            });
+                        },
+                    );
+                } else if (req.body.password) {
                     if (await user.matchPassword(req.body.oldPassword)) {
                         user.password = req.body.password;
+                        const updatedPassword = await user.save();
+                        res.json({
+                            _id: updatedPassword._id,
+                            name: updatedPassword.name,
+                            email: updatedPassword.email,
+                            phone: updatedPassword.phone,
+                            isAdmin: updatedPassword.isAdmin,
+                            createdAt: updatedPassword.createdAt,
+                            token: generateToken(updatedPassword._id),
+                            address: user.address,
+                            city: user.city,
+                            country: user.country,
+                            image: user.image,
+                            disabled: user.disabled,
+                        });
                     } else {
                         res.status(404);
                         throw new Error('Old Password is not correct!');
                     }
+                } else {
+                    user.name = req.body.name || user.name;
+                    user.phone = req.body.phone || user.phone;
+                    user.address = req.body.address || user.address;
+                    user.city = req.body.city || user.city;
+                    user.country = req.body.country || user.country;
+                    user.image = req.body.image || user.image;
+
+                    const updatedUser = await user.save();
+                    res.json({
+                        _id: updatedUser._id,
+                        name: updatedUser.name,
+                        email: user.email,
+                        phone: updatedUser.phone,
+                        isAdmin: updatedUser.isAdmin,
+                        createdAt: updatedUser.createdAt,
+                        token: generateToken(updatedUser._id),
+                        address: user.address,
+                        city: user.city,
+                        country: user.country,
+                        image: user.image,
+                        disabled: user.disabled,
+                    });
                 }
-                const updatedUser = await user.save();
-                res.json({
-                    _id: updatedUser._id,
-                    name: updatedUser.name,
-                    email: updatedUser.email,
-                    phone: updatedUser.phone,
-                    isAdmin: updatedUser.isAdmin,
-                    createdAt: updatedUser.createdAt,
-                    token: generateToken(updatedUser._id),
-                    address: user.address,
-                    city: user.city,
-                    country: user.country,
-                    image: user.image,
-                    disabled: user.disabled,
-                });
             } else {
                 res.status(404);
                 throw new Error('User not found');
             }
-        });
-
-        // user.email = req.body.email || user.email; // bỏ
+        } catch (error) {
+            throw new Error(error);
+        }
     }),
 );
 

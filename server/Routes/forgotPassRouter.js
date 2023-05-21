@@ -2,14 +2,14 @@ import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
-// UserInFo
 // import UserInFor from '../Models/userDetails.js';
 import User from '../Models/UserModel.js';
+import baseURL from '../baseURL/baseURL.js';
 
 const forgotPassRouter = express.Router();
 
 const JWT_SECRET1 = 'hvdvay6ert72839289()aiyg8t87qt72393293883uhefiuh78ttq3ifi78272jbkj?[]]pou89ywe';
-// nhập mail, gửi link thay đổi mật khẩu
+
 forgotPassRouter.post('/forgotPassword', async (req, res) => {
     const { email } = req.body;
     try {
@@ -19,56 +19,67 @@ forgotPassRouter.post('/forgotPassword', async (req, res) => {
         }
         const secret = JWT_SECRET1 + oldUser.password;
         const token1 = jwt.sign({ email: oldUser.email, id: oldUser._id }, secret, {
-            expiresIn: '5m',
+            expiresIn: '30m',
         });
-        const link = `http://localhost:9001/api/forgotPass/reset-password/${oldUser._id}/${token1}`;
-        var transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: 'balostore.owner@gmail.com',
-                pass: 'ytmgtsqgkgtypwle',
-            },
-        });
+        // const link = `${baseURL.urlUser}/api/forgotPass/reset-password/${oldUser._id}/${token1}`;
+        const link = `${baseURL.urlUser}/verify-reset-password/${oldUser._id}/${token1}`;
 
-        var mailOptions = {
-            from: 'balostore.owner@gmail.com',
-            to: oldUser.email,
-            subject: 'BaloStore kính chào quý khách, quý khách hãy nhấp vào đường link bên dưới để đặt lại mật khẩu',
-            text: link,
-        };
+        // var transporter = nodemailer.createTransport({
+        //     service: 'gmail',
+        //     auth: {
+        //         user: 'balostore.owner@gmail.com',
+        //         pass: 'ytmgtsqgkgtypwle',
+        //     },
+        // });
 
-        transporter.sendMail(mailOptions, function (error, info) {
-            if (error) {
-                console.log(error);
-            } else {
-                console.log('Email sent: ' + info.response);
-            }
-        });
+        // var mailOptions = {
+        //     from: 'balostore.owner@gmail.com',
+        //     to: oldUser.email,
+        //     subject: 'BaloStore kính chào quý khách, quý khách hãy nhấp vào đường link bên dưới để đặt lại mật khẩu',
+        //     text: link,
+        // };
+
+        // transporter.sendMail(mailOptions, function (error, info) {
+        //     if (error) {
+        //         console.log(error);
+        //     } else {
+        //         console.log('Email sent: ' + info.response);
+        //     }
+        // });
         res.json({ status: 'Link đặt lại mật khẩu đã được gửi qua email, vui lòng kiểm tra hòm thư của bạn' });
         console.log(link);
     } catch (error) {}
 });
 
-//   gọi api thay đổi mật khẩu
-forgotPassRouter.get('/reset-password/:id/:token1', async (req, res) => {
-    const { id, token1 } = req.params;
+//   xác thực
+forgotPassRouter.post('/verify-reset-password', async (req, res) => {
+    // console.log('req.body = ', req?.body);
+
+    const { id, token } = req?.body;
+
     const oldUser = await User.findOne({ _id: id });
+    const email = oldUser.email;
     if (!oldUser) {
         return res.json({ status: 'User Not Exists!!' });
     }
     const secret = JWT_SECRET1 + oldUser.password;
     try {
-        const verify = jwt.verify(token1, secret);
-        res.render('index', { email: verify.email, status: 'Not verified' });
-        // res.send("Verified");
+        const verify = jwt.verify(token, secret);
+        console.log('verify = ', verify);
+        // res.render('index', { email: verify.email, status: 'Verified Account' });
+        return res.json({ status: 'Verified Account', id, token, email });
     } catch (error) {
         console.log(error);
-        res.send('not verified');
+        // res.send('not verified');
+        res.json({ status: 'Not verified', error });
     }
 });
-forgotPassRouter.post('/reset-password/:id/:token', async (req, res) => {
-    const { id, token } = req.params;
-    const { password } = req.body;
+
+// thay đổi mật khẩu
+forgotPassRouter.post('/reset-password', async (req, res) => {
+    // const { id, token } = req.params;
+    console.log('req?.body = ', req?.body);
+    const { newPassword, id, token } = req?.body;
 
     const oldUser = await User.findOne({ _id: id });
     if (!oldUser) {
@@ -77,7 +88,7 @@ forgotPassRouter.post('/reset-password/:id/:token', async (req, res) => {
     const secret = JWT_SECRET1 + oldUser.password;
     try {
         const verify = jwt.verify(token, secret);
-        const encryptedPassword = await bcrypt.hash(password, 10);
+        const encryptedPassword = await bcrypt.hash(newPassword, 10);
         await User.updateOne(
             {
                 _id: id,
@@ -88,8 +99,8 @@ forgotPassRouter.post('/reset-password/:id/:token', async (req, res) => {
                 },
             },
         );
-        // res.json({ status: "Password updated" });
-        res.render('index', { email: verify.email, status: 'verified' });
+        res.json({ status: 'Password updated' });
+        // res.render('index', { email: verify.email, status: 'verified' });
     } catch (error) {
         console.log(error);
         res.json({ status: 'Something Went Wrong' });

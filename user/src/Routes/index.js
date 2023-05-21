@@ -12,6 +12,8 @@ import PlaceOrder from '~/pages/PlaceOrder/PlaceOrder';
 import Order from '~/pages/Order/Order';
 import Profile from '~/pages/Profile/Profile';
 import PurchaseHistory from '~/pages/PurchaseHistory';
+import ResetPasswordRequest from '~/pages/ResetPasswordRequest/ResetPasswordRequest';
+import VerifyResetPassWord from '~/pages/VerifyResetPassWord/VerifyResetPassWord';
 import ResetPassword from '~/pages/ResetPassword/ResetPassword';
 import NotFound from '~/pages/NotFound/NotFound';
 // test private route tý xóa
@@ -37,6 +39,8 @@ const publicRoutes = [
     { path: '/product/:id', component: DetailProduct },
     { path: '/login', component: Login, layout: HeaderOnly },
     { path: '/register', component: Register, layout: HeaderOnly },
+    { path: '/resetpassword-request', component: ResetPasswordRequest, layout: HeaderOnly },
+    { path: '/verify-reset-password/:id/:token', component: VerifyResetPassWord, layout: HeaderOnly },
     { path: '/resetpassword', component: ResetPassword, layout: HeaderOnly },
 
     { path: '*', component: NotFound, layout: HeaderOnly },

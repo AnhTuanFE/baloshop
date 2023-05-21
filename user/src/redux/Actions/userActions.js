@@ -226,3 +226,63 @@ export const ListAvatar = () => async (dispatch) => {
         });
     }
 };
+
+export const ForgotPassWord = (email) => async (dispatch) => {
+    try {
+        dispatch({ type: types.FORGOT_PASS_WORD_REQUEST });
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                'Access-Control-Allow-Origin': '*',
+            },
+        };
+        const { data } = await axios.post(`/api/forgotPass/forgotPassword`, email, config);
+        dispatch({ type: types.FORGOT_PASS_WORD_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({
+            type: types.FORGOT_PASS_WORD_FAIL,
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+        });
+    }
+};
+
+export const VerifyResetPassWordAction = (verifyData) => async (dispatch) => {
+    try {
+        dispatch({ type: types.VERIFY_RESET_PASS_WORD_REQUEST });
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                'Access-Control-Allow-Origin': '*',
+            },
+        };
+        const { data } = await axios.post(`/api/forgotPass/verify-reset-password`, verifyData, config);
+        dispatch({ type: types.VERIFY_RESET_PASS_WORD_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({
+            type: types.VERIFY_RESET_PASS_WORD_FAIL,
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+        });
+    }
+};
+
+export const ResetPassWordAction = (newPassword) => async (dispatch) => {
+    try {
+        dispatch({ type: types.RESET_PASS_WORD_REQUEST });
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                'Access-Control-Allow-Origin': '*',
+            },
+        };
+        const { data } = await axios.post(`/api/forgotPass/reset-password`, newPassword, config);
+        dispatch({ type: types.RESET_PASS_WORD_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({
+            type: types.RESET_PASS_WORD_FAIL,
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+        });
+    }
+};
