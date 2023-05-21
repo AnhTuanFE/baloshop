@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { listUser, disabledUser } from '~/Redux/Actions/userActions';
 import { USER_DISABLED_RESET } from '~/Redux/Constants/UserContants';
-import { toast } from 'react-toastify';
-import Toast from '../LoadingError/Toast';
-import Loading from '../LoadingError/Loading';
-import Message from '../LoadingError/Error';
+import Toast from '~/components/LoadingError/Toast';
+import Loading from '~/components/LoadingError/Loading';
+import Message from '~/components/LoadingError/Error';
 
 const ToastObjects = {
     pauseOnFocusLoss: false,
@@ -14,7 +14,7 @@ const ToastObjects = {
     pauseOnHover: false,
     autoClose: 2000,
 };
-const UserComponent = () => {
+const UsersScreen = () => {
     const dispatch = useDispatch();
 
     const userList = useSelector((state) => state.userList);
@@ -55,7 +55,6 @@ const UserComponent = () => {
             dispatch(disabledUser(id, disabled));
         }
     };
-    //hết
     return (
         <section className="content-main">
             <div className="content-header">
@@ -135,4 +134,4 @@ const UserComponent = () => {
     );
 };
 
-export default UserComponent;
+export default UsersScreen;

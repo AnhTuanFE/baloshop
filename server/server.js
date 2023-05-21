@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import bodyParser from 'body-parser';
 import connectDatabase from './config/MongoDb.js';
 import connectCloudinary from './config/CloudinaryConfig.js';
 import ImportData from './DataImport.js';
@@ -10,12 +11,9 @@ import orderRouter from './Routes/orderRoutes.js';
 import SliderRouter from './Routes/SliderRouter.js';
 import cartRoutes from './Routes/cartRoutes.js';
 import categoryRoute from './Routes/categoryRouter.js';
-import ImageUploadCloudinaryRouter from './Routes/uploadImageCloudinary.js';
-import Upload from './Routes/Upload.js';
 import newsRouter from './Routes/newsRouter.js';
 import forgotPassRouter from './Routes/forgotPassRouter.js';
 import createUserRouter from './Routes/createUserRouter.js';
-import bodyParser from 'body-parser'; //img
 
 import cors from 'cors';
 dotenv.config();
@@ -54,9 +52,7 @@ app.use('/api/category', categoryRoute);
 app.get('/api/config/paypal', (req, res) => {
     res.send(process.env.PAYPAL_CLIENT_ID);
 });
-app.use('/api/uploadAvatar', Upload);
 app.use('/api/imageProfile', imageProfile);
-app.use('/api/uploadimagecloudinary', ImageUploadCloudinaryRouter);
 // forgot
 app.use('/api/forgotPass', forgotPassRouter);
 app.use('/api/verifiedEmail', createUserRouter);

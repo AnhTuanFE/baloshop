@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { createSlider, deleteSlider, ListSlider } from '~/Redux/Actions/SliderAction';
-import AddSlider from './AddSlider';
+import AddSlider from '~/components/slider/AddSlider';
 
-export default function Slidermain() {
+export default function SliderScreen() {
     const sliderList = useSelector((state) => state.sliderList);
     const { slider } = sliderList;
     const sliderDelete = useSelector((state) => state.deleteSlider);
