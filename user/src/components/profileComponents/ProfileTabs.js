@@ -2,7 +2,6 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import isEmpty from 'validator/lib/isEmpty';
-import axios from 'axios';
 import Cropper from 'react-easy-crop';
 import { Button } from '@mui/material';
 
@@ -16,14 +15,15 @@ import { ListProvince } from '~/redux/Actions/userActions';
 import getCroppedImg from '../editAvatar/cropImage';
 import { Alert, Space } from 'antd';
 import imageDefaul from '~/utils/data';
+
 // import { listCart } from '~/redux/Actions/cartActions';
 // import { ListAvatar } from '~/redux/Actions/avatarAction';
 // import { EditAvatart as App } from '../editAvatar/EditAvatart';
 // import ImgDialog from '../editAvatar/ImgDialog';
 
-// import '../editAvatar/style.css';
 import '../editAvatar/style.css';
 import './ProfileTabs.css';
+import { object } from 'joi';
 const ProfileTabs = () => {
     const [visible, setVisible] = useState(false);
     const handleClose = () => {
@@ -107,6 +107,7 @@ const ProfileTabs = () => {
     }
     // xư lý profile validate
     const [objProfile, setObjProfile] = useState({});
+
     function checkObjProfile() {
         const profileObj = {};
         if (isEmpty(name)) {
@@ -188,7 +189,6 @@ const ProfileTabs = () => {
             dispatch({ type: USER_UPDATE_PROFILE_RESET });
         }
     }, [dispatch, errorProfile]);
-
     useEffect(() => {
         if (user) {
             setName(user.name);
@@ -204,16 +204,11 @@ const ProfileTabs = () => {
         }
     }, [dispatch, user, successDetail]);
 
-    const submitUpdateProfile = (e) => {
-        e.preventDefault();
-        if (!checkObjProfile()) return;
-        // email,
-        dispatch(updateUserProfile({ id: user._id, name, phone, country, city, address, image }));
-    };
     const submitUpdatePassword = (e) => {
         e.preventDefault();
         if (!checkPassword()) return; // check funtion check pass để kiểm tra xem có các trường bị rổng hay không
-        dispatch(updateUserPassword({ id: user._id, oldPassword, password, image }));
+        //, image
+        dispatch(updateUserPassword({ id: user._id, oldPassword, password }));
 
         setOldPassword('');
         setPassword('');
@@ -221,7 +216,6 @@ const ProfileTabs = () => {
     };
 
     //port avatar
-    const [file, setFile] = useState();
     const [url, setUrl] = useState();
     const [imgAvatar, setImgAvatar] = useState();
     const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -235,6 +229,7 @@ const ProfileTabs = () => {
 
     const showCroppedImage = useCallback(async () => {
         try {
+            // nhận vào 1 object url image
             const croppedImage = await getCroppedImg(imgAvatar, croppedAreaPixels, rotation);
             let response = await fetch(croppedImage);
             let data = await response.blob();
@@ -243,36 +238,15 @@ const ProfileTabs = () => {
             };
             // let newFile = new File([data], 'test.jpg', metadata);
             let newFile = new File([data], `${fileHinh.name}`, metadata);
-            setFile(newFile);
+            // lưu vào một file
+            // setFile(newFile);
+            setImage(newFile);
             setCheckImage(false);
             setCheckFile(true);
         } catch (e) {
             console.error(e);
         }
     }, [croppedAreaPixels, rotation]);
-
-    useEffect(() => {
-        if (file) {
-            let newImage = new FormData();
-            newImage.append('image', file);
-            // newImage.append('image', fileHinh);
-            axios
-                .post('/api/uploadAvatar', newImage, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                })
-                .then((res) => {
-                    res?.data && setUrl(res?.data);
-                });
-        }
-    }, [file]);
-
-    useEffect(() => {
-        if (url !== undefined) {
-            setImage(url);
-        }
-    }, [url]);
 
     // ================ đổi input = seclct
     const handleChooseProvince = (e) => {
@@ -296,7 +270,20 @@ const ProfileTabs = () => {
     };
 
     // ================ đổi input = seclct
-
+    const submitUpdateProfile = (e) => {
+        e.preventDefault();
+        if (!checkObjProfile()) return;
+        // email,
+        let userInforNeedUpdate = new FormData();
+        userInforNeedUpdate.append('id', user._id);
+        userInforNeedUpdate.append('name', name);
+        userInforNeedUpdate.append('phone', phone);
+        userInforNeedUpdate.append('country', country);
+        userInforNeedUpdate.append('city', city);
+        userInforNeedUpdate.append('address', address);
+        userInforNeedUpdate.append('image', image);
+        dispatch(updateUserProfile(userInforNeedUpdate));
+    };
     return (
         <>
             {/* <Toast /> */}
@@ -312,7 +299,7 @@ const ProfileTabs = () => {
             )}
             {error && <Message variant="alert-danger">{error}</Message>}
             {loading && <Loading />}
-            {updateLoading && <Loading />}
+            {/* {updateLoading && <Loading />} */}
             <div className="row form-container">
                 {/*Update profile*/}
                 {/* nut check radio */}
@@ -526,7 +513,13 @@ const ProfileTabs = () => {
                         style={checkFile === true ? {} : { display: 'none' }}
                     >
                         <img
-                            src={url === undefined ? (user?.image === undefined ? imageDefaul : image) : url}
+                            src={
+                                image === undefined || typeof image === 'object'
+                                    ? imgAvatar === undefined
+                                        ? imageDefaul
+                                        : imgAvatar
+                                    : image
+                            }
                             style={{
                                 height: '120px',
                                 width: '120px',

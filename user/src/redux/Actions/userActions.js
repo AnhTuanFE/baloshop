@@ -96,9 +96,10 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
             userLogin: { userInfo },
         } = getState();
 
+        // 'Content-Type': 'application/json',
         const config = {
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'multipart/form-data',
                 Authorization: `Bearer ${userInfo.token}`,
             },
         };

@@ -3,21 +3,10 @@ import asyncHandler from 'express-async-handler';
 import multer from 'multer';
 import { protect, admin } from '../Middleware/AuthMiddleware.js';
 import generateToken from '../utils/generateToken.js';
+import cloudinary from 'cloudinary';
 import User from './../Models/UserModel.js';
-import path from 'path';
 
-const __dirname = path.resolve();
 const userRouter = express.Router();
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'public/userProfile');
-    },
-
-    // By default, multer removes file extensions so let's add them back
-    filename: function (req, file, cb) {
-        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-    },
-});
 
 // LOGIN
 userRouter.post(
@@ -121,57 +110,79 @@ userRouter.get(
 );
 
 // UPDATE PROFILE
+const storage = multer.diskStorage({
+    filename: function (req, file, callback) {
+        callback(null, Date.now() + file.originalname);
+    },
+});
+const imageFilter = function (req, file, cb) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png|gif|jfif)$/i)) {
+        return cb(new Error('Only image files are accepted!'), false);
+    }
+    cb(null, true);
+};
+const upload = multer({ storage: storage, fileFilter: imageFilter }).single('image');
+
 userRouter.put(
     '/profile',
-    protect,
+    protect, //lỗi tại mày, t ko dủ quyền truy cập
+    upload,
     asyncHandler(async (req, res) => {
-        const user = await User.findById(req.user._id);
-        if (user?.disabled) {
-            res.status(400);
-            throw new Error('account lock up');
-        }
-        // if (!!user?.image && req.body.image !== user.image) {
-        //     fs.unlink(path.join(__dirname, 'public/userProfile', user.image), (err) => {
-        //         if (err) console.log('Delete old avatar have err:', err);
-        //     });
-        // }
-        // user.email = req.body.email || user.email;
-        if (user) {
-            user.name = req.body.name || user.name;
-            user.phone = req.body.phone || user.phone;
-            user.address = req.body.address || user.address;
-            user.city = req.body.city || user.city;
-            user.country = req.body.country || user.country;
-            //user.image = newImage === undefined ? user.image : newImage;
-            user.image = req.body.image || user.image;
+        const imagePath = req.file?.path;
+        console.log('req.body = ', req.body);
+        console.log('imagePath = ', req.file.path);
 
-            if (req.body.password) {
-                if (await user.matchPassword(req.body.oldPassword)) {
-                    user.password = req.body.password;
-                } else {
-                    res.status(404);
-                    throw new Error('Old Password is not correct!');
-                }
+        cloudinary.v2.uploader.upload(imagePath, { folder: 'baloshopAvatar' }, async function (err, result) {
+            if (err) {
+                req.json(err.message);
             }
-            const updatedUser = await user.save();
-            res.json({
-                _id: updatedUser._id,
-                name: updatedUser.name,
-                email: updatedUser.email,
-                phone: updatedUser.phone,
-                isAdmin: updatedUser.isAdmin,
-                createdAt: updatedUser.createdAt,
-                token: generateToken(updatedUser._id),
-                address: user.address,
-                city: user.city,
-                country: user.country,
-                image: user.image,
-                disabled: user.disabled,
-            });
-        } else {
-            res.status(404);
-            throw new Error('User not found');
-        }
+            req.body.image = result.secure_url; //url image
+            req.body.imageId = result.public_id; //name image trong cloudinary
+
+            const user = await User.findById(req.user._id);
+
+            if (user?.disabled) {
+                res.status(400);
+                throw new Error('account lock up');
+            }
+            if (user) {
+                user.name = req.body.name || user.name;
+                user.phone = req.body.phone || user.phone;
+                user.address = req.body.address || user.address;
+                user.city = req.body.city || user.city;
+                user.country = req.body.country || user.country;
+                user.image = req.body.image || user.image;
+
+                if (req.body.password) {
+                    if (await user.matchPassword(req.body.oldPassword)) {
+                        user.password = req.body.password;
+                    } else {
+                        res.status(404);
+                        throw new Error('Old Password is not correct!');
+                    }
+                }
+                const updatedUser = await user.save();
+                res.json({
+                    _id: updatedUser._id,
+                    name: updatedUser.name,
+                    email: updatedUser.email,
+                    phone: updatedUser.phone,
+                    isAdmin: updatedUser.isAdmin,
+                    createdAt: updatedUser.createdAt,
+                    token: generateToken(updatedUser._id),
+                    address: user.address,
+                    city: user.city,
+                    country: user.country,
+                    image: user.image,
+                    disabled: user.disabled,
+                });
+            } else {
+                res.status(404);
+                throw new Error('User not found');
+            }
+        });
+
+        // user.email = req.body.email || user.email; // bỏ
     }),
 );
 

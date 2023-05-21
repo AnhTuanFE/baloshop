@@ -1,8 +1,7 @@
 import express from 'express';
 import multer from 'multer';
-import path from 'path';
 import cloudinary from 'cloudinary';
-
+// import path from 'path';
 // import fs from 'fs';
 // const __dirname = path.resolve();
 const Upload = express.Router();
