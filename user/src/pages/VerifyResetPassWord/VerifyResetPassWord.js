@@ -1,8 +1,12 @@
 import { useEffect } from 'react';
+import clsx from 'clsx';
+import { Button } from 'antd';
 import { useParams, useNavigate } from 'react-router-dom';
 import { VerifyResetPassWordAction } from '~/redux/Actions/userActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { usersRemainingSelector } from '~/redux/Selector/usersSelector';
+import { SmileOutlined } from '@ant-design/icons';
+import styles from './VerifyResetPassWord.module.css';
 
 function VerifyResetPassWord() {
     const params = useParams();
@@ -22,9 +26,24 @@ function VerifyResetPassWord() {
     };
 
     return (
-        <div>
-            <h1>VerifyResetPassWord pages</h1>
-            <button onClick={handleVerify}>Verified</button>
+        <div className={clsx(styles.wrapper)}>
+            <div className={clsx(styles.wrap_main)}>
+                <div className={clsx(styles.wrap_content)}>
+                    <div className={clsx(styles.content)}>
+                        <h2>Đây là trang xác thực tài khoản của bạn</h2>
+                        <hr></hr>
+                        <p>hãy bấm vào nút xác thực bên dưới để xác nhận việc đặt lại mật khẩu</p>
+                        <Button
+                            className={clsx(styles.button_verify)}
+                            icon={<SmileOutlined className={clsx(styles.icon_smile)} />}
+                            type="primary"
+                            onClick={handleVerify}
+                        >
+                            Xác thực
+                        </Button>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

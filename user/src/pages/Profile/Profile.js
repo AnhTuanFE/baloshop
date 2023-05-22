@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 
 import ProfileTabs from '~/components/profileComponents/ProfileTabs';
-import imageDefaul from '~/utils/data';
+import { imageDefaul } from '~/utils/data';
 import './Profile.css';
 
 function Profile() {

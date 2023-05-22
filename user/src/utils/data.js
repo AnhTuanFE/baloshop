@@ -1,2 +1,4 @@
 const imageDefaul = 'https://res.cloudinary.com/tlsbaloshop/image/upload/v1684570314/baloshopAvatar/user_dngvqn.png';
-export default imageDefaul;
+const logoDefaul =
+    'https://res.cloudinary.com/tlsbaloshop/image/upload/v1684744391/baloshopDefaulLogo/logo2_iac27f.png';
+export { imageDefaul, logoDefaul };

@@ -14,7 +14,7 @@ import { USER_UPDATE_PROFILE_RESET } from '~/redux/Constants/UserContants';
 import { ListProvince } from '~/redux/Actions/userActions';
 import getCroppedImg from '../editAvatar/cropImage';
 import { Alert, Space } from 'antd';
-import imageDefaul from '~/utils/data';
+import { imageDefaul } from '~/utils/data';
 
 // import { listCart } from '~/redux/Actions/cartActions';
 // import { ListAvatar } from '~/redux/Actions/avatarAction';
