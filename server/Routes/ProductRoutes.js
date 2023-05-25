@@ -316,7 +316,7 @@ const storage = multer.diskStorage({
     },
 });
 const imageFilter = function (req, file, cb) {
-    if (!file.originalname.match(/\.(jpg|jpeg|png|gif|jfif)$/i)) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png|webp|gif|jfif)$/i)) {
         return cb(new Error('Only image files are accepted!'), false);
     }
     cb(null, true);
@@ -407,23 +407,57 @@ productRoute.put(
     '/:id',
     protect,
     admin,
+    upload.single('image'),
     asyncHandler(async (req, res) => {
-        const { name, price, description, category, image } = req.body;
-        const product = await Product.findById(req.params.id);
+        const { id, name, price, description, category } = req?.body;
+        const imagePath = req?.file?.path;
+        console.log('data = ', req.body);
+        console.log('imagePath = ', imagePath);
+
+        const product = await Product.findById(id);
+
         if (price <= 0) {
             res.status(400);
             throw new Error('Price or Count in stock is not valid, please correct it and try again');
         }
         if (product) {
-            product.name = name || product.name;
-            product.price = price || product.price;
-            product.description = description || product.description;
-            product.category = category || product.category;
-            product.image = image || product.image;
-            // product.countInStock = countInStock || product.countInStock;
+            cloudinary.v2.uploader.upload(imagePath, { folder: 'baloshopImage' }, async function (err, result) {
+                if (err) {
+                    req.json(err.message);
+                }
+                const urlImageCloudinary = result.secure_url;
+                const nameImageCloudinary = result.public_id; //name image trong cloudinary
+                console.log('urlImageCloudinary = ', urlImageCloudinary);
+                // ======================
+                const filter = { _id: id };
+                const update = {
+                    $set: {
+                        name: name,
+                        price: price,
+                        description: description,
+                        category: category,
+                        image: [
+                            {
+                                urlImage: urlImageCloudinary,
+                                nameCloudinary: nameImageCloudinary,
+                            },
+                        ],
+                    },
+                };
+                const updataStatus = await Product.updateOne(filter, update);
+                res.json(updataStatus);
 
-            const updatedProduct = await product.save();
-            res.json(updatedProduct);
+                // =======================
+                // product.name = name || product.name;
+                // product.price = price || product.price;
+                // product.description = description || product.description;
+                // product.category = category || product.category;
+                // product.image[0].urlImage = urlImageCloudinary || product.image[0].urlImage;
+                // product.image[0].nameCloudinary = nameImageCloudinary || product.image[0].nameCloudinary;
+                // const updatedProduct = await product.save();
+
+                // res.json(updatedProduct);
+            });
         } else {
             res.status(404);
             throw new Error('Product not found');

@@ -15,7 +15,7 @@ function VerifyResetPassWord() {
     const dispatch = useDispatch();
 
     const { verifyState } = useSelector(usersRemainingSelector);
-    console.log('verifyState = ', verifyState);
+    // console.log('verifyState = ', verifyState);
     useEffect(() => {
         if (verifyState?.state?.status === 'Verified Account') {
             navigate('/resetpassword');
@@ -30,9 +30,9 @@ function VerifyResetPassWord() {
             <div className={clsx(styles.wrap_main)}>
                 <div className={clsx(styles.wrap_content)}>
                     <div className={clsx(styles.content)}>
-                        <h2>Đây là trang xác thực tài khoản của bạn</h2>
+                        <h2>Đây là trang xác thực việc đặt lại mật khẩu của bạn</h2>
                         <hr></hr>
-                        <p>hãy bấm vào nút xác thực bên dưới để xác nhận việc đặt lại mật khẩu</p>
+                        <p>Hãy bấm vào nút xác thực bên dưới để xác nhận việc đặt lại mật khẩu</p>
                         <Button
                             className={clsx(styles.button_verify)}
                             icon={<SmileOutlined className={clsx(styles.icon_smile)} />}

@@ -3,130 +3,142 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { usersRemainingSelector } from '~/redux/Selector/usersSelector';
 import { ResetPassWordAction } from '~/redux/Actions/userActions';
+import { useForm, Controller } from 'react-hook-form';
+import { Button, notification } from 'antd';
+import { SmileOutlined } from '@ant-design/icons';
+
 //
 import { Link } from 'react-router-dom';
-import isEmpty from 'validator/lib/isEmpty';
-import Message from '~/components/HomeComponent/LoadingError/Error';
-import Loading from '~/components/HomeComponent/LoadingError/Loading';
-import './ResetPassword.module.css';
+import clsx from 'clsx';
+import styles from './ResetPassword.module.css';
 
 function ResetPassword() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [newPassword, setNewPassword] = useState('');
-    const [newConfirmPassword, setNewConfirmPassword] = useState('');
 
-    const [loginCheck, setLoginCheck] = useState('');
+    const {
+        register,
+        watch,
+        control,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
 
     const { verifyState, resetPasswordState } = useSelector(usersRemainingSelector);
     const { email, id, token } = verifyState?.state;
+
     // const { status } = resetPasswordState?.state;
     // console.log('verifyState page resetpassword = ', verifyState);
     // console.log('resetPasswordState = ', resetPasswordState);
-
-    if (resetPasswordState.state?.status === 'Password updated') {
-        alert('cập nhập mật khẩu thành công !');
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (placement) => {
+        api.info({
+            message: `Thông báo `,
+            description: 'Cập nhập mật khẩu thành công !',
+            placement,
+            icon: (
+                <SmileOutlined
+                    style={{
+                        color: '#108ee9',
+                    }}
+                />
+            ),
+        });
+    };
+    if (resetPasswordState?.state?.status === 'Password updated') {
+        navigate('/login');
+        openNotification('top');
     }
 
-    const funtionCheck = () => {
-        const msg = {};
-        if (isEmpty(newPassword)) {
-            msg.newPassword = 'Vui lòng nhập mật khẩu mới';
-            msg.borderRed1 = 'border-red';
-            msg.colorRed1 = 'color-red';
-        } else {
-            if (newPassword.length < 6) {
-                msg.newPassword = 'Mật khẩu mới phải có it nhất 6 ký tự';
-                msg.borderRed2 = 'border-red';
-                msg.colorRed2 = 'color-red';
-            }
-        }
-        if (isEmpty(newConfirmPassword)) {
-            msg.newConfirmPassword = 'Vui lòng xác nhận mật khẩu mới';
-            msg.borderRed2 = 'border-red';
-            msg.colorRed2 = 'color-red';
-        } else {
-            if (newConfirmPassword.length < 6) {
-                msg.newConfirmPassword = 'Mật khẩu phải có it nhất 6 ký tự';
-                msg.borderRed2 = 'border-red';
-                msg.colorRed2 = 'color-red';
-            }
-        }
-        setLoginCheck(msg);
-        if (Object.keys(msg).length > 0) return false;
-        return true;
-    };
-    const handleUpdatePassword = (e) => {
-        e.preventDefault();
-        const isEmptyLogin = funtionCheck();
-        if (isEmptyLogin) {
-            dispatch(ResetPassWordAction({ newPassword, id, token }));
-            console.log('isEmptyLogin true = ', isEmptyLogin);
-        } else {
-            console.log('isEmptyLogin false = ', isEmptyLogin);
-            return;
-        }
+    const handleUpdatePassword = (data) => {
+        const { newPassword } = data;
+        dispatch(ResetPassWordAction({ newPassword, id, token }));
+        console.log('data = ', data);
     };
     return (
-        <>
-            {/* <div>
-                <h3>Nhập lại mật khẩu cho email {email} </h3>
-                    <button onClick={handleUpdatePassword} class="btn btn-success ">
-                        Cập nhập mật khẩu mới
-                    </button>
-            </div> */}
+        <div className={clsx(styles.wrapper)}>
+            {contextHolder}
+            <div className={clsx(styles.wrap_content)}>
+                <div className={clsx(styles.wrap_content_child)}>
+                    <div className={clsx(styles.content_child)}>
+                        <h5>Cập nhập mật khẩu cho email {email}</h5>
+                        <hr></hr>
+                        <form className={clsx(styles.form)} onSubmit={handleSubmit(handleUpdatePassword)}>
+                            <div className={clsx(styles.form_input)}>
+                                <Controller
+                                    name="newPassword"
+                                    control={control}
+                                    defaultValue=""
+                                    rules={{
+                                        minLength: 6,
+                                        required: 'Bạn chưa nhập mật khẩu mới',
+                                    }}
+                                    render={({ field }) => (
+                                        <input
+                                            type="password"
+                                            className={clsx(styles.input_password)}
+                                            {...field}
+                                            // onChange={(e) => {
+                                            //     field.onChange('tuandepzai');
+                                            // }}
+                                            placeholder="Mật khẩu mới"
+                                        />
+                                    )}
+                                />
+                                {errors.newPassword && errors.newPassword.type === 'required' ? (
+                                    <p className="text-danger m-0">{errors.newPassword.message}</p>
+                                ) : null}
 
-            <div className="container d-flex flex-column justify-content-center align-items-center login-center">
-                {/* {error && <Message variant="alert-danger">{error}</Message>}
-                {loading && <Loading />} */}
-                <h3>Nhập lại mật khẩu cho email {email} </h3>
-                <form className="Login col-md-6 col-lg-4 col-10">
-                    <div className="Login-from from-login">
-                        <input
-                            type="text"
-                            className={loginCheck.borderRed1}
-                            value={newPassword}
-                            onClick={() => {
-                                setLoginCheck((object) => {
-                                    const x = { ...object };
-                                    x.borderRed1 = ' ';
-                                    x.colorRed1 = ' ';
-                                    x.newPassword = ' ';
-                                    return x;
-                                });
-                            }}
-                            onChange={(e) => setNewPassword(e.target.value)}
-                        />
-                        <p className="from-login__email-pass noti-validate">{loginCheck.newPassword}</p>
-                        <p className={`from-login__email-pass-color Login-from__email ${loginCheck.colorRed1}`}>
-                            Password
-                        </p>
+                                {errors.newPassword && errors.newPassword.type === 'minLength' ? (
+                                    <p className="text-danger m-0">
+                                        Mật khẩu phải từ 6 - 255 ký tự, ít nhất 1 chữ cái, 1 chữ số và không có khoảng
+                                        trắng
+                                    </p>
+                                ) : null}
+                            </div>
+                            <div className={clsx(styles.form_input)}>
+                                <Controller
+                                    name="newConfirmPassword"
+                                    control={control}
+                                    defaultValue=""
+                                    rules={{
+                                        minLength: 6,
+                                        required: 'Bạn chưa xác nhận mật khẩu mới',
+                                        validate: (value) => value === watch('newPassword'),
+                                    }}
+                                    render={({ field }) => (
+                                        <input
+                                            type="password"
+                                            className={clsx(styles.input_password)}
+                                            {...field}
+                                            placeholder="Xác nhận mật khẩu mới"
+                                        />
+                                    )}
+                                />
+
+                                {errors.newConfirmPassword && errors.newConfirmPassword.type === 'minLength' ? (
+                                    <p className="text-danger m-0">
+                                        Mật khẩu phải từ 6 - 255 ký tự, ít nhất 1 chữ cái, 1 chữ số và không có khoảng
+                                        trắng
+                                    </p>
+                                ) : null}
+
+                                {errors.newConfirmPassword && errors.newConfirmPassword.type === 'validate' ? (
+                                    <p className="text-danger m-0">Mật khẩu không khớp</p>
+                                ) : null}
+
+                                {errors.newConfirmPassword && errors.newConfirmPassword.type === 'required' ? (
+                                    <p className="text-danger m-0">Bạn chưa nhập lại mật khẩu mới</p>
+                                ) : null}
+                            </div>
+                            <button className={clsx(styles.button_submit)} type="submit">
+                                Cập nhập mật khẩu
+                            </button>
+                        </form>
                     </div>
-                    <div className="Login-from from-login">
-                        <input
-                            type="text"
-                            className={loginCheck.borderRed2}
-                            value={newConfirmPassword}
-                            onClick={() => {
-                                setLoginCheck((object) => {
-                                    const x = { ...object };
-                                    x.borderRed2 = ' ';
-                                    x.colorRed2 = ' ';
-                                    x.newConfirmPassword = ' ';
-                                    return x;
-                                });
-                            }}
-                            onChange={(e) => setNewConfirmPassword(e.target.value)}
-                        />
-                        <p className="from-login__email-pass noti-validate">{loginCheck.newConfirmPassword}</p>
-                        <p className={`from-login__email-pass-color1 Login-from__password ${loginCheck.colorRed2}`}>
-                            ConfirmPass
-                        </p>
-                    </div>
-                    <button onClick={handleUpdatePassword}>Cập nhập mật khẩu mới</button>
-                </form>
+                </div>
             </div>
-        </>
+        </div>
     );
 }
 

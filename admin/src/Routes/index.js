@@ -29,6 +29,7 @@ const privateRoutes = [
     { path: '/products/category/:category', component: ProductScreen },
     { path: '/products/search/:keyword/page/:pageNumber', component: ProductScreen },
     { path: '/products/category/:category/page/:pageNumber', component: ProductScreen },
+    { path: '/product/:id/edit', component: ProductEditScreen },
 
     { path: '/category', component: CategoriesScreen },
 
@@ -51,7 +52,6 @@ const privateRoutes = [
     { path: '/news', component: NewsScreen },
     { path: '/addnews', component: AddNewsScreen },
     { path: '/editnews/:id/edit', component: EditNewsScreen },
-    { path: '/product/:id/edit', component: ProductEditScreen },
 
     { path: '*', component: NotFound },
 ];

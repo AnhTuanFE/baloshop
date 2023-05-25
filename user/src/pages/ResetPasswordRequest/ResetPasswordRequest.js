@@ -84,8 +84,8 @@ export default function ResetPasswordRequest() {
                                 <Button
                                     className={clsx(styles.buton)}
                                     type="primary"
-                                    onClick={handleSubmit}
                                     icon={<SmileOutlined />}
+                                    onClick={handleSubmit}
                                     disabled={disabled}
                                 >
                                     Gửi

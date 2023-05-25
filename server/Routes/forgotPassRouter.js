@@ -24,28 +24,28 @@ forgotPassRouter.post('/forgotPassword', async (req, res) => {
         // const link = `${baseURL.urlUser}/api/forgotPass/reset-password/${oldUser._id}/${token1}`;
         const link = `${baseURL.urlUser}/verify-reset-password/${oldUser._id}/${token1}`;
 
-        // var transporter = nodemailer.createTransport({
-        //     service: 'gmail',
-        //     auth: {
-        //         user: 'balostore.owner@gmail.com',
-        //         pass: 'ytmgtsqgkgtypwle',
-        //     },
-        // });
+        var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'balostore.owner@gmail.com',
+                pass: 'ytmgtsqgkgtypwle',
+            },
+        });
 
-        // var mailOptions = {
-        //     from: 'balostore.owner@gmail.com',
-        //     to: oldUser.email,
-        //     subject: 'BaloStore kính chào quý khách, quý khách hãy nhấp vào đường link bên dưới để đặt lại mật khẩu',
-        //     text: link,
-        // };
+        var mailOptions = {
+            from: 'balostore.owner@gmail.com',
+            to: oldUser.email,
+            subject: 'BaloStore kính chào quý khách, quý khách hãy nhấp vào đường link bên dưới để đặt lại mật khẩu',
+            text: link,
+        };
 
-        // transporter.sendMail(mailOptions, function (error, info) {
-        //     if (error) {
-        //         console.log(error);
-        //     } else {
-        //         console.log('Email sent: ' + info.response);
-        //     }
-        // });
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
         res.json({ status: 'Link đặt lại mật khẩu đã được gửi qua email, vui lòng kiểm tra hòm thư của bạn' });
         console.log(link);
     } catch (error) {}
