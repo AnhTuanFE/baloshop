@@ -26,7 +26,6 @@ const app = express();
 app.use(express.json()); // gửi data dưới dạng javascrip thì nó sẽ xử lý
 
 // API
-// cấu hình định danh file ejs bên express
 // app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: false })); //gửi data dưới dạng form thì nó sẽ xử lý
 app.use(express.static('public'));
