@@ -38,7 +38,11 @@ function Profile() {
                                     }}
                                 >
                                     <img
-                                        src={userInfo?.image !== undefined ? userInfo?.image : imageDefaul}
+                                        src={
+                                            userInfo?.image?.urlImageCloudinary !== undefined
+                                                ? userInfo?.image?.urlImageCloudinary
+                                                : imageDefaul
+                                        }
                                         alt=""
                                         style={{
                                             height: '100px',

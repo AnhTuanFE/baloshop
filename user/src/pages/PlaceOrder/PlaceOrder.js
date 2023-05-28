@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-
+import { message } from 'antd';
 import { clearFromCart, listCart } from '~/redux/Actions/cartActions';
 import { createOrder } from '~/redux/Actions/OrderActions';
 import { ORDER_CREATE_RESET } from '~/redux/Constants/OrderConstants';
@@ -10,21 +9,25 @@ import { ORDER_CREATE_RESET } from '~/redux/Constants/OrderConstants';
 import PayModal from '~/components/Modal/PayModal';
 import Message from '~/components/HomeComponent/LoadingError/Error';
 import Loading from '~/components/HomeComponent/LoadingError/Loading';
-import Toast from '~/components/HomeComponent/LoadingError/Toast';
 import './PlaceOrder.css';
 
 function PlaceOrder() {
-    const Toastobjects = {
-        pauseOnFocusLoss: false,
-        draggable: false,
-        pauseOnHover: false,
-        autoClose: 2000,
-    };
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    // const userDetails = useSelector((state) => state.userDetails);
-    // const { loading, user } = userDetails;
+    const [messageApi, contextHolder] = message.useMessage();
+    const successPlaceholder = () => {
+        messageApi.open({
+            type: 'success',
+            content: 'Đặt hàng thành công',
+        });
+    };
+    const errorPlaceholder = () => {
+        messageApi.open({
+            type: 'error',
+            content: 'Đặt hàng thất bại, vui lòng thử lại sau',
+        });
+    };
 
     const cart = useSelector((state) => state.cart);
     const { cartItems } = cart;
@@ -42,7 +45,7 @@ function PlaceOrder() {
                 color: pro.color,
                 qty: pro.qty,
                 // image: pro.product.image[0].image,
-                image: pro.product.image[0],
+                image: pro.product.image[0].urlImage,
                 price: pro.product.price,
                 product: pro.product._id,
             });
@@ -79,7 +82,7 @@ function PlaceOrder() {
     const { order, success, error } = orderCreate;
     useEffect(() => {
         if (error) {
-            toast.error(error, Toastobjects);
+            errorPlaceholder();
             dispatch({ type: ORDER_CREATE_RESET });
         }
     }, [error]);
@@ -93,7 +96,6 @@ function PlaceOrder() {
     }, [navigate, dispatch, success, order, userInfo]);
 
     const placeOrderHandler = () => {
-        //if (window.confirm("Are you sure"))
         dispatch(
             createOrder({
                 orderItems: currenCartItems,
@@ -129,16 +131,11 @@ function PlaceOrder() {
                 )}
                 {findCart?.countInStock < item?.qty ? (
                     <div className="col-md-2 col-5">
-                        <img
-                            // src={`/productImage/${item.product?.image[0].image}`}
-                            src={`${item.product?.image[0]}`}
-                            alt={item.name}
-                        />
+                        <img src={`${item.product?.image[0]?.urlImage}`} alt={item.name} />
                     </div>
                 ) : (
                     <div className="col-md-2 col-6">
-                        {/* <img src={`/productImage/${item.product?.image[0].image}`} alt={item.name} /> */}
-                        <img src={`${item.product?.image[0]}`} alt={item.name} />
+                        <img src={`${item.product?.image[0]?.urlImage}`} alt={item.name} />
                     </div>
                 )}
                 {findCart?.countInStock < item?.qty ? (
@@ -172,7 +169,7 @@ function PlaceOrder() {
     return (
         <>
             {error && <Loading />}
-            <Toast />
+            {contextHolder}
             <div className="container">
                 <PayModal
                     Title="Mua hàng"

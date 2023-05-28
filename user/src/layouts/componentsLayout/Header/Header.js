@@ -13,7 +13,7 @@ import { logout, getUserDetails } from '~/redux/Actions/userActions'; //updateUs
 
 import { usersRemainingSelector } from '~/redux/Selector/usersSelector';
 import { cartsRemainingSelector } from '~/redux/Selector/cartsSelector';
-import { imageDefaul } from '~/utils/data';
+import { imageDefaul, logoDefaul } from '~/utils/data';
 const Header = (props) => {
     const { keysearch } = props;
     const dispatch = useDispatch();
@@ -110,6 +110,7 @@ const Header = (props) => {
             behavior: 'smooth',
         });
     };
+
     return (
         <>
             <div>
@@ -120,7 +121,7 @@ const Header = (props) => {
                             <div className="row">
                                 <div className="col-md-3 col-4 d-flex align-items-center">
                                     <Link className={clsx(styles.navbar_brand)} to="/">
-                                        <img alt="logo" src="/images/logo2.png" />
+                                        <img alt="logo" src={logoDefaul} />
                                     </Link>
                                 </div>
                                 <div className="col-md-6 col-8 header-nav__search">
@@ -163,7 +164,9 @@ const Header = (props) => {
                                             >
                                                 <img
                                                     src={`${
-                                                        userInfo?.image === undefined ? imageDefaul : userInfo?.image
+                                                        userInfo?.image?.urlImageCloudinary === undefined
+                                                            ? imageDefaul
+                                                            : userInfo?.image?.urlImageCloudinary
                                                     }`}
                                                     alt=""
                                                     style={{

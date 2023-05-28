@@ -13,6 +13,7 @@ import { listUser } from '~/Redux/Actions/userActions';
 
 import Message from '~/components/LoadingError/Error';
 import Loading from '~/components/LoadingError/Loading';
+import { imageDefaul, logoDefaul } from '~/data/data';
 
 import './CommentScreen.css';
 
@@ -49,8 +50,7 @@ const CommentScreen = () => {
         const findUser = users?.find((user) => user._id === data.user);
         return (
             <img
-                // src={`/userProfile/${findUser?.image}` || '/images/logo2.png'} // upload ảnh
-                src="./images/user.png"
+                src={imageDefaul}
                 alt=""
                 style={{
                     height: '40px',
@@ -117,7 +117,6 @@ const CommentScreen = () => {
                                                 <tr>
                                                     <td>
                                                         <img
-                                                            // src={`/productImage/${product?.imageProduct}`}
                                                             src={`${product?.imageProduct}`}
                                                             alt=""
                                                             style={{ height: '40px', width: '40px' }}
@@ -144,8 +143,7 @@ const CommentScreen = () => {
                                         >
                                             <div className="rating-review__flex">
                                                 <img
-                                                    // src={`/userProfile/${product?.user?.image}` || '/images/logo.png'} // upload ảnh
-                                                    src="./images/logo.png"
+                                                    src={imageDefaul}
                                                     alt=""
                                                     style={{
                                                         height: '40px',

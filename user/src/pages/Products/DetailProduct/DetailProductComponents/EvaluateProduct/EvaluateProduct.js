@@ -5,7 +5,7 @@ import moment from 'moment';
 
 import Rating from '~/components/HomeComponent/Rating/Rating';
 import Message from '~/components/HomeComponent/LoadingError/Error';
-
+import { imageDefaul } from '~/utils/data';
 import { createProductReview, getAllReviews } from '~/redux/Actions/ProductActions';
 import { PRODUCT_CREATE_REVIEW_RESET } from '~/redux/Constants/ProductConstants';
 
@@ -283,7 +283,7 @@ function EvaluateProduct({ productId }) {
                             >
                                 <div className="rating-review__flex">
                                     <img
-                                        src={`/userProfile/${review?.user?.image}` || '/images/logo.png'} // upload ảnh
+                                        src={`${review?.user?.image?.urlImageCloudinary}` || imageDefaul} // upload ảnh
                                         alt=""
                                         style={{
                                             height: '40px',

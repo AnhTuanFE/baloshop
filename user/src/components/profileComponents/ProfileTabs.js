@@ -16,14 +16,9 @@ import getCroppedImg from '../editAvatar/cropImage';
 import { Alert, Space } from 'antd';
 import { imageDefaul } from '~/utils/data';
 
-// import { listCart } from '~/redux/Actions/cartActions';
-// import { ListAvatar } from '~/redux/Actions/avatarAction';
-// import { EditAvatart as App } from '../editAvatar/EditAvatart';
-// import ImgDialog from '../editAvatar/ImgDialog';
-
 import '../editAvatar/style.css';
 import './ProfileTabs.css';
-import { object } from 'joi';
+
 const ProfileTabs = () => {
     const [visible, setVisible] = useState(false);
     const handleClose = () => {
@@ -52,6 +47,8 @@ const ProfileTabs = () => {
     const [city, setCity] = useState('');
     const [country, setCountry] = useState('');
     const [image, setImage] = useState();
+    const [nameImage, setNameImage] = useState();
+
     const [confirmPassword, setConfirmPassword] = useState('');
     const [uploadProfile, setUploadProfile] = useState(true); //ghi chú
     const [uploadPassword, setUploadPassword] = useState(false); //ghi chú
@@ -68,6 +65,7 @@ const ProfileTabs = () => {
     const { loading, error, user, success: successDetail } = userDetails;
 
     const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
+
     const {
         successPass: updatesuccessPass,
         success: updatesuccess,
@@ -197,7 +195,8 @@ const ProfileTabs = () => {
             setAddress(user.address);
             setCity(user.city);
             setCountry(user.country);
-            setImage(user.image);
+            setImage(user.image?.urlImageCloudinary);
+            setNameImage(user.image?.idImageCloudinary);
         }
         if (errorProfile) {
             toastId.current = toast.error(error);
@@ -269,7 +268,6 @@ const ProfileTabs = () => {
     const submitUpdateProfile = (e) => {
         e.preventDefault();
         if (!checkObjProfile()) return;
-        // email,
         let userInforNeedUpdate = new FormData();
         userInforNeedUpdate.append('id', user._id);
         userInforNeedUpdate.append('name', name);
@@ -278,6 +276,8 @@ const ProfileTabs = () => {
         userInforNeedUpdate.append('city', city);
         userInforNeedUpdate.append('address', address);
         userInforNeedUpdate.append('image', image);
+        userInforNeedUpdate.append('nameImage', nameImage);
+
         dispatch(updateUserProfile(userInforNeedUpdate));
     };
     return (

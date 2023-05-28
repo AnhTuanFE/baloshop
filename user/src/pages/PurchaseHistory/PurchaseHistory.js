@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
+import { imageDefaul } from '~/utils/data';
 
 import Orders from '~/components/profileComponents/Orders';
 import { listMyOrders } from '~/redux/Actions/OrderActions';
@@ -18,6 +19,7 @@ function PurchaseHistory() {
     useEffect(() => {
         dispatch(listMyOrders());
     }, [dispatch]);
+    // console.log('userInfo = ', userInfo);
 
     return (
         <>
@@ -43,9 +45,9 @@ function PurchaseHistory() {
                                 >
                                     <img
                                         src={
-                                            userInfo?.image !== undefined
-                                                ? `/userProfile/${userInfo?.image}`
-                                                : './images/user.png'
+                                            userInfo?.image?.urlImageCloudinary !== undefined
+                                                ? `${userInfo?.image?.urlImageCloudinary}`
+                                                : imageDefaul
                                         }
                                         alt=""
                                         style={{

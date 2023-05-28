@@ -35,7 +35,8 @@ const userSchema = mongoose.Schema(
             type: String,
         },
         image: {
-            type: String,
+            urlImageCloudinary: { type: String },
+            idImageCloudinary: { type: String },
         },
         disabled: {
             type: Boolean,

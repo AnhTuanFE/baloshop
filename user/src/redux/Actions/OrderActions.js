@@ -13,9 +13,9 @@ export const createOrder = (order) => async (dispatch, getState) => {
             userLogin: { userInfo },
         } = getState();
 
+        // 'Content-Type': 'application/json',
         const config = {
             headers: {
-                'Content-Type': 'application/json',
                 Authorization: `Bearer ${userInfo.token}`,
             },
         };

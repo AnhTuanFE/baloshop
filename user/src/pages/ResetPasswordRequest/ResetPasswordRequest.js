@@ -16,7 +16,7 @@ export default function ResetPasswordRequest() {
 
     const { forgotPassWordState } = useSelector(usersRemainingSelector);
     const { loading, state } = forgotPassWordState;
-    console.log('state = ', state);
+    // console.log('state = ', state);
 
     const [api, contextHolder] = notification.useNotification();
     const openNotification = (placement) => {

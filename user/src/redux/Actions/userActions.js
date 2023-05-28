@@ -60,7 +60,7 @@ export const register = (name, email, phone, password) => async (dispatch) => {
 };
 
 // USER DETAILS
-export const getUserDetails = (id) => async (dispatch, getState) => {
+export const getUserDetails = () => async (dispatch, getState) => {
     try {
         dispatch({ type: types.USER_DETAILS_REQUEST });
         const {
@@ -97,9 +97,9 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
         } = getState();
 
         // 'Content-Type': 'application/json',
+        // 'Content-Type': 'multipart/form-data',
         const config = {
             headers: {
-                'Content-Type': 'multipart/form-data',
                 Authorization: `Bearer ${userInfo.token}`,
             },
         };
@@ -108,6 +108,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
         dispatch({ type: types.USER_UPDATE_PROFILE_SUCCESS, payload: data });
         dispatch({ type: types.USER_LOGIN_SUCCESS, payload: data });
 
+        // localStorage.removeItem('userInfo');
         localStorage.setItem('userInfo', JSON.stringify(data));
     } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;

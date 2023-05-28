@@ -409,10 +409,10 @@ productRoute.put(
     admin,
     upload.single('image'),
     asyncHandler(async (req, res) => {
-        const { id, name, price, description, category } = req?.body;
+        const { id, name, price, description, category, nameImage } = req?.body;
         const imagePath = req?.file?.path;
-        console.log('data = ', req.body);
-        console.log('imagePath = ', imagePath);
+        // console.log('data = ', req.body);
+        // console.log('imagePath = ', imagePath);
 
         const product = await Product.findById(id);
 
@@ -421,13 +421,20 @@ productRoute.put(
             throw new Error('Price or Count in stock is not valid, please correct it and try again');
         }
         if (product) {
+            cloudinary.uploader.destroy(nameImage, function (error, result) {
+                try {
+                    console.log('result = ', result, 'error = ', error);
+                } catch (err) {
+                    console.log('lỗi = '.err);
+                }
+            });
+            // ===================
             cloudinary.v2.uploader.upload(imagePath, { folder: 'baloshopImage' }, async function (err, result) {
                 if (err) {
                     req.json(err.message);
                 }
                 const urlImageCloudinary = result.secure_url;
                 const nameImageCloudinary = result.public_id; //name image trong cloudinary
-                console.log('urlImageCloudinary = ', urlImageCloudinary);
                 // ======================
                 const filter = { _id: id };
                 const update = {
@@ -445,18 +452,8 @@ productRoute.put(
                     },
                 };
                 const updataStatus = await Product.updateOne(filter, update);
+                // ======================
                 res.json(updataStatus);
-
-                // =======================
-                // product.name = name || product.name;
-                // product.price = price || product.price;
-                // product.description = description || product.description;
-                // product.category = category || product.category;
-                // product.image[0].urlImage = urlImageCloudinary || product.image[0].urlImage;
-                // product.image[0].nameCloudinary = nameImageCloudinary || product.image[0].nameCloudinary;
-                // const updatedProduct = await product.save();
-
-                // res.json(updatedProduct);
             });
         } else {
             res.status(404);

@@ -7,6 +7,7 @@ import { USER_DISABLED_RESET } from '~/Redux/Constants/UserContants';
 import Toast from '~/components/LoadingError/Toast';
 import Loading from '~/components/LoadingError/Loading';
 import Message from '~/components/LoadingError/Error';
+import { imageDefaul } from '~/data/data';
 
 const ToastObjects = {
     pauseOnFocusLoss: false,
@@ -103,8 +104,8 @@ const UsersScreen = () => {
                                                 className={`img-md img-avatar ${user.disabled ? 'opacity-25' : ''}`}
                                                 src={
                                                     user?.image === undefined
-                                                        ? '/images/user.png'
-                                                        : `/userProfile/${user?.image}`
+                                                        ? imageDefaul
+                                                        : `${user?.image?.urlImageCloudinary}`
                                                 }
                                                 alt="User pic"
                                             />

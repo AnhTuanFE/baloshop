@@ -4,6 +4,7 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import Message from '~/components/HomeComponent/LoadingError/Error';
 import Loading from '~/components/HomeComponent/LoadingError/Loading';
+import { imageDefaul } from '~/utils/data';
 //
 import { PRODUCT_CREATE_COMMENTCHILD_RESET, PRODUCT_CREATE_COMMENT_RESET } from '~/redux/Constants/ProductConstants';
 import { createProductComment, createProductCommentChild, getAllComments } from '~/redux/Actions/ProductActions';
@@ -85,7 +86,7 @@ function AskAndAnswer({ productId }) {
 
         return (
             <img
-                src={`/userProfile/${findUser?.image}` || '/images/logo2.png'} // upload ảnh
+                src={`${findUser?.image.urlImageCloudinary}` || imageDefaul} // upload ảnh
                 alt=""
                 style={{
                     height: '40px',
@@ -152,7 +153,7 @@ function AskAndAnswer({ productId }) {
                                 >
                                     <div className="rating-review__flex">
                                         <img
-                                            src={`/userProfile/${review?.user?.image}` || '/images/logo.png'}
+                                            src={`${review?.user?.image?.urlImageCloudinary}` || imageDefaul}
                                             alt=""
                                             style={{
                                                 height: '40px',

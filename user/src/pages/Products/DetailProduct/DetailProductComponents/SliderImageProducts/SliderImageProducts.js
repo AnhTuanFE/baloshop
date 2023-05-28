@@ -5,8 +5,7 @@ function SliderImageProducts({ images }) {
     const [imageOne, setImageOne] = useState();
     useEffect(() => {
         if (images) {
-            // setImageOne(images[0]?.image);
-            setImageOne(images[0]);
+            setImageOne(images[0].urlImage);
         }
     }, [images]);
     return (

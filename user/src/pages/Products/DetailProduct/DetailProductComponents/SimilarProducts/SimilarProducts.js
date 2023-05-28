@@ -76,7 +76,7 @@ function SimilarProducts(data) {
                                     <Link to={`/products/${product._id}`} className="corousel-link">
                                         <img
                                             // src={`/productImage/${product?.image[0]?.image}`}
-                                            src={`${product?.image[0]}`}
+                                            src={`${product?.image[0].urlImage}`}
                                             className="corousel-img"
                                             alt=""
                                         ></img>

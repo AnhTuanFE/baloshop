@@ -20,7 +20,6 @@ import {
     PRODUCT_UPDATE_OPTION_RESET,
     PRODUCT_OPTIONCOLOR_RESET,
     PRODUCT_DELETE_OPTION_RESET,
-    PRODUCT_CREATE_IMAGE_RESET,
     PRODUCT_DELETE_IMAGE_RESET,
 } from '~/Redux/Constants/ProductConstants';
 import { ListCategory } from '~/Redux/Actions/categoryActions';
@@ -43,10 +42,10 @@ const ProductEditScreen = () => {
     const [name, setName] = useState('');
     const [price, setPrice] = useState(0);
     const [image, setImage] = useState('');
+    const [nameImage, setNameImage] = useState('');
+
     const [imageTemp, setImageTemp] = useState();
 
-    // const [inputImage, setInputImage] = useState([]);
-    // const [arrImage, setArrImage] = useState([]);
     const [countInStock, setCountInStock] = useState('');
     const [description, setDescription] = useState('');
     const [color, setColor] = useState('');
@@ -124,6 +123,7 @@ const ProductEditScreen = () => {
                 setCountInStock(product.countInStock);
                 setCategory(product.category);
                 setImage(product.image[0]?.urlImage);
+                setNameImage(product.image[0]?.nameCloudinary);
                 setPrice(product.price);
             }
         }
@@ -139,6 +139,8 @@ const ProductEditScreen = () => {
             formData.append('category', category);
             formData.append('description', description);
             formData.append('image', image);
+            formData.append('nameImage', nameImage);
+
             dispatch(updateProduct(formData));
         }
     };
@@ -182,8 +184,6 @@ const ProductEditScreen = () => {
         'color',
         'background',
     ];
-    console.log('imageTemp =', imageTemp);
-    console.log('image =', image);
     return (
         <>
             <Toast />

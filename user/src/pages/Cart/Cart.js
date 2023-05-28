@@ -146,7 +146,7 @@ function Cart() {
                                 style={{ width: '100px', height: '100px', margin: '0 auto' }}
                                 src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/cart/9bdd8040b334d31946f49e36beaf32db.png"
                                 alt=""
-                            ></img>
+                            />
                             GIỎ HÀNG CỦA BẠN ĐANG TRỐNG
                         </div>
                         <Link
@@ -179,11 +179,7 @@ function Cart() {
                                 <div key={item?._id} className="cart-iterm row">
                                     {findCartCountInStock(item)}
                                     <div className="cart-image col-md-1 col-4">
-                                        <img
-                                            // src={`/productImage/${item.product?.image[0].image}`}
-                                            src={`${item.product?.image[0]}`}
-                                            alt={item.product?.name}
-                                        />
+                                        <img src={`${item.product?.image[0]?.urlImage}`} alt={item.product?.name} />
                                     </div>
                                     <div className="cart-text col-md-3 col-6 d-flex align-items-center">
                                         <Link to={`/products/${item.product?._id}`}>

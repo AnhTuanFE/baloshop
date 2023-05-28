@@ -151,7 +151,7 @@ const AllProducts_Filter = (props) => {
                                                             <div className={clsx(styles.shopBack)}>
                                                                 <img
                                                                     // src={`/productImage/${product?.image[0]?.image}`}
-                                                                    src={`${product?.image[0]}`}
+                                                                    src={`${product?.image[0].urlImage}`}
                                                                     alt={product?.name}
                                                                 />
                                                             </div>

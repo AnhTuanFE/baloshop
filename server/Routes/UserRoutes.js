@@ -5,6 +5,7 @@ import { protect, admin } from '../Middleware/AuthMiddleware.js';
 import generateToken from '../utils/generateToken.js';
 import cloudinary from 'cloudinary';
 import User from './../Models/UserModel.js';
+import jwt from 'jsonwebtoken';
 
 const userRouter = express.Router();
 
@@ -87,7 +88,14 @@ userRouter.get(
     '/user',
     protect,
     asyncHandler(async (req, res) => {
-        const user = await User.findById(req.user._id);
+        // const user = await User.findById(req.user._id);
+        let token = req.headers.authorization.split(' ')[1];
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        // console.log('decoded = ', decoded);
+        // console.log('token = ', token);
+
+        const user = await User.findById(decoded.id).select('-password');
+
         if (user) {
             res.json({
                 _id: user._id,
@@ -125,20 +133,28 @@ const upload = multer({ storage: storage, fileFilter: imageFilter }).single('ima
 
 userRouter.put(
     '/profile',
-    protect, //lỗi tại mày, t ko dủ quyền truy cập
+    protect,
     upload,
     asyncHandler(async (req, res) => {
         try {
             const imagePath = req?.file?.path;
+            const { id, name, phone, country, city, address, nameImage } = req?.body;
             // console.log('req.body = ', req.body);
             // console.log('imagePath = ', req.file?.path);
-            const user = await User.findById(req.user._id);
+            const user = await User.findById(id);
 
             if (user) {
                 if (user?.disabled) {
                     res.status(400);
                     throw new Error('account lock up');
                 } else if (imagePath) {
+                    cloudinary.uploader.destroy(nameImage, function (error, result) {
+                        try {
+                            console.log('result = ', result, 'error = ', error);
+                        } catch (err) {
+                            console.log('lỗi = '.err);
+                        }
+                    });
                     cloudinary.v2.uploader.upload(
                         imagePath,
                         { folder: 'baloshopAvatar' },
@@ -146,22 +162,39 @@ userRouter.put(
                             if (err) {
                                 req.json(err.message);
                             }
-                            const imageURL = result.secure_url; //url image
-                            req.body.imageId = result.public_id; //name image trong cloudinary
-                            user.image = imageURL || user.image;
-                            const updatedUser = await user.save();
+                            const imageURL = result.secure_url;
+                            const imageID = result.public_id;
+
+                            const filter = { _id: id };
+                            const update = {
+                                $set: {
+                                    name: name,
+                                    phone: phone,
+                                    country: country,
+                                    city: city,
+                                    address: address,
+                                    image: {
+                                        urlImageCloudinary: imageURL,
+                                        idImageCloudinary: imageID,
+                                    },
+                                },
+                            };
+                            const updataStatus = await User.updateOne(filter, update);
                             res.json({
-                                _id: updatedUser._id,
-                                name: updatedUser.name,
-                                phone: updatedUser.phone,
-                                isAdmin: updatedUser.isAdmin,
-                                createdAt: updatedUser.createdAt,
-                                token: generateToken(updatedUser._id),
+                                _id: id || user.id,
+                                name: name || user.name,
+                                phone: phone || user.phone,
+                                isAdmin: user.isAdmin,
+                                createdAt: user.createdAt,
+                                token: generateToken(user.id),
                                 email: user.email,
-                                address: user.address,
-                                city: user.city,
-                                country: user.country,
-                                image: updatedUser.image,
+                                address: address || user.address,
+                                city: city || user.city,
+                                country: country || user.country,
+                                image: {
+                                    urlImageCloudinary: imageURL,
+                                    idImageCloudinary: imageID,
+                                },
                                 disabled: user.disabled,
                             });
                         },
@@ -194,20 +227,19 @@ userRouter.put(
                     user.address = req.body.address || user.address;
                     user.city = req.body.city || user.city;
                     user.country = req.body.country || user.country;
-                    user.image = req.body.image || user.image;
 
                     const updatedUser = await user.save();
                     res.json({
                         _id: updatedUser._id,
                         name: updatedUser.name,
-                        email: user.email,
                         phone: updatedUser.phone,
+                        address: updatedUser.address,
+                        city: updatedUser.city,
+                        country: updatedUser.country,
+                        email: user.email,
                         isAdmin: updatedUser.isAdmin,
                         createdAt: updatedUser.createdAt,
                         token: generateToken(updatedUser._id),
-                        address: user.address,
-                        city: user.city,
-                        country: user.country,
                         image: user.image,
                         disabled: user.disabled,
                     });
