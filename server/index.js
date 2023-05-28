@@ -17,7 +17,7 @@ import createUserRouter from './Routes/createUserRouter.js';
 
 import cors from 'cors';
 dotenv.config();
-import { Server } from 'http'; //deploy thì comment
+// import { Server } from 'http'; //deploy thì comment
 import imageProfile from './Routes/imageProfile.js';
 
 connectDatabase();
@@ -27,9 +27,8 @@ app.use(express.json()); // gửi data dưới dạng javascrip thì nó sẽ x�
 
 // API
 // cấu hình định danh file ejs bên express
-app.set('view engine', 'ejs');
+// app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: false })); //gửi data dưới dạng form thì nó sẽ xử lý
-// app.use('/public', express.static('public'));
 app.use(express.static('public'));
 app.use(cors());
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));

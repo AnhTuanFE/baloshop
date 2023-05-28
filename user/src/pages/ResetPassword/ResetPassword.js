@@ -53,7 +53,7 @@ function ResetPassword() {
     const handleUpdatePassword = (data) => {
         const { newPassword } = data;
         dispatch(ResetPassWordAction({ newPassword, id, token }));
-        console.log('data = ', data);
+        // console.log('data = ', data);
     };
     return (
         <div className={clsx(styles.wrapper)}>
