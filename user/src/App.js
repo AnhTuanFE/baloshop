@@ -2,8 +2,11 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { publicRoutes, privateRoutes } from './Routes';
 import DefaulLayout from './layouts/defaulLayout/defaulLayout';
 import './App.css';
+import axios from 'axios';
 import { Fragment } from 'react';
 import RouteConfirmation from './Routes/RouteConfirmation';
+
+axios.defaults.baseURL = 'https://baloshop-api.vercel.app/';
 
 function App() {
     return (
