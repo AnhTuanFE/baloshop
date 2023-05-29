@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
@@ -54,7 +54,6 @@ function Profile() {
                                         }}
                                         className="fix-none"
                                     />
-                                    {/* Nút button Avatar */}
                                 </div>
                                 <div className="col-md-8">
                                     <h5 className="author-card-name mb-2">

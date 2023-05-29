@@ -96,8 +96,6 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
             userLogin: { userInfo },
         } = getState();
 
-        // 'Content-Type': 'application/json',
-        // 'Content-Type': 'multipart/form-data',
         const config = {
             headers: {
                 Authorization: `Bearer ${userInfo.token}`,
@@ -201,9 +199,9 @@ export const createUser =
     };
 
 // PROVINCE
-export const ListProvince = () => async (dispatch) => {
+export const getListProvincesAction = () => async (dispatch) => {
     try {
-        // dispatch({ type: PROVINCE_REQUEST })
+        dispatch({ type: types.PROVINCE_REQUEST });
         const { data } = await axios.get(`https://provinces.open-api.vn/api/?depth=3`);
         dispatch({ type: types.PROVINCE_SUCCESS, payload: data });
     } catch (error) {

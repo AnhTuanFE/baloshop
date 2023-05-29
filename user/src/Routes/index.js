@@ -16,8 +16,6 @@ import ResetPasswordRequest from '~/pages/ResetPasswordRequest/ResetPasswordRequ
 import VerifyResetPassWord from '~/pages/VerifyResetPassWord/VerifyResetPassWord';
 import ResetPassword from '~/pages/ResetPassword/ResetPassword';
 import NotFound from '~/pages/NotFound/NotFound';
-// test private route tý xóa
-import TestPage from '~/pages/TestPage/TestPage';
 
 const publicRoutes = [
     { path: '/', component: Home },
@@ -47,7 +45,6 @@ const publicRoutes = [
 ];
 
 const privateRoutes = [
-    { path: '/test', component: TestPage },
     { path: '/profile', component: Profile, layout: HeaderOnly },
 
     { path: '/cart/:id?', component: Cart, layout: HeaderOnly },

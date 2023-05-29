@@ -73,7 +73,7 @@ const reducer = combineReducers({
     sliderLoad: Sliderload,
     CategoryList: categoryListReducer,
     avatarLoad: Avatarload,
-    province: ProvinceReducer,
+    provincesVietNam: ProvinceReducer,
     listNews: newsListReducer,
     getDetailNews: getNewsReducer,
     forgotPassWordState: userForgotPassWord,
