@@ -51,7 +51,9 @@ const Header = () => {
                                     borderRadius: '50%',
                                     border: '1px solid #ccc',
                                 }}
-                                src={`${userInfo?.image === undefined ? imageDefaul : userInfo?.image}`}
+                                src={`${
+                                    userInfo?.image === undefined ? imageDefaul : userInfo?.image?.urlImageCloudinary
+                                }`}
                                 alt="User"
                             />
                         </Link>
