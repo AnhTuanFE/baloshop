@@ -19,6 +19,7 @@ import { imageDefaul } from '~/utils/data';
 
 // import '../editAvatar/style.css';
 import './ProfileTabs.css';
+import { object } from 'joi';
 
 const ProfileTabs = () => {
     const [visible, setVisible] = useState(false);
@@ -44,13 +45,12 @@ const ProfileTabs = () => {
     const [oldPassword, setOldPassword] = useState('');
     const [password, setPassword] = useState('');
 
-    const [address, setAddress] = useState('');
-
     const [city, setCity] = useState(''); //tp
     const [distric, setDistric] = useState(''); //quận huyện
+    const [districtOptions, setDistrictOptions] = useState([]);
     const [ward, setWard] = useState(''); // xá phường
-
-    const [country, setCountry] = useState('');
+    const [wardOptions, setWardOptions] = useState([]);
+    const [address, setAddress] = useState(''); // địa chỉ chi tiết
 
     const [image, setImage] = useState();
     const [nameImage, setNameImage] = useState();
@@ -132,9 +132,6 @@ const ProfileTabs = () => {
         if (isEmpty(city)) {
             profileObj.city = 'Please input your city';
         }
-        if (isEmpty(country)) {
-            profileObj.country = 'Please input your country';
-        }
         setObjProfile(profileObj);
         if (Object.keys(profileObj).length > 0) return false;
         return true;
@@ -200,9 +197,10 @@ const ProfileTabs = () => {
             setName(user.name);
             setEmail(user.email);
             setPhone(user.phone);
-            // setAddress(user.address);
-            // setCity(user.city);
-            // setCountry(user.country);
+            setCity(user.city);
+            setDistric(user.distric);
+            setWard(user.ward);
+            setAddress(user.address);
             setImage(user.image?.urlImageCloudinary);
             setNameImage(user.image?.idImageCloudinary);
         }
@@ -214,9 +212,7 @@ const ProfileTabs = () => {
     const submitUpdatePassword = (e) => {
         e.preventDefault();
         if (!checkPassword()) return; // check funtion check pass để kiểm tra xem có các trường bị rổng hay không
-        //, image
         dispatch(updateUserPassword({ id: user._id, oldPassword, password }));
-
         setOldPassword('');
         setPassword('');
         setConfirmPassword('');
@@ -258,15 +254,18 @@ const ProfileTabs = () => {
         userInforNeedUpdate.append('id', user._id);
         userInforNeedUpdate.append('name', name);
         userInforNeedUpdate.append('phone', phone);
-        userInforNeedUpdate.append('country', country);
         userInforNeedUpdate.append('city', city);
+        userInforNeedUpdate.append('distric', distric);
+        userInforNeedUpdate.append('ward', ward);
         userInforNeedUpdate.append('address', address);
         userInforNeedUpdate.append('image', image);
         userInforNeedUpdate.append('nameImage', nameImage);
 
         dispatch(updateUserProfile(userInforNeedUpdate));
     };
-    // =======================================================
+
+    // =========================================================================
+
     const optionsAntD_city = [];
     const optionsAntD_distric = [];
     const optionsAntD_ward = [];
@@ -276,8 +275,11 @@ const ProfileTabs = () => {
         const infoCity = DataProvinces.find((arr) => {
             return arr.name == value.toString();
         });
-        setDistric(infoCity.districts);
+        setDistric('');
+        setWard('');
+        setDistrictOptions(infoCity.districts);
     };
+
     function findDistricByName(arr, name) {
         for (let i = 0; i < arr.length; i++) {
             if (arr[i].name === name) {
@@ -291,18 +293,19 @@ const ProfileTabs = () => {
         }
         return null;
     }
+
     const onChange_distric = (value) => {
         const infoDistric = findDistricByName(DataProvinces, value);
-        setWard(infoDistric.wards);
+        setWardOptions(infoDistric.wards);
         setDistric(value);
+        setWard('');
     };
+
     const onChange_ward = (value) => {
         setWard(value);
     };
-    const onSearch = (value) => {
-        console.log('search:', value);
-    };
 
+    // lấy dữ liệu từ api và chuyển option cho thành dữ liệu cho MUI nhận được
     if (DataProvinces) {
         for (let i = 0; i < DataProvinces.length; i++) {
             optionsAntD_city.push({
@@ -311,30 +314,46 @@ const ProfileTabs = () => {
             });
         }
     }
-    if (distric) {
-        for (let i = 0; i < distric?.length; i++) {
+
+    if (districtOptions.length > 1) {
+        for (let i = 0; i < districtOptions?.length; i++) {
             optionsAntD_distric.push({
-                value: distric[i]?.name,
-                label: distric[i]?.name,
-            });
-        }
-    }
-    if (ward) {
-        for (let i = 0; i < ward?.length; i++) {
-            optionsAntD_ward.push({
-                value: ward[i]?.name,
-                label: ward[i]?.name,
+                value: districtOptions[i]?.name,
+                label: districtOptions[i]?.name,
             });
         }
     }
 
-    console.log('optionsAntD_city = ', optionsAntD_city);
-    console.log('optionsAntD_distric = ', optionsAntD_distric);
-    console.log('optionsAntD_ward = ', optionsAntD_ward);
+    if (city) {
+        const infoDistric = findDistricByName(DataProvinces, city);
+        const arrDistrictsTemp = infoDistric?.districts;
+        for (let i = 0; i < arrDistrictsTemp?.length; i++) {
+            optionsAntD_distric.push({
+                value: arrDistrictsTemp[i]?.name,
+                label: arrDistrictsTemp[i]?.name,
+            });
+        }
+        const infoWards = findDistricByName(DataProvinces, distric);
+        const arrWardsTemp = infoWards?.wards;
+        for (let i = 0; i < arrWardsTemp?.length; i++) {
+            optionsAntD_ward.push({
+                value: arrWardsTemp[i]?.name,
+                label: arrWardsTemp[i]?.name,
+            });
+        }
+    }
+
+    if (wardOptions.length > 1) {
+        for (let i = 0; i < wardOptions?.length; i++) {
+            optionsAntD_ward.push({
+                value: wardOptions[i]?.name,
+                label: wardOptions[i]?.name,
+            });
+        }
+    }
 
     return (
         <>
-            {/* <Toast /> */}
             {visible && (
                 <Alert
                     message="Cập nhật thông tin thành công"
@@ -386,12 +405,16 @@ const ProfileTabs = () => {
                         <div className="col-md-12">
                             <div className="form">
                                 <label for="account-fn">Họ tên</label>
-                                <input
-                                    className="form-control"
-                                    type="text"
-                                    // required
+                                <TextField
+                                    className="text_field"
                                     value={name}
-                                    onChange={(e) => setName(e.target.value)}
+                                    id="outlined-basic"
+                                    fullWidth
+                                    label="Họ tên"
+                                    variant="outlined"
+                                    onChange={(e) => {
+                                        setName(e.target.value);
+                                    }}
                                 />
                                 <p className="noti-validate">{objProfile.name}</p>
                             </div>
@@ -400,13 +423,16 @@ const ProfileTabs = () => {
                         <div className="col-md-12">
                             <div className="form">
                                 <label for="account-email">E-mail</label>
-                                <input
-                                    className="form-control"
-                                    type="email"
-                                    disabled
+                                <TextField
+                                    className="text_field"
                                     value={email}
-                                    // required
-                                    // onChange={(e) => setEmail(e.target.value)}
+                                    id="outlined-basic"
+                                    fullWidth
+                                    label="email"
+                                    variant="outlined"
+                                    // onChange={(e) => {
+                                    //     setEmail(e.target.value);
+                                    // }}
                                 />
                                 <p className="noti-validate"></p>
                             </div>
@@ -415,34 +441,35 @@ const ProfileTabs = () => {
                         <div className="col-md-12">
                             <div className="form">
                                 <label>Số điện thoại</label>
-                                <input
-                                    className="form-control"
-                                    type="text"
+                                <TextField
+                                    className="text_field"
                                     value={phone}
-                                    // required
-                                    onChange={(e) => setPhone(e.target.value)}
+                                    id="outlined-basic"
+                                    fullWidth
+                                    label="Số điện thoại"
+                                    variant="outlined"
+                                    onChange={(e) => {
+                                        setPhone(e.target.value);
+                                    }}
                                 />
                                 <p className="noti-validate">{objProfile.phone}</p>
                             </div>
                         </div>
 
-                        <div
-                            className="col-md-12"
-                            style={{
-                                marginBottom: '32px',
-                            }}
-                        >
+                        <div className="col-md-12">
                             <div className="form">
                                 <label>Tỉnh/Thành phố</label>
                                 <Autocomplete
+                                    className="autocomplete"
                                     disablePortal
                                     id="combo-box-demo"
                                     options={optionsAntD_city}
+                                    value={city}
                                     onChange={(e) => {
                                         onChange_city(e.target.outerText);
                                     }}
                                     sx={{ width: 500 }}
-                                    renderInput={(params) => <TextField {...params} label="city" />}
+                                    renderInput={(params) => <TextField {...params} label="Tỉnh / Thành phố" />}
                                 />
                             </div>
                         </div>
@@ -450,41 +477,49 @@ const ProfileTabs = () => {
                             <div className="form">
                                 <label>Quận/Huyện</label>
                                 <Autocomplete
+                                    className="autocomplete"
                                     disablePortal
                                     id="combo-box-demo"
                                     options={optionsAntD_distric}
+                                    value={distric}
                                     onChange={(e) => {
                                         onChange_distric(e.target.outerText);
                                     }}
                                     sx={{ width: 500 }}
-                                    renderInput={(params) => <TextField {...params} label="distric" />}
+                                    renderInput={(params) => <TextField {...params} label="Quận/Huyện" />}
                                 />
                             </div>
                         </div>
                         <div className="col-md-12">
                             <div className="form">
-                                <label>Xã/Phường</label>
+                                <label className="label_title">Xã/Phường</label>
                                 <Autocomplete
+                                    className="autocomplete"
                                     disablePortal
                                     id="combo-box-demo"
+                                    value={ward}
                                     options={optionsAntD_ward}
                                     onChange={(e) => {
                                         onChange_ward(e.target.outerText);
                                     }}
                                     sx={{ width: 500 }}
-                                    renderInput={(params) => <TextField {...params} label="ward" />}
+                                    renderInput={(params) => <TextField {...params} label="Xã/Phường" />}
                                 />
                             </div>
                         </div>
                         <div className="col-md-12">
                             <div className="form">
                                 <label>Đường/Hẻm - Thôn/Phường</label>
-                                <input
-                                    className="form-control"
-                                    type="text"
+                                <TextField
+                                    className="text_field"
                                     value={address}
-                                    // required
-                                    onChange={(e) => setAddress(e.target.value)}
+                                    id="outlined-basic"
+                                    fullWidth
+                                    label="Đường/Hẻm - Thôn/Phường"
+                                    variant="outlined"
+                                    onChange={(e) => {
+                                        setAddress(e.target.value);
+                                    }}
                                 />
                             </div>
                         </div>

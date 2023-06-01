@@ -25,13 +25,16 @@ const userSchema = mongoose.Schema(
             required: true,
             default: false,
         },
-        address: {
-            type: String,
-        },
         city: {
             type: String,
         },
-        country: {
+        distric: {
+            type: String,
+        },
+        ward: {
+            type: String,
+        },
+        address: {
             type: String,
         },
         image: {

@@ -88,11 +88,8 @@ userRouter.get(
     '/user',
     protect,
     asyncHandler(async (req, res) => {
-        // const user = await User.findById(req.user._id);
         let token = req.headers.authorization.split(' ')[1];
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        // console.log('decoded = ', decoded);
-        // console.log('token = ', token);
 
         const user = await User.findById(decoded.id).select('-password');
 
@@ -104,9 +101,10 @@ userRouter.get(
                 phone: user.phone,
                 isAdmin: user.isAdmin,
                 createdAt: user.createdAt,
-                address: user.address,
                 city: user.city,
-                country: user.country,
+                distric: user.distric,
+                ward: user.ward,
+                address: user.address,
                 image: user.image,
                 disabled: user.disabled,
             });
@@ -138,9 +136,10 @@ userRouter.put(
     asyncHandler(async (req, res) => {
         try {
             const imagePath = req?.file?.path;
-            const { id, name, phone, country, city, address, nameImage } = req?.body;
-            // console.log('req.body = ', req.body);
-            // console.log('imagePath = ', req.file?.path);
+            const { id, name, phone, city, distric, ward, address, nameImage } = req?.body;
+            console.log('req.body = ', req.body);
+            console.log('imagePath = ', req.file?.path);
+
             const user = await User.findById(id);
 
             if (user) {
@@ -170,8 +169,9 @@ userRouter.put(
                                 $set: {
                                     name: name,
                                     phone: phone,
-                                    country: country,
                                     city: city,
+                                    distric: distric,
+                                    ward: ward,
                                     address: address,
                                     image: {
                                         urlImageCloudinary: imageURL,
@@ -188,9 +188,10 @@ userRouter.put(
                                 createdAt: user.createdAt,
                                 token: generateToken(user.id),
                                 email: user.email,
-                                address: address || user.address,
                                 city: city || user.city,
-                                country: country || user.country,
+                                distric: distric || user.distric,
+                                ward: ward || user.ward,
+                                address: address || user.address,
                                 image: {
                                     urlImageCloudinary: imageURL,
                                     idImageCloudinary: imageID,
@@ -204,16 +205,17 @@ userRouter.put(
                         user.password = req.body.password;
                         const updatedPassword = await user.save();
                         res.json({
-                            _id: updatedPassword._id,
+                            _id: user._id,
                             name: updatedPassword.name,
-                            email: updatedPassword.email,
-                            phone: updatedPassword.phone,
-                            isAdmin: updatedPassword.isAdmin,
-                            createdAt: updatedPassword.createdAt,
-                            token: generateToken(updatedPassword._id),
-                            address: user.address,
+                            email: user.email,
+                            phone: user.phone,
+                            isAdmin: user.isAdmin,
+                            createdAt: user.createdAt,
+                            token: generateToken(user._id),
                             city: user.city,
-                            country: user.country,
+                            distric: user.distric,
+                            ward: user.ward,
+                            address: user.address,
                             image: user.image,
                             disabled: user.disabled,
                         });
@@ -222,20 +224,22 @@ userRouter.put(
                         throw new Error('Old Password is not correct!');
                     }
                 } else {
-                    user.name = req.body.name || user.name;
-                    user.phone = req.body.phone || user.phone;
-                    user.address = req.body.address || user.address;
-                    user.city = req.body.city || user.city;
-                    user.country = req.body.country || user.country;
+                    user.name = name || user.name;
+                    user.phone = phone || user.phone;
+                    user.city = city || user.city;
+                    user.distric = distric || user.distric;
+                    user.ward = ward || user.ward;
+                    user.address = address || user.address;
 
                     const updatedUser = await user.save();
                     res.json({
                         _id: updatedUser._id,
                         name: updatedUser.name,
                         phone: updatedUser.phone,
-                        address: updatedUser.address,
                         city: updatedUser.city,
-                        country: updatedUser.country,
+                        distric: updatedUser.distric,
+                        ward: updatedUser.ward,
+                        address: updatedUser.address,
                         email: user.email,
                         isAdmin: updatedUser.isAdmin,
                         createdAt: updatedUser.createdAt,

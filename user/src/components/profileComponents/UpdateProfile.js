@@ -1,11 +1,9 @@
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import isEmpty from 'validator/lib/isEmpty';
 import { toast } from 'react-toastify';
 
 import { updateUserProfile } from '~/redux/Actions/userActions';
 
-import Toast from '../HomeComponent/LoadingError/Toast';
 import Loading from '../HomeComponent/LoadingError/Loading';
 import Message from '../HomeComponent/LoadingError/Error';
 
@@ -21,12 +19,6 @@ export default function UpdateProfile({ uploadProfile, setSucessft }) {
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
 
-    const Toastobjects = {
-        pauseOnFocusLoss: false,
-        draggable: false,
-        pauseOnHover: false,
-        autoClose: 2000,
-    };
     const submitUpdateProfile = (e) => {
         e.preventDefault();
 
@@ -52,7 +44,7 @@ export default function UpdateProfile({ uploadProfile, setSucessft }) {
             setPhone(user.phone);
         }
         if (updatesuccess && uploadProfile && !error) {
-            toast.success('Update Profile Success', Toastobjects);
+            toast.success('Update Profile Success');
         }
     }, [updatesuccess]);
 
