@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, useNavigate } from 'react-router-dom';
 
@@ -12,19 +11,22 @@ import { ORDER_ADDRESS_MY_RESET } from '~/redux/Constants/OrderConstants';
 import { USER_UPDATE_PROFILE_RESET } from '~/redux/Constants/UserContants';
 
 import Message from '~/components/HomeComponent/LoadingError/Error';
-import Toast from '~/components/HomeComponent/LoadingError/Toast';
 import Loading from '~/components/HomeComponent/LoadingError/Loading';
+import { notification } from 'antd';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 
 import './DeliveryAddress.css';
 
-const Toastobjects = {
-    pauseOnFocusLoss: false,
-    draggable: false,
-    pauseOnHover: false,
-    autoClose: 2000,
-};
-
 function DeliveryAddress() {
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (placement, notify, type) => {
+        api[type]({
+            message: `Thông báo `,
+            description: `${notify}`,
+            placement,
+        });
+    };
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const UpdateProfile = useSelector((state) => state.userUpdateProfile);
@@ -32,20 +34,24 @@ function DeliveryAddress() {
 
     const userDetails = useSelector((state) => state.userDetails);
 
-    const province = useSelector((state) => state.provincesVietNam);
+    const listProvince = useSelector((state) => state.provincesVietNam);
     useEffect(() => {
         dispatch(getListProvincesAction());
     }, []);
-    const GetDataProvince = province.province;
+    const DataProvinces = listProvince.province;
 
     // user lấy từ store
     const { loading, error, user } = userDetails;
-    const [address, setAddress] = useState('');
-    const [city, setCity] = useState('');
-    const [country, setCountry] = useState('');
-    const [image, setImage] = useState('');
-    const [retult, setRetult] = useState('');
+
+    const [city, setCity] = useState(''); //tp
+    const [districtOptions, setDistrictOptions] = useState([]);
+    const [ward, setWard] = useState(''); // xá phường
+    const [wardOptions, setWardOptions] = useState([]);
+    const [address, setAddress] = useState(''); // địa chỉ chi tiết
     const [distric, setDistric] = useState([]);
+    // const [distric, setDistric] = useState(''); //quận huyện
+
+    const [retult, setRetult] = useState('');
 
     useEffect(() => {
         if (updatesuccess) {
@@ -55,20 +61,21 @@ function DeliveryAddress() {
     }, [updatesuccess]);
     useEffect(() => {
         if (updateError === 'account lock up') {
-            toast.error('Tài khoản của bạn đã bị khóa', Toastobjects);
+            openNotification('top', 'Tài khoản của bạn đã bị khóa', 'error');
+
             dispatch({ type: USER_UPDATE_PROFILE_RESET });
         }
     }, [dispatch, updateError]);
     useEffect(() => {
-        dispatch(getUserDetails('profile'));
+        dispatch(getUserDetails());
     }, []);
 
     useEffect(() => {
         if (user.address != undefined) {
-            setAddress(user.address);
             setCity(user.city);
-            setCountry(user.country);
-            setImage(user.image);
+            setDistric(user.distric);
+            setWard(user.ward);
+            setAddress(user.address);
         }
     }, [dispatch, user]);
 
@@ -80,68 +87,156 @@ function DeliveryAddress() {
     };
     const submitHandler = async (e) => {
         e.preventDefault();
-        if (!valitor({ address, city, country })) return;
-        dispatch(saveShippingAddress({ address, city, country }));
-        dispatch(updateUserProfile({ id: user._id, address, city, country, image }));
+        if (!valitor({ city, distric, ward, address })) return;
+        dispatch(saveShippingAddress({ city, distric, ward, address }));
+        dispatch(updateUserProfile({ id: user._id, city, distric, ward, address }));
         setRetult('');
     };
 
-    const handleChooseProvince = (e) => {
-        const temp = e.target.value;
-        const arrDistric = GetDataProvince.find((arr) => {
-            return arr.code == temp.toString();
+    // ===========================================
+    const optionsAntD_city = [];
+    const optionsAntD_distric = [];
+    const optionsAntD_ward = [];
+
+    const onChange_city = (value) => {
+        setCity(value);
+        const infoCity = DataProvinces.find((arr) => {
+            return arr.name == value.toString();
         });
-        // obiect
-        setDistric(arrDistric);
-        setCountry(arrDistric.name);
+        setDistric('');
+        setWard('');
+        setDistrictOptions(infoCity.districts);
     };
-    const handleChooseCiTy = (e) => {
-        setCity(e.target.value);
+
+    function findInfoCityByName(arr, name) {
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i].name === name) {
+                return arr[i];
+            } else if (arr[i].districts) {
+                const found = findInfoCityByName(arr[i].districts, name);
+                if (found) {
+                    return found;
+                }
+            }
+        }
+        return null;
+    }
+
+    const onChange_distric = (value) => {
+        const infoDistric = findInfoCityByName(DataProvinces, value);
+        setWardOptions(infoDistric.wards);
+        setDistric(value);
+        setWard('');
     };
-    const GetDefaulDistrict = () => {
-        const tamp = country;
-        const defaultDistric = GetDataProvince.find((arr) => {
-            return arr.name == tamp.toString();
-        });
-        setDistric(defaultDistric);
+
+    const onChange_ward = (value) => {
+        setWard(value);
     };
+
+    // lấy dữ liệu từ api và chuyển option cho thành dữ liệu cho MUI nhận được
+    if (DataProvinces) {
+        for (let i = 0; i < DataProvinces.length; i++) {
+            optionsAntD_city.push({
+                value: DataProvinces[i].name,
+                label: DataProvinces[i].name,
+            });
+        }
+    }
+
+    if (districtOptions.length > 1) {
+        for (let i = 0; i < districtOptions?.length; i++) {
+            optionsAntD_distric.push({
+                value: districtOptions[i]?.name,
+                label: districtOptions[i]?.name,
+            });
+        }
+    }
+
+    if (city) {
+        const infoDistric = findInfoCityByName(DataProvinces, city);
+        const arrDistrictsTemp = infoDistric?.districts;
+        for (let i = 0; i < arrDistrictsTemp?.length; i++) {
+            optionsAntD_distric.push({
+                value: arrDistrictsTemp[i]?.name,
+                label: arrDistrictsTemp[i]?.name,
+            });
+        }
+        const infoWards = findInfoCityByName(DataProvinces, distric);
+        const arrWardsTemp = infoWards?.wards;
+        for (let i = 0; i < arrWardsTemp?.length; i++) {
+            optionsAntD_ward.push({
+                value: arrWardsTemp[i]?.name,
+                label: arrWardsTemp[i]?.name,
+            });
+        }
+    }
+
+    if (wardOptions.length > 1) {
+        for (let i = 0; i < wardOptions?.length; i++) {
+            optionsAntD_ward.push({
+                value: wardOptions[i]?.name,
+                label: wardOptions[i]?.name,
+            });
+        }
+    }
     return (
         <>
-            <Toast />
+            {contextHolder}
             {updateLoading && <Loading />}
             <div className="container d-flex justify-content-center align-items-center login-center">
                 <form className="Login col-md-8 col-lg-4 col-11" onSubmit={submitHandler}>
                     {retult !== '' && <Message variant="alert-danger text-center fs-6">{retult}</Message>}
                     <h4>Địa chỉ giao hàng</h4>
                     <div className="wrapSelect">
-                        <select onChange={handleChooseProvince} className="carSelect">
-                            <option disabled selected hidden>
-                                {country}
-                            </option>
-                            {GetDataProvince.map((pro, index) => (
-                                <option key={index} value={pro.code}>
-                                    {pro.name}
-                                </option>
-                            ))}
-                        </select>
+                        <Autocomplete
+                            className="address_autocomplete"
+                            disablePortal
+                            id="combo-box-demo"
+                            options={optionsAntD_city}
+                            value={city}
+                            onChange={(e) => {
+                                onChange_city(e.target.outerText);
+                            }}
+                            renderInput={(params) => <TextField {...params} label="Tỉnh / Thành phố" />}
+                        />
+                        <Autocomplete
+                            className="address_autocomplete"
+                            disablePortal
+                            id="combo-box-demo"
+                            options={optionsAntD_distric}
+                            value={distric}
+                            onChange={(e) => {
+                                onChange_distric(e.target.outerText);
+                            }}
+                            renderInput={(params) => <TextField {...params} label="Quận/Huyện" />}
+                        />
 
-                        <select onChange={handleChooseCiTy} className="carSelect" onClick={GetDefaulDistrict}>
-                            <option disabled selected hidden>
-                                {city}
-                            </option>
-                            {distric?.districts?.map((dis, index) => {
-                                return <option key={index}>{dis.name}</option>;
-                            })}
-                        </select>
+                        <Autocomplete
+                            className="address_autocomplete autoWard"
+                            disablePortal
+                            id="combo-box-demo"
+                            value={ward}
+                            options={optionsAntD_ward}
+                            onChange={(e) => {
+                                onChange_ward(e.target.outerText);
+                            }}
+                            renderInput={(params) => <TextField {...params} label="Xã/Phường" />}
+                        />
+                        <TextField
+                            className="address_textfield"
+                            value={address}
+                            id="outlined-basic"
+                            fullWidth
+                            label="Đường/Hẻm - Thôn/Phường"
+                            variant="outlined"
+                            onChange={(e) => {
+                                setAddress(e.target.value);
+                            }}
+                        />
                     </div>
-                    <input
-                        type="text"
-                        placeholder="Đường/Hẻm - Thôn/Phường"
-                        value={address}
-                        // required
-                        onChange={(e) => setAddress(e.target.value)}
-                    />
-                    <button type="submit">Tiếp tục</button>
+                    <button className="button_continue" type="submit">
+                        Tiếp tục
+                    </button>
                 </form>
             </div>
         </>

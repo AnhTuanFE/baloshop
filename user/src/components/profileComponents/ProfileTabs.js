@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
 import isEmpty from 'validator/lib/isEmpty';
 import Cropper from 'react-easy-crop';
 import { Button } from '@mui/material';
@@ -12,33 +11,24 @@ import { updateUserPassword, updateUserProfile } from '~/redux/Actions/userActio
 import { USER_UPDATE_PROFILE_RESET } from '~/redux/Constants/UserContants';
 import { getListProvincesAction } from '~/redux/Actions/userActions';
 import getCroppedImg from '../editAvatar/cropImage';
-import { Alert, Space } from 'antd';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { imageDefaul } from '~/utils/data';
+import { notification } from 'antd';
 
-// import '../editAvatar/style.css';
+import '../editAvatar/style.css';
 import './ProfileTabs.css';
-import { object } from 'joi';
 
+// type NotificationType = 'success' | 'info' | 'warning' | 'error';
 const ProfileTabs = () => {
-    const [visible, setVisible] = useState(false);
-    const handleClose = () => {
-        setVisible(false);
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (placement, notify, type) => {
+        api[type]({
+            message: `Thông báo `,
+            description: `${notify}`,
+            placement,
+        });
     };
-
-    const handleAlertClose = () => {
-        setTimeout(() => {
-            handleClose();
-        }, 2000);
-    };
-    <Space
-        direction="vertical"
-        style={{
-            width: '100%',
-        }}
-    ></Space>;
-
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
@@ -61,7 +51,6 @@ const ProfileTabs = () => {
     const [checkbox, setCheckbox] = useState('0');
     const [checkFile, setCheckFile] = useState(true);
     const [checkImage, setCheckImage] = useState(false);
-    const toastId = useRef(null);
     const refProfile = useRef(); /// ghi chú
     const refSetPassword = useRef(); /// ghi chú
 
@@ -167,28 +156,28 @@ const ProfileTabs = () => {
     }
 
     useEffect(() => {
-        if (!toast.isActive(toastId.current)) {
-            if (updatesuccessPass === true) {
-                toastId.current = toast.success('Mật khẩu cập nhật thành công');
-                dispatch({ type: USER_UPDATE_PROFILE_RESET });
-            }
+        if (updatesuccessPass === true) {
+            openNotification('top', 'Mật khẩu cập nhật thành công', 'success');
+
+            dispatch({ type: USER_UPDATE_PROFILE_RESET });
         }
     }, [dispatch, updatesuccessPass]);
 
     useEffect(() => {
         if (updatesuccess) {
-            toast.success('Cập nhật thông tin thành công');
+            openNotification('top', 'Cập nhật thông tin thành công', 'success');
             dispatch({ type: USER_UPDATE_PROFILE_RESET });
         }
     }, [dispatch, updatesuccess]);
 
     useEffect(() => {
         if (errorProfile === 'account lock up') {
-            toast.error('Tài khoản của bạn đã bị khóa');
+            openNotification('top', 'Tài khoản của bạn đã bị khóa', 'error');
+
             dispatch({ type: USER_UPDATE_PROFILE_RESET });
         }
         if (errorProfile !== undefined && errorProfile !== 'account lock up') {
-            toast.error('Cập nhật không thành công');
+            openNotification('top', 'Cập nhật không thành công', 'error');
             dispatch({ type: USER_UPDATE_PROFILE_RESET });
         }
     }, [dispatch, errorProfile]);
@@ -205,7 +194,7 @@ const ProfileTabs = () => {
             setNameImage(user.image?.idImageCloudinary);
         }
         if (errorProfile) {
-            toastId.current = toast.error(error);
+            openNotification('top', 'Lỗi thông tin tài khoản', 'error');
         }
     }, [dispatch, user, successDetail]);
 
@@ -280,12 +269,12 @@ const ProfileTabs = () => {
         setDistrictOptions(infoCity.districts);
     };
 
-    function findDistricByName(arr, name) {
+    function findInfoCityByName(arr, name) {
         for (let i = 0; i < arr.length; i++) {
             if (arr[i].name === name) {
                 return arr[i];
             } else if (arr[i].districts) {
-                const found = findDistricByName(arr[i].districts, name);
+                const found = findInfoCityByName(arr[i].districts, name);
                 if (found) {
                     return found;
                 }
@@ -295,7 +284,7 @@ const ProfileTabs = () => {
     }
 
     const onChange_distric = (value) => {
-        const infoDistric = findDistricByName(DataProvinces, value);
+        const infoDistric = findInfoCityByName(DataProvinces, value);
         setWardOptions(infoDistric.wards);
         setDistric(value);
         setWard('');
@@ -325,7 +314,7 @@ const ProfileTabs = () => {
     }
 
     if (city) {
-        const infoDistric = findDistricByName(DataProvinces, city);
+        const infoDistric = findInfoCityByName(DataProvinces, city);
         const arrDistrictsTemp = infoDistric?.districts;
         for (let i = 0; i < arrDistrictsTemp?.length; i++) {
             optionsAntD_distric.push({
@@ -333,7 +322,7 @@ const ProfileTabs = () => {
                 label: arrDistrictsTemp[i]?.name,
             });
         }
-        const infoWards = findDistricByName(DataProvinces, distric);
+        const infoWards = findInfoCityByName(DataProvinces, distric);
         const arrWardsTemp = infoWards?.wards;
         for (let i = 0; i < arrWardsTemp?.length; i++) {
             optionsAntD_ward.push({
@@ -354,19 +343,11 @@ const ProfileTabs = () => {
 
     return (
         <>
-            {visible && (
-                <Alert
-                    message="Cập nhật thông tin thành công"
-                    type="success"
-                    closable
-                    onClose={handleAlertClose}
-                    afterClose={handleClose}
-                    showIcon
-                />
-            )}
+            {contextHolder}
             {error && <Message variant="alert-danger">{error}</Message>}
             {loading && <Loading />}
-            {/* {updateLoading && <Loading />} */}
+            {updateLoading && <Loading />}
+
             <div className="row form-container">
                 <div className="radio-check">
                     <from className="radio-from">

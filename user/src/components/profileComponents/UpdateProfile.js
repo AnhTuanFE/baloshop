@@ -1,13 +1,22 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
+import { notification } from 'antd';
 
 import { updateUserProfile } from '~/redux/Actions/userActions';
 
 import Loading from '../HomeComponent/LoadingError/Loading';
 import Message from '../HomeComponent/LoadingError/Error';
+// type NotificationType = 'success' | 'info' | 'warning' | 'error';
 
 export default function UpdateProfile({ uploadProfile, setSucessft }) {
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (placement, notify, type) => {
+        api[type]({
+            message: `Thông báo `,
+            description: `${notify}`,
+            placement,
+        });
+    };
     const userDetails = useSelector((state) => state.userDetails);
     const { loading, error, user } = userDetails;
     const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
@@ -44,12 +53,13 @@ export default function UpdateProfile({ uploadProfile, setSucessft }) {
             setPhone(user.phone);
         }
         if (updatesuccess && uploadProfile && !error) {
-            toast.success('Update Profile Success');
+            openNotification('top', 'Update Profile Success', 'success');
         }
     }, [updatesuccess]);
 
     return (
         <>
+            {contextHolder}
             {loading && <Loading />}
             {updateLoading && <Loading />}
             {updatesuccess && <Message variant="alert-success">Update success</Message>}

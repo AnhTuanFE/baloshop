@@ -1,12 +1,21 @@
-import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+import { useState } from 'react';
 import isEmpty from 'validator/lib/isEmpty';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { updateUserProfile } from '~/redux/Actions/userActions';
 import Message from '~/components/HomeComponent/LoadingError/Error';
+import { notification } from 'antd';
 
 export default function UpdatePassword({ uploadPassword }) {
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (placement, notify, type) => {
+        api[type]({
+            message: `Thông báo `,
+            description: `${notify}`,
+            placement,
+        });
+    };
+
     const userDetails = useSelector((state) => state.userDetails);
     const { loading, error, user } = userDetails;
     const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
@@ -16,12 +25,6 @@ export default function UpdatePassword({ uploadPassword }) {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [objFormPass, setObjFromPass] = useState({});
-    const Toastobjects = {
-        pauseOnFocusLoss: false,
-        draggable: false,
-        pauseOnHover: false,
-        autoClose: 2000,
-    };
 
     const dispatch = useDispatch();
 
@@ -31,26 +34,21 @@ export default function UpdatePassword({ uploadPassword }) {
             return;
         } // check funtion check pass để kiểm tra xem có các trường bị rổng hay không
         // Password match
-        // if (password !== confirmPassword) {
-        //   if (!toast.isActive(toastId.current)) {
-        //     toastId.current = toast.error("Password does not match", Toastobjects);
-        //   }
-        // } else {
-        //   dispatch(updateUserProfile({ id: user._id, oldPassword, password }));
+        if (password !== confirmPassword) {
+            openNotification('top', 'Password does not match', 'error');
+        } else {
+            dispatch(updateUserProfile({ id: user._id, oldPassword, password }));
 
-        //   if (!toast.isActive(toastId.current)) {
-        //     if (errorUpdate) {
-        //       toastId.current = toast.error(errorUpdate, Toastobjects);
-        //     }
-        //     else {
-        //       toastId.current = toast.success("Password Updated", Toastobjects);
-        //     }
-        //   }
-        // }
+            if (errorUpdate) {
+                openNotification('top', 'Update Password fail', 'success');
+            } else {
+                openNotification('top', 'Update Password Success', 'success');
+            }
+        }
 
         dispatch(updateUserProfile({ id: user._id, oldPassword, password }));
         if (updatesuccess && uploadPassword && !errorUpdate) {
-            toast.success('Update Password Success', Toastobjects);
+            openNotification('top', 'Update Password Success', 'success');
         }
         setPassword('');
         setConfirmPassword('');
@@ -86,6 +84,7 @@ export default function UpdatePassword({ uploadPassword }) {
     }
     return (
         <>
+            {contextHolder}
             {updatesuccess && <Message variant="alert-success">Update success</Message>}
             {errorUpdate && <Message variant="alert-danger">{errorUpdate}</Message>}
             <form className="row  form-container" onSubmit={submitUpdatePassword}>

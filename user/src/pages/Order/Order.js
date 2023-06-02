@@ -6,7 +6,8 @@ import { Rating } from 'primereact/rating';
 import 'primereact/resources/themes/lara-light-indigo/theme.css'; //theme
 import 'primereact/resources/primereact.min.css'; //core css
 import 'primeicons/primeicons.css';
-import { toast } from 'react-toastify';
+import { notification } from 'antd';
+
 import {
     cancelOrder,
     getOrderDetails,
@@ -27,18 +28,18 @@ import { ORDER_PAY_RESET } from '~/redux/Constants/OrderConstants';
 import { listCart } from '~/redux/Actions/cartActions';
 import Loading from '~/components/HomeComponent/LoadingError/Loading';
 import Message from '~/components/HomeComponent/LoadingError/Error';
-import Toast from '~/components/HomeComponent/LoadingError/Toast';
 
 import './Order.css';
 
-const Toastobjects = {
-    pauseOnFocusLoss: false,
-    draggable: false,
-    pauseOnHover: false,
-    autoClose: 2000,
-};
-
 function Order() {
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (placement, notify, type) => {
+        api[type]({
+            message: `Thông báo `,
+            description: `${notify}`,
+            placement,
+        });
+    };
     const params = useParams();
     const orderId = params.id;
 
@@ -84,7 +85,7 @@ function Order() {
     useEffect(() => {
         if (errorCancel === 'account lock up') {
             dispatch({ type: ORDER_CANCEL_RESET });
-            toast.error('Tài khoản của bạn đã bị khóa', Toastobjects);
+            openNotification('top', 'Tài khoản của bạn đã bị khóa', 'error');
         }
     }, [errorCancel]);
 
@@ -141,7 +142,8 @@ function Order() {
     return (
         <>
             <div className="container">
-                <Toast />
+                {contextHolder}
+
                 {loadingCancel && <Loading />}
                 {loading ? (
                     <Loading />
@@ -187,7 +189,7 @@ function Order() {
                                     <div className="col-lg-10 col-sm-9 mb-lg-9">
                                         <p>
                                             <span style={{ fontWeight: '600' }}>Địa chỉ:</span>{' '}
-                                            {`${order.shippingAddress.city}, ${order.shippingAddress.address}, ${order.shippingAddress.country}`}
+                                            {`${order.shippingAddress.city}, ${order.shippingAddress.distric}, ${order.shippingAddress.ward}, ${order.shippingAddress.address}`}
                                         </p>
                                     </div>
                                 </div>

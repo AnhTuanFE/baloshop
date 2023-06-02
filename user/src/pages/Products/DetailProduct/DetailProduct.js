@@ -2,11 +2,9 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import './product.css';
-import { toast } from 'react-toastify';
 
 // component child
 import Loading from '~/components/HomeComponent/LoadingError/Loading';
-import Toast from '~/components/HomeComponent/LoadingError/Toast';
 import Message from '~/components/HomeComponent/LoadingError/Error';
 import Rating from '~/components/HomeComponent/Rating/Rating';
 
@@ -20,15 +18,17 @@ import { CART_CREATE_RESET } from '~/redux/Constants/CartConstants';
 import { addToCart } from '~/redux/Actions/cartActions';
 
 import SimilarProducts from './DetailProductComponents/SimilarProducts/SimilarProducts';
-
-const Toastobjects = {
-    pauseOnFocusLoss: false,
-    draggable: false,
-    pauseOnHover: false,
-    autoClose: 2000,
-};
+import { notification } from 'antd';
 
 function DetailProduct() {
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (placement, notify, type) => {
+        api[type]({
+            message: `Thông báo `,
+            description: `${notify}`,
+            placement,
+        });
+    };
     const param = useParams();
     const productId = param.id;
     const navigate = useNavigate();
@@ -105,7 +105,8 @@ function DetailProduct() {
             navigate(`/cart/${productId}?qty=${qty}?color=${color}`);
         }
         if (errorAddCart) {
-            toast.error(errorAddCart, Toastobjects);
+            openNotification('top', 'Thêm sản phẩm vào giỏ hàng thất bại', 'error');
+
             dispatch({ type: CART_CREATE_RESET });
         }
     }, [dispatch, successAddCart, errorAddCart]);
@@ -120,6 +121,7 @@ function DetailProduct() {
     const handleRender = () => {
         return (
             <>
+                {contextHolder}
                 <div className="row">
                     <div className="col-md-12 product-avatar">
                         <div className="row">
@@ -226,7 +228,6 @@ function DetailProduct() {
     return (
         <>
             <div className="container single-product">
-                <Toast />
                 {loadingAddCart && <Loading />}
                 {content}
             </div>

@@ -61,10 +61,7 @@
     right: 3% !important;
     z-index: 2;
 }
-.slick-prev:hover {
-    font-size: 30px !important;
-    color: red;
-}
+
 .slick-next:hover {
     font-size: 30px !important;
 }

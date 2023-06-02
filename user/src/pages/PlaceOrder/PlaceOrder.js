@@ -100,10 +100,11 @@ function PlaceOrder() {
             createOrder({
                 orderItems: currenCartItems,
                 shippingAddress: {
-                    address: userInfo.address,
                     city: userInfo.city,
+                    distric: userInfo.distric,
+                    ward: userInfo.ward,
+                    address: userInfo.address,
                     postalCode: '',
-                    country: userInfo.country,
                 },
                 // paymentMethod: cart.paymentMethod,
                 paymentMethod: 'Thanh toán bằng tiền mặt',
@@ -214,7 +215,7 @@ function PlaceOrder() {
                             <div className="col-lg-9 col-sm-9 mb-lg-9">
                                 <p>
                                     <span style={{ fontWeight: '600' }}>Địa chỉ:</span>{' '}
-                                    {`${userInfo?.city}, ${userInfo?.address}, ${userInfo?.country}`}
+                                    {`${userInfo?.city}, ${userInfo?.distric}, ${userInfo?.ward}, ${userInfo?.address}`}
                                 </p>
                             </div>
                         </div>

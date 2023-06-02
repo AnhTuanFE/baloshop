@@ -2,21 +2,23 @@ import { useEffect } from 'react';
 import { Link, useParams, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Checkbox } from 'primereact/checkbox';
-import { toast } from 'react-toastify';
 //
 import { CART_CREATE_RESET } from '~/redux/Constants/CartConstants';
 import { addToCart, listCart, removefromcart } from '~/redux/Actions/cartActions';
 
-import Toast from '~/components/HomeComponent/LoadingError/Toast';
 import Loading from '~/components/HomeComponent/LoadingError/Loading';
+import { notification } from 'antd';
+
 import './Cart.css';
 
 function Cart() {
-    const Toastobjects = {
-        pauseOnFocusLoss: false,
-        draggable: false,
-        pauseOnHover: false,
-        autoClose: 2000,
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (placement, notify, type) => {
+        api[type]({
+            message: `Thông báo `,
+            description: `${notify}`,
+            placement,
+        });
     };
 
     const dispatch = useDispatch();
@@ -58,7 +60,8 @@ function Cart() {
     };
     useEffect(() => {
         if (errorCreate === 'account lock up') {
-            toast.error('Tài khoản của bạn đã bị khóa', Toastobjects);
+            openNotification('top', 'Tài khoản của bạn đã bị khóa', 'error');
+
             dispatch({ type: CART_CREATE_RESET });
         }
     }, [dispatch, errorCreate]);
@@ -137,7 +140,7 @@ function Cart() {
     return (
         <>
             {loadingCreate && <Loading />}
-            <Toast />
+            {contextHolder}
             <div className="container">
                 {cartItems?.length === 0 ? (
                     <div className=" alert alert-info text-center mt-3">
