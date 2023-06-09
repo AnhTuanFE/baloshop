@@ -58,3 +58,13 @@
     color: #ffffff;
     margin: 0 10px;
 }
+.btn_return {
+    margin-top: 5px;
+    text-transform: capitalize;
+    border-radius: 4px;
+    font-size: 17px;
+    cursor: pointer;
+}
+.box_mui {
+    background-color: aqua;
+}

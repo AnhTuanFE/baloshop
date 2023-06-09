@@ -113,7 +113,9 @@ const Login = () => {
                             Mật khẩu
                         </p>
                     </div>
-                    <button type="submit">Đăng nhập</button>
+                    <button className="button_login_form_login" type="submit">
+                        Đăng nhập
+                    </button>
                     <p>
                         <Link to={'/resetpassword-request'}>Quên mật khẩu</Link>
                     </p>

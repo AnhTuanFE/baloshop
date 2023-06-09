@@ -1,7 +1,6 @@
 import { React, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import moment from 'moment';
 import { Rating } from 'primereact/rating';
 import 'primereact/resources/themes/lara-light-indigo/theme.css'; //theme
 import 'primereact/resources/primereact.min.css'; //core css
@@ -11,7 +10,6 @@ import { notification } from 'antd';
 import {
     cancelOrder,
     getOrderDetails,
-    payOrder,
     createOrderReview,
     orderGetItemOrder,
     completeOrder,
@@ -28,14 +26,8 @@ import { ORDER_PAY_RESET } from '~/redux/Constants/OrderConstants';
 import { listCart } from '~/redux/Actions/cartActions';
 import Loading from '~/components/HomeComponent/LoadingError/Loading';
 import Message from '~/components/HomeComponent/LoadingError/Error';
+import CustomizedSteppers from './custom_stepper_MUI/CustomizedSteppers';
 import './Order.css';
-// ================
-import Box from '@mui/material/Box';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepButton from '@mui/material/StepButton';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 
 function Order() {
     const [api, contextHolder] = notification.useNotification();
@@ -70,8 +62,6 @@ function Order() {
     const { success: successReview, error: errorReview } = reviews;
     const orderGetComplete = useSelector((state) => state.orderGetComplete);
     const { success: successComplete } = orderGetComplete;
-    const userDetail = useSelector((state) => state.userDetails);
-    const { success: successDetail, user } = userDetail;
 
     useEffect(() => {
         dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
@@ -147,45 +137,6 @@ function Order() {
     };
 
     // ==========================================
-    const steps = ['Select campaign settings', 'Create an ad group', 'Create an ad'];
-    const [activeStep, setActiveStep] = useState(0);
-    const [completed, setCompleted] = useState({});
-
-    const totalSteps = () => {
-        return steps.length;
-    };
-
-    const completedSteps = () => {
-        return Object.keys(completed).length;
-    };
-
-    const isLastStep = () => {
-        return activeStep === totalSteps() - 1;
-    };
-
-    const allStepsCompleted = () => {
-        return completedSteps() === totalSteps();
-    };
-
-    const handleNext = () => {
-        const newActiveStep =
-            isLastStep() && !allStepsCompleted()
-                ? // It's the last step, but not all steps have been completed,
-                  // find the first step that has been completed
-                  steps.findIndex((step, i) => !(i in completed))
-                : activeStep + 1;
-        setActiveStep(newActiveStep);
-    };
-
-    const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
-
-    const handleStep = (step) => () => {
-        setActiveStep(step);
-    };
-
-    // ===============================
     return (
         <>
             <div className="container">
@@ -222,7 +173,6 @@ function Order() {
                                 </div>
                             </div>
                             {/* 2 */}
-
                             <div className="col-lg-4 col-sm-4 mb-lg-4 mb-2 mb-sm-0 fix-bottom">
                                 <div
                                     className="row"
@@ -261,265 +211,7 @@ function Order() {
                                 </div>
                             </div>
                         </div>
-                        {/* ============================================== */}
-                        {/* <div
-                            className="row order-detail"
-                            style={{ border: '1px solid rgb(218, 216, 216)', borderRadius: '4px' }}
-                        >
-                            <div className="col-6 col-sm-6 col-md-6 col-lg-3 col-xl-3">
-                                <div className="row" style={{ display: 'flex', alignItems: 'center' }}>
-                                    <div className="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
-                                        <div className="d-flex justify-content-center">
-                                            <span className="arrow-cart">
-                                                <i
-                                                    class="fas fa-arrow-alt-right"
-                                                    style={order.cancel === 0 ? { color: '#06dce6ed' } : {}}
-                                                ></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div className="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-8">
-                                        <div>
-                                            <div className="d-flex justify-content-center">
-                                                <div
-                                                    className="cutoms-css"
-                                                    style={
-                                                        order?.waitConfirmation ? { backgroundColor: '#06dce6ed' } : {}
-                                                    }
-                                                >
-                                                    <i class="fad fa-calendar-check"></i>
-                                                </div>
-                                            </div>
-                                            <div className="text-center">
-                                                {order?.waitConfirmation ? (
-                                                    <>
-                                                        <p
-                                                            className="text-center text-font"
-                                                            style={{ color: 'blue', fontWeight: '600' }}
-                                                        >
-                                                            Đã xác nhận
-                                                        </p>
-                                                        <span
-                                                            style={{
-                                                                fontSize: '13px',
-                                                                color: 'red',
-                                                                fontWeight: '600',
-                                                            }}
-                                                        >
-                                                            {moment(order?.waitConfirmationAt).hours()}
-                                                            {':'}
-                                                            {moment(order?.waitConfirmationAt).minutes() < 10
-                                                                ? `0${moment(order?.waitConfirmationAt).minutes()}`
-                                                                : moment(order?.waitConfirmationAt).minutes()}{' '}
-                                                            {moment(order?.waitConfirmationAt).format('DD/MM/YYYY')}{' '}
-                                                        </span>
-                                                    </>
-                                                ) : (
-                                                    <p className="text-center text-font">Chờ xác nhận</p>
-                                                )}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-6 col-sm-6 col-md-6 col-lg-3 col-xl-3">
-                                <div className="row" style={{ display: 'flex', alignItems: 'center' }}>
-                                    <div className="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
-                                        <div className="d-flex justify-content-center">
-                                            <span className="arrow-cart">
-                                                <i
-                                                    class="fas fa-arrow-alt-right"
-                                                    style={order?.waitConfirmation ? { color: '#06dce6ed' } : {}}
-                                                ></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div className="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-8">
-                                        <div>
-                                            <div className="d-flex justify-content-center">
-                                                <div
-                                                    className="cutoms-css"
-                                                    style={order?.isDelivered ? { backgroundColor: '#06dce6ed' } : {}}
-                                                >
-                                                    <i class="fas fa-car-side"></i>
-                                                </div>
-                                            </div>
-                                            <div className="text-center">
-                                                {order?.isDelivered ? (
-                                                    <>
-                                                        <p
-                                                            className="text-center text-font"
-                                                            style={{ color: 'blue', fontWeight: '600' }}
-                                                        >
-                                                            Đang giao
-                                                        </p>
-                                                        <span
-                                                            style={{
-                                                                fontSize: '13px',
-                                                                color: 'red',
-                                                                fontWeight: '600',
-                                                            }}
-                                                        >
-                                                            {moment(order?.deliveredAt).hours()}
-                                                            {':'}
-                                                            {moment(order?.deliveredAt).minutes() < 10
-                                                                ? `0${moment(order?.deliveredAt).minutes()}`
-                                                                : moment(order?.deliveredAt).minutes()}{' '}
-                                                            {moment(order?.deliveredAt).format('DD/MM/YYYY')}{' '}
-                                                        </span>
-                                                    </>
-                                                ) : (
-                                                    <p className="text-center text-font">Đang giao</p>
-                                                )}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-6 col-sm-6 col-md-6 col-lg-3 col-xl-3">
-                                <div className="row" style={{ display: 'flex', alignItems: 'center' }}>
-                                    <div className="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
-                                        <div className="d-flex justify-content-center">
-                                            <span className="arrow-cart">
-                                                <i
-                                                    class="fas fa-arrow-alt-right"
-                                                    style={order?.isDelivered ? { color: '#06dce6ed' } : {}}
-                                                ></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div className="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-8">
-                                        <div>
-                                            <div className="d-flex justify-content-center">
-                                                <div
-                                                    className="cutoms-css"
-                                                    style={order?.isPaid ? { backgroundColor: '#06dce6ed' } : {}}
-                                                >
-                                                    <i class="fas fa-money-bill-alt"></i>
-                                                </div>
-                                            </div>
-                                            <div className="text-center">
-                                                {order?.isPaid ? (
-                                                    <>
-                                                        <p
-                                                            className="text-center text-font"
-                                                            style={{ color: 'blue', fontWeight: '600' }}
-                                                        >
-                                                            Nhận hàng và thanh toán
-                                                        </p>
-                                                        <span
-                                                            style={{
-                                                                fontSize: '13px',
-                                                                color: 'red',
-                                                                fontWeight: '600',
-                                                            }}
-                                                        >
-                                                            {moment(order?.paidAt).hours()}
-                                                            {':'}
-                                                            {moment(order?.paidAt).minutes() < 10
-                                                                ? `0${moment(order?.paidAt).minutes()}`
-                                                                : moment(order?.paidAt).minutes()}{' '}
-                                                            {moment(order?.paidAt).format('DD/MM/YYYY')}{' '}
-                                                        </span>
-                                                    </>
-                                                ) : (
-                                                    <p className="text-center text-font">Nhận hàng và thanh toán</p>
-                                                )}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-6 col-sm-6 col-md-6 col-lg-3 col-xl-3">
-                                <div className="row" style={{ display: 'flex', alignItems: 'center' }}>
-                                    <div className="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
-                                        <div className="d-flex justify-content-center">
-                                            <span className="arrow-cart">
-                                                <i
-                                                    class="fas fa-arrow-alt-right"
-                                                    style={order?.isPaid ? { color: '#06dce6ed' } : {}}
-                                                ></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div className="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-8">
-                                        <div>
-                                            <div className="d-flex justify-content-center">
-                                                <div
-                                                    className="cutoms-css"
-                                                    style={
-                                                        order?.completeUser && order?.completeAdmin
-                                                            ? { backgroundColor: '#06dce6ed' }
-                                                            : {}
-                                                    }
-                                                >
-                                                    <i class="far fa-handshake"></i>
-                                                </div>
-                                            </div>
-                                            <div className="text-center">
-                                                {order?.completeUser && order?.completeAdmin ? (
-                                                    <>
-                                                        <p
-                                                            className="text-center text-font"
-                                                            style={{ color: 'blue', fontWeight: '600' }}
-                                                        >
-                                                            Hoàn tất
-                                                        </p>
-                                                        <span
-                                                            style={{
-                                                                fontSize: '13px',
-                                                                color: 'red',
-                                                                fontWeight: '600',
-                                                            }}
-                                                        >
-                                                            {moment(order?.completeAdminAt).hours()}
-                                                            {':'}
-                                                            {moment(order?.completeAdminAt).minutes() < 10
-                                                                ? `0${moment(order?.completeAdminAt).minutes()}`
-                                                                : moment(order?.completeAdminAt).minutes()}{' '}
-                                                            {moment(order?.completeAdminAt).format('DD/MM/YYYY')}{' '}
-                                                        </span>
-                                                    </>
-                                                ) : (
-                                                    <p className="text-center text-font">Hoàn tất</p>
-                                                )}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> */}
-                        <Box sx={{ width: '100%' }}>
-                            <Stepper nonLinear activeStep={activeStep}>
-                                {steps.map((label, index) => (
-                                    <Step key={label} completed={completed[index]}>
-                                        <StepButton color="inherit" onClick={handleStep(index)}>
-                                            {label}
-                                        </StepButton>
-                                    </Step>
-                                ))}
-                            </Stepper>
-                            <div>
-                                <>
-                                    <Typography sx={{ mt: 2, mb: 1, py: 1 }}>Step {activeStep + 1}</Typography>
-                                    <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-                                        <Button
-                                            color="inherit"
-                                            disabled={activeStep === 0}
-                                            onClick={handleBack}
-                                            sx={{ mr: 1 }}
-                                        >
-                                            Back
-                                        </Button>
-                                        <Box sx={{ flex: '1 1 auto' }} />
-                                        <Button onClick={handleNext} sx={{ mr: 1 }}>
-                                            Next
-                                        </Button>
-                                    </Box>
-                                </>
-                            </div>
-                        </Box>
-                        {/* ===================================== */}
+                        <CustomizedSteppers order={order} />
                         <div className="row order-products justify-content-between" style={{ marginBottom: '30px' }}>
                             <div className="col-lg-9 fix-padding cart-scroll">
                                 {order.orderItems.length === 0 ? (
@@ -616,14 +308,6 @@ function Order() {
                                         </tr>
                                         <tr>
                                             <td>
-                                                <strong className="fs-6">Thuế:</strong>
-                                            </td>
-                                            <td className="fs-6">
-                                                {Number(order?.taxPrice)?.toLocaleString('de-DE')}đ
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
                                                 <strong className="fs-6">Tổng tiền:</strong>
                                             </td>
                                             <td className="fs-6">
@@ -677,17 +361,7 @@ function Order() {
                                                 href="https://m.me/balostore.owner"
                                                 style={{ padding: '0px 0px' }}
                                             >
-                                                <button
-                                                    style={{
-                                                        textTransform: ' capitalize',
-                                                        marginTop: '5px',
-                                                        borderRadius: '4px',
-                                                        fontSize: '17px',
-                                                        cursor: 'pointer',
-                                                    }}
-                                                >
-                                                    Trả hàng
-                                                </button>
+                                                <button className="btn_return">Trả hàng</button>
                                             </a>
                                         </div>
                                     </div>

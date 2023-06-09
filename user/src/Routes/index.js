@@ -9,7 +9,7 @@ import Cart from '~/pages/Cart';
 import DeliveryAddress from '~/pages/DeliveryAddress';
 import Payment from '~/pages/Payment/Payment';
 import PlaceOrder from '~/pages/PlaceOrder/PlaceOrder';
-import Order from '~/pages/Order/Order';
+import Order from '~/pages/Order';
 import Profile from '~/pages/Profile/Profile';
 import PurchaseHistory from '~/pages/PurchaseHistory';
 import ResetPasswordRequest from '~/pages/ResetPasswordRequest/ResetPasswordRequest';
@@ -50,6 +50,7 @@ const privateRoutes = [
     { path: '/cart/:id?', component: Cart, layout: HeaderOnly },
     { path: '/deliveryaddress', component: DeliveryAddress, layout: HeaderOnly },
     { path: '/payment', component: Payment, layout: HeaderOnly },
+
     { path: '/placeorder', component: PlaceOrder, layout: HeaderOnly },
     { path: '/order/:id', component: Order, layout: HeaderOnly },
     { path: '/purchasehistory', component: PurchaseHistory, layout: HeaderOnly },

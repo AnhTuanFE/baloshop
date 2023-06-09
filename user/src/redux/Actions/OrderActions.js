@@ -318,3 +318,62 @@ export const returnAmountProduct = (orderItems) => async (dispatch, getState) =>
         });
     }
 };
+// =========================================================
+
+export const paypalCreateOrderAction = () => async (dispatch, getState) => {
+    try {
+        dispatch({ type: types.ORDER_PAYPAL_PAID_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+        //                Authorization: `Bearer ${userInfo.token}`,
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+
+        const { data } = await axios.post(`/api/paypal/create-paypal-order`, config);
+        dispatch({ type: types.ORDER_PAYPAL_PAID_SUCCESS, payload: data });
+    } catch (error) {
+        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+        if (message === 'Not authorized, token failed') {
+            dispatch(logout());
+        }
+        dispatch({
+            type: types.ORDER_PAYPAL_PAID_FAIL,
+            payload: message,
+        });
+    }
+};
+
+export const paypalConfirmPaidOrderAction = (orderID) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: types.ORDER_PAYPAL_PAID_CONFIRM_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+        //                Authorization: `Bearer ${userInfo.token}`,
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+
+        const { data } = await axios.post(`/api/paypal/capture-paypal-order`, { orderID });
+        dispatch({ type: types.ORDER_PAYPAL_PAID_CONFIRM_SUCCESS, payload: data });
+    } catch (error) {
+        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+        if (message === 'Not authorized, token failed') {
+            dispatch(logout());
+        }
+        dispatch({
+            type: types.ORDER_PAYPAL_PAID_CONFIRM_FAIL,
+            payload: message,
+        });
+    }
+};

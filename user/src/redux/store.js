@@ -38,6 +38,7 @@ import {
     orderCompleteReducer,
     orderGetItem,
     returnAmountProductReducer,
+    PaypalReducer,
 } from './Reducers/OrderReducres';
 import { Sliderload } from './Reducers/SliderReducer';
 import { getNewsReducer, newsListReducer } from './Reducers/NewsReducer';
@@ -69,6 +70,7 @@ const reducer = combineReducers({
     orderCreateReviewsRetult: orderCreateReviewReducer,
     orderGetItemRetult: orderGetItem,
     orderGetComplete: orderCompleteReducer,
+    paypalstate: PaypalReducer,
     returnAmount: returnAmountProductReducer,
     sliderLoad: Sliderload,
     CategoryList: categoryListReducer,

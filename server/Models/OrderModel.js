@@ -45,16 +45,16 @@ const orderSchema = mongoose.Schema(
             required: true,
             default: 'Payment in cash',
         },
+        paypalOrder: {
+            orderID: { type: String, required: true },
+            payerID: { type: String, required: true },
+            cost: { type: Number, required: true },
+        },
         paymentResult: {
             id: { type: String },
             status: { type: String },
             update_time: { type: String },
             email_address: { type: String },
-        },
-        taxPrice: {
-            type: Number,
-            required: true,
-            default: 0.0,
         },
         shippingPrice: {
             type: Number,

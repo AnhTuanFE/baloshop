@@ -14,6 +14,7 @@ import categoryRoute from './Routes/categoryRouter.js';
 import newsRouter from './Routes/newsRouter.js';
 import forgotPassRouter from './Routes/forgotPassRouter.js';
 import createUserRouter from './Routes/createUserRouter.js';
+import paypalRouter from './Routes/paypalRouter.js';
 
 import cors from 'cors';
 dotenv.config();
@@ -56,6 +57,7 @@ app.use('/api/imageProfile', imageProfile);
 // forgot
 app.use('/api/forgotPass', forgotPassRouter);
 app.use('/api/verifiedEmail', createUserRouter);
+app.use('/api/paypal', paypalRouter);
 
 // ERROR HANDLER
 app.use(notFound);

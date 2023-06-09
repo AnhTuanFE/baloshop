@@ -9,13 +9,18 @@ import { ORDER_CREATE_RESET } from '~/redux/Constants/OrderConstants';
 import PayModal from '~/components/Modal/PayModal';
 import Message from '~/components/HomeComponent/LoadingError/Error';
 import Loading from '~/components/HomeComponent/LoadingError/Loading';
+import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
+
 import './PlaceOrder.css';
 
 function PlaceOrder() {
+    const [paymentPaypal, setPaymentPaypal] = useState('');
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const paymentMethods_from_localStorage = localStorage.getItem('paymentMethod');
 
     const [messageApi, contextHolder] = message.useMessage();
+
     const successPlaceholder = () => {
         messageApi.open({
             type: 'success',
@@ -44,7 +49,6 @@ function PlaceOrder() {
                 name: pro.product.name,
                 color: pro.color,
                 qty: pro.qty,
-                // image: pro.product.image[0].image,
                 image: pro.product.image[0].urlImage,
                 price: pro.product.price,
                 product: pro.product._id,
@@ -72,24 +76,34 @@ function PlaceOrder() {
             .toFixed(0),
     );
     cart.shippingPrice = addDecimals(cart.itemsPrice > 0 ? (cart.itemsPrice > 100 ? 30000 : 20) : 0);
-    cart.taxPrice = addDecimals(Number((0.05 * cart.itemsPrice).toFixed(0)));
     cart.totalPrice =
-        cart?.cartItems.length > 0
-            ? (Number(cart.itemsPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice)).toFixed(0)
-            : 0;
+        cart?.cartItems.length > 0 ? (Number(cart.itemsPrice) + Number(cart.shippingPrice)).toFixed(0) : 0;
 
     const orderCreate = useSelector((state) => state.orderCreate);
     const { order, success, error } = orderCreate;
+
     useEffect(() => {
         if (error) {
             errorPlaceholder();
             dispatch({ type: ORDER_CREATE_RESET });
         }
     }, [error]);
+
+    useEffect(() => {
+        if (paymentMethods_from_localStorage == '"Thanh toán qua paypal"') {
+            setPaymentPaypal('Thanh toán qua paypal');
+        } else {
+            setPaymentPaypal('Thanh toán bằng tiền mặt');
+        }
+    });
+
     useEffect(() => {
         dispatch(listCart());
         if (success) {
-            navigate(`/order/${order._id}`);
+            // successPlaceholder();
+            setTimeout(() => {
+                navigate(`/order/${order._id}`);
+            }, 3000);
             dispatch({ type: ORDER_CREATE_RESET });
             dispatch(clearFromCart(userInfo._id));
         }
@@ -107,10 +121,9 @@ function PlaceOrder() {
                     postalCode: '',
                 },
                 // paymentMethod: cart.paymentMethod,
-                paymentMethod: 'Thanh toán bằng tiền mặt',
+                paymentMethod: paymentMethods_from_localStorage,
                 itemsPrice: cart.itemsPrice,
                 shippingPrice: cart.shippingPrice,
-                taxPrice: cart.taxPrice,
                 totalPrice: cart.totalPrice,
                 phone: userInfo.phone,
                 name: userInfo.name,
@@ -167,6 +180,79 @@ function PlaceOrder() {
             </>
         );
     }
+
+    //========================= handle thanh toán paypal =========================
+
+    // chuyển tiền việt thành tiền dollar
+    const handleExchangeCurrency = (vnd) => {
+        const usd = (vnd / 23000).toFixed(1);
+        return usd;
+    };
+
+    let moneyNeedPaid = handleExchangeCurrency(cart.totalPrice);
+
+    const createOrderPaypal = (data, actions) => {
+        console.log('data create order = ', data);
+        // paymentSource: 'paypal
+        return actions.order.create({
+            purchase_units: [
+                {
+                    amount: {
+                        currency_code: 'USD',
+                        value: `${moneyNeedPaid}`,
+                    },
+                },
+            ],
+        });
+    };
+
+    // Định nghĩa hàm xử lý khi thanh toán được xử lý thành công
+    const onApprove = (data, actions) => {
+        console.log('data onApprove = ', data);
+        const { orderID, payerID } = data;
+        if (orderID && payerID) {
+            dispatch(
+                createOrder({
+                    orderItems: currenCartItems,
+                    shippingAddress: {
+                        city: userInfo.city,
+                        distric: userInfo.distric,
+                        ward: userInfo.ward,
+                        address: userInfo.address,
+                        postalCode: '',
+                    },
+                    paymentMethod: paymentMethods_from_localStorage,
+                    paypalOrder: {
+                        orderID: orderID,
+                        payerID: payerID,
+                        cost: Number(moneyNeedPaid),
+                    },
+                    itemsPrice: cart.itemsPrice,
+                    shippingPrice: cart.shippingPrice,
+                    totalPrice: cart.totalPrice,
+                    phone: userInfo.phone,
+                    name: userInfo.name,
+                    email: userInfo.email,
+                }),
+            );
+        }
+        // orderID: '11B73242Y0409550V';
+        // payerID: 'JHQ5FY4NNVYSC';
+
+        return actions.order.capture().then(function (details) {
+            successPlaceholder();
+            // alert('Transaction completed by ' + details.payer.name.given_name);
+        });
+    };
+    // Định nghĩa hàm xử lý khi có lỗi xảy ra trong quá trình thanh toán
+    const onError = (err) => {
+        console.log('data err = ', err);
+    };
+    // Định nghĩa hàm xử lý khi người dùng hủy thanh toán
+    const onCancel = (data) => {
+        console.log(' data Cancelled =', data);
+    };
+    const ID_CLENT = 'Af5R_f2_MvnxLxpFeDO56MRvo6PGOIfXR3c0P9z8wyRGek_Th6JPBU7ktH5kgPpHW0Bb5pw0aasuA2NR';
     return (
         <>
             {error && <Loading />}
@@ -232,7 +318,7 @@ function PlaceOrder() {
                                 <p>
                                     <p>
                                         <span style={{ fontWeight: '600' }}>Phương thức:</span>{' '}
-                                        {'Thanh toán bằng tiền mặt'}
+                                        {paymentMethods_from_localStorage}
                                     </p>
                                 </p>
                             </div>
@@ -249,11 +335,7 @@ function PlaceOrder() {
                                 {cart.cartItems
                                     .filter((item) => item.isBuy == true)
                                     .map((item, index) => (
-                                        <div
-                                            className="order-product row"
-                                            key={index}
-                                            style={{ border: '1px solid rgb(218, 216, 216)', borderRadius: '4px' }}
-                                        >
+                                        <div className="order-product row" key={index}>
                                             {findCartCountInStock(item)}
                                         </div>
                                     ))}
@@ -274,17 +356,14 @@ function PlaceOrder() {
                                         <strong>Sản phẩm</strong>
                                     </td>
                                     <td>{Number(cart?.itemsPrice)?.toLocaleString('de-DE')}đ</td>
-                                    <td>
-                                        <strong>Thuế</strong>
-                                    </td>
-                                    <td>{Number(cart?.taxPrice)?.toLocaleString('de-DE')}đ</td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <strong>Phí vận chuyển</strong>
                                     </td>
                                     <td>{Number(cart?.shippingPrice)?.toLocaleString('de-DE')}đ</td>
-
+                                </tr>
+                                <tr>
                                     <td>
                                         <strong>Tổng tiền</strong>
                                     </td>
@@ -299,14 +378,36 @@ function PlaceOrder() {
                     style={{ padding: '10px 0', backgroundColor: '#fff', marginTop: '10px', marginBottom: '30px' }}
                 >
                     <div className="col-lg-12 fix-right">
-                        <div style={{ fontWeight: '600', paddingRight: '10px' }}>
-                            Tổng tiền: {Number(cart.totalPrice)?.toLocaleString('de-DE')}đ
-                        </div>
-                        {cart.cartItems.length === 0 ? null : (
+                        {paymentPaypal == 'Thanh toán qua paypal' ? (
+                            <div className="button_total_pay_paypal">Tổng thanh toán: {moneyNeedPaid} USD</div>
+                        ) : (
+                            <div className="button_total_pay_paypal">
+                                Tổng thanh toán: {Number(cart.totalPrice)?.toLocaleString('de-DE')} VNĐ
+                            </div>
+                        )}
+
+                        {cart.cartItems.length === 0 ? null : paymentPaypal == 'Thanh toán qua paypal' ? (
+                            <div className="wrap_paypal_button">
+                                <PayPalScriptProvider
+                                    options={{
+                                        'client-id': `${ID_CLENT}`,
+                                    }}
+                                    className="paypal_button_provider"
+                                >
+                                    <PayPalButtons
+                                        createOrder={createOrderPaypal}
+                                        onApprove={onApprove}
+                                        onError={onError}
+                                        onCancel={onCancel}
+                                        // layout: 'horizontal',
+                                        style={{ label: 'pay' }}
+                                        className="paypal_button"
+                                    />
+                                </PayPalScriptProvider>
+                            </div>
+                        ) : (
                             <button
                                 type="submit"
-                                //onClick={placeOrderHandler}
-                                // type="button"
                                 class="btn btn-primary pay-button"
                                 data-bs-toggle="modal"
                                 data-bs-target="#staticBackdrop"

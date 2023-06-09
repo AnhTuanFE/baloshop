@@ -16,12 +16,12 @@ orderRouter.post(
             shippingAddress,
             paymentMethod,
             itemsPrice,
-            taxPrice,
             shippingPrice,
             totalPrice,
             phone,
             name,
             email,
+            paypalOrder,
         } = req.body;
 
         if (orderItems.length != 0) {
@@ -45,6 +45,37 @@ orderRouter.post(
             res.status(400);
             throw new Error('No order items');
             return;
+        }
+        if (paypalOrder?.payerID) {
+            const order = new Order({
+                orderItems,
+                user: req.user._id,
+                shippingAddress,
+                paymentMethod,
+                itemsPrice,
+                shippingPrice,
+                totalPrice,
+                phone,
+                name,
+                email,
+                paypalOrder,
+                waitConfirmation: true,
+                isPaid: true,
+            });
+            for (let i = 0; i < orderItems.length; i++) {
+                const findProduct = await Product.findById(orderItems[i].product);
+                const optionColor = findProduct?.optionColor;
+                const findColor = optionColor.find((option) => option.color == orderItems[i].color);
+                const filterOptionColor = optionColor.filter((option) => option.color != orderItems[i].color);
+                if (findColor) {
+                    findColor.color = findColor.color;
+                    findColor.countInStock = findColor.countInStock - orderItems[i].qty;
+                }
+                let arrOption = [...filterOptionColor, findColor];
+                await Product.findOneAndUpdate({ _id: orderItems[i].product }, { optionColor: arrOption });
+            }
+            const createOrder = await order.save();
+            res.status(201).json(createOrder);
         } else {
             const order = new Order({
                 orderItems,
@@ -52,7 +83,6 @@ orderRouter.post(
                 shippingAddress,
                 paymentMethod,
                 itemsPrice,
-                taxPrice,
                 shippingPrice,
                 totalPrice,
                 phone,
