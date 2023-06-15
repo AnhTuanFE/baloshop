@@ -1,23 +1,46 @@
-import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import { faFacebook, faInstagram, faYoutube, faPinterestP, faLinkedin } from '@fortawesome/free-brands-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import clsx from 'clsx';
-import styles from './ContactInformation.module.scss';
+import Box from '@mui/material/Box';
+import { LocalPostOfficeSharp, FacebookSharp, Instagram, YouTube, Pinterest, LinkedIn } from '@mui/icons-material';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+
+const them = createTheme({
+    components: {
+        MuiSvgIcon: {
+            styleOverrides: {
+                root: {
+                    color: 'var(--white-color)',
+                    margin: '0px 4px',
+                },
+            },
+        },
+    },
+});
 function ContactInformation() {
     return (
-        <div className={clsx(styles.wrap_comtact_infomation)}>
-            <div className={clsx(styles.phoneNumber)}>
-                <p>Đường dây nóng: 123456789</p>
-            </div>
-            <div className={clsx(styles.wrap_social_network)}>
-                <FontAwesomeIcon icon={faEnvelope} className={clsx(styles.wrap_social_network_icon)} />
-                <FontAwesomeIcon icon={faFacebook} className={clsx(styles.wrap_social_network_icon)} />
-                <FontAwesomeIcon icon={faInstagram} className={clsx(styles.wrap_social_network_icon)} />
-                <FontAwesomeIcon icon={faYoutube} className={clsx(styles.wrap_social_network_icon)} />
-                <FontAwesomeIcon icon={faPinterestP} className={clsx(styles.wrap_social_network_icon)} />
-                <FontAwesomeIcon icon={faLinkedin} className={clsx(styles.wrap_social_network_icon)} />
-            </div>
-        </div>
+        <Box sx={{ width: '100%' }}>
+            <Box
+                sx={{
+                    '& > :not(style)': {
+                        m: 2,
+                    },
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    bgcolor: 'var(--main-color)',
+                }}
+            >
+                <Box sx={{ color: 'var(--white-color)' }}>Đường dây nóng: 123456789</Box>
+
+                <ThemeProvider theme={them}>
+                    <Box>
+                        <LocalPostOfficeSharp />
+                        <FacebookSharp />
+                        <Instagram />
+                        <YouTube />
+                        <Pinterest />
+                        <LinkedIn />
+                    </Box>
+                </ThemeProvider>
+            </Box>
+        </Box>
     );
 }
 

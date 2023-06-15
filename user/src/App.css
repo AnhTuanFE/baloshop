@@ -1,3 +1,9 @@
+:root {
+    --white-color: #fff;
+    --main-color: #00483d;
+    --main-color2: #007fff;
+    --content-color: #f4f4f4;
+}
 /* START CSS CHUNG*/
 .Announcement .container {
     padding-left: 0;
