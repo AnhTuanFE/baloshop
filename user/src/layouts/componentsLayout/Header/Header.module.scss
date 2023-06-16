@@ -1,9 +1,6 @@
 .header {
-    // background-color: #f4f4f4;
-    // height: 80px;
-    padding: 10px 0px 0px 0px;
     border-bottom: 1.2px solid #f4f4f4;
-    background-color: #f4f4f4;
+    background-color: #fbfbfb;
 }
 .Announcement {
     background-color: #00483d;
@@ -37,37 +34,36 @@
 //   align-items: center;
 // }
 .search_button {
-    // padding: 10px 20px;
-    // font-weight: 600;
-    width: 20%;
-    background-color: #00483d;
+    background-color: #121b60;
     color: white;
     border: 0;
     text-transform: uppercase;
     font-size: 12px;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
-    width: 65px;
+    width: 50px;
 }
 .submit_search {
-    font-size: 25px;
+    font-size: 20px;
 }
-// .header_logo {
-//   height: 50px;
-//   width: 30%;
-// }
-.header_logo img {
-    // width: 30%;
-    // vertical-align: middle;
-    // width: 33%;
+
+.header_logo {
+    width: 200px;
+    height: 100px;
+    padding: 0px;
 }
 .navbar_brand img {
-    width: 33%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 .input_group {
-    height: 45px;
-    width: 90%;
     display: flex;
+    width: 50%;
+    input {
+        width: 70%;
+        border-radius: 10px 0px 0px 10px;
+    }
 }
 .user_Button {
     margin-right: 20px;

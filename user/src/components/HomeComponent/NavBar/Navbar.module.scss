@@ -1,11 +1,25 @@
 .navbar_menu {
+    margin: auto;
 }
 .navbar_list {
     display: flex;
-    text-align: center;
-    padding-top: 5px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0px;
+    margin: 0px;
 }
 .navbar_list_li {
     list-style: none;
-    padding-right: 10px;
+    font-size: 1.2rem;
+    text-transform: capitalize;
+    font-weight: 700;
+    a {
+        background-color: #96a0f4;
+        margin: 0 5px;
+        padding: 15px;
+        border-radius: 0% 0% 50% 50%;
+        color: rgb(0, 0, 0);
+    }
 }

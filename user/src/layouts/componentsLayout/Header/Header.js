@@ -7,7 +7,7 @@ import {} from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './Header.module.scss';
 import NavBar from '~/components/HomeComponent/NavBar/Navbar';
-import ContactInformation from '../ContactInformation';
+// import ContactInformation from '../ContactInformation';
 
 import { logout, getUserDetails } from '~/redux/Actions/userActions'; //updateUserProfile,
 
@@ -114,27 +114,25 @@ const Header = (props) => {
     return (
         <>
             <div>
-                <ContactInformation />
+                {/* <ContactInformation /> */}
                 <div className={clsx(styles.header)}>
                     <div className={clsx(styles.container)}>
                         <div className={clsx(styles.pc_header)}>
-                            <div className="row">
-                                <div className="col-md-3 col-4 d-flex align-items-center">
+                            <div className="row flex-nowrap justify-content-start align-items-center">
+                                <div className={clsx(styles.header_logo)}>
                                     <Link className={clsx(styles.navbar_brand)} to="/">
                                         <img alt="logo" src={logoDefaul} />
                                     </Link>
                                 </div>
-                                <div className="col-md-6 col-8 header-nav__search">
-                                    <form
-                                        onSubmit={submitHandler}
-                                        /* className="input-group__search"*/ className={clsx(styles.input_group)}
-                                    >
+
+                                <div className="col-md-7 col-4 d-flex justify-content-between align-items-center">
+                                    <form onSubmit={submitHandler} className={clsx(styles.input_group)}>
                                         <input
                                             type="search"
-                                            placeholder="Tìm kiếm"
+                                            placeholder="Tìm kiếm..."
                                             value={keyword}
                                             onChange={(e) => setKeyword(e.target.value)}
-                                            className="form-control rounded search button-search dropdown-toggle"
+                                            className="form-control "
                                             data-toggle="dropdown"
                                             aria-haspopup="true"
                                             // aria-expanded="false"
@@ -145,7 +143,6 @@ const Header = (props) => {
                                                 className={clsx(styles.submit_search)}
                                             />
                                         </button>
-                                        <div className="dropdown-menu input-group__search">{/* <Suggestions /> */}</div>
                                     </form>
                                     <NavBar />
                                 </div>
