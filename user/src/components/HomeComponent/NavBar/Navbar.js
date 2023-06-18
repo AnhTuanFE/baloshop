@@ -12,9 +12,11 @@ export default function NavBar({ onRemove }) {
     const dispatch = useDispatch();
     const { CategoryList } = useSelector(productsRemainingSelector);
     const { categories } = CategoryList;
+
     useEffect(() => {
         dispatch(ListCategory());
     }, []);
+
     return (
         <>
             {/* Pc-navbar */}
