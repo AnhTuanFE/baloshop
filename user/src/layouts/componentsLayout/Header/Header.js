@@ -146,7 +146,7 @@ const Header = (props) => {
                                     </form>
                                     <NavBar />
                                 </div>
-                                <div className="col-md-4 d-flex align-items-center justify-content-center">
+                                <div className="col-md-3 d-flex align-items-center justify-content-center">
                                     {userInfo ? (
                                         <div className="btn-group me-3">
                                             <button
