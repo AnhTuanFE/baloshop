@@ -146,12 +146,12 @@ const Header = (props) => {
                                     </form>
                                     <NavBar />
                                 </div>
-                                <div className="col-md-3 d-flex align-items-center justify-content-end Login-Register">
+                                <div className="col-md-4 d-flex align-items-center justify-content-center">
                                     {userInfo ? (
-                                        <div className="btn-group">
+                                        <div className="btn-group me-3">
                                             <button
                                                 type="button"
-                                                className="name-button dropdown-toggle name-button__user"
+                                                className="name-button dropdown-toggle name-button__user align-items-center bg-transparent"
                                                 data-toggle="dropdown"
                                                 aria-haspopup="true"
                                                 aria-expanded="false"
@@ -167,56 +167,38 @@ const Header = (props) => {
                                                     }`}
                                                     alt=""
                                                     style={{
-                                                        height: '45px',
-                                                        width: '45px',
+                                                        height: '50px',
+                                                        width: '50px',
                                                         borderRadius: '100%',
                                                         objectFit: 'cover',
                                                         flexShrink: '0',
                                                     }}
                                                     className="fix-none"
                                                 />
-                                                <span className="name-button__p ps-1">{notiUser()}</span>
+                                                <span className="name-button__p ps-2 fw-bold fs-5">{notiUser()}</span>
                                             </button>
-                                            <div className="dropdown-menu">
-                                                <Link
-                                                    className="dropdown-item"
-                                                    style={{ textTransform: 'capitalize' }}
-                                                    to="/profile"
-                                                >
-                                                    Tài khoản của tôi
+                                            <div className="dropdown-menu text-center">
+                                                <Link className={clsx(styles.sub_menu)} to="/profile">
+                                                    Tài khoản
                                                 </Link>
-
-                                                <Link
-                                                    className="dropdown-item"
-                                                    to="#"
-                                                    style={{ textTransform: 'capitalize' }}
-                                                    onClick={logoutHandler}
-                                                >
+                                                <Link className={clsx(styles.sub_menu)} to="#" onClick={logoutHandler}>
                                                     Đăng xuất
                                                 </Link>
                                             </div>
                                         </div>
                                     ) : (
                                         <>
-                                            <Link
-                                                to="/register"
-                                                style={{ textTransform: 'capitalize', fontWeight: '600' }}
-                                                className={clsx(styles.user_Button)}
-                                            >
+                                            <Link to="/register" className={clsx(styles.user_Button)}>
                                                 Đăng kí
                                             </Link>
-                                            <Link
-                                                to="/login"
-                                                style={{ textTransform: 'capitalize', fontWeight: '600' }}
-                                                className={clsx(styles.user_Button)}
-                                            >
+                                            <Link to="/login" className={clsx(styles.user_Button)}>
                                                 Đăng nhập
                                             </Link>
                                         </>
                                     )}
 
-                                    <Link to="/cart" className={clsx(styles.user_Button)}>
-                                        <i className="fas fa-shopping-bag"></i>
+                                    <Link to="/cart" className={clsx(styles.user_Button_Cart)}>
+                                        <i class="far fa-shopping-cart"></i>
                                         <span className={clsx(styles.badge)}>{cartItems ? cartItems?.length : 0}</span>
                                     </Link>
                                 </div>
@@ -226,7 +208,7 @@ const Header = (props) => {
                 </div>
             </div>
             <div className="back-to-top" onClick={handlerScroll} style={checkScroll ? {} : { display: 'none' }}>
-                <i class="fas fa-chevron-double-up"></i>
+                <i className="fas fa-chevron-double-up"></i>
             </div>
         </>
     );
