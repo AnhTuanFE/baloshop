@@ -1,123 +1,159 @@
+import { Box, Typography } from '@mui/material';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import clsx from 'clsx';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import moment from 'moment';
+import PropTypes from 'prop-types';
+import SwipeableViews from 'react-swipeable-views';
+import { useTheme } from '@mui/material/styles';
+import AppBar from '@mui/material/AppBar';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import { useSelector } from 'react-redux';
+import Detail_infor_account from './profileComponent/detail_infor_account/Detail_infor_account';
+import Change_password from './profileComponent/change_password/Change_password';
+import Crop_image_avatar from './profileComponent/crop_image_avatar/Crop_image_avatar';
+import SideBar_Profile from './profileComponent/sideBar_profile/SideBar_Profile';
 
-import ProfileTabs from '~/components/profileComponents/ProfileTabs';
-import { imageDefaul } from '~/utils/data';
-import './Profile.css';
+import styles from './Profile.module.css';
 
-function Profile() {
-    const dispatch = useDispatch();
-    const userUpdate = useSelector((state) => state.userUpdateProfile);
-    const { success: successUpdate } = userUpdate;
-    const userLogin = useSelector((state) => state.userLogin);
-    const { userInfo } = userLogin;
-    const [buleanProfile, setBuleanProfile] = useState(true);
+const them = createTheme({
+    components: {
+        MuiSvgIcon: {
+            styleOverrides: {
+                root: {
+                    color: 'white',
+                    margin: '0px 4px',
+                },
+            },
+        },
+    },
+});
+const themTest = createTheme({
+    components: {
+        styleOverrides: {
+            root: {
+                border: 'none',
+                margin: '12px',
+            },
+        },
+    },
+});
+
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
 
     return (
-        <>
-            <div className="container mt-lg-5 mt-3">
-                <div className="row align-items-start">
-                    <div className="col-lg-4 p-0 ">
-                        <div className="author-card pb-0">
-                            <div
-                                className="row fix-culum"
-                                style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                }}
-                            >
-                                <div
-                                    className="col-md-4"
-                                    style={{
-                                        marginTop: '12px',
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignItems: 'center',
-                                    }}
-                                >
-                                    <img
-                                        src={
-                                            userInfo?.image?.urlImageCloudinary !== undefined
-                                                ? userInfo?.image?.urlImageCloudinary
-                                                : imageDefaul
-                                        }
-                                        alt=""
-                                        style={{
-                                            height: '100px',
-                                            width: '100px',
-                                            borderRadius: '100%',
-                                            objectFit: 'cover',
-                                            flexShrink: '0',
-                                            marginBottom: '5px',
-                                        }}
-                                        className="fix-none"
-                                    />
-                                </div>
-                                <div className="col-md-8">
-                                    <h5 className="author-card-name mb-2">
-                                        <strong>{userInfo.name}</strong>
-                                    </h5>
-                                    <span className="author-card-position">
-                                        <>Ngày tham gia: {moment(userInfo.createdAt).format('DD/MM/YYYY')}</>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="wizard pt-3 fix-top" style={{ marginTop: '10px' }}>
-                            <div class="d-flex align-items-start">
-                                <div
-                                    class="nav align-items-start flex-column col-12 nav-pills me-3 "
-                                    id="v-pills-tab"
-                                    role="tablist"
-                                    aria-orientation="vertical"
-                                >
-                                    <button
-                                        class={buleanProfile ? 'nav-link active color-red' : 'nav-link'}
-                                        id="v-pills-home-tab"
-                                        data-bs-toggle="pill"
-                                        data-bs-target="#v-pills-home"
-                                        type="button"
-                                        role="tab"
-                                        aria-controls="v-pills-home"
-                                        aria-selected="true"
-                                        style={{ display: 'flex', alignItems: 'center', fontWeight: '600' }}
-                                    >
-                                        <div style={{ fontSize: '18px', paddingRight: '10px' }}>
-                                            <i class="fas fa-cogs"></i>
-                                        </div>
-                                        Hồ Sơ Cá Nhân
-                                    </button>
-                                    <button
-                                        className="nav-link d-flex"
-                                        style={{ display: 'flex', alignItems: 'center', fontWeight: '600' }}
-                                    >
-                                        <div style={{ fontSize: '18px', paddingRight: '10px' }}>
-                                            <i class="fas fa-shopping-cart"></i>
-                                        </div>
-                                        <Link to="/purchasehistory">Danh Sách Mua Hàng</Link>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* panels */}
-                    <div class="tab-content col-lg-8 pb-5 pt-lg-0 pt-3" id="v-pills-tabContent">
-                        <div
-                            class="tab-pane fade show active"
-                            id="v-pills-home"
-                            role="tabpanel"
-                            aria-labelledby="v-pills-home-tab"
-                        >
-                            <ProfileTabs />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </>
+        <Typography
+            component="div"
+            role="tabpanel"
+            hidden={value !== index}
+            id={`action-tabpanel-${index}`}
+            aria-labelledby={`action-tab-${index}`}
+            {...other}
+        >
+            {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+        </Typography>
     );
 }
 
-export default Profile;
+TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+    return {
+        id: `action-tab-${index}`,
+        'aria-controls': `action-tabpanel-${index}`,
+    };
+}
+
+export default function Profile() {
+    const theme = useTheme();
+
+    const userDetails = useSelector((state) => state.userDetails);
+    const { loading, error, user, success: successDetail } = userDetails;
+
+    const userLogin = useSelector((state) => state.userLogin);
+    const { userInfo } = userLogin;
+
+    // ================ để đấy đã ===============
+    const [value, setValue] = useState(0);
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+    const handleChangeIndex = (index) => {
+        setValue(index);
+    };
+    // ================ để đấy ===============
+
+    return (
+        <Box
+            sx={{
+                '& > :not(style)': {
+                    m: 5,
+                },
+            }}
+        >
+            <Box
+                sx={{
+                    display: 'flex',
+                }}
+            >
+                <SideBar_Profile userInfo={userInfo} />
+
+                <Box
+                    sx={{
+                        flex: '2',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Box
+                        sx={{
+                            bgcolor: 'background.paper',
+                            minHeight: 200,
+                            position: 'relative',
+                            margin: '0px 20px',
+                        }}
+                    >
+                        <AppBar position="static" color="default">
+                            <Tabs
+                                value={value}
+                                onChange={handleChange}
+                                indicatorColor="primary"
+                                textColor="primary"
+                                variant="fullWidth"
+                                aria-label="action tabs example"
+                            >
+                                <Tab label="Thông tin" {...a11yProps(0)} />
+                                <Tab label="Đổi mật khẩu" {...a11yProps(1)} />
+                            </Tabs>
+                        </AppBar>
+                        <SwipeableViews
+                            axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+                            index={value}
+                            onChangeIndex={handleChangeIndex}
+                            className={clsx(styles.table_swich)}
+                        >
+                            <TabPanel value={value} index={0} dir={theme.direction}>
+                                <Detail_infor_account user={user} />
+                            </TabPanel>
+                            <TabPanel value={value} index={1} dir={theme.direction}>
+                                <Change_password user={user} />
+                            </TabPanel>
+                        </SwipeableViews>
+                    </Box>
+                </Box>
+
+                <Box
+                    sx={{
+                        flex: '1',
+                    }}
+                >
+                    <Crop_image_avatar user={user} />
+                </Box>
+            </Box>
+        </Box>
+    );
+}

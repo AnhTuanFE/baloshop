@@ -1,7 +1,20 @@
-import { Box, IconButton, Typography, Avatar, TextField, MenuItem, Select, Autocomplete } from '@mui/material';
-import { Search, LocalMall } from '@mui/icons-material';
+import { Box, Typography } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { Link } from 'react-router-dom';
+import clsx from 'clsx';
+import { useState } from 'react';
+import styles from './Header2.module.css';
+import PropTypes from 'prop-types';
+import SwipeableViews from 'react-swipeable-views';
+import { useTheme } from '@mui/material/styles';
+import AppBar from '@mui/material/AppBar';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import { useSelector } from 'react-redux';
+// =============================================
+import Detail_infor_account from './Detail_infor_account';
+import Change_password from './Change_password';
+import Crop_image_avatar from './Crop_image_avatar';
+import SideBar_Profile from './SideBar_Profile';
 
 const them = createTheme({
     components: {
@@ -20,113 +33,72 @@ const themTest = createTheme({
         styleOverrides: {
             root: {
                 border: 'none',
+                margin: '12px',
             },
         },
     },
 });
 
-const UINotLogin = () => {
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
     return (
-        <Box
-            sx={{
-                flex: '1',
-                display: 'flex',
-            }}
+        <Typography
+            component="div"
+            role="tabpanel"
+            hidden={value !== index}
+            id={`action-tabpanel-${index}`}
+            aria-labelledby={`action-tab-${index}`}
+            {...other}
         >
-            <Typography
-                align="center"
-                sx={{
-                    margin: '0px 8px',
-                    fontSize: '18px',
-                    verticalAlign: 'center',
-                    fontWeight: 'bold',
-                    padding: '4px 0px',
-                    margin: 'auto',
-                }}
-            >
-                Đăng nhập
-            </Typography>
-            <Typography
-                align="center"
-                sx={{
-                    margin: '0px 8px',
-                    fontSize: '18px',
-                    verticalAlign: 'center',
-                    fontWeight: 'bold',
-                    padding: '4px 0px',
-                    margin: 'auto',
-                }}
-            >
-                Đăng ký
-            </Typography>
-        </Box>
+            {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+        </Typography>
     );
+}
+
+TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
 };
-const UILogined = () => {
-    return (
-        <Box
-            sx={{
-                flex: '1',
-                display: 'flex',
-            }}
-        >
-            <Avatar
-                alt="Remy Sharp"
-                src="https://res.cloudinary.com/dt0iazjvh/image/upload/v1685325635/baloshopAvatar/bdvi7rllxxix656jcytq.jpg"
-                sx={{ width: 48, height: 48 }}
-            />
-            <Select
-                sx={{
-                    width: '200px',
-                }}
-                value={10}
-                variant="standard"
-            >
-                <MenuItem
-                    value={10}
-                    sx={{
-                        display: 'none',
-                    }}
-                >
-                    Tuấn đẹp zai
-                </MenuItem>
-                <MenuItem value={20}>Tài khoản của tôi</MenuItem>
-                <MenuItem value={30}>Đăng xuất</MenuItem>
-            </Select>
-            <IconButton aria-label="delete" size="medium">
-                <LocalMall
-                    fontSize="inherit"
-                    sx={{
-                        color: 'black',
-                    }}
-                />
-                <Box
-                    sx={{
-                        borderRadius: '50%',
-                        backgroundColor: 'red',
-                        fontSize: '14px',
-                        padding: '0px 4px',
-                        color: 'var(--white-color)',
-                    }}
-                >
-                    1
-                </Box>
-            </IconButton>
-        </Box>
-    );
-};
+
+function a11yProps(index) {
+    return {
+        id: `action-tab-${index}`,
+        'aria-controls': `action-tabpanel-${index}`,
+    };
+}
+
 export default function Header2() {
+    const theme = useTheme();
+
+    const userDetails = useSelector((state) => state.userDetails);
+    const { loading, error, user, success: successDetail } = userDetails;
+
+    const userLogin = useSelector((state) => state.userLogin);
+    const { userInfo } = userLogin;
+
+    // ================ để đấy đã ===============
+    const [value, setValue] = useState(0);
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+    const handleChangeIndex = (index) => {
+        setValue(index);
+    };
+    // ================ để đấy ===============
+
     return (
-        <Box sx={{ width: '100%' }}>
+        <Box
+            sx={{
+                '& > :not(style)': {
+                    m: 5,
+                },
+            }}
+        >
             <Box
                 sx={{
-                    '& > :not(style)': {
-                        m: 4,
-                    },
                     display: 'flex',
-                    justifyContent: 'space-between',
-                    bgcolor: 'var(--content-color)',
-                    marginTop: '20px',
                 }}
             >
                 <Box
@@ -134,60 +106,59 @@ export default function Header2() {
                         flex: '1',
                     }}
                 >
-                    <img
-                        alt="Logo"
-                        src="https://res.cloudinary.com/tlsbaloshop/image/upload/v1684744391/baloshopDefaulLogo/logo2_iac27f.png"
-                        style={{ width: '124px' }}
-                    />
-                </Box>
-                <Box
-                    sx={{
-                        flex: '3',
-                        display: 'flex',
-                        justifyContent: 'center',
-                    }}
-                >
-                    <Autocomplete
-                        disablePortal
-                        id="combo-box-demo"
-                        options={[
-                            {
-                                label: 'hello',
-                            },
-                            {
-                                label: 'hello',
-                            },
-                        ]}
-                        sx={{ width: '70%', borderRadius: '6px' }}
-                        renderInput={(params) => (
-                            <TextField
-                                sx={{
-                                    backgroundColor: 'white',
-                                }}
-                                {...params}
-                                label="Tìm kiếm"
-                            />
-                        )}
-                    />
-                    <IconButton
-                        aria-label="search"
-                        size="large"
-                        sx={{
-                            bgcolor: 'var(--main-color)',
-                            borderRadius: '4px 8px 8px 4px',
-                            padding: '-4px 14px',
-                        }}
-                    >
-                        <Search
-                            fontSize="inherit"
-                            sx={{
-                                color: 'var(--white-color)',
-                            }}
-                        />
-                    </IconButton>
+                    <SideBar_Profile userInfo={userInfo} />
                 </Box>
 
-                {UILogined()}
+                <Box
+                    sx={{
+                        flex: '2',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Box
+                        sx={{
+                            bgcolor: 'background.paper',
+                            minHeight: 200,
+                            position: 'relative',
+                            margin: '0px 20px',
+                        }}
+                    >
+                        <AppBar position="static" color="default">
+                            <Tabs
+                                value={value}
+                                onChange={handleChange}
+                                indicatorColor="primary"
+                                textColor="primary"
+                                variant="fullWidth"
+                                aria-label="action tabs example"
+                            >
+                                <Tab label="Thông tin" {...a11yProps(0)} />
+                                <Tab label="Đổi mật khẩu" {...a11yProps(1)} />
+                            </Tabs>
+                        </AppBar>
+                        <SwipeableViews
+                            axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+                            index={value}
+                            onChangeIndex={handleChangeIndex}
+                            className={clsx(styles.table_swich)}
+                        >
+                            <TabPanel value={value} index={0} dir={theme.direction}>
+                                <Detail_infor_account user={user} />
+                            </TabPanel>
+                            <TabPanel value={value} index={1} dir={theme.direction}>
+                                <Change_password user={user} />
+                            </TabPanel>
+                        </SwipeableViews>
+                    </Box>
+                </Box>
+
+                <Box
+                    sx={{
+                        flex: '1',
+                    }}
+                >
+                    <Crop_image_avatar user={user} />
+                </Box>
             </Box>
         </Box>
     );

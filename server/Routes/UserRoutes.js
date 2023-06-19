@@ -167,12 +167,12 @@ userRouter.put(
                             const filter = { _id: id };
                             const update = {
                                 $set: {
-                                    name: name,
-                                    phone: phone,
-                                    city: city,
-                                    distric: distric,
-                                    ward: ward,
-                                    address: address,
+                                    name: name || user.name,
+                                    phone: phone || user.phone,
+                                    city: city || user.city,
+                                    distric: distric || user.distric,
+                                    ward: ward || user.ward,
+                                    address: address || user.address,
                                     image: {
                                         urlImageCloudinary: imageURL,
                                         idImageCloudinary: imageID,
@@ -204,7 +204,7 @@ userRouter.put(
                     if (await user.matchPassword(req.body.oldPassword)) {
                         user.password = req.body.password;
                         const updatedPassword = await user.save();
-                        res.json({
+                        res.status(201).json({
                             _id: user._id,
                             name: updatedPassword.name,
                             email: user.email,
