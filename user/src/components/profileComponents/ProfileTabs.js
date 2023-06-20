@@ -70,7 +70,6 @@
 //     } = userUpdateProfile;
 
 //     const listProvince = useSelector((state) => state.provincesVietNam);
-
 //     useEffect(() => {
 //         dispatch(getListProvincesAction());
 //     }, []);

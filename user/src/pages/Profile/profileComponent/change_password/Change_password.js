@@ -1,13 +1,30 @@
 import { Box, Typography, TextField, Button, Stack } from '@mui/material';
 import clsx from 'clsx';
 import styles from './Change_password.module.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
 import { updateUserPassword } from '~/redux/Actions/userActions';
+import { notification } from 'antd';
+import { useEffect } from 'react';
 
 function Change_password({ user }) {
     const dispatch = useDispatch();
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (placement, notify, type) => {
+        api[type]({
+            message: `Thông báo `,
+            description: `${notify}`,
+            placement,
+        });
+    };
+    const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
 
+    const {
+        successPass: updatesuccessPass,
+        success: updatesuccess,
+        loading: updateLoading,
+        error: errorProfile,
+    } = userUpdateProfile;
     const {
         register,
         watch,
@@ -20,9 +37,16 @@ function Change_password({ user }) {
         const { password, oldPassword } = data;
         dispatch(updateUserPassword({ id: user._id, password, oldPassword }));
     };
+    useEffect(() => {
+        if (updatesuccessPass === true) {
+            openNotification('top', 'Mật khẩu cập nhật thành công', 'success');
 
+            // dispatch({ type: USER_UPDATE_PROFILE_RESET });
+        }
+    }, [dispatch, updatesuccessPass]);
     return (
         <>
+            {contextHolder}
             <form onSubmit={handleSubmit(submitUpdatePassword)}>
                 <Stack>
                     <Box className={clsx(styles.wrap_info_item)}>

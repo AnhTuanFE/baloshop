@@ -59,7 +59,6 @@ export default function Header2(props) {
             }
         }
     };
-
     useEffect(() => {
         dispatch(getUserDetails());
     }, [userInfo]);
@@ -200,17 +199,20 @@ export default function Header2(props) {
         );
     };
     return (
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{}}>
             <ContactInformation />
-            <Box
+            {/*
                 sx={{
                     '& > :not(style)': {
                         m: 3,
                     },
+             */}
+            <Box
+                sx={{
                     display: 'flex',
                     justifyContent: 'space-between',
                     bgcolor: 'var(--content-color)',
-                    // marginTop: '20px',
+                    paddingTop: '20px',
                 }}
             >
                 <Box
@@ -240,6 +242,9 @@ export default function Header2(props) {
                                 id="combo-box-demo"
                                 options={key}
                                 sx={{ width: '70%', borderRadius: '6px' }}
+                                onChange={(e) => {
+                                    setKeyword(e.target.outerText);
+                                }}
                                 renderInput={(params) => (
                                     <TextField
                                         onChange={(e) => {
