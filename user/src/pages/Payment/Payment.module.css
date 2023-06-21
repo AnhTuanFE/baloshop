@@ -29,7 +29,7 @@
     font-weight: bold;
 }
 .btn_continue {
-    background-color: #00483d;
+    background-color: var(--main-color);
     color: #ffffff;
     font-size: 17px;
     border-radius: 12px;

@@ -143,7 +143,7 @@
     margin-top: 15px;
     padding: 15px 0;
     border: 0;
-    background-color: #00483d;
+    background-color: var(--main-color);
     border-radius: 5px;
     text-transform: uppercase;
     color: white; */
@@ -164,7 +164,7 @@
     margin-top: 15px;
     padding: 15px 0;
     border: 0;
-    background-color: #00483d;
+    background-color: var(--main-color);
     border-radius: 5px;
     text-transform: uppercase;
     color: white;
@@ -192,7 +192,7 @@
 }
 .Login button {
     width: 100%;
-    background-color: #00483d;
+    background-color: var(--main-color);
     color: white;
     text-transform: uppercase;
     margin: 10px 0;

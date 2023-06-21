@@ -11,32 +11,6 @@
 }
 /* END CSS CHUNG*/
 
-/*======================================== start slider ==============================================*/
-.slick-next::before {
-    color: #00483d !important;
-    font-size: 30px !important;
-}
-.slick-prev::before {
-    color: #00483d !important;
-    font-size: 30px !important;
-}
-.slick-prev {
-    left: 2% !important;
-    z-index: 2;
-}
-.slick-next {
-    right: 3% !important;
-    z-index: 2;
-}
-.slick-prev:hover {
-    font-size: 30px !important;
-    /* color: red; */
-}
-.slick-next:hover {
-    font-size: 30px !important;
-}
-/*=========================================== end slider =====================================*/
-
 /* ========================================= start thư viện corousel===============================*/
 .corousel-div:hover {
     transform: translateY(-4px);
@@ -52,15 +26,15 @@
     margin-top: 40px !important;
 }
 .slick-next::before {
-    color: #00483d !important;
-    font-size: 30px !important;
+    color: var(--main-color2) !important;
+    font-size: 40px !important;
 }
 .slick-prev::before {
-    color: #00483d !important;
-    font-size: 30px !important;
+    color: var(--main-color2) !important;
+    font-size: 40px !important;
 }
 .slick-prev {
-    left: 2% !important;
+    left: 3% !important;
     z-index: 2;
 }
 .slick-next {

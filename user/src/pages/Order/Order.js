@@ -477,7 +477,7 @@ function Order() {
                                                             className="col-12 bg-orange border-0 p-3 rounded text-white"
                                                             type="button"
                                                             data-bs-dismiss={successReviewOrder === true ? 'modal' : ''}
-                                                            style={{ backgroundColor: '#00483d' }}
+                                                            style={{ backgroundColor: 'var(--main-color)' }}
                                                             onClick={() => {
                                                                 dispatch(
                                                                     createProductReview(

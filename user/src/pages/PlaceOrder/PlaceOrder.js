@@ -411,7 +411,7 @@ function PlaceOrder() {
                                 class="btn btn-primary pay-button"
                                 data-bs-toggle="modal"
                                 data-bs-target="#staticBackdrop"
-                                style={{ backgroundColor: '#00483d', borderColor: '#00483d' }}
+                                style={{ backgroundColor: 'var(--main-color)', borderColor: 'var(--main-color)' }}
                             >
                                 Đặt hàng
                             </button>

@@ -42,7 +42,7 @@ textarea:focus {
     padding: 0;
 }
 .Announcement {
-    background-color: #00483d;
+    background-color: var(--main-color);
     padding: 15px 0;
 }
 .Announcement .container {
@@ -72,44 +72,3 @@ input,
     border: none;
     outline: none;
 }
-
-/*
-@import 'normalize.css';
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
-
-:root {
-    --primary: #fe2c55;
-    --black: #000;
-    --text-color: #333;
-    //defaul layout
-    --default-layout-header-height: 60px;
-    --default-layout-width: 1150px;
-}
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-html {
-    font-size: 62.5%;
-}
-body {
-    font-family: 'Roboto', sans-serif;
-    font-size: 1.6rem;
-    line-height: 1.5;
-    text-rendering: optimizeSpeed;
-    color: var(--text-color);
-}
-button,
-input,
-[tabindex] {
-    border: none;
-    outline: none;
-}
-a[href] {
-    color: var(--text-color);
-    text-decoration: none;
-}
-
-
-*/

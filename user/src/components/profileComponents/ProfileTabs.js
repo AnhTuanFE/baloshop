@@ -508,7 +508,7 @@
 //                             </div>
 //                         </div>
 //                         <div className="button-submit">
-//                             <button style={{ backgroundColor: '#00483d' }} type="submit">
+//                             <button style={{ backgroundColor: 'var(--main-color)' }} type="submit">
 //                                 Cập nhật hồ sơ
 //                             </button>
 //                         </div>
@@ -573,7 +573,7 @@
 //                         </div>
 
 //                         <div className="button-submit">
-//                             <button style={{ backgroundColor: '#00483d' }} type="submit">
+//                             <button style={{ backgroundColor: 'var(--main-color)' }} type="submit">
 //                                 Cập nhật mật khẩu
 //                             </button>
 //                         </div>

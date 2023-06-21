@@ -1,20 +1,18 @@
 import { Box, Typography } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import clsx from 'clsx';
-import { useState } from 'react';
-import PropTypes from 'prop-types';
-import SwipeableViews from 'react-swipeable-views';
 import { useTheme } from '@mui/material/styles';
-import AppBar from '@mui/material/AppBar';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
 import { useSelector } from 'react-redux';
 import Detail_infor_account from './profileComponent/detail_infor_account/Detail_infor_account';
 import Change_password from './profileComponent/change_password/Change_password';
 import Crop_image_avatar from './profileComponent/crop_image_avatar/Crop_image_avatar';
 import SideBar_Profile from './profileComponent/sideBar_profile/SideBar_Profile';
+import { Tabs } from 'antd';
+import { AppleOutlined, AndroidOutlined, WindowsOutlined } from '@ant-design/icons';
 
 import styles from './Profile.module.css';
+import './Profile.css';
+const { TabPane } = Tabs;
 
 const them = createTheme({
     components: {
@@ -56,19 +54,6 @@ function TabPanel(props) {
     );
 }
 
-TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
-};
-
-function a11yProps(index) {
-    return {
-        id: `action-tab-${index}`,
-        'aria-controls': `action-tabpanel-${index}`,
-    };
-}
-
 export default function Profile() {
     const theme = useTheme();
 
@@ -78,16 +63,18 @@ export default function Profile() {
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
 
-    // ================ để đấy đã ===============
-    const [value, setValue] = useState(0);
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
-    const handleChangeIndex = (index) => {
-        setValue(index);
-    };
-    // ================ để đấy ===============
-
+    const items = [
+        {
+            label: <span className={clsx(styles.head_swipe_view_label)}>Thông tin</span>,
+            key: '1',
+            children: <Detail_infor_account user={user} />,
+        },
+        {
+            label: <span className={clsx(styles.head_swipe_view_label)}>Đổi mật khẩu</span>,
+            key: '2',
+            children: <Change_password user={user} />,
+        },
+    ];
     return (
         <Box
             sx={{
@@ -109,41 +96,13 @@ export default function Profile() {
                         alignItems: 'center',
                     }}
                 >
-                    <Box
-                        sx={{
-                            bgcolor: 'background.paper',
-                            minHeight: 200,
-                            position: 'relative',
-                            margin: '0px 20px',
-                        }}
-                    >
-                        <AppBar position="static" color="default">
-                            <Tabs
-                                value={value}
-                                onChange={handleChange}
-                                indicatorColor="primary"
-                                textColor="primary"
-                                variant="fullWidth"
-                                aria-label="action tabs example"
-                            >
-                                <Tab label="Thông tin" {...a11yProps(0)} />
-                                <Tab label="Đổi mật khẩu" {...a11yProps(1)} />
-                            </Tabs>
-                        </AppBar>
-                        <SwipeableViews
-                            axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-                            index={value}
-                            onChangeIndex={handleChangeIndex}
-                            className={clsx(styles.table_swich)}
-                        >
-                            <TabPanel value={value} index={0} dir={theme.direction}>
-                                <Detail_infor_account user={user} />
-                            </TabPanel>
-                            <TabPanel value={value} index={1} dir={theme.direction}>
-                                <Change_password user={user} />
-                            </TabPanel>
-                        </SwipeableViews>
-                    </Box>
+                    <Tabs defaultActiveKey="1" items={items} className={clsx(styles.head_swipe)}>
+                        {items.map((item) => (
+                            <TabPane tab={item.label} key={item.key} className={clsx(styles.head_swipe_view)}>
+                                {item.children}
+                            </TabPane>
+                        ))}
+                    </Tabs>
                 </Box>
 
                 <Box

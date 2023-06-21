@@ -23,7 +23,7 @@
     margin-top: 15px;
     padding: 15px 0;
     border: 0;
-    background-color: #00483d;
+    background-color: var(--main-color);
     border-radius: 5px;
     text-transform: uppercase;
     color: white;

@@ -1,4 +1,13 @@
-.table_swich {
+.head_swipe {
+    padding: 20px 40px;
     box-shadow: 0 1px 2px 0 rgb(60 64 67 / 10%), 0 2px 6px 2px rgb(60 64 67 / 15%);
-    background-color: #e8f5f7;
+}
+.head_swipe_view {
+    background-color: yellow;
+}
+.head_swipe_view_label {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
 }
