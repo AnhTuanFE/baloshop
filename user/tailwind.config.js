@@ -4,7 +4,7 @@ module.exports = {
     theme: {
         extend: {
             backgroundColor: {
-                'custom-color': 'var(--main-color)',
+                'custom-background-color': 'var(--main-color)',
             },
         },
     },

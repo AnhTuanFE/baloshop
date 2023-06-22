@@ -56,24 +56,24 @@ function SideBar_Profile({ userInfo }) {
                     <nav aria-label="main mailbox folders">
                         <List>
                             <ListItem disablePadding>
-                                <ListItemButton>
-                                    <ListItemIcon>
-                                        <ManageAccounts fontSize="large" color="secondary" />
-                                    </ListItemIcon>
-                                    <Link to={'/profile'}>
+                                <Link to={'/profile'} className="w-full">
+                                    <ListItemButton>
+                                        <ListItemIcon>
+                                            <ManageAccounts fontSize="large" color="secondary" />
+                                        </ListItemIcon>
                                         <ListItemText primary="Hồ sơ cá nhân" />
-                                    </Link>
-                                </ListItemButton>
+                                    </ListItemButton>
+                                </Link>
                             </ListItem>
                             <ListItem disablePadding>
-                                <ListItemButton>
-                                    <ListItemIcon>
-                                        <FactCheckRounded fontSize="large" color="secondary" />
-                                    </ListItemIcon>
-                                    <Link to="/purchasehistory">
+                                <Link to="/purchasehistory" className="w-full">
+                                    <ListItemButton>
+                                        <ListItemIcon>
+                                            <FactCheckRounded fontSize="large" color="secondary" />
+                                        </ListItemIcon>
                                         <ListItemText primary="Danh sách mua hàng" />
-                                    </Link>
-                                </ListItemButton>
+                                    </ListItemButton>
+                                </Link>
                             </ListItem>
                         </List>
                     </nav>

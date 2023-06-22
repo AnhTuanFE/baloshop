@@ -20,22 +20,26 @@ export default function Sliders() {
         slidesToScroll: 1,
         autoplay: true,
         speed: 1000,
-        // autoplaySpeed: 4000,
-        autoplaySpeed: 4000000,
-
+        autoplaySpeed: 4000,
         cssEase: 'linear',
     };
     return (
-        <div className="m-4 rounded-xl bg-custom-color pb-4 pt-6">
-            <Slider {...settings}>
-                {slider?.map((value, index) => {
-                    return (
-                        <div key={index}>
-                            <img src={value.url} className="mx-auto my-auto h-[450px] rounded-xl" alt="slider image" />
-                        </div>
-                    );
-                })}
-            </Slider>
+        <div className="mx-auto my-auto ml-7 mr-7 max-w-screen-2xl">
+            <div className="m-4  rounded-xl bg-custom-background-color pb-4 pt-6">
+                <Slider {...settings}>
+                    {slider?.map((value, index) => {
+                        return (
+                            <div key={index}>
+                                <img
+                                    src={value.url}
+                                    className="mx-auto my-auto h-[450px] rounded-xl"
+                                    alt="slider image"
+                                />
+                            </div>
+                        );
+                    })}
+                </Slider>
+            </div>
         </div>
     );
 }

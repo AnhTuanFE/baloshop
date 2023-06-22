@@ -2,47 +2,47 @@ import { memo } from 'react';
 import { faPhone, faLocationDot, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { faFacebook, faInstagramSquare } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import clsx from 'clsx';
-import styles from './Footer.module.scss';
 function Footer() {
     return (
-        <div className={clsx(styles.wrap_footer)}>
-            <div className={clsx(styles.footer_info)}>
-                <h3 className={clsx(styles.tittle_content)}>Người phát triển</h3>
-                <p className={clsx(styles.content)}>Nguyễn Anh tuấn</p>
-            </div>
-            <div className={clsx(styles.footer_info)}>
-                <h3 className={clsx(styles.tittle_content)}>Theo dõi chúng tôi</h3>
-                <div className={clsx(styles.wrapContent)}>
-                    <FontAwesomeIcon icon={faFacebook} />
-                    <p className={clsx(styles.content)}>Facebook</p>
+        <div className="mx-auto my-auto max-w-screen-2xl">
+            <div className="flex bg-custom-background-color p-4 text-fuchsia-50">
+                <div className="flex-1 text-left">
+                    <h3 className="pb-2 text-lg font-semibold">Người phát triển</h3>
+                    <p className="pb-1 pl-2 text-sm">Nguyễn Anh tuấn</p>
                 </div>
-                <div className={clsx(styles.wrapContent)}>
-                    <FontAwesomeIcon icon={faInstagramSquare} />
-                    <p className={clsx(styles.content)}>Instagram</p>
+                <div className="flex-1 text-left">
+                    <h3 className="pb-2 text-lg font-semibold">Theo dõi chúng tôi</h3>
+                    <div className="flex">
+                        <FontAwesomeIcon icon={faFacebook} />
+                        <p className="pb-1 pl-2 text-sm">Facebook</p>
+                    </div>
+                    <div className="flex">
+                        <FontAwesomeIcon icon={faInstagramSquare} />
+                        <p className="pb-1 pl-2 text-sm">Instagram</p>
+                    </div>
                 </div>
-            </div>
-            <div className={clsx(styles.footer_info)}>
-                <h3 className={clsx(styles.tittle_content)}>Liên hệ</h3>
-                <div className={clsx(styles.wrapContent)}>
-                    <FontAwesomeIcon icon={faPhone} />
-                    <p className={clsx(styles.content)}>Điện thoại: 0123456789</p>
+                <div className="flex-1 text-left">
+                    <h3 className="pb-2 text-lg font-semibold">Liên hệ</h3>
+                    <div className="flex">
+                        <FontAwesomeIcon icon={faPhone} />
+                        <p className="pb-1 pl-2 text-sm">Điện thoại: 0123456789</p>
+                    </div>
+                    <div className="flex">
+                        <FontAwesomeIcon icon={faEnvelope} />
+                        <p className="pb-1 pl-2 text-sm">Email: balostore.owner@gmail.com </p>
+                    </div>
+                    <div className="flex">
+                        <FontAwesomeIcon icon={faLocationDot} />
+                        <p className="pb-1 pl-2 text-sm">
+                            Địa chỉ: 566/191 - Nguyễn Thái Sơn - Phường 5 - Gò Vấp - TP.HCM
+                        </p>
+                    </div>
                 </div>
-                <div className={clsx(styles.wrapContent)}>
-                    <FontAwesomeIcon icon={faEnvelope} />
-                    <p className={clsx(styles.content)}>Email: balostore.owner@gmail.com </p>
+                <div className="flex-1 text-left">
+                    <h3 className="pb-2 text-lg font-semibold">Chăm sóc khách hàng</h3>
+                    <p className="pb-1 pl-2 text-sm">Trung tâm trợ giúp</p>
+                    <p className="pb-1 pl-2 text-sm">Hướng dẫn khách hàng</p>
                 </div>
-                <div className={clsx(styles.wrapContent)}>
-                    <FontAwesomeIcon icon={faLocationDot} />
-                    <p className={clsx(styles.content)}>
-                        Địa chỉ: 566/191 - Nguyễn Thái Sơn - Phường 5 - Gò Vấp - TP.HCM
-                    </p>
-                </div>
-            </div>
-            <div className={clsx(styles.footer_info)}>
-                <h3 className={clsx(styles.tittle_content)}>Chăm sóc khách hàng</h3>
-                <p className={clsx(styles.content)}>Trung tâm trợ giúp</p>
-                <p className={clsx(styles.content)}>Hướng dẫn khách hàng</p>
             </div>
         </div>
     );

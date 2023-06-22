@@ -89,8 +89,8 @@ export default function Header2(props) {
         return (
             <Box
                 sx={{
-                    flex: '1',
                     display: 'flex',
+                    paddingTop: '12px',
                 }}
             >
                 <Typography
@@ -125,7 +125,6 @@ export default function Header2(props) {
         return (
             <Box
                 sx={{
-                    flex: '1',
                     display: 'flex',
                 }}
                 className={clsx(styles.wrap_info_user)}
@@ -199,7 +198,7 @@ export default function Header2(props) {
         );
     };
     return (
-        <Box sx={{}}>
+        <Box className="mx-auto my-auto max-w-screen-2xl">
             <ContactInformation />
             {/*
                 sx={{
@@ -218,7 +217,7 @@ export default function Header2(props) {
                 <Box
                     sx={{
                         flex: '1',
-                        margin: '0px',
+                        marginLeft: '128px',
                     }}
                 >
                     <Link to={'/'}>
@@ -288,7 +287,14 @@ export default function Header2(props) {
                     </form>
                 </Box>
 
-                {userInfo ? <UILogined /> : <UINotLogin />}
+                <Box
+                    sx={{
+                        flex: '1',
+                        marginRight: '40px',
+                    }}
+                >
+                    {userInfo ? <UILogined /> : <UINotLogin />}
+                </Box>
             </Box>
         </Box>
     );

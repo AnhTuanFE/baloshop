@@ -71,56 +71,45 @@ function Crop_image_avatar({ user }) {
     return (
         <Box>
             <div
-                className="col-lg-12 col-md-12 col-sm-12 text-center display_none"
+                className="col-lg-12 col-md-12 col-sm-12 display_none "
                 style={checkFile === true ? {} : { display: 'none' }}
             >
-                <img
-                    src={
-                        image === undefined || typeof image === 'object'
-                            ? imgAvatar === undefined
-                                ? imageDefaul
-                                : imgAvatar
-                            : image
-                    }
-                    style={{
-                        height: '120px',
-                        width: '120px',
-                        borderRadius: '100%',
-                        objectFit: 'cover',
-                        flexShrink: '0',
-                    }}
-                    alt=""
-                />
-                <div className="text-center">
-                    <input
-                        id="id_file"
-                        type="file"
-                        style={{ display: 'none' }}
-                        onChange={(e) => {
-                            setImgAvatar(URL.createObjectURL(e.target.files[0]));
-                            setCheckFile(false);
-                            setCheckImage(true);
-                            setFileHinh(e.target.files[0]);
-                        }}
-                    ></input>
-                    <label
-                        for="id_file"
-                        style={{
-                            marginTop: '5px',
-                            padding: '5px 10px',
-                            backgroundColor: '#eb7914',
-                            borderRadius: '3px',
-                            cursor: 'pointer',
-                            color: '#fff',
-                        }}
-                    >
-                        Chọn ảnh
-                    </label>
+                <div className="ml-28">
+                    <img
+                        src={
+                            image === undefined || typeof image === 'object'
+                                ? imgAvatar === undefined
+                                    ? imageDefaul
+                                    : imgAvatar
+                                : image
+                        }
+                        className=" h-32 w-32 flex-shrink-0 rounded-[100%] object-cover"
+                        alt="avatar"
+                    />
+                    <div className="">
+                        <input
+                            id="id_file"
+                            type="file"
+                            style={{ display: 'none' }}
+                            onChange={(e) => {
+                                setImgAvatar(URL.createObjectURL(e.target.files[0]));
+                                setCheckFile(false);
+                                setCheckImage(true);
+                                setFileHinh(e.target.files[0]);
+                            }}
+                        ></input>
+                        <label
+                            for="id_file"
+                            className="mt-2 cursor-pointer rounded-md bg-[#eb7914] pb-1 pl-8 pr-8 pt-1 text-fuchsia-50"
+                        >
+                            Chọn ảnh
+                        </label>
+                    </div>
                 </div>
             </div>
 
             <div
-                className="col-lg-12 col-md-12 col-sm-12 text-center display_none"
+                className="col-lg-12 col-md-12 col-sm-12 display_none text-center"
                 style={
                     checkImage === true
                         ? { position: 'absolute', height: '230px', width: '230px', background: '#cccccc42' }
