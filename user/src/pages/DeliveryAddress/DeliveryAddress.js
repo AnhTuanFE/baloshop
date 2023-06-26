@@ -183,10 +183,10 @@ function DeliveryAddress() {
         <>
             {contextHolder}
             {updateLoading && <Loading />}
-            <div className="container d-flex justify-content-center align-items-center login-center">
+            <div className="d-flex justify-content-center align-items-center login-center container">
                 <form className="Login col-md-8 col-lg-4 col-11" onSubmit={submitHandler}>
                     {retult !== '' && <Message variant="alert-danger text-center fs-6">{retult}</Message>}
-                    <h4>Địa chỉ giao hàng</h4>
+                    <h4 className="mt-5 p-2 text-center text-xl font-semibold">Địa chỉ giao hàng</h4>
                     <div className="wrapSelect">
                         <Autocomplete
                             className="address_autocomplete"

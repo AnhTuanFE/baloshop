@@ -25,6 +25,7 @@ function Change_password({ user }) {
         loading: updateLoading,
         error: errorProfile,
     } = userUpdateProfile;
+
     const {
         register,
         watch,

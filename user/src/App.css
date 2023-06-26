@@ -64,9 +64,7 @@ input,
     filter: brightness(1);
     -webkit-filter: brightness(1);
 }
-.corousel-oder {
-    margin-top: 40px !important;
-}
+
 .slick-next::before {
     color: var(--main-color2) !important;
     font-size: 40px !important;
@@ -87,69 +85,15 @@ input,
 .slick-next:hover {
     font-size: 30px !important;
 }
-.corousel-rating {
-    text-align: center;
-}
-.corousel-noti {
-    text-align: center;
-    padding: 0 15px;
-    display: block;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 1;
-    height: 22px;
-    overflow: hidden;
-    margin: 5px 0;
-    text-transform: capitalize !important;
-}
-.corousel-price {
-    text-align: center;
-    font-weight: 600;
-    font-size: 16px;
-}
-.corousel .slick-slide {
-    /* margin-right: 4px;
-    /* height: auto; */
-    /* border-radius: 15px;
-    box-shadow: 0 1px 2px 0 rgb(60 64 67 / 10%), 0 2px 6px 2px rgb(60 64 67 / 15%); */
-}
+
 .corousel-link:active {
     border: none;
 }
-.corousel-container {
-    margin-top: 15px;
-    margin-bottom: 15px;
-    background-color: #fff;
-}
-.corousel-container h2 {
-    font-size: 28px;
-    font-weight: 500;
-    padding: 10px 0;
-    padding-left: 10px;
-}
-.section-title {
-    display: flex;
-    align-items: center;
-}
-.section-title b {
-    display: block;
-    -webkit-box-flex: 1;
-    -ms-flex: 1;
-    flex: 1;
-    height: 2px;
-    opacity: 0.1;
-    background-color: currentColor;
-}
-.section-title-main {
-    font-size: 22px;
-    font-weight: 600;
-}
+
 /*========================================== end thư viện corousel ==========================*/
 
 /*========================================= start phân trang================================*/
-.pagination {
-    margin-bottom: 0;
-}
+
 .page-item:first-child .page-link,
 .page-item:last-child .page-link {
     border-top-right-radius: 0px;
@@ -158,73 +102,4 @@ input,
     border-bottom-left-radius: 0px;
     text-align: center;
     border-radius: 50%;
-}
-.page-item {
-    margin: 0 5px;
-}
-.pagination .page-link {
-    width: 40px;
-    height: 40px;
-    text-align: center;
-    border-radius: 50%;
-    line-height: 30px;
-    display: flex;
-    justify-content: center;
-    align-content: center;
-}
-.pagination-flex {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.icon-right i {
-    font-size: 20px;
-    cursor: pointer;
-    color: #6785db;
-    height: 40px;
-    width: 40px;
-    text-align: center;
-    line-height: 40px;
-    border: 1px solid #ccc;
-    border-radius: 50%;
-}
-.icon-left i {
-    font-size: 20px;
-    cursor: pointer;
-    color: #6785db;
-    height: 40px;
-    width: 40px;
-    text-align: center;
-    line-height: 40px;
-    border: 1px solid #ccc;
-    border-radius: 50%;
-}
-.icon-left:hover,
-.icon-right:hover {
-    color: #fb5533;
-}
-/*========================================= end phân trang================================*/
-.noti-validate {
-    margin: 5px 0 0 0 !important;
-    font-size: 15px;
-    height: 25px;
-    overflow: hidden;
-    color: red;
-    padding-left: 2px;
-    text-align: left;
-}
-
-.button-submit {
-    display: flex;
-    justify-content: center;
-    padding-bottom: 15px;
-}
-.button-submit button {
-    margin-top: 0 !important;
-    width: 100%;
-    border-radius: 7px;
-    border: 0.5px solid rgba(0, 0, 0, 0.05) !important;
-}
-.button-submit button:hover {
-    background-color: #1cb803;
 }

@@ -60,10 +60,10 @@ const AllProducts_Filter = (props) => {
     };
     return (
         <>
-            <div className="container mt-2">
-                <h2 className="section-title container mt-5">
+            <div className="my-3">
+                <h2 className="">
                     <b></b>
-                    <span className="section-title-main">Tất Cả Sản Phẩm</span>
+                    <span className="text-center text-2xl font-semibold">Tất Cả Sản Phẩm</span>
                     <b></b>
                 </h2>
                 <div className=" pt-0">

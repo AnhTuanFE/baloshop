@@ -142,6 +142,7 @@ export default function Header2(props) {
                 />
                 <Box className={clsx(styles.dropdown_info_user)}>
                     <Select
+                        disableUnderline
                         id="simple-select"
                         sx={{
                             width: '200px',
@@ -240,7 +241,10 @@ export default function Header2(props) {
                                 disablePortal
                                 id="combo-box-demo"
                                 options={key}
-                                sx={{ width: '70%', borderRadius: '6px' }}
+                                sx={{
+                                    width: '70%',
+                                    borderRadius: '6px',
+                                }}
                                 onChange={(e) => {
                                     setKeyword(e.target.outerText);
                                 }}

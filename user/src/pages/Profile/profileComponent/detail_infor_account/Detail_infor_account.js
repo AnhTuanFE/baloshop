@@ -1,8 +1,7 @@
 import { Box, Typography, TextField, Autocomplete, Button, Stack } from '@mui/material';
 import clsx from 'clsx';
-import { useEffect, useState, memo } from 'react';
+import { useEffect } from 'react';
 import styles from './Detail_infor_account.module.css';
-// =========================================
 import PropTypes from 'prop-types';
 import { getListProvincesAction } from '~/redux/Actions/userActions';
 import { updateUserProfile } from '~/redux/Actions/userActions';
@@ -42,22 +41,17 @@ function Detail_infor_account({ user }) {
         handleSubmit,
         formState: { errors },
         setValue,
-    } = useForm();
-
-    const [city, setCity] = useState(''); //tp
-    const [distric, setDistric] = useState(''); //quận huyện
-    const [districtOptions, setDistrictOptions] = useState([]);
-
-    const [ward, setWard] = useState(''); // xá phường
-    const [wardOptions, setWardOptions] = useState([]);
+    } = useForm({ defaultValues: { city: '', distric: '', ward: '' } });
 
     useEffect(() => {
-        if (user) {
-            setCity(user.city);
-            setDistric(user.distric);
-            setWard(user.ward);
-        }
-    }, [user]);
+        setValue('name', user.name);
+        setValue('phone', user.phone);
+        setValue('city', user.city);
+        setValue('distric', user.distric);
+        setValue('ward', user.ward);
+        setValue('address', user.address);
+    }, [setValue, user]);
+
     const listProvince = useSelector((state) => state.provincesVietNam);
 
     useEffect(() => {
@@ -67,7 +61,7 @@ function Detail_infor_account({ user }) {
     const DataProvinces = listProvince.province;
 
     const submitUpdateProfile = (data) => {
-        const { name, phone, address } = data;
+        const { name, phone, address, city, distric, ward } = data;
 
         let userInforNeedUpdate = new FormData();
         userInforNeedUpdate.append('id', user._id);
@@ -82,19 +76,9 @@ function Detail_infor_account({ user }) {
     };
     // =========================================================================
 
-    const optionsAntD_city = [];
-    const optionsAntD_distric = [];
-    const optionsAntD_ward = [];
-
-    const onChange_city = (value) => {
-        setCity(value);
-        const infoCity = DataProvinces.find((arr) => {
-            return arr.name == value.toString();
-        });
-        setDistric('');
-        setWard('');
-        setDistrictOptions(infoCity.districts);
-    };
+    const optionsMUI_city = [];
+    const optionsMUI_distric = [];
+    const optionsMUI_ward = [];
 
     function findInfoCityByName(arr, name) {
         for (let i = 0; i < arr.length; i++) {
@@ -110,69 +94,53 @@ function Detail_infor_account({ user }) {
         return null;
     }
 
+    const handleFindInformation = (val, arr, unit) => {
+        if (unit) {
+            for (let i = 0; i < findInfoCityByName(DataProvinces, val)?.wards?.length; i++) {
+                arr.push({
+                    value: findInfoCityByName(DataProvinces, val)?.wards[i]?.name,
+                    label: findInfoCityByName(DataProvinces, val)?.wards[i]?.name,
+                });
+            }
+        } else {
+            for (let i = 0; i < findInfoCityByName(DataProvinces, val)?.districts?.length; i++) {
+                arr.push({
+                    value: findInfoCityByName(DataProvinces, val)?.districts[i]?.name,
+                    label: findInfoCityByName(DataProvinces, val)?.districts[i]?.name,
+                });
+            }
+        }
+    };
+
+    const onChange_city = (value) => {
+        setValue('city', value);
+        setValue('distric', '');
+        setValue('ward', '');
+        handleFindInformation(value, optionsMUI_distric);
+    };
+
     const onChange_distric = (value) => {
-        const infoDistric = findInfoCityByName(DataProvinces, value);
-        setWardOptions(infoDistric.wards);
-        setDistric(value);
-        setWard('');
+        setValue('distric', value);
+        setValue('ward', '');
+        handleFindInformation(value, optionsMUI_ward, true);
     };
 
     const onChange_ward = (value) => {
-        setWard(value);
+        setValue('ward', value);
     };
 
     // lấy dữ liệu từ api và chuyển option cho thành dữ liệu cho MUI nhận được
     if (DataProvinces) {
         for (let i = 0; i < DataProvinces.length; i++) {
-            optionsAntD_city.push({
+            optionsMUI_city.push({
                 value: DataProvinces[i].name,
                 label: DataProvinces[i].name,
             });
         }
+        handleFindInformation(watch('city'), optionsMUI_distric);
+        handleFindInformation(watch('distric'), optionsMUI_ward, true);
     }
 
-    if (districtOptions.length > 1) {
-        for (let i = 0; i < districtOptions?.length; i++) {
-            optionsAntD_distric.push({
-                value: districtOptions[i]?.name,
-                label: districtOptions[i]?.name,
-            });
-        }
-    }
-
-    if (city) {
-        const infoDistric = findInfoCityByName(DataProvinces, city);
-        const arrDistrictsTemp = infoDistric?.districts;
-        for (let i = 0; i < arrDistrictsTemp?.length; i++) {
-            optionsAntD_distric.push({
-                value: arrDistrictsTemp[i]?.name,
-                label: arrDistrictsTemp[i]?.name,
-            });
-        }
-        const infoWards = findInfoCityByName(DataProvinces, distric);
-        const arrWardsTemp = infoWards?.wards;
-        for (let i = 0; i < arrWardsTemp?.length; i++) {
-            optionsAntD_ward.push({
-                value: arrWardsTemp[i]?.name,
-                label: arrWardsTemp[i]?.name,
-            });
-        }
-    }
-
-    if (wardOptions.length > 1) {
-        for (let i = 0; i < wardOptions?.length; i++) {
-            optionsAntD_ward.push({
-                value: wardOptions[i]?.name,
-                label: wardOptions[i]?.name,
-            });
-        }
-    }
-
-    useEffect(() => {
-        setValue('name', user.name);
-        setValue('phone', user.phone);
-        setValue('address', user.address);
-    }, [setValue, user]);
     return (
         <>
             <form onSubmit={handleSubmit(submitUpdateProfile)}>
@@ -243,18 +211,7 @@ function Detail_infor_account({ user }) {
                     </Box>
                     <Box className={clsx(styles.wrap_info_item)}>
                         <Typography className={clsx(styles.info_item_label)}>Tỉnh/Thành phố</Typography>
-                        <Autocomplete
-                            className={clsx(styles.info_item)}
-                            disablePortal
-                            id="combo-box-demo"
-                            value={city}
-                            onChange={(e) => {
-                                onChange_city(e.target.outerText);
-                            }}
-                            options={optionsAntD_city}
-                            renderInput={(params) => <TextField {...params} />}
-                        />
-                        {/* <Controller
+                        <Controller
                             name="city"
                             control={control}
                             rules={{
@@ -262,55 +219,90 @@ function Detail_infor_account({ user }) {
                             }}
                             render={({ field }) => (
                                 <Autocomplete
+                                    noOptionsText="Không tìm thấy kết quả"
+                                    loadingText="Đang tải"
                                     className={clsx(styles.info_item)}
                                     disablePortal
-                                    id="combo-box-demo"
+                                    // id="combo-box-demo"
                                     {...field}
                                     placeholder="Tỉnh/Thành phố"
                                     onChange={(e) => {
                                         onChange_city(e.target.outerText);
                                     }}
-                                    defaultValue={user.city}
-                                    options={optionsAntD_city}
+                                    options={optionsMUI_city}
                                     renderInput={(params) => <TextField {...params} />}
                                 />
                             )}
-                        /> */}
-                    </Box>
-                    <Box className={clsx(styles.wrap_info_item_warning)}></Box>
-
-                    <Box className={clsx(styles.wrap_info_item)}>
-                        <Typography className={clsx(styles.info_item_label)}>Quận/Huyện</Typography>
-                        <Autocomplete
-                            className={clsx(styles.info_item)}
-                            disablePortal
-                            id="combo-box-demo"
-                            options={optionsAntD_distric}
-                            value={distric}
-                            onChange={(e) => {
-                                onChange_distric(e.target.outerText);
-                            }}
-                            renderInput={(params) => <TextField {...params} />}
                         />
                     </Box>
-                    <Box className={clsx(styles.wrap_info_item_warning)}></Box>
+                    <Box className={clsx(styles.wrap_info_item_warning)}>
+                        {errors.name && errors.name.type === 'required' ? (
+                            <p className={clsx(styles.info_item_warning)}>{errors.name.message}</p>
+                        ) : null}
+                    </Box>
+                    <Box className={clsx(styles.wrap_info_item)}>
+                        <Typography className={clsx(styles.info_item_label)}>Quận/Huyện</Typography>
+                        <Controller
+                            name="distric"
+                            control={control}
+                            rules={{
+                                required: 'Bạn chưa nhập tên quận, huyện',
+                            }}
+                            render={({ field }) => (
+                                <Autocomplete
+                                    noOptionsText="Không tìm thấy kết quả"
+                                    loadingText="Đang tải"
+                                    className={clsx(styles.info_item)}
+                                    disablePortal
+                                    id="combo-box-demo"
+                                    {...field}
+                                    placeholder="Quận/huyện"
+                                    onChange={(e) => {
+                                        onChange_distric(e.target.outerText);
+                                    }}
+                                    options={optionsMUI_distric}
+                                    renderInput={(params) => <TextField {...params} />}
+                                />
+                            )}
+                        />
+                    </Box>
+                    <Box className={clsx(styles.wrap_info_item_warning)}>
+                        {errors.name && errors.name.type === 'required' ? (
+                            <p className={clsx(styles.info_item_warning)}>{errors.name.message}</p>
+                        ) : null}
+                    </Box>
 
                     <Box className={clsx(styles.wrap_info_item)}>
                         <Typography className={clsx(styles.info_item_label)}>Xã/Phường</Typography>
-                        <Autocomplete
-                            className={clsx(styles.info_item)}
-                            disablePortal
-                            id="combo-box-demo"
-                            value={ward}
-                            options={optionsAntD_ward}
-                            onChange={(e) => {
-                                onChange_ward(e.target.outerText);
+                        <Controller
+                            name="ward"
+                            control={control}
+                            rules={{
+                                required: 'Bạn chưa nhập tên xã, phường',
                             }}
-                            renderInput={(params) => <TextField {...params} />}
+                            render={({ field }) => (
+                                <Autocomplete
+                                    noOptionsText="Không tìm thấy kết quả"
+                                    loadingText="Đang tải"
+                                    className={clsx(styles.info_item)}
+                                    disablePortal
+                                    id="combo-box-demo"
+                                    placeholder="Quận/huyện"
+                                    {...field}
+                                    onChange={(e) => {
+                                        onChange_ward(e.target.outerText);
+                                    }}
+                                    options={optionsMUI_ward}
+                                    renderInput={(params) => <TextField {...params} />}
+                                />
+                            )}
                         />
                     </Box>
-                    <Box className={clsx(styles.wrap_info_item_warning)}></Box>
-
+                    <Box className={clsx(styles.wrap_info_item_warning)}>
+                        {errors.name && errors.name.type === 'required' ? (
+                            <p className={clsx(styles.info_item_warning)}>{errors.name.message}</p>
+                        ) : null}
+                    </Box>
                     <Box className={clsx(styles.wrap_info_item)}>
                         <Typography className={clsx(styles.info_item_label)}>Đường Hẻm/Thôn</Typography>
                         <Controller

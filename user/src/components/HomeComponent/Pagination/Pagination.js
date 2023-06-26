@@ -1,8 +1,5 @@
-import React from 'react';
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import clsx from 'clsx';
-import styles from './Pagination.module.scss';
 
 // PHÂN TRANG
 const Pagination = (props) => {
@@ -51,30 +48,24 @@ const Pagination = (props) => {
     }, [page, pages]);
     return (
         pages > 1 && (
-            <nav
-                className="col-lg-12 col-md-12 mt-5 mb-2"
-                aria-label="Page navigation"
-                style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-            >
-                <div className="icon-left">
+            <nav className="flex items-center justify-center" aria-label="Page navigation">
+                <div className=" border-[1px solid #ccc] h-6 w-6 cursor-pointer rounded-[50%] text-center text-xl text-[#6785db] hover:text-[#fb5533]">
                     <div onClick={() => handlerPage(page > 1 ? page - 1 : page)}>
                         <i class="fas fa-angle-double-left"></i>
                     </div>
                 </div>
-                <ul className="pagination justify-content-center" style={{ marginTop: '0', marginBottom: '0' }}>
+                <ul className="flex justify-center">
                     {(page > 5 ? pageProduct : [...Array(pages > 5 ? 5 : pages).keys()]).map((x) => (
                         <li
-                            className={`page-item ${x + 1 === page ? 'active' : ''}`}
+                            className={`page-item  mx-1 ${x + 1 === page ? 'active' : ''}`}
                             key={x + 1}
                             onClick={() => handlerPage(x + 1)}
                         >
-                            <div className="page-link" style={{ cursor: 'pointer' }}>
-                                {x + 1}
-                            </div>
+                            <div className="page-link cursor-pointer hover:text-[#fb5533]">{x + 1}</div>
                         </li>
                     ))}
                 </ul>
-                <div className="icon-right">
+                <div className=" border-[1px solid #ccc] h-6 w-6 cursor-pointer rounded-[50%] text-center text-xl text-[#6785db] hover:text-[#fb5533]">
                     <div onClick={() => handlerPage(page < pages ? page + 1 : page)}>
                         <i class="fas fa-angle-double-right"></i>
                     </div>
