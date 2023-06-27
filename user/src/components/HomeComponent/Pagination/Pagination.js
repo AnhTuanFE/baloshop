@@ -48,7 +48,7 @@ const Pagination = (props) => {
     }, [page, pages]);
     return (
         pages > 1 && (
-            <nav className="flex items-center justify-center" aria-label="Page navigation">
+            <nav className="mb-3 mt-3 flex items-center justify-center" aria-label="Page navigation">
                 <div className=" border-[1px solid #ccc] h-6 w-6 cursor-pointer rounded-[50%] text-center text-xl text-[#6785db] hover:text-[#fb5533]">
                     <div onClick={() => handlerPage(page > 1 ? page - 1 : page)}>
                         <i class="fas fa-angle-double-left"></i>

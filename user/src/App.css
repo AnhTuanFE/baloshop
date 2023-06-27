@@ -103,3 +103,6 @@ input,
     text-align: center;
     border-radius: 50%;
 }
+.p-rating-icon {
+    color: yellow !important;
+}

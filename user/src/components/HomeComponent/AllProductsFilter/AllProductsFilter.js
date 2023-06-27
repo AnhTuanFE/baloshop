@@ -10,7 +10,7 @@ import Loading from '../LoadingError/Loading';
 import Message from '../LoadingError/Error';
 import { listCart } from '~/redux/Actions/cartActions';
 import { productsRemainingSelector } from '~/redux/Selector/productsSelector';
-
+import { Divider, Chip } from '@mui/material';
 import styles from './AllProductsFilter.module.scss';
 
 const AllProducts_Filter = (props) => {
@@ -60,11 +60,18 @@ const AllProducts_Filter = (props) => {
     };
     return (
         <>
-            <div className="my-3">
-                <h2 className="">
-                    <b></b>
-                    <span className="text-center text-2xl font-semibold">Tất Cả Sản Phẩm</span>
-                    <b></b>
+            <div className="mx-auto my-auto max-w-screen-2xl pt-10">
+                <h2 className="pb-10 text-center">
+                    <Divider>
+                        <Chip
+                            className="font-semibold"
+                            sx={{
+                                fontSize: '24px',
+                                bgcolor: '#ffff',
+                            }}
+                            label="Tất Cả Sản Phẩm"
+                        />
+                    </Divider>
                 </h2>
                 <div className=" pt-0">
                     <div className={clsx(styles.wrapFilter)}>
@@ -72,9 +79,6 @@ const AllProducts_Filter = (props) => {
                             <select
                                 className="form-select"
                                 value={sortProducts === undefined ? '1' : sortProducts}
-                                // onChange={(e) => {
-                                //     setSortProducts(e.target.value);
-                                // }}
                                 onChange={(e) => {
                                     handlerSort(e.target.value);
                                 }}

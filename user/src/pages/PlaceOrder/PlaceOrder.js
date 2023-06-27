@@ -10,8 +10,10 @@ import PayModal from '~/components/Modal/PayModal';
 import Message from '~/components/HomeComponent/LoadingError/Error';
 import Loading from '~/components/HomeComponent/LoadingError/Loading';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
-
-import './PlaceOrder.css';
+import AccountCircleSharpIcon from '@mui/icons-material/AccountCircleSharp';
+import AddLocationSharpIcon from '@mui/icons-material/AddLocationSharp';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+// import './PlaceOrder.css';
 
 function PlaceOrder() {
     const [paymentPaypal, setPaymentPaypal] = useState('');
@@ -165,15 +167,15 @@ function PlaceOrder() {
                         </Link>
                     </div>
                 )}
-                <div className="mt-3 mt-md-0 col-md-2 col-4  d-flex align-items-center flex-column justify-content-center ">
-                    <h4 style={{ fontWeight: '600', fontSize: '16px' }}>Phân loại hàng</h4>
+                <div className="mt-md-0 col-md-2 col-4 d-flex  align-items-center flex-column justify-content-center mt-3 ">
+                    <h4 className="text-lg font-semibold">Màu sắc</h4>
                     <h6>{item?.color}</h6>
                 </div>
-                <div className="mt-3 mt-md-0 col-md-2 col-4  d-flex align-items-center flex-column justify-content-center ">
+                <div className="mt-md-0 col-md-2 col-4 d-flex  align-items-center flex-column justify-content-center mt-3 ">
                     <h4 style={{ fontWeight: '600', fontSize: '16px' }}>Số lượng</h4>
                     <h6>{item?.qty}</h6>
                 </div>
-                <div className="mt-3 mt-md-0 col-md-2 col-4 align-items-end  d-flex flex-column justify-content-center ">
+                <div className="mt-md-0 col-md-2 col-4 align-items-end d-flex  flex-column justify-content-center mt-3 ">
                     <h4 style={{ fontWeight: '600', fontSize: '16px' }}>Giá</h4>
                     <h6>{(item?.qty * item?.product?.price)?.toLocaleString('de-DE')}đ</h6>
                 </div>
@@ -257,165 +259,153 @@ function PlaceOrder() {
         <>
             {error && <Loading />}
             {contextHolder}
-            <div className="container">
-                <PayModal
-                    Title="Mua hàng"
-                    Body="Bạn có đồng ý mua hay không?"
-                    HandleSubmit={placeOrderHandler}
-                    Close="modal"
-                ></PayModal>
-                <div
-                    className="row  order-detail"
-                    style={{ border: '1px solid rgb(218, 216, 216)', borderRadius: '4px' }}
-                >
-                    <div className="col-lg-4 col-sm-4 mb-lg-4 mb-2 mb-sm-0 fix-bottom">
-                        <div className="row " style={{ display: 'flex', alignItems: 'center' }}>
-                            <div className="col-lg-3 col-sm-3 mb-lg-3 center fix-bottom">
-                                <div className="alert-success order-box fix-none">
-                                    <i class="fas fa-user"></i>
+            <div className="mx-auto my-auto max-w-screen-2xl">
+                <div className="mx-20 ">
+                    <div className="m-auto  ">
+                        <PayModal
+                            Title="Mua hàng"
+                            Body="Bạn có đồng ý mua hay không?"
+                            HandleSubmit={placeOrderHandler}
+                            Close="modal"
+                        ></PayModal>
+                        <div className="mb-4 h-32 px-4 shadow-custom-shadow">
+                            <div className="my-3 flex items-center justify-around rounded-md pt-3">
+                                <div className="flex">
+                                    <div className="mr-2 px-2">
+                                        <AccountCircleSharpIcon className="" fontSize="large" color="secondary" />
+                                    </div>
+                                    <div className="">
+                                        <p>
+                                            <span className="font-semibold">Họ tên:</span> {userInfo.name}
+                                        </p>
+                                        <p>
+                                            <span className="font-semibold">Số điện thoại:</span> {userInfo.phone}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="flex">
+                                    <div className="mr-2 px-2">
+                                        <AddLocationSharpIcon className="" fontSize="large" color="secondary" />
+                                    </div>
+                                    <div className="">
+                                        <p>
+                                            <span className="font-semibold">Địa chỉ:</span>{' '}
+                                            {`${userInfo?.city}, ${userInfo?.distric}, ${userInfo?.ward}, ${userInfo?.address}`}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="flex">
+                                    <div className="mr-2 px-2">
+                                        <MonetizationOnIcon className="" fontSize="large" color="secondary" />
+                                    </div>
+                                    <div className="">
+                                        <p>
+                                            <span className="font-semibold">Phương thức:</span>{' '}
+                                            {paymentMethods_from_localStorage}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="col-lg-9 col-sm-9 mb-lg-9 fix-display">
-                                <p>
-                                    <span style={{ fontWeight: '600' }}>Họ tên: </span>
-                                    {userInfo.name}
-                                </p>
-                                <p>
-                                    <span style={{ fontWeight: '600' }}>Số điện thoại: </span>
-                                    {userInfo.phone}
-                                </p>
+                        </div>
+
+                        <div className="row order-products justify-content-between">
+                            <div className="col-lg-12 fix-padding cart-scroll">
+                                {cart.cartItems.length === 0 ? (
+                                    <Message variant="alert-info mt-5">Không có sản phẩm nào được chọn</Message>
+                                ) : (
+                                    <>
+                                        {cart.cartItems
+                                            .filter((item) => item.isBuy == true)
+                                            .map((item, index) => (
+                                                <div className="order-product row" key={index}>
+                                                    {findCartCountInStock(item)}
+                                                </div>
+                                            ))}
+                                    </>
+                                )}
                             </div>
                         </div>
-                    </div>
-                    {/* 2 */}
-                    <div className="col-lg-4 col-sm-4 mb-lg-4 mb-2 mb-sm-0 fix-bottom">
+                        <div className="row" style={{ padding: '10px 0', backgroundColor: '#fff', marginTop: '10px' }}>
+                            {/* total */}
+                            <div
+                                className="col-lg-12 d-flex align-items-end flex-column subtotal-order"
+                                style={{ border: '1px solid rgb(218, 216, 216)', borderRadius: '4px' }}
+                            >
+                                <table className="fix-bottom table">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <strong>Sản phẩm</strong>
+                                            </td>
+                                            <td>{Number(cart?.itemsPrice)?.toLocaleString('de-DE')}đ</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Phí vận chuyển</strong>
+                                            </td>
+                                            <td>{Number(cart?.shippingPrice)?.toLocaleString('de-DE')}đ</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Tổng tiền</strong>
+                                            </td>
+                                            <td>{Number(cart?.totalPrice)?.toLocaleString('de-DE')}đ</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                         <div
                             className="row"
-                            style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}
+                            style={{
+                                padding: '10px 0',
+                                backgroundColor: '#fff',
+                                marginTop: '10px',
+                                marginBottom: '30px',
+                            }}
                         >
-                            <div className="col-lg-3 col-sm-3 mb-lg-3 center fix-bottom">
-                                <div className="alert-success order-box fix-none">
-                                    <i className="fas fa-map-marker-alt"></i>
-                                </div>
-                            </div>
-                            <div className="col-lg-9 col-sm-9 mb-lg-9">
-                                <p>
-                                    <span style={{ fontWeight: '600' }}>Địa chỉ:</span>{' '}
-                                    {`${userInfo?.city}, ${userInfo?.distric}, ${userInfo?.ward}, ${userInfo?.address}`}
-                                </p>
+                            <div className="">
+                                {paymentPaypal == 'Thanh toán qua paypal' ? (
+                                    <div className="mb-4 text-center text-xl font-bold uppercase">
+                                        Tổng thanh toán: {moneyNeedPaid} USD
+                                    </div>
+                                ) : (
+                                    <div className="mb-4 text-center  text-xl font-bold uppercase">
+                                        Tổng thanh toán: {Number(cart.totalPrice)?.toLocaleString('de-DE')} VNĐ
+                                    </div>
+                                )}
+
+                                {cart.cartItems.length === 0 ? null : paymentPaypal == 'Thanh toán qua paypal' ? (
+                                    <div className="m-8 text-center ">
+                                        <PayPalScriptProvider
+                                            options={{
+                                                'client-id': `${ID_CLENT}`,
+                                            }}
+                                            className=""
+                                        >
+                                            <PayPalButtons
+                                                createOrder={createOrderPaypal}
+                                                onApprove={onApprove}
+                                                onError={onError}
+                                                onCancel={onCancel}
+                                                // layout: 'horizontal',
+                                                style={{ label: 'pay' }}
+                                                className="mx-[22%]"
+                                            />
+                                        </PayPalScriptProvider>
+                                    </div>
+                                ) : (
+                                    <button
+                                        type="submit"
+                                        className="m-auto flex justify-center rounded-lg bg-custom-background-color px-16 py-3 text-fuchsia-50"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop"
+                                    >
+                                        Đặt hàng
+                                    </button>
+                                )}
                             </div>
                         </div>
-                    </div>
-                    {/* 3 */}
-                    <div className="col-lg-4 col-sm-4 mb-lg-4 mb-2 mb-sm-0 fix-bottom">
-                        <div className="row" style={{ display: 'flex', alignItems: 'center' }}>
-                            <div className="col-lg-3 col-sm-3 mb-lg-3 center fix-bottom">
-                                <div className="alert-success order-box fix-none">
-                                    <i class="fab fa-paypal"></i>
-                                </div>
-                            </div>
-                            <div className="col-lg-9 col-sm-9 mb-lg-9">
-                                <p>
-                                    <p>
-                                        <span style={{ fontWeight: '600' }}>Phương thức:</span>{' '}
-                                        {paymentMethods_from_localStorage}
-                                    </p>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="row order-products justify-content-between">
-                    <div className="col-lg-12 fix-padding cart-scroll">
-                        {cart.cartItems.length === 0 ? (
-                            <Message variant="alert-info mt-5">Không có sản phẩm nào được chọn</Message>
-                        ) : (
-                            <>
-                                {cart.cartItems
-                                    .filter((item) => item.isBuy == true)
-                                    .map((item, index) => (
-                                        <div className="order-product row" key={index}>
-                                            {findCartCountInStock(item)}
-                                        </div>
-                                    ))}
-                            </>
-                        )}
-                    </div>
-                </div>
-                <div className="row" style={{ padding: '10px 0', backgroundColor: '#fff', marginTop: '10px' }}>
-                    {/* total */}
-                    <div
-                        className="col-lg-12 d-flex align-items-end flex-column subtotal-order"
-                        style={{ border: '1px solid rgb(218, 216, 216)', borderRadius: '4px' }}
-                    >
-                        <table className="table fix-bottom">
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <strong>Sản phẩm</strong>
-                                    </td>
-                                    <td>{Number(cart?.itemsPrice)?.toLocaleString('de-DE')}đ</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <strong>Phí vận chuyển</strong>
-                                    </td>
-                                    <td>{Number(cart?.shippingPrice)?.toLocaleString('de-DE')}đ</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <strong>Tổng tiền</strong>
-                                    </td>
-                                    <td>{Number(cart?.totalPrice)?.toLocaleString('de-DE')}đ</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div
-                    className="row"
-                    style={{ padding: '10px 0', backgroundColor: '#fff', marginTop: '10px', marginBottom: '30px' }}
-                >
-                    <div className="col-lg-12 fix-right">
-                        {paymentPaypal == 'Thanh toán qua paypal' ? (
-                            <div className="button_total_pay_paypal">Tổng thanh toán: {moneyNeedPaid} USD</div>
-                        ) : (
-                            <div className="button_total_pay_paypal">
-                                Tổng thanh toán: {Number(cart.totalPrice)?.toLocaleString('de-DE')} VNĐ
-                            </div>
-                        )}
-
-                        {cart.cartItems.length === 0 ? null : paymentPaypal == 'Thanh toán qua paypal' ? (
-                            <div className="wrap_paypal_button">
-                                <PayPalScriptProvider
-                                    options={{
-                                        'client-id': `${ID_CLENT}`,
-                                    }}
-                                    className="paypal_button_provider"
-                                >
-                                    <PayPalButtons
-                                        createOrder={createOrderPaypal}
-                                        onApprove={onApprove}
-                                        onError={onError}
-                                        onCancel={onCancel}
-                                        // layout: 'horizontal',
-                                        style={{ label: 'pay' }}
-                                        className="paypal_button"
-                                    />
-                                </PayPalScriptProvider>
-                            </div>
-                        ) : (
-                            <button
-                                type="submit"
-                                class="btn btn-primary pay-button"
-                                data-bs-toggle="modal"
-                                data-bs-target="#staticBackdrop"
-                                style={{ backgroundColor: 'var(--main-color)', borderColor: 'var(--main-color)' }}
-                            >
-                                Đặt hàng
-                            </button>
-                        )}
                     </div>
                 </div>
             </div>

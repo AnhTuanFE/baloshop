@@ -100,18 +100,12 @@ function EvaluateProduct({ productId }) {
         dispatch(createProductReview(productId, rating, reviewColor, comment));
     };
     return (
-        <div
-            style={{
-                borderRadius: '10px',
-                boxShadow: '0 1px 2px 0 rgb(60 64 67 / 10%), 0 2px 6px 2px rgb(60 64 67 / 15%)',
-                paddingTop: '10px',
-            }}
-        >
-            <div className="col-md-12 col-sm-12">
+        <div className="rounded-xl pt-3 shadow-custom-shadow">
+            <div className="">
                 <h2 className="noti-view">Đánh giá & nhận xét</h2>
                 <div style={{ border: '2px solid #ccc', borderRadius: '10px' }}>
                     <div className="row">
-                        <div className="col-md-4 col-sm-5 text-center pt-4">
+                        <div className="col-md-4 col-sm-5 pt-4 text-center">
                             <div class="rating-box">
                                 <h1 class="pt-4">{mediumReview}</h1>
                                 <p class="">out of 5</p>
@@ -123,7 +117,7 @@ function EvaluateProduct({ productId }) {
                         </div>
                         <div class="col-md-8 col-sm-7">
                             <div class="rating-bar0 justify-content-center">
-                                <table class="text-left mx-auto">
+                                <table class="mx-auto text-left">
                                     {returnStar.map((star, index) => {
                                         return (
                                             <tr key={index}>
@@ -200,7 +194,7 @@ function EvaluateProduct({ productId }) {
                                                 <select
                                                     value={rating}
                                                     onChange={(e) => setRating(e.target.value)}
-                                                    className="col-12 p-3 mt-2 border-0 rounded"
+                                                    className="col-12 mt-2 rounded border-0 p-3"
                                                     style={{ backgroundColor: '#e9eaed80' }}
                                                 >
                                                     <option value="">Lựa chọn...</option>
@@ -216,7 +210,7 @@ function EvaluateProduct({ productId }) {
                                                 <select
                                                     value={reviewColor}
                                                     onChange={(e) => setReviewColor(e.target.value)}
-                                                    className="col-12 p-3 mt-2 border-0 rounded"
+                                                    className="col-12 mt-2 rounded border-0 p-3"
                                                     style={{ backgroundColor: '#e9eaed80' }}
                                                 >
                                                     <option value="">Lựa chọn...</option>
@@ -235,14 +229,14 @@ function EvaluateProduct({ productId }) {
                                                     row="3"
                                                     value={comment}
                                                     onChange={(e) => setComment(e.target.value)}
-                                                    className="col-12 p-3 mt-2 border-0 rounded"
+                                                    className="col-12 mt-2 rounded border-0 p-3"
                                                     style={{ backgroundColor: '#e9eaed80' }}
                                                 ></textarea>
                                             </div>
                                             <div className="my-3">
                                                 <button
                                                     disabled={loadingCreateReview}
-                                                    className="col-12 bg-orange border-0 p-3 rounded text-white"
+                                                    className="col-12 bg-orange rounded border-0 p-3 text-white"
                                                     type="submit"
                                                 >
                                                     <p>Gửi đánh giá</p>
@@ -271,7 +265,7 @@ function EvaluateProduct({ productId }) {
                     {reviews?.map((review) => (
                         <div
                             key={review._id}
-                            className="mb-2 mb-md-3 bg-light p-3 shadow-sm rounded-5"
+                            className="mb-md-3 bg-light rounded-5 mb-2 p-3 shadow-sm"
                             style={{ borderRadius: '10px' }}
                         >
                             <div

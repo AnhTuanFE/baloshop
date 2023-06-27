@@ -5,7 +5,6 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
-import { PropTypes } from '@mui/material';
 //
 import Box from '@mui/material/Box';
 import AssuredWorkloadIcon from '@mui/icons-material/AssuredWorkload';
@@ -14,13 +13,6 @@ import LocalAtmSharpIcon from '@mui/icons-material/LocalAtmSharp';
 import LibraryAddCheckSharpIcon from '@mui/icons-material/LibraryAddCheckSharp';
 import moment from 'moment';
 import CancelSharpIcon from '@mui/icons-material/CancelSharp';
-
-import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
-import StickyNote2OutlinedIcon from '@mui/icons-material/StickyNote2Outlined';
-import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
-import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
-import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
-import VerifiedUserOutlinedIcon from '@mui/icons-material/VerifiedUserOutlined';
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
     [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -104,37 +96,32 @@ export default function CustomizedSteppers({ order }) {
 
     console.log('order = ', order);
     return (
-        <Stack sx={{ width: '100%' }} spacing={4}>
+        <Stack sx={{ width: '100%', marginBottom: '16px' }} spacing={4}>
             <Box sx={{ width: '100%' }}>
                 {order.cancel == 0 ? (
                     <Stepper alternativeLabel activeStep={actiStep} connector={<ColorlibConnector />}>
                         {order.waitConfirmation ? (
                             <Step key={1}>
-                                <StepLabel
-                                    StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={1} />}
-                                >
-                                    Đã xác nhận
-                                </StepLabel>
-                                <span
-                                    style={{
-                                        fontSize: '13px',
-                                        color: 'red',
-                                        fontWeight: '600',
-                                    }}
-                                >
-                                    {moment(order?.waitConfirmationAt).hours()}
-                                    {':'}
-                                    {moment(order?.waitConfirmationAt).minutes() < 10
-                                        ? `0${moment(order?.waitConfirmationAt).minutes()}`
-                                        : moment(order?.waitConfirmationAt).minutes()}{' '}
-                                    {moment(order?.waitConfirmationAt).format('DD/MM/YYYY')}{' '}
-                                </span>
+                                <div className="">
+                                    <StepLabel
+                                        StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={1} />}
+                                    >
+                                        Đã xác nhận
+                                    </StepLabel>
+                                    <span className=" mt-2 flex justify-center text-sm font-semibold text-[red]">
+                                        {moment(order?.waitConfirmationAt).hours()}
+                                        {':'}
+                                        {moment(order?.waitConfirmationAt).minutes() < 10
+                                            ? `0${moment(order?.waitConfirmationAt).minutes()}`
+                                            : moment(order?.waitConfirmationAt).minutes()}{' '}
+                                        {moment(order?.waitConfirmationAt).format('DD/MM/YYYY')}{' '}
+                                    </span>
+                                </div>
                             </Step>
                         ) : (
                             <Step key={1}>
                                 <StepLabel
                                     StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={1} />}
-                                    // icon={<AssuredWorkloadIcon fontSize="large" />}
                                 >
                                     Chờ xác nhận
                                 </StepLabel>
@@ -142,25 +129,21 @@ export default function CustomizedSteppers({ order }) {
                         )}
                         {order.isDelivered ? (
                             <Step key={2}>
-                                <StepLabel
-                                    StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={2} />}
-                                >
-                                    Đã giao
-                                </StepLabel>
-                                <span
-                                    style={{
-                                        fontSize: '13px',
-                                        color: 'red',
-                                        fontWeight: '600',
-                                    }}
-                                >
-                                    {moment(order?.deliveredAt).hours()}
-                                    {':'}
-                                    {moment(order?.deliveredAt).minutes() < 10
-                                        ? `0${moment(order?.deliveredAt).minutes()}`
-                                        : moment(order?.deliveredAt).minutes()}{' '}
-                                    {moment(order?.deliveredAt).format('DD/MM/YYYY')}{' '}
-                                </span>
+                                <div>
+                                    <StepLabel
+                                        StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={2} />}
+                                    >
+                                        Đã giao
+                                    </StepLabel>
+                                    <span className=" mt-2 flex justify-center text-sm font-semibold text-[red]">
+                                        {moment(order?.deliveredAt).hours()}
+                                        {':'}
+                                        {moment(order?.deliveredAt).minutes() < 10
+                                            ? `0${moment(order?.deliveredAt).minutes()}`
+                                            : moment(order?.deliveredAt).minutes()}{' '}
+                                        {moment(order?.deliveredAt).format('DD/MM/YYYY')}{' '}
+                                    </span>
+                                </div>
                             </Step>
                         ) : (
                             <Step key={2}>
@@ -169,26 +152,22 @@ export default function CustomizedSteppers({ order }) {
                         )}
                         {order.isPaid ? (
                             <Step key={3}>
-                                <StepLabel
-                                    StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={3} />}
-                                    icon={<LocalAtmSharpIcon fontSize="large" color="primary" />}
-                                >
-                                    Đã thanh toán
-                                </StepLabel>
-                                <span
-                                    style={{
-                                        fontSize: '13px',
-                                        color: 'red',
-                                        fontWeight: '600',
-                                    }}
-                                >
-                                    {moment(order?.paidAt).hours()}
-                                    {':'}
-                                    {moment(order?.paidAt).minutes() < 10
-                                        ? `0${moment(order?.paidAt).minutes()}`
-                                        : moment(order?.paidAt).minutes()}{' '}
-                                    {moment(order?.paidAt).format('DD/MM/YYYY')}{' '}
-                                </span>
+                                <div>
+                                    <StepLabel
+                                        StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={3} />}
+                                        icon={<LocalAtmSharpIcon fontSize="large" color="primary" />}
+                                    >
+                                        Đã thanh toán
+                                    </StepLabel>
+                                    <span className=" mt-2 flex justify-center text-sm font-semibold text-[red]">
+                                        {moment(order?.paidAt).hours()}
+                                        {':'}
+                                        {moment(order?.paidAt).minutes() < 10
+                                            ? `0${moment(order?.paidAt).minutes()}`
+                                            : moment(order?.paidAt).minutes()}{' '}
+                                        {moment(order?.paidAt).format('DD/MM/YYYY')}{' '}
+                                    </span>
+                                </div>
                             </Step>
                         ) : (
                             <Step key={3}>
@@ -197,25 +176,21 @@ export default function CustomizedSteppers({ order }) {
                         )}
                         {order.completeAdmin && order.completeUser ? (
                             <Step key={4}>
-                                <StepLabel
-                                    StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={4} />}
-                                >
-                                    Đã Hoàn tất
-                                </StepLabel>
-                                <span
-                                    style={{
-                                        fontSize: '13px',
-                                        color: 'red',
-                                        fontWeight: '600',
-                                    }}
-                                >
-                                    {moment(order?.completeAdminAt).hours()}
-                                    {':'}
-                                    {moment(order?.completeAdminAt).minutes() < 10
-                                        ? `0${moment(order?.completeAdminAt).minutes()}`
-                                        : moment(order?.completeAdminAt).minutes()}{' '}
-                                    {moment(order?.completeAdminAt).format('DD/MM/YYYY')}{' '}
-                                </span>
+                                <div>
+                                    <StepLabel
+                                        StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={4} />}
+                                    >
+                                        Đã Hoàn tất
+                                    </StepLabel>
+                                    <span className=" mt-2 flex justify-center text-sm font-semibold text-[red]">
+                                        {moment(order?.completeAdminAt).hours()}
+                                        {':'}
+                                        {moment(order?.completeAdminAt).minutes() < 10
+                                            ? `0${moment(order?.completeAdminAt).minutes()}`
+                                            : moment(order?.completeAdminAt).minutes()}{' '}
+                                        {moment(order?.completeAdminAt).format('DD/MM/YYYY')}{' '}
+                                    </span>
+                                </div>
                             </Step>
                         ) : (
                             <Step key={4}>
