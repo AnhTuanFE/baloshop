@@ -15,7 +15,7 @@ import newsRouter from './Routes/newsRouter.js';
 import forgotPassRouter from './Routes/forgotPassRouter.js';
 import createUserRouter from './Routes/createUserRouter.js';
 import paypalRouter from './Routes/paypalRouter.js';
-import deliveryAndPayRouter from './Routes/deliveryAndPayRouter.js';
+import GHTK_Router from './Routes/GHTK_Router.js';
 import cors from 'cors';
 dotenv.config();
 import { Server } from 'http'; //deploy thì comment
@@ -49,7 +49,7 @@ app.use('/api/import', ImportData);
 app.use('/api/products', productRoute);
 app.use('/api/users', userRouter);
 app.use('/api/orders', orderRouter);
-app.use('/api/delivery_and_pay_router', deliveryAndPayRouter);
+app.use('/api/ghtk', GHTK_Router);
 app.use('/api/category', categoryRoute);
 app.get('/api/config/paypal', (req, res) => {
     res.send(process.env.PAYPAL_CLIENT_ID);

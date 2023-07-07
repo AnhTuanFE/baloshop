@@ -30,6 +30,7 @@
         "jquery": "^3.6.0",
         "moment": "^2.29.1",
         "nodemailer": "^6.8.0",
+        "pdfjs-dist": "^3.8.162",
         "primeicons": "^6.0.1",
         "primereact": "^9.3.0",
         "react": "^18.2.0",
