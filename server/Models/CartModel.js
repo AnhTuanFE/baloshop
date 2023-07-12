@@ -8,6 +8,7 @@ const cartItem = mongoose.Schema(
         },
         color: { type: String, required: true },
         qty: { type: Number, required: true },
+        id_product: { type: Number, required: true },
         isBuy: {
             type: Boolean,
             require: true,

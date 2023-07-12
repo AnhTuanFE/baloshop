@@ -14,13 +14,20 @@ userRouter.post(
     '/login',
     asyncHandler(async (req, res) => {
         const { email, password } = req.body;
-
         const user = await User.findOne({ email });
+        const information_admin = await User.findOne({ email: 'admin@gmail.com' });
         if (user?.disabled) {
             res.status(400);
             throw new Error('Tài khoản đã bạn đã bị khóa, vui lòng liên hệ shop để có thể lấy lại');
         }
-        if (user && (await user.matchPassword(password))) {
+        if (user && (await user.matchPassword(password)) && information_admin) {
+            const data = {
+                city: information_admin.city,
+                distric: information_admin.distric,
+                ward: information_admin.ward,
+                address: information_admin.address,
+                phone: information_admin.phone,
+            };
             res.json({
                 _id: user._id,
                 name: user.name,
@@ -34,6 +41,7 @@ userRouter.post(
                 country: user.country,
                 image: user.image,
                 disabled: user.disabled,
+                address_shop: data,
             });
         } else {
             res.status(401);
@@ -52,7 +60,7 @@ userRouter.post(
 
         if (userExists) {
             res.status(400);
-            throw new Error('User already exists');
+            throw new Error('Tài khoản đã tồn tại');
         }
 
         const user = await User.create({
@@ -66,6 +74,7 @@ userRouter.post(
             res.status(201).json({
                 _id: user._id,
                 name: user.name,
+                dateOfBirth: user.dateOfBirth,
                 email: user.email,
                 phone: user.phone,
                 isAdmin: user.isAdmin,
@@ -92,11 +101,20 @@ userRouter.get(
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
         const user = await User.findById(decoded.id).select('-password');
+        const information_admin = await User.findOne({ email: 'admin@gmail.com' });
 
-        if (user) {
+        if (user && information_admin) {
+            const data = {
+                city: information_admin.city,
+                distric: information_admin.distric,
+                ward: information_admin.ward,
+                address: information_admin.address,
+                phone: information_admin.phone,
+            };
             res.json({
                 _id: user._id,
                 name: user.name,
+                dateOfBirth: user.dateOfBirth,
                 email: user.email,
                 phone: user.phone,
                 isAdmin: user.isAdmin,
@@ -107,6 +125,7 @@ userRouter.get(
                 address: user.address,
                 image: user.image,
                 disabled: user.disabled,
+                address_shop: data,
             });
         } else {
             res.status(404);
@@ -136,13 +155,22 @@ userRouter.put(
     asyncHandler(async (req, res) => {
         try {
             const imagePath = req?.file?.path;
-            const { id, name, phone, city, distric, ward, address, nameImage } = req?.body;
-            console.log('req.body = ', req.body);
-            console.log('imagePath = ', req.file?.path);
+            const { id, name, dateOfBirth, phone, city, distric, ward, address, nameImage } = req?.body;
+            // console.log('req.body = ', req.body);
+            // console.log('imagePath = ', req.file?.path);
 
             const user = await User.findById(id);
+            const information_admin = await User.findOne({ email: 'admin@gmail.com' });
 
-            if (user) {
+            if (user && information_admin) {
+                const data = {
+                    city: information_admin.city,
+                    distric: information_admin.distric,
+                    ward: information_admin.ward,
+                    address: information_admin.address,
+                    phone: information_admin.phone,
+                };
+
                 if (user?.disabled) {
                     res.status(400);
                     throw new Error('account lock up');
@@ -168,6 +196,7 @@ userRouter.put(
                             const update = {
                                 $set: {
                                     name: name || user.name,
+                                    dateOfBirth: dateOfBirth || user.dateOfBirth,
                                     phone: phone || user.phone,
                                     city: city || user.city,
                                     distric: distric || user.distric,
@@ -183,6 +212,7 @@ userRouter.put(
                             res.json({
                                 _id: id || user.id,
                                 name: name || user.name,
+                                dateOfBirth: dateOfBirth || user.dateOfBirth,
                                 phone: phone || user.phone,
                                 isAdmin: user.isAdmin,
                                 createdAt: user.createdAt,
@@ -197,6 +227,7 @@ userRouter.put(
                                     idImageCloudinary: imageID,
                                 },
                                 disabled: user.disabled,
+                                address_shop: data,
                             });
                         },
                     );
@@ -207,6 +238,7 @@ userRouter.put(
                         res.status(201).json({
                             _id: user._id,
                             name: updatedPassword.name,
+                            dateOfBirth: user.dateOfBirth,
                             email: user.email,
                             phone: user.phone,
                             isAdmin: user.isAdmin,
@@ -218,6 +250,7 @@ userRouter.put(
                             address: user.address,
                             image: user.image,
                             disabled: user.disabled,
+                            address_shop: data,
                         });
                     } else {
                         res.status(404);
@@ -225,6 +258,7 @@ userRouter.put(
                     }
                 } else {
                     user.name = name || user.name;
+                    user.dateOfBirth = dateOfBirth || user.dateOfBirth;
                     user.phone = phone || user.phone;
                     user.city = city || user.city;
                     user.distric = distric || user.distric;
@@ -235,6 +269,7 @@ userRouter.put(
                     res.json({
                         _id: updatedUser._id,
                         name: updatedUser.name,
+                        dateOfBirth: updatedUser.dateOfBirth,
                         phone: updatedUser.phone,
                         city: updatedUser.city,
                         distric: updatedUser.distric,
@@ -246,6 +281,7 @@ userRouter.put(
                         token: generateToken(updatedUser._id),
                         image: user.image,
                         disabled: user.disabled,
+                        address_shop: data,
                     });
                 }
             } else {

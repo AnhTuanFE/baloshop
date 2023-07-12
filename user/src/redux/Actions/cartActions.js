@@ -2,25 +2,6 @@ import axios from 'axios';
 import * as types from '../Constants/CartConstants';
 import { logout } from './userActions';
 
-// ADD TO CART OLD
-// export const addToCart = (id, qty) => async (dispatch, getState) => {
-//   const { data } = await axios.get(`/api/products/${id}`);
-
-//   dispatch({
-//     type: types.CART_ADD_ITEM,
-//     payload: {
-//       product: data._id,
-//       name: data.name,
-//       image: data.image,
-//       price: data.price,
-//       countInStock: data.countInStock,
-//       qty,
-//     },
-//   });
-
-//   localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
-// };
-
 export const listCart = () => async (dispatch, getState) => {
     try {
         dispatch({ type: types.CART_LIST_REQUEST });
@@ -51,7 +32,8 @@ export const listCart = () => async (dispatch, getState) => {
     }
 };
 //ADD TO CART NEW
-export const addToCart = (productId, color, qty) => async (dispatch, getState) => {
+// productId, id_product, color, qty
+export const addToCart = (data_post) => async (dispatch, getState) => {
     try {
         dispatch({ type: types.CART_CREATE_REQUEST });
 
@@ -66,7 +48,7 @@ export const addToCart = (productId, color, qty) => async (dispatch, getState) =
             },
         };
 
-        const { data } = await axios.post(`/api/cart/`, { productId, color, qty, _id }, config);
+        const { data } = await axios.post(`/api/cart/`, data_post, config);
 
         dispatch({ type: types.CART_CREATE_SUCCESS, payload: data });
     } catch (error) {

@@ -7,6 +7,7 @@ import { getListProvincesAction } from '~/redux/Actions/userActions';
 import { updateUserProfile } from '~/redux/Actions/userActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
+import moment from 'moment';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -33,6 +34,7 @@ TabPanel.propTypes = {
 
 function Detail_infor_account({ user }) {
     const dispatch = useDispatch();
+    console.log('user = ', user);
 
     const {
         register,
@@ -41,10 +43,11 @@ function Detail_infor_account({ user }) {
         handleSubmit,
         formState: { errors },
         setValue,
-    } = useForm({ defaultValues: { city: '', distric: '', ward: '' } });
+    } = useForm({ defaultValues: { city: '', distric: '', ward: '', dateOfBirth: '' } });
 
     useEffect(() => {
         setValue('name', user.name);
+        setValue('dateOfBirth', moment(user?.dateOfBirth).format('YYYY-MM-DD'));
         setValue('phone', user.phone);
         setValue('city', user.city);
         setValue('distric', user.distric);
@@ -61,11 +64,13 @@ function Detail_infor_account({ user }) {
     const DataProvinces = listProvince.province;
 
     const submitUpdateProfile = (data) => {
-        const { name, phone, address, city, distric, ward } = data;
-
+        const { name, dateOfBirth, phone, address, city, distric, ward } = data;
+        const dateOfBirthTemp = moment(dateOfBirth).format('YYYY-MM-DD');
+        console.log('dateOfBirthTemp = ', dateOfBirthTemp);
         let userInforNeedUpdate = new FormData();
         userInforNeedUpdate.append('id', user._id);
         userInforNeedUpdate.append('name', name);
+        userInforNeedUpdate.append('dateOfBirth', dateOfBirthTemp);
         userInforNeedUpdate.append('phone', phone);
         userInforNeedUpdate.append('city', city);
         userInforNeedUpdate.append('distric', distric);
@@ -162,6 +167,32 @@ function Detail_infor_account({ user }) {
                                     variant="outlined"
                                     {...field}
                                     placeholder="Họ tên"
+                                />
+                            )}
+                        />
+                    </Box>
+                    <Box className={clsx(styles.wrap_info_item_warning)}>
+                        {errors.name && errors.name.type === 'required' ? (
+                            <p className={clsx(styles.info_item_warning)}>{errors.name.message}</p>
+                        ) : null}
+                    </Box>
+                    <Box className={clsx(styles.wrap_info_item)}>
+                        <Typography className={clsx(styles.info_item_label)}>Ngày sinh</Typography>
+                        <Controller
+                            name="dateOfBirth"
+                            control={control}
+                            rules={{
+                                required: 'Bạn chưa nhập ngày sinh',
+                            }}
+                            render={({ field }) => (
+                                <TextField
+                                    type="date"
+                                    className={clsx(styles.info_item)}
+                                    hiddenLabel
+                                    id="outlined-basic"
+                                    variant="outlined"
+                                    {...field}
+                                    placeholder="Ngày sinh"
                                 />
                             )}
                         />

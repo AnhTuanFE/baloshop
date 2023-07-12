@@ -1,0 +1,215 @@
+{
+    "success": true,
+    "message": "",
+    "order": {
+        "label_id": "S22223996.SG01-G60.1250011188",
+        "partner_id": "a4",
+        "order_id": null,
+        "status": 1,
+        "status_text": "Chưa tiếp nhận",
+        "created": "2023-07-07 14:49:57",
+        "modified": "2023-07-07 14:50:00",
+        "message": "Khối lượng tính cước tối đa: 1.00 kg\nShop chọn Hàng dễ vỡ xin nhẹ tay",
+        "pick_date": "2023-07-07",
+        "deliver_date": "2023-07-08",
+        "customer_fullname": "GHTK - HCM - Noi Thanh",
+        "customer_tel": "0193456765",
+        "address": "123 nguyễn chí thanh Phường Bến Nghé, Quận 1, TP Hồ Chí Minh",
+        "storage_day": 0,
+        "ship_money": 44400,
+        "insurance": 15000,
+        "value": 3000000,
+        "weight": 400,
+        "pick_money": 47000,
+        "is_freeship": 1,
+        "products": [
+            {
+                "full_name": "bút",
+                "product_code": "",
+                "weight": 0.1,
+                "quantity": 1
+            },
+            {
+                "full_name": "tẩy",
+                "product_code": "",
+                "weight": 0.2,
+                "quantity": 1
+            }
+        ]
+    }
+}
+
+
+
+
+
+tôi có một mảng như sau
+orderItems: [
+    {
+      name: 'Balo học sinh 7391223',
+      color: 'hồng',
+      qty: 123,
+      weight: 1,
+      product: new ObjectId("6447416fc151d6ec5a219834"),
+      _id: new ObjectId("64ac261ec222229a4fdab8b1"),
+    },
+{
+      name: 'Balo cùi bắp',
+      color: 'đen',
+      qty: 234,
+      weight: 12,
+      product: new ObjectId("644741ddc151d6ec5a219834"),
+      _id: new ObjectId("64ac261ec222229a4fhhhb8b1"),
+    }
+  ],
+Tôi muốn chuyển dữ liệu của nó như thế này
+products: [
+                    {
+                        name: 'Balo học sinh 7391223',
+                        weight: 1 || 0.5,
+                        quantity: 123,
+                        product_code: "6447416fc151d6ec5a219834",
+                    },
+                    {
+                        name: 'Balo cùi bắp',
+                        weight: 12 || 0.5,
+                        quantity: 234,
+                        product_code: "6447416fc151d6ec5a219834",
+                    },
+                ],
+
+
+
+=================================================================
+request create order new  {
+  orderItems: [
+    {
+      name: 'Balo laptop 92332',
+      color: 'xanh lá',
+      qty: 1,
+      image: 'https://res.cloudinary.com/dt0iazjvh/image/upload/v1685326171/baloshopImage/dfoulwxvriabrhqktkmr.webp',
+      price: 560000,
+      product: '64474328c151d6ec5a2198d3'
+    },
+    {
+      name: 'Túi chống sốc 010',
+      color: 'đen',
+      qty: 1,
+      image: 'https://res.cloudinary.com/dt0iazjvh/image/upload/v1685326035/baloshopImage/jl9a0lsmafmscg4osrdc.webp',
+      price: 299000,
+      product: '63ec819e05b559d341dfe956'
+    }
+  ],
+  shippingAddress: {
+    city: 'Thành phố Hồ Chí Minh',
+    distric: 'Quận 10',
+    ward: 'Phường 08',
+    address: 'thôn 7 đường quang trung',
+    postalCode: ''
+  },
+  paymentMethod: '"Thanh toán bằng tiền mặt"',
+  itemsPrice: '859000',
+  shippingPrice: '22000',
+  totalPrice: '881000',
+  phone: '012345678',
+  name: 'Anh Tuấn7',
+  email: 'tuandgtl7@gmail.com'
+}
+
+
+=======================================
+dataOrderGHTK =  {
+  success: true,
+  message: 'Các đơn hàng đã được add vào hệ thống GHTK thành công. Thông tin đơn hàng thành công được trả về trong trường success_orders.',
+  order: {
+    partner_id: '64ad86eaf263c27263edeae8',
+    label: 'S22223996.SG01-A26.1200011762',
+    area: 1,
+    fee: 22000,
+    insurance_fee: 0,
+    estimated_pick_time: 'Sáng 2023-07-12',
+    estimated_deliver_time: 'Chiều 2023-07-12',
+    products: [],
+    status_id: 1,
+    tracking_id: 1200011762,
+    sorting_code: 'SG01-A26',
+    date_to_delay_pick: '2023-07-12 00:00:00',
+    pick_work_shift: 1,
+    date_to_delay_deliver: '2023-07-12 00:00:00',
+    deliver_work_shift: 2,
+    is_xfast: 0
+  },
+  warning_message: ''
+}
+
+
+{
+    "success": true,
+    "message": "",
+    "order": {
+        "label_id": "S22223996.SG01-A26.1200011762",
+        "partner_id": "64ad86eaf263c27263edeae8",
+        "order_id": null,
+        "status": 1,
+        "status_text": "Chưa tiếp nhận",
+        "created": "2023-07-11 23:44:30",
+        "modified": "2023-07-11 23:44:32",
+        "message": "Khối lượng tính cước tối đa: 1.00 kg",
+        "pick_date": "2023-07-12",
+        "deliver_date": "2023-07-12",
+        "customer_fullname": "Anh Tuấn7",
+        "customer_tel": "012345678",
+        "address": "thôn 7 đường quang trung Dương Quang Trung, Phường 8, Quận 10, TP Hồ Chí Minh",
+        "storage_day": 0,
+        "ship_money": 22000,
+        "insurance": 0,
+        "value": 881000,
+        "weight": 1000,
+        "pick_money": 0,
+        "is_freeship": 1,
+        "products": [
+            {
+                "full_name": "Balo laptop 92332",
+                "product_code": "",
+                "weight": 0.5,
+                "quantity": 1
+            },
+            {
+                "full_name": "Túi chống sốc 010",
+                "product_code": "",
+                "weight": 0.5,
+                "quantity": 1
+            }
+        ]
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

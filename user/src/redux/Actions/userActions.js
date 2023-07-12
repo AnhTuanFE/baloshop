@@ -1,7 +1,6 @@
 import * as types from '../Constants/UserContants';
 import axios from 'axios';
 import { ORDER_LIST_MY_RESET } from '../Constants/OrderConstants';
-// import { addToCart, listCart } from './cartActions';
 import { CART_LIST_MY_RESET } from '../Constants/CartConstants';
 
 // LOGIN

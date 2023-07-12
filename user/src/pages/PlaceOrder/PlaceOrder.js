@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { message } from 'antd';
@@ -13,6 +13,12 @@ import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import AccountCircleSharpIcon from '@mui/icons-material/AccountCircleSharp';
 import AddLocationSharpIcon from '@mui/icons-material/AddLocationSharp';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import { ordersRemainingSelector } from '~/redux/Selector/ordersSelector';
+import { calculate_fee_ship_action } from '~/redux/Actions/OrderActions';
+
+// react query
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 // import './PlaceOrder.css';
 
 function PlaceOrder() {
@@ -29,16 +35,36 @@ function PlaceOrder() {
             content: 'Đặt hàng thành công',
         });
     };
-    const errorPlaceholder = () => {
+    const errorPlaceholder = (content) => {
         messageApi.open({
             type: 'error',
-            content: 'Đặt hàng thất bại, vui lòng thử lại sau',
+            content: content,
         });
     };
 
+    const mutationVariable = useMutation({
+        mutationFn: (new_label) => {
+            return axios.put('/api/orders/update_label_ghtk', new_label);
+        },
+        // onSuccess: (data) => {
+        //     console.log('Mutation was successful!', data);
+        // },
+        // onError: (error) => {
+        //     console.error('Mutation failed!', error);
+        // },
+    });
+    const handleUp = () => {
+        mutationVariable.mutate({ idOrder: order?.ShopOrder?._id, label_GHTK: order?.GHTK_Order?.order?.label });
+    };
     const cart = useSelector((state) => state.cart);
     const { cartItems } = cart;
-
+    const userLogin = useSelector((state) => state.userLogin);
+    const { userInfo } = userLogin;
+    const orderCreate = useSelector((state) => state.orderCreate);
+    const { order, success, error } = orderCreate;
+    const { order_ghtk_state } = useSelector(ordersRemainingSelector);
+    const fee_VC = order_ghtk_state?.data_fee_ship?.fee.fee;
+    // =====================================================
     const currenCartItems = cartItems
         .filter((item) => {
             const findCart = item?.product?.optionColor?.find((option) => option.color === item.color);
@@ -53,13 +79,11 @@ function PlaceOrder() {
                 qty: pro.qty,
                 image: pro.product.image[0].urlImage,
                 price: pro.product.price,
+                id_product: pro.id_product,
                 product: pro.product._id,
             });
             return arr;
         }, []);
-
-    const userLogin = useSelector((state) => state.userLogin);
-    const { userInfo } = userLogin;
 
     // Calculate Price
     const addDecimals = (num) => {
@@ -77,40 +101,24 @@ function PlaceOrder() {
             .reduce((a, i) => a + i.qty * i.product.price, 0)
             .toFixed(0),
     );
-    cart.shippingPrice = addDecimals(cart.itemsPrice > 0 ? (cart.itemsPrice > 100 ? 30000 : 20) : 0);
-    cart.totalPrice =
-        cart?.cartItems.length > 0 ? (Number(cart.itemsPrice) + Number(cart.shippingPrice)).toFixed(0) : 0;
-
-    const orderCreate = useSelector((state) => state.orderCreate);
-    const { order, success, error } = orderCreate;
+    cart.shippingPrice = addDecimals(cart.itemsPrice > 0 ? fee_VC : 30000);
+    cart.totalPrice = (Number(cart.itemsPrice) + Number(cart.shippingPrice)).toFixed(0);
 
     useEffect(() => {
         if (error) {
-            errorPlaceholder();
+            errorPlaceholder('Đặt hàng thất bại, vui lòng thử lại sau');
             dispatch({ type: ORDER_CREATE_RESET });
         }
-    }, [error]);
-
-    useEffect(() => {
-        if (paymentMethods_from_localStorage == '"Thanh toán qua paypal"') {
-            setPaymentPaypal('Thanh toán qua paypal');
-        } else {
-            setPaymentPaypal('Thanh toán bằng tiền mặt');
-        }
-    });
-
-    useEffect(() => {
-        dispatch(listCart());
         if (success) {
-            // successPlaceholder();
+            successPlaceholder();
+            handleUp();
             setTimeout(() => {
-                navigate(`/order/${order._id}`);
+                navigate(`/order/${order.ShopOrder._id}`);
             }, 3000);
             dispatch({ type: ORDER_CREATE_RESET });
             dispatch(clearFromCart(userInfo._id));
         }
-    }, [navigate, dispatch, success, order, userInfo]);
-
+    }, [error, success]);
     const placeOrderHandler = () => {
         dispatch(
             createOrder({
@@ -122,7 +130,6 @@ function PlaceOrder() {
                     address: userInfo.address,
                     postalCode: '',
                 },
-                // paymentMethod: cart.paymentMethod,
                 paymentMethod: paymentMethods_from_localStorage,
                 itemsPrice: cart.itemsPrice,
                 shippingPrice: cart.shippingPrice,
@@ -130,6 +137,7 @@ function PlaceOrder() {
                 phone: userInfo.phone,
                 name: userInfo.name,
                 email: userInfo.email,
+                address_shop: userInfo.address_shop,
             }),
         );
     };
@@ -184,7 +192,6 @@ function PlaceOrder() {
     }
 
     //========================= handle thanh toán paypal =========================
-
     // chuyển tiền việt thành tiền dollar
     const handleExchangeCurrency = (vnd) => {
         const usd = (vnd / 23000).toFixed(1);
@@ -194,7 +201,7 @@ function PlaceOrder() {
     let moneyNeedPaid = handleExchangeCurrency(cart.totalPrice);
 
     const createOrderPaypal = (data, actions) => {
-        console.log('data create order = ', data);
+        // console.log('data create order = ', data);
         // paymentSource: 'paypal
         return actions.order.create({
             purchase_units: [
@@ -248,13 +255,49 @@ function PlaceOrder() {
     };
     // Định nghĩa hàm xử lý khi có lỗi xảy ra trong quá trình thanh toán
     const onError = (err) => {
+        errorPlaceholder('Có lỗi xảy ra khi thanh toán, vui lòng thử lại sau');
         console.log('data err = ', err);
     };
     // Định nghĩa hàm xử lý khi người dùng hủy thanh toán
     const onCancel = (data) => {
+        errorPlaceholder('Bạn đã hủy thanh toán, vui lòng hoàn tất thanh toán trong 24h');
         console.log(' data Cancelled =', data);
     };
     const ID_CLENT = 'Af5R_f2_MvnxLxpFeDO56MRvo6PGOIfXR3c0P9z8wyRGek_Th6JPBU7ktH5kgPpHW0Bb5pw0aasuA2NR';
+
+    // ===================================================
+    useLayoutEffect(() => {
+        if (cartItems.length === 0) {
+            dispatch(listCart());
+        }
+        if (paymentMethods_from_localStorage == '"Thanh toán qua paypal"') {
+            setPaymentPaypal('Thanh toán qua paypal');
+        }
+        if (paymentMethods_from_localStorage != '"Thanh toán qua paypal"') {
+            setPaymentPaypal('Thanh toán bằng tiền mặt');
+        }
+    }, []);
+    useEffect(() => {
+        if (cartItems.length != 0 && Object.keys(order_ghtk_state).length === 0) {
+            dispatch(
+                calculate_fee_ship_action({
+                    pick_province: userInfo.address_shop.city,
+                    pick_district: userInfo.address_shop.distric,
+                    pick_ward: userInfo.address_shop.ward,
+                    pick_address: userInfo.address_shop.address,
+                    province: userInfo.city,
+                    district: userInfo.distric,
+                    ward: userInfo.ward,
+                    address: userInfo.address,
+                    weight: 1000, // đơn vị gam
+                    value: cart.totalPrice, // giá trị đơn hàng để tính bảo hiểm
+                    transport: 'road',
+                    deliver_option: 'none',
+                    // tags: [1, 7],
+                }),
+            );
+        }
+    }, [cart]);
     return (
         <>
             {error && <Loading />}

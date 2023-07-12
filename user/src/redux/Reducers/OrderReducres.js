@@ -1,6 +1,6 @@
 import * as types from '../Constants/OrderConstants';
 // CREATE ORDER
-export const orderCreateReducer = (state = {}, action) => {
+export const orderCreateReducer = (state = { loading: false, order: {} }, action) => {
     switch (action.type) {
         case types.ORDER_CREATE_REQUEST:
             return { loading: true };
@@ -183,6 +183,19 @@ export const PaypalReducer = (state = {}, action) => {
             return { ...state, loading: false, orderConfirmReturn: action.payload };
         case types.ORDER_PAYPAL_PAID_CONFIRM_FAIL:
             return { ...state, loading: false, error: action.payload };
+        default:
+            return state;
+    }
+};
+
+export const GHTK_Reducer = (state = {}, action) => {
+    switch (action.type) {
+        case types.CALCULATE_FEE_SHIP_REQUEST:
+            return { loading: true };
+        case types.CALCULATE_FEE_SHIP_SUCCESS:
+            return { loading: false, success: true, data_fee_ship: action.payload };
+        case types.CALCULATE_FEE_SHIP_FAIL:
+            return { loading: false, error: action.payload };
         default:
             return state;
     }

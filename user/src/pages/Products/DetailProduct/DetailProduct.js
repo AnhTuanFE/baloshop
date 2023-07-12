@@ -113,8 +113,9 @@ function DetailProduct() {
 
     const AddToCartHandle = (e) => {
         e.preventDefault();
+        const id_product = product?.id_product || 123456789;
         if (userInfo) {
-            dispatch(addToCart(productId, color, qty, userInfo._id));
+            dispatch(addToCart({ productId, color, id_product, qty, _id: userInfo._id }));
         } else navigate('/login');
     };
 
@@ -173,7 +174,7 @@ function DetailProduct() {
                                                         }}
                                                         class={
                                                             optionIndex === index
-                                                                ? 'btn btn-outline-primary mx-1 active'
+                                                                ? 'btn btn-outline-primary active mx-1'
                                                                 : 'btn btn-outline-primary mx-1'
                                                         }
                                                         style={{ marginTop: '8px' }}
@@ -227,7 +228,7 @@ function DetailProduct() {
     }
     return (
         <>
-            <div className="container single-product">
+            <div className="single-product container">
                 {loadingAddCart && <Loading />}
                 {content}
             </div>

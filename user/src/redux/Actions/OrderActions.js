@@ -3,6 +3,27 @@ import axios from 'axios';
 import { CART_CLEAR_ITEMS } from '../Constants/CartConstants';
 import { logout } from './userActions';
 
+//CALCULATE FEE SHIP
+export const calculate_fee_ship_action = (data_calculate) => async (dispatch) => {
+    try {
+        dispatch({ type: types.CALCULATE_FEE_SHIP_REQUEST });
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+
+        const { data } = await axios.post(`/api/ghtk/get_fee_ship`, data_calculate, config);
+        dispatch({ type: types.CALCULATE_FEE_SHIP_SUCCESS, payload: data });
+    } catch (error) {
+        const message = error.response?.data.message ? error.response.data.message : error.message;
+        dispatch({
+            type: types.CALCULATE_FEE_SHIP_FAIL,
+            payload: message,
+        });
+    }
+};
 // CREATE ORDER
 
 export const createOrder = (order) => async (dispatch, getState) => {

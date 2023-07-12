@@ -6,10 +6,48 @@ const GHTK_Router = express.Router();
 // const apiBase = 'https://services.giaohangtietkiem.vn';
 const apiBase = 'https://services-staging.ghtklab.com';
 
+// lấy dữ liệu từ các tỉnh thành
 GHTK_Router.get(
+    '/get_data_province',
+    asyncHandler(async (req, res) => {
+        try {
+            const url = `${apiBase}/services/address/getDeliveredAddress`;
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Token: 'dfdb4cb9647b5130ea49d5216fda3c60f9a712cd',
+                },
+            };
+            const data1 = {
+                parent_id: 863,
+            };
+            const { data } = await axios.get(url, config);
+            if (data) {
+                res.status(200).json(data);
+            }
+        } catch (error) {
+            res.status(500).json('lỗi', error);
+        }
+    }),
+);
+// Tính phí ship
+GHTK_Router.post(
     '/get_fee_ship',
     asyncHandler(async (req, res) => {
         try {
+            // console.log('req = ', req?.body);
+            const {
+                pick_province,
+                pick_district,
+                pick_ward,
+                pick_address,
+                province,
+                district,
+                ward,
+                address,
+                weight,
+                value,
+            } = req?.body;
             const url = `${apiBase}/services/shipment/fee`;
             const config = {
                 headers: {
@@ -18,29 +56,30 @@ GHTK_Router.get(
                 },
             };
             const data1 = {
-                pick_province: 'Hà Nội',
-                pick_district: 'Quận Hai Bà Trưng',
-                province: 'Hà nội',
-                district: 'Quận Cầu Giấy',
-                address: 'P.503 tòa nhà Auu Việt, số 1 Lê Đức Thọ',
-                weight: 1000,
-                value: 3000000,
-                transport: 'fly',
-                deliver_option: 'xteam',
-                tags: [1, 7],
+                pick_province: pick_province,
+                pick_district: pick_district,
+                pick_ward: pick_ward,
+                pick_address: pick_address,
+                province: province,
+                district: district,
+                ward: ward,
+                address: address,
+                weight: weight, // đơn vị gam
+                value: value, // giá trị đơn hàng để tính bảo hiểm
+                transport: 'road',
+                deliver_option: 'none',
+                // tags: [1, 7],
             };
             const { data } = await axios.post(url, data1, config);
             if (data) {
-                console.log('data = ', data);
                 res.status(200).json(data);
             }
         } catch (error) {
-            console.log('lỗi là : ', error);
             res.status(500).json('lỗi', error);
         }
     }),
 );
-
+// tạo đơn hàng mới
 GHTK_Router.get(
     '/create_order_ghtk',
     asyncHandler(async (req, res) => {
@@ -55,22 +94,20 @@ GHTK_Router.get(
             const data1 = {
                 products: [
                     {
-                        id_p: 1433,
-                        name: 'bút',
+                        name: 'sách',
                         weight: 0.1,
                         quantity: 1,
-                        product_code: 1241,
+                        product_code: 1242,
                     },
                     {
-                        id_p: 1223,
-                        name: 'tẩy',
+                        name: 'vở',
                         weight: 0.2,
                         quantity: 1,
-                        product_code: 1254,
+                        product_code: 1255,
                     },
                 ],
                 order: {
-                    id: 'a4',
+                    id: 'a5',
                     pick_name: 'HCM-nội thành',
                     pick_address: '590 CMT8 P.11',
                     pick_province: 'TP. Hồ Chí Minh',
@@ -100,20 +137,22 @@ GHTK_Router.get(
             };
             const { data } = await axios.post(url, data1, config);
             if (data) {
-                console.log('data = ', data);
                 res.status(201).json(data);
             }
         } catch (error) {
-            console.log('lỗi là : ', error);
             res.status(500).json('lỗi', error);
         }
     }),
 );
+
+// lấy thông tin đơn hàng theo id
 GHTK_Router.get(
     '/get_order_by_id',
     asyncHandler(async (req, res) => {
         try {
-            const data1 = 'S22223996.SG01-G60.1250011188';
+            // const data1 = 'S22223996.SG01-G60.1250011188';
+            const data1 = 'S22223996.SG01-A26.1250011557';
+
             const url = `${apiBase}/services/shipment/v2/${data1}`;
             const config = {
                 headers: {
@@ -123,42 +162,14 @@ GHTK_Router.get(
             };
             const { data } = await axios.get(url, config);
             if (data) {
-                console.log('data = ', data);
                 res.status(201).json(data);
             }
         } catch (error) {
-            console.log('lỗi là : ', error);
             res.status(500).json('lỗi', error);
         }
     }),
 );
-GHTK_Router.get(
-    '/update_status_order_by_id',
-    asyncHandler(async (req, res) => {
-        try {
-            const data1 = 'S22223996.SG01-G60.1250011188';
-            const url = `${apiBase}/services/shipment/v2/${data1}`;
-            const data2 = {
-                status: 3,
-                status_text: 'Đã tiếp nhận',
-            };
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Token: 'dfdb4cb9647b5130ea49d5216fda3c60f9a712cd',
-                },
-            };
-            const { data } = await axios.post(url, data2, config);
-            if (data) {
-                console.log('data = ', data);
-                res.status(201).json(data);
-            }
-        } catch (error) {
-            console.log('lỗi là : ', error);
-            res.status(500).json('lỗi', error);
-        }
-    }),
-);
+// hủy đơn hàng theo id
 GHTK_Router.get(
     '/cancel_order_by_id',
     asyncHandler(async (req, res) => {
@@ -173,15 +184,14 @@ GHTK_Router.get(
             };
             const { data } = await axios.get(url, config);
             if (data) {
-                console.log('data = ', data);
                 res.status(201).json(data);
             }
         } catch (error) {
-            console.log('lỗi là : ', error);
             res.status(500).json('lỗi', error);
         }
     }),
 );
+// lấy nhãn của đơn hàng, sẽ trả về 1 file pdf
 GHTK_Router.get(
     '/get_label_order_by_id',
     asyncHandler(async (req, res) => {
@@ -196,11 +206,9 @@ GHTK_Router.get(
             };
             const { data } = await axios.get(url, config);
             if (data) {
-                console.log('data = ', data);
                 res.status(201).json(data);
             }
         } catch (error) {
-            console.log('lỗi là : ', error);
             res.status(500).json('lỗi', error);
         }
     }),

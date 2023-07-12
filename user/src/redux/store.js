@@ -39,6 +39,7 @@ import {
     orderGetItem,
     returnAmountProductReducer,
     PaypalReducer,
+    GHTK_Reducer,
 } from './Reducers/OrderReducres';
 import { Sliderload } from './Reducers/SliderReducer';
 import { getNewsReducer, newsListReducer } from './Reducers/NewsReducer';
@@ -70,6 +71,7 @@ const reducer = combineReducers({
     orderCreateReviewsRetult: orderCreateReviewReducer,
     orderGetItemRetult: orderGetItem,
     orderGetComplete: orderCompleteReducer,
+    order_ghtk_state: GHTK_Reducer,
     paypalstate: PaypalReducer,
     returnAmount: returnAmountProductReducer,
     sliderLoad: Sliderload,

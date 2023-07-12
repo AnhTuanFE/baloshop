@@ -10,6 +10,7 @@ import fs from 'fs';
 //
 import multer from 'multer';
 import cloudinary from 'cloudinary';
+import { v4 as uuidv4 } from 'uuid';
 
 const __dirname = path.resolve();
 const productRoute = express.Router();
@@ -310,6 +311,8 @@ productRoute.post(
 );
 
 // CREATE PRODUCT
+let id_product = uuidv4().slice(0, 24);
+
 const storage = multer.diskStorage({
     filename: function (req, file, callback) {
         callback(null, Date.now() + file.originalname);
@@ -354,6 +357,7 @@ productRoute.post(
                     description,
                     category,
                     image: { urlImage: req.body.image, nameCloudinary: req.body.imageId },
+                    id_product: id_product,
                     // user: req.user._id,
                 });
                 if (product) {

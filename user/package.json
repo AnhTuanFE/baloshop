@@ -17,6 +17,7 @@
         "@mui/system": "^5.13.2",
         "@paypal/react-paypal-js": "^7.8.3",
         "@redux-devtools/extension": "^3.2.5",
+        "@tanstack/react-query": "^4.29.19",
         "@testing-library/jest-dom": "^5.16.5",
         "@testing-library/react": "^13.4.0",
         "@testing-library/user-event": "^13.5.0",
@@ -56,6 +57,7 @@
         "web-vitals": "^2.1.4"
     },
     "devDependencies": {
+        "@tanstack/eslint-plugin-query": "^4.29.9",
         "babel-plugin-module-resolver": "^4.1.0",
         "customize-cra": "^1.0.0",
         "prettier": "^2.8.8",

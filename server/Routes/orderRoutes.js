@@ -3,53 +3,44 @@ import asyncHandler from 'express-async-handler';
 import { admin, protect } from '../Middleware/AuthMiddleware.js';
 import Product from '../Models/ProductModel.js';
 import Order from './../Models/OrderModel.js';
+import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 
 const orderRouter = express.Router();
 
+// API giao hàng tiết kiệm
+// const apiBase = 'https://services.giaohangtietkiem.vn';
+const apiBase = 'https://services-staging.ghtklab.com';
+
 // CREATE ORDER
+const handleConfigProducts = (orderItems) => {
+    const products = [];
+    for (let i = 0; i < orderItems.length; i++) {
+        const item = orderItems[i];
+        const product = {
+            name: item.name,
+            weight: item.weight || 0.5,
+            quantity: item.qty,
+            product_code: item.id_product,
+        };
+        products.push(product);
+    }
+    return products;
+};
+
 orderRouter.post(
     '/',
     protect,
     asyncHandler(async (req, res) => {
-        const {
-            orderItems,
-            shippingAddress,
-            paymentMethod,
-            itemsPrice,
-            shippingPrice,
-            totalPrice,
-            phone,
-            name,
-            email,
-            paypalOrder,
-        } = req.body;
-
-        if (orderItems.length != 0) {
-            for (let i = 0; i < orderItems.length; i++) {
-                const product = await Product.findById(orderItems[i].product);
-                const findCart = product.optionColor?.find((option) => option.color === orderItems[i].color);
-                if (findCart.countInStock < orderItems[i].qty) {
-                    res.status(400);
-                    throw new Error('Số lượng không đủ đáp ứng');
-                }
-            }
-        } else {
-            res.status(400);
-            throw new Error('Đặt hàng không thành công');
-        }
-        if (req?.user?.disabled) {
-            res.status(400);
-            throw new Error('Tài khoản của bạn đã bị khóa');
-        }
-        if (orderItems && orderItems.length === 0) {
-            res.status(400);
-            throw new Error('No order items');
-            return;
-        }
-        if (paypalOrder?.payerID) {
-            const order = new Order({
+        let id_predefined = uuidv4().slice(0, 24);
+        let currentDate = new Date();
+        let year = currentDate.getFullYear();
+        let month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+        let day = currentDate.getDate().toString().padStart(2, '0');
+        let dateString = `${year}-${month}-${day}`;
+        try {
+            const {
                 orderItems,
-                user: req.user._id,
                 shippingAddress,
                 paymentMethod,
                 itemsPrice,
@@ -59,54 +50,155 @@ orderRouter.post(
                 name,
                 email,
                 paypalOrder,
-                waitConfirmation: true,
-                isPaid: true,
-            });
-            for (let i = 0; i < orderItems.length; i++) {
-                const findProduct = await Product.findById(orderItems[i].product);
-                const optionColor = findProduct?.optionColor;
-                const findColor = optionColor.find((option) => option.color == orderItems[i].color);
-                const filterOptionColor = optionColor.filter((option) => option.color != orderItems[i].color);
-                if (findColor) {
-                    findColor.color = findColor.color;
-                    findColor.countInStock = findColor.countInStock - orderItems[i].qty;
+                address_shop,
+            } = req.body;
+
+            if (orderItems.length != 0) {
+                for (let i = 0; i < orderItems.length; i++) {
+                    const product = await Product.findById(orderItems[i].product);
+                    const findCart = product.optionColor?.find((option) => option.color === orderItems[i].color);
+                    if (findCart.countInStock < orderItems[i].qty) {
+                        res.status(400);
+                        throw new Error('Số lượng không đủ đáp ứng');
+                    }
                 }
-                let arrOption = [...filterOptionColor, findColor];
-                await Product.findOneAndUpdate({ _id: orderItems[i].product }, { optionColor: arrOption });
+            } else {
+                res.status(400);
+                throw new Error('Đặt hàng không thành công');
             }
-            const createOrder = await order.save();
-            res.status(201).json(createOrder);
-        } else {
-            const order = new Order({
-                orderItems,
-                user: req.user._id,
-                shippingAddress,
-                paymentMethod,
-                itemsPrice,
-                shippingPrice,
-                totalPrice,
-                phone,
-                name,
-                email,
-            });
-            for (let i = 0; i < orderItems.length; i++) {
-                const findProduct = await Product.findById(orderItems[i].product);
-                const optionColor = findProduct?.optionColor;
-                const findColor = optionColor.find((option) => option.color == orderItems[i].color);
-                const filterOptionColor = optionColor.filter((option) => option.color != orderItems[i].color);
-                if (findColor) {
-                    findColor.color = findColor.color;
-                    findColor.countInStock = findColor.countInStock - orderItems[i].qty;
+            if (req?.user?.disabled) {
+                res.status(400);
+                throw new Error('Tài khoản của bạn đã bị khóa');
+            }
+            if (orderItems && orderItems.length === 0) {
+                res.status(400);
+                throw new Error('No order items');
+            }
+            if (paypalOrder?.payerID) {
+                const order = new Order({
+                    orderItems,
+                    user: req.user._id,
+                    shippingAddress,
+                    paymentMethod,
+                    itemsPrice,
+                    shippingPrice,
+                    totalPrice,
+                    phone,
+                    name,
+                    email,
+                    paypalOrder,
+                    waitConfirmation: true,
+                    isPaid: true,
+                });
+                for (let i = 0; i < orderItems.length; i++) {
+                    const findProduct = await Product.findById(orderItems[i].product);
+                    const optionColor = findProduct?.optionColor;
+                    const findColor = optionColor.find((option) => option.color == orderItems[i].color);
+                    const filterOptionColor = optionColor.filter((option) => option.color != orderItems[i].color);
+                    if (findColor) {
+                        findColor.color = findColor.color;
+                        findColor.countInStock = findColor.countInStock - orderItems[i].qty;
+                    }
+                    let arrOption = [...filterOptionColor, findColor];
+                    await Product.findOneAndUpdate({ _id: orderItems[i].product }, { optionColor: arrOption });
                 }
-                let arrOption = [...filterOptionColor, findColor];
-                await Product.findOneAndUpdate({ _id: orderItems[i].product }, { optionColor: arrOption });
+                const createOrder = await order.save();
+                res.status(201).json(createOrder);
+            } else {
+                const order = new Order({
+                    orderItems,
+                    user: req.user._id,
+                    shippingAddress,
+                    paymentMethod,
+                    itemsPrice,
+                    shippingPrice,
+                    totalPrice,
+                    phone,
+                    name,
+                    email,
+                    id_predefined: id_predefined,
+                });
+                for (const orderItem of orderItems) {
+                    const findProduct = await Product.findById(orderItem.product);
+                    const optionColor = findProduct?.optionColor;
+                    const findColor = optionColor.find((option) => option.color == orderItem.color);
+                    const filterOptionColor = optionColor.filter((option) => option.color != orderItem.color);
+                    if (findColor) {
+                        findColor.color = findColor.color;
+                        findColor.countInStock = findColor.countInStock - orderItem.qty;
+                    }
+                    let arrOption = [...filterOptionColor, findColor];
+                    await Product.findOneAndUpdate({ _id: orderItem.product }, { optionColor: arrOption });
+                }
+                const createOrder = await order.save();
+                const productConfiged = await handleConfigProducts(orderItems);
+                const handleCreateOrderGHTK = async (products) => {
+                    const data12 = {
+                        products: products,
+                        order: {
+                            id: id_predefined,
+                            pick_name: 'SHOP BALO',
+                            pick_province: address_shop?.city,
+                            pick_district: address_shop?.distric,
+                            pick_address: address_shop?.address,
+                            // pick_ward: address_shop?.ward,
+                            pick_tel: address_shop?.phone,
+                            tel: phone,
+                            name: name,
+                            email: email,
+                            address: shippingAddress.address,
+                            province: shippingAddress.city,
+                            district: shippingAddress.distric,
+                            ward: shippingAddress.ward,
+                            hamlet: 'Khác',
+                            // is_freeship: '1',
+                            // pick_date: dateString,
+                            pick_money: 0,
+                            // note: 'Khối lượng tính cước tối đa: 1.00 kg',
+                            value: totalPrice,
+                            transport: 'road',
+                            // pick_option: 'cod', // Đơn hàng xfast yêu cầu bắt buộc pick_option là COD
+                            // deliver_option: 'xteam', // nếu lựa chọn kiểu vận chuyển xfast
+                            // pick_session: 2, // Phiên lấy xfast
+                            // booking_id: 2,
+                            // tags: [1, 7],
+                        },
+                    };
+                    const url = `${apiBase}/services/shipment/order`;
+                    const config = {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Token: 'dfdb4cb9647b5130ea49d5216fda3c60f9a712cd',
+                        },
+                    };
+                    const { data } = await axios.post(url, data12, config);
+                    return data;
+                };
+                const dataOrderGHTK = await handleCreateOrderGHTK(productConfiged);
+                console.log('dataOrderGHTK = ', dataOrderGHTK);
+
+                res.status(201).json({ ShopOrder: createOrder, GHTK_Order: dataOrderGHTK });
             }
-            const createOrder = await order.save();
-            res.status(201).json(createOrder);
+        } catch (err) {
+            res.status(500).json(err);
         }
     }),
 );
-
+orderRouter.put(
+    '/update_label_ghtk',
+    asyncHandler(async (req, res) => {
+        try {
+            const { idOrder, label_GHTK } = req.body;
+            const find_order_by_id_pre = await Order.findById(idOrder);
+            // console.log('find_order_by_id_pre = ', find_order_by_id_pre);
+            find_order_by_id_pre.label_id_GiaoHangTK = label_GHTK;
+            const orderUpdate = await find_order_by_id_pre.save();
+            res.status(200).json(orderUpdate);
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    }),
+);
 //UPDATE AMOUNT PRODUCT
 orderRouter.put(
     '/returnAmountProduct',

@@ -18,13 +18,19 @@ const orderSchema = mongoose.Schema(
             required: true,
             ref: 'User',
         },
+        id_predefined: { type: String, required: true },
         orderItems: [
             {
                 name: { type: String, required: true },
                 color: { type: String, required: true },
                 qty: { type: Number, required: true },
+                weight: { type: Number, required: true, default: 0 },
                 image: { type: String, required: true },
                 price: { type: Number, required: true },
+                id_product: {
+                    type: Number,
+                    required: true,
+                },
                 productReview: [productReviewSchema],
                 product: {
                     type: mongoose.Schema.Types.ObjectId,
@@ -33,6 +39,10 @@ const orderSchema = mongoose.Schema(
                 },
             },
         ],
+        label_id_GiaoHangTK: {
+            type: String,
+            required: false,
+        },
         shippingAddress: {
             city: { type: String, required: true },
             distric: { type: String, required: true },
@@ -43,12 +53,12 @@ const orderSchema = mongoose.Schema(
         paymentMethod: {
             type: String,
             required: true,
-            default: 'Payment in cash',
+            default: 'Thanh toán bằng tiền mặt',
         },
         paypalOrder: {
-            orderID: { type: String, required: true },
-            payerID: { type: String, required: true },
-            cost: { type: Number, required: true },
+            orderID: { type: String, required: false },
+            payerID: { type: String, required: false },
+            cost: { type: Number, required: false },
         },
         paymentResult: {
             id: { type: String },
