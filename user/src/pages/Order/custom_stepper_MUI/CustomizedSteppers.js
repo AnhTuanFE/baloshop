@@ -94,7 +94,6 @@ export default function CustomizedSteppers({ order }) {
         }
     }, []);
 
-    console.log('order = ', order);
     return (
         <Stack sx={{ width: '100%', marginBottom: '16px' }} spacing={4}>
             <Box sx={{ width: '100%' }}>

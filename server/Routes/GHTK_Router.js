@@ -150,10 +150,12 @@ GHTK_Router.get(
     '/get_order_by_id',
     asyncHandler(async (req, res) => {
         try {
-            // const data1 = 'S22223996.SG01-G60.1250011188';
             const data1 = 'S22223996.SG01-A26.1250011557';
+            // const {id_Ghtk} = req.body;
 
-            const url = `${apiBase}/services/shipment/v2/${data1}`;
+            // const url = `${apiBase}/services/shipment/v2/${data1}`;
+            // const url = `${apiBase}/services/shipment/v2/${id_Ghtk}`;
+
             const config = {
                 headers: {
                     'Content-Type': 'application/json',
@@ -192,12 +194,13 @@ GHTK_Router.get(
     }),
 );
 // lấy nhãn của đơn hàng, sẽ trả về 1 file pdf
-GHTK_Router.get(
+GHTK_Router.post(
     '/get_label_order_by_id',
     asyncHandler(async (req, res) => {
         try {
-            const data1 = 'S22223996.SG01-G60.1250011188';
-            const url = `${apiBase}/services/label/${data1}`;
+            const { id_Ghtk } = req.body;
+            // const data1 = 'S22223996.SG01-G60.1250011188';
+            const url = `${apiBase}/services/label/${id_Ghtk}`;
             const config = {
                 headers: {
                     'Content-Type': 'application/json',
@@ -206,10 +209,11 @@ GHTK_Router.get(
             };
             const { data } = await axios.get(url, config);
             if (data) {
-                res.status(201).json(data);
+                console.log('data = ', data);
+                res.status(200).json(data);
             }
         } catch (error) {
-            res.status(500).json('lỗi', error);
+            res.status(500).json(error);
         }
     }),
 );

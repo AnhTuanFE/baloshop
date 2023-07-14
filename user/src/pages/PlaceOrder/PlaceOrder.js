@@ -217,7 +217,6 @@ function PlaceOrder() {
 
     // Định nghĩa hàm xử lý khi thanh toán được xử lý thành công
     const onApprove = (data, actions) => {
-        console.log('data onApprove = ', data);
         const { orderID, payerID } = data;
         if (orderID && payerID) {
             dispatch(
@@ -242,6 +241,7 @@ function PlaceOrder() {
                     phone: userInfo.phone,
                     name: userInfo.name,
                     email: userInfo.email,
+                    address_shop: userInfo.address_shop,
                 }),
             );
         }
@@ -256,12 +256,12 @@ function PlaceOrder() {
     // Định nghĩa hàm xử lý khi có lỗi xảy ra trong quá trình thanh toán
     const onError = (err) => {
         errorPlaceholder('Có lỗi xảy ra khi thanh toán, vui lòng thử lại sau');
-        console.log('data err = ', err);
+        // console.log('data err = ', err);
     };
     // Định nghĩa hàm xử lý khi người dùng hủy thanh toán
     const onCancel = (data) => {
         errorPlaceholder('Bạn đã hủy thanh toán, vui lòng hoàn tất thanh toán trong 24h');
-        console.log(' data Cancelled =', data);
+        // console.log(' data Cancelled =', data);
     };
     const ID_CLENT = 'Af5R_f2_MvnxLxpFeDO56MRvo6PGOIfXR3c0P9z8wyRGek_Th6JPBU7ktH5kgPpHW0Bb5pw0aasuA2NR';
 

@@ -2,11 +2,10 @@ import { React, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Rating } from 'primereact/rating';
-import 'primereact/resources/themes/lara-light-indigo/theme.css'; //theme
-import 'primereact/resources/primereact.min.css'; //core css
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
+import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import { notification } from 'antd';
-
 import {
     cancelOrder,
     getOrderDetails,
@@ -29,6 +28,8 @@ import Message from '~/components/HomeComponent/LoadingError/Error';
 import CustomizedSteppers from './custom_stepper_MUI/CustomizedSteppers';
 import DisabledByDefaultSharpIcon from '@mui/icons-material/DisabledByDefaultSharp';
 import InfoPayer from './InfoPayer';
+import ViewOrderInformation from './ViewOrderInformation';
+import { Modal } from 'antd';
 import './Order.css';
 
 function Order() {
@@ -49,6 +50,7 @@ function Order() {
     const [product, setProduct] = useState('');
     const [bulean, setBulean] = useState(false);
     const [orderItemId, setOrderItemId] = useState('');
+    const [screenInformationOrder, setScreenInformationOrder] = useState(false);
     const dispatch = useDispatch();
 
     const orderDetails = useSelector((state) => state.orderDetails);
@@ -72,7 +74,6 @@ function Order() {
         setComment('');
         setBulean('');
     }, [bulean]);
-
     const cancelOrderHandler = () => {
         if (window.confirm('Bạn có đồng ý hủy đơn hàng không?')) {
             dispatch(cancelOrder(order));
@@ -137,8 +138,17 @@ function Order() {
             }
         }
     };
-
     // ==========================================
+    const [open, setOpen] = useState(false);
+    const showModal = () => {
+        setOpen(true);
+    };
+    const handleOk = () => {
+        setOpen(false);
+    };
+    const handleCancel = () => {
+        setOpen(false);
+    };
     return (
         <>
             <div className="mx-auto my-auto max-w-screen-2xl">
@@ -261,6 +271,12 @@ function Order() {
                                             Đơn hàng này đã bị hủy bỏ
                                         </div>
                                     )}
+                                    <div className="m-2 cursor-pointer rounded-md bg-[#fe6233] py-2 text-center text-fuchsia-50 ">
+                                        <button onClick={showModal}>Xem chi tiết đơn hàng</button>
+                                        <Modal title="Title" open={open} onOk={handleOk} onCancel={handleCancel}>
+                                            <ViewOrderInformation id_Ghtk={order?.label_id_GiaoHangTK} />
+                                        </Modal>
+                                    </div>
                                     {order?.isPaid && order?.completeUser !== true && (
                                         <div className="">
                                             <div className="">
@@ -295,6 +311,7 @@ function Order() {
                                 </div>
                             </div>
                             {/* ====================================================================================================== */}
+                            {/* MODAL */}
                             <div>
                                 <div
                                     class="modal fade"
