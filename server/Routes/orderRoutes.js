@@ -33,11 +33,11 @@ orderRouter.post(
     protect,
     asyncHandler(async (req, res) => {
         let id_predefined = uuidv4().slice(0, 24);
-        let currentDate = new Date();
-        let year = currentDate.getFullYear();
-        let month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-        let day = currentDate.getDate().toString().padStart(2, '0');
-        let dateString = `${year}-${month}-${day}`;
+        // let currentDate = new Date();
+        // let year = currentDate.getFullYear();
+        // let month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+        // let day = currentDate.getDate().toString().padStart(2, '0');
+        // let dateString = `${year}-${month}-${day}`;
         try {
             const {
                 orderItems,
@@ -579,9 +579,19 @@ orderRouter.delete(
         }
         if (order != undefined || req.user._id == order.user) {
             if (order.isDelivered != true) {
-                order.cancel = 1;
-                const updatedOrder = await order.save();
-                res.json(updatedOrder);
+                const url = `${apiBase}/services/shipment/cancel/${order.label_id_GiaoHangTK}`;
+                const config = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Token: 'dfdb4cb9647b5130ea49d5216fda3c60f9a712cd',
+                    },
+                };
+                const { data } = await axios.post(url, config);
+                if (data) {
+                    order.cancel = 1;
+                    const updatedOrder = await order.save();
+                    res.json(updatedOrder);
+                }
             } else {
                 res.status(404);
                 throw new Error('Can not cancel');

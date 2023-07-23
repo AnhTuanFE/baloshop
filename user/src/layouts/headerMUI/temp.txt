@@ -1,215 +1,126 @@
-{
-    "success": true,
-    "message": "",
-    "order": {
-        "label_id": "S22223996.SG01-G60.1250011188",
-        "partner_id": "a4",
-        "order_id": null,
-        "status": 1,
-        "status_text": "Chưa tiếp nhận",
-        "created": "2023-07-07 14:49:57",
-        "modified": "2023-07-07 14:50:00",
-        "message": "Khối lượng tính cước tối đa: 1.00 kg\nShop chọn Hàng dễ vỡ xin nhẹ tay",
-        "pick_date": "2023-07-07",
-        "deliver_date": "2023-07-08",
-        "customer_fullname": "GHTK - HCM - Noi Thanh",
-        "customer_tel": "0193456765",
-        "address": "123 nguyễn chí thanh Phường Bến Nghé, Quận 1, TP Hồ Chí Minh",
-        "storage_day": 0,
-        "ship_money": 44400,
-        "insurance": 15000,
-        "value": 3000000,
-        "weight": 400,
-        "pick_money": 47000,
-        "is_freeship": 1,
-        "products": [
-            {
-                "full_name": "bút",
-                "product_code": "",
-                "weight": 0.1,
-                "quantity": 1
-            },
-            {
-                "full_name": "tẩy",
-                "product_code": "",
-                "weight": 0.2,
-                "quantity": 1
-            }
-        ]
-    }
+import { Box, Button } from '@mui/material';
+import axios from 'axios';
+import { Select } from 'flowbite-react';
+import { useEffect, useState, useLayoutEffect } from 'react';
+
+export default function Header2() {
+    const getPhiShip = async () => {
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            };
+            // const { data } = await axios.get(`/api/ghtk/get_fee_ship`, config);
+            const { data } = await axios.get(`/api/ghtk/cancel_order_by_id`, config);
+            console.log('data nhận được = ', data);
+        } catch (error) {
+            console.log('error = ', error);
+        }
+    };
+
+    const [state1, setState1] = useState(0);
+    const [state2, setState2] = useState(0);
+
+    const CongSo1 = () => {
+        setState1(state1 + 1);
+    };
+
+    const CongSo2 = () => {
+        if (state2 > 3) {
+            setState2(0);
+        } else {
+            setState2(state2 + 1);
+        }
+    };
+
+    useEffect(() => {
+        console.log('1. useEffect no dependencies ');
+    });
+
+    useEffect(() => {
+        console.log('2. useEffect have dependencies state1 ');
+        if (state1 >= 3) {
+            setState1(0);
+        }
+    }, [state1]);
+
+    useEffect(() => {
+        console.log('3. useEffect have dependencies state2 ');
+    }, [state2]);
+
+    useEffect(() => {
+        console.log('4. useEffect - did mount render - []');
+    }, []);
+    return (
+        <Box
+            sx={{
+                '& > :not(style)': {
+                    m: 5,
+                },
+            }}
+        >
+            {console.log('UI render')}
+            <div className="flex justify-between">
+                <div className="flex">
+                    <h1 className="mx-3">state1: {state1}</h1>
+                    <Button size="large" variant="contained" onClick={CongSo1}>
+                        Tăng State1
+                    </Button>
+                </div>
+                <div className="flex">
+                    <h1 className="mx-3">state2: {state2}</h1>
+                    <Button size="large" variant="contained" onClick={CongSo2}>
+                        Tăng State2
+                    </Button>
+                </div>
+            </div>
+            <h1 className="w-full bg-orange-300 text-center">Tổng = {state1 + state2}</h1>
+        </Box>
+    );
 }
 
 
 
+=====================================
 
 
-tôi có một mảng như sau
-orderItems: [
-    {
-      name: 'Balo học sinh 7391223',
-      color: 'hồng',
-      qty: 123,
-      weight: 1,
-      product: new ObjectId("6447416fc151d6ec5a219834"),
-      _id: new ObjectId("64ac261ec222229a4fdab8b1"),
-    },
-{
-      name: 'Balo cùi bắp',
-      color: 'đen',
-      qty: 234,
-      weight: 12,
-      product: new ObjectId("644741ddc151d6ec5a219834"),
-      _id: new ObjectId("64ac261ec222229a4fhhhb8b1"),
+///////////////////////////////////////
+import React, { useState } from 'react';
+import { Document, Page } from 'react-pdf';
+
+function Header2() {
+    const [pdf, setPdf] = useState(null);
+    const [numPages, setNumPages] = useState(null);
+
+    function handlePdfChange(e) {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+            setPdf(event.target.result);
+        };
+
+        reader.readAsDataURL(file);
     }
-  ],
-Tôi muốn chuyển dữ liệu của nó như thế này
-products: [
-                    {
-                        name: 'Balo học sinh 7391223',
-                        weight: 1 || 0.5,
-                        quantity: 123,
-                        product_code: "6447416fc151d6ec5a219834",
-                    },
-                    {
-                        name: 'Balo cùi bắp',
-                        weight: 12 || 0.5,
-                        quantity: 234,
-                        product_code: "6447416fc151d6ec5a219834",
-                    },
-                ],
 
-
-
-=================================================================
-request create order new  {
-  orderItems: [
-    {
-      name: 'Balo laptop 92332',
-      color: 'xanh lá',
-      qty: 1,
-      image: 'https://res.cloudinary.com/dt0iazjvh/image/upload/v1685326171/baloshopImage/dfoulwxvriabrhqktkmr.webp',
-      price: 560000,
-      product: '64474328c151d6ec5a2198d3'
-    },
-    {
-      name: 'Túi chống sốc 010',
-      color: 'đen',
-      qty: 1,
-      image: 'https://res.cloudinary.com/dt0iazjvh/image/upload/v1685326035/baloshopImage/jl9a0lsmafmscg4osrdc.webp',
-      price: 299000,
-      product: '63ec819e05b559d341dfe956'
+    function onDocumentLoadSuccess({ numPages }) {
+        setNumPages(numPages);
     }
-  ],
-  shippingAddress: {
-    city: 'Thành phố Hồ Chí Minh',
-    distric: 'Quận 10',
-    ward: 'Phường 08',
-    address: 'thôn 7 đường quang trung',
-    postalCode: ''
-  },
-  paymentMethod: '"Thanh toán bằng tiền mặt"',
-  itemsPrice: '859000',
-  shippingPrice: '22000',
-  totalPrice: '881000',
-  phone: '012345678',
-  name: 'Anh Tuấn7',
-  email: 'tuandgtl7@gmail.com'
+
+    console.log('pdf = ', pdf);
+    return (
+        <div>
+            <input type="file" accept=".pdf" onChange={handlePdfChange} />
+            {pdf && (
+                <Document file={pdf} onLoadSuccess={onDocumentLoadSuccess}>
+                    {Array.from(new Array(numPages), (el, index) => (
+                        <Page key={`page_${index + 1}`} pageNumber={index + 1} />
+                    ))}
+                </Document>
+            )}
+        </div>
+    );
 }
 
-
-=======================================
-dataOrderGHTK =  {
-  success: true,
-  message: 'Các đơn hàng đã được add vào hệ thống GHTK thành công. Thông tin đơn hàng thành công được trả về trong trường success_orders.',
-  order: {
-    partner_id: '64ad86eaf263c27263edeae8',
-    label: 'S22223996.SG01-A26.1200011762',
-    area: 1,
-    fee: 22000,
-    insurance_fee: 0,
-    estimated_pick_time: 'Sáng 2023-07-12',
-    estimated_deliver_time: 'Chiều 2023-07-12',
-    products: [],
-    status_id: 1,
-    tracking_id: 1200011762,
-    sorting_code: 'SG01-A26',
-    date_to_delay_pick: '2023-07-12 00:00:00',
-    pick_work_shift: 1,
-    date_to_delay_deliver: '2023-07-12 00:00:00',
-    deliver_work_shift: 2,
-    is_xfast: 0
-  },
-  warning_message: ''
-}
-
-
-{
-    "success": true,
-    "message": "",
-    "order": {
-        "label_id": "S22223996.SG01-A26.1200011762",
-        "partner_id": "64ad86eaf263c27263edeae8",
-        "order_id": null,
-        "status": 1,
-        "status_text": "Chưa tiếp nhận",
-        "created": "2023-07-11 23:44:30",
-        "modified": "2023-07-11 23:44:32",
-        "message": "Khối lượng tính cước tối đa: 1.00 kg",
-        "pick_date": "2023-07-12",
-        "deliver_date": "2023-07-12",
-        "customer_fullname": "Anh Tuấn7",
-        "customer_tel": "012345678",
-        "address": "thôn 7 đường quang trung Dương Quang Trung, Phường 8, Quận 10, TP Hồ Chí Minh",
-        "storage_day": 0,
-        "ship_money": 22000,
-        "insurance": 0,
-        "value": 881000,
-        "weight": 1000,
-        "pick_money": 0,
-        "is_freeship": 1,
-        "products": [
-            {
-                "full_name": "Balo laptop 92332",
-                "product_code": "",
-                "weight": 0.5,
-                "quantity": 1
-            },
-            {
-                "full_name": "Túi chống sốc 010",
-                "product_code": "",
-                "weight": 0.5,
-                "quantity": 1
-            }
-        ]
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export default Header2;

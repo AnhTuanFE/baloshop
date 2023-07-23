@@ -1,13 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-// import { listCart, saveShippingAddress } from '~/redux/Actions/cartActions';
-import { listCart, saveShippingAddress } from '~/redux/Actions/cartActions';
-import { getUserDetails, updateUserProfile } from '~/redux/Actions/userActions';
-import { getListProvincesAction } from '~/redux/Actions/userActions';
-
-import { ORDER_ADDRESS_MY_RESET } from '~/redux/Constants/OrderConstants';
+import { saveShippingAddress } from '~/redux/Actions/cartActions';
+import { getUserDetails, updateUserProfile, getListProvincesAction } from '~/redux/Actions/userActions';
 import { USER_UPDATE_PROFILE_RESET } from '~/redux/Constants/UserContants';
 
 import Message from '~/components/HomeComponent/LoadingError/Error';

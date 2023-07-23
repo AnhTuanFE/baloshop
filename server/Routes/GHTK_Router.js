@@ -150,11 +150,10 @@ GHTK_Router.get(
     '/get_order_by_id',
     asyncHandler(async (req, res) => {
         try {
-            const data1 = 'S22223996.SG01-A26.1250011557';
-            // const {id_Ghtk} = req.body;
+            // const data1 = 'S22223996.SG01-A26.1250011557';
+            const data1 = 'S22223996.SG01-A26.1000020635';
 
-            // const url = `${apiBase}/services/shipment/v2/${data1}`;
-            // const url = `${apiBase}/services/shipment/v2/${id_Ghtk}`;
+            const url = `${apiBase}/services/shipment/v2/${data1}`;
 
             const config = {
                 headers: {
@@ -164,29 +163,34 @@ GHTK_Router.get(
             };
             const { data } = await axios.get(url, config);
             if (data) {
-                res.status(201).json(data);
+                res.status(200).json(data);
             }
         } catch (error) {
             res.status(500).json('lỗi', error);
         }
     }),
 );
+
 // hủy đơn hàng theo id
 GHTK_Router.get(
     '/cancel_order_by_id',
     asyncHandler(async (req, res) => {
         try {
-            const data1 = 'S22223996.SG01-G60.1250011188';
+            const data1 = 'S22223996.SG01-A26.1000020635';
             const url = `${apiBase}/services/shipment/cancel/${data1}`;
+
             const config = {
                 headers: {
                     'Content-Type': 'application/json',
                     Token: 'dfdb4cb9647b5130ea49d5216fda3c60f9a712cd',
                 },
             };
-            const { data } = await axios.get(url, config);
+            const { data } = await axios.post(url, config);
+            console.log('data = ', data);
+
             if (data) {
-                res.status(201).json(data);
+                console.log('data if = ', data);
+                res.status(200).json(data);
             }
         } catch (error) {
             res.status(500).json('lỗi', error);
@@ -199,17 +203,15 @@ GHTK_Router.post(
     asyncHandler(async (req, res) => {
         try {
             const { id_Ghtk } = req.body;
-            // const data1 = 'S22223996.SG01-G60.1250011188';
             const url = `${apiBase}/services/label/${id_Ghtk}`;
             const config = {
+                // 'Content-Type': 'application/json',
                 headers: {
-                    'Content-Type': 'application/json',
                     Token: 'dfdb4cb9647b5130ea49d5216fda3c60f9a712cd',
                 },
             };
             const { data } = await axios.get(url, config);
             if (data) {
-                console.log('data = ', data);
                 res.status(200).json(data);
             }
         } catch (error) {
