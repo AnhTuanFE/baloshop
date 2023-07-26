@@ -80,7 +80,6 @@ function Detail_infor_account({ user }) {
         dispatch(updateUserProfile(userInforNeedUpdate));
     };
     // =========================================================================
-
     const optionsMUI_city = [];
     const optionsMUI_distric = [];
     const optionsMUI_ward = [];

@@ -25,7 +25,7 @@ import { ORDER_PAY_RESET } from '~/redux/Constants/OrderConstants';
 import { listCart } from '~/redux/Actions/cartActions';
 import Loading from '~/components/HomeComponent/LoadingError/Loading';
 import Message from '~/components/HomeComponent/LoadingError/Error';
-import CustomizedSteppers from './custom_stepper_MUI/CustomizedSteppers';
+import Steppers from './custom_stepper_MUI/Steppers';
 import DisabledByDefaultSharpIcon from '@mui/icons-material/DisabledByDefaultSharp';
 import InfoPayer from './InfoPayer';
 import ViewOrderInformation from './ViewOrderInformation';
@@ -163,7 +163,7 @@ function Order() {
                     ) : (
                         <>
                             <InfoPayer order={order} />
-                            <CustomizedSteppers order={order} />
+                            <Steppers order={order} />
                             <div className="flex justify-around">
                                 <div className="mr-5 flex-[3]">
                                     {order.orderItems.length === 0 ? (

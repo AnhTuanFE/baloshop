@@ -196,6 +196,12 @@ export const GHTK_Reducer = (state = {}, action) => {
             return { loading: false, success: true, data_fee_ship: action.payload };
         case types.CALCULATE_FEE_SHIP_FAIL:
             return { loading: false, error: action.payload };
+        case types.GET_LABEL_ORDER_GHTK_REQUEST:
+            return { loading: true };
+        case types.GET_LABEL_ORDER_GHTK_SUCCESS:
+            return { loading: false, data_label_order: action.payload };
+        case types.GET_LABEL_ORDER_GHTK_FAIL:
+            return { loading: false, error: action.payload };
         default:
             return state;
     }

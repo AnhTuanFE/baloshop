@@ -398,3 +398,37 @@ export const paypalConfirmPaidOrderAction = (orderID) => async (dispatch, getSta
         });
     }
 };
+
+// ===============
+
+export const getLabelOrderGHTKAction = (id_Ghtk) => async (dispatch, getState) => {
+    const apiBase = 'https://services-staging.ghtklab.com';
+    console.log('id_Ghtk = ', id_Ghtk);
+    try {
+        dispatch({ type: types.GET_LABEL_ORDER_GHTK_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+        //                Authorization: `Bearer ${userInfo.token}`,
+
+        const url = `${apiBase}/services/label/${id_Ghtk}`;
+        const config = {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                Token: 'dfdb4cb9647b5130ea49d5216fda3c60f9a712cd',
+            },
+        };
+        const { data } = await axios.get(url, config);
+        dispatch({ type: types.GET_LABEL_ORDER_GHTK_SUCCESS, payload: data });
+    } catch (error) {
+        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+        if (message === 'Not authorized, token failed') {
+            dispatch(logout());
+        }
+        dispatch({
+            type: types.GET_LABEL_ORDER_GHTK_FAIL,
+            payload: message,
+        });
+    }
+};

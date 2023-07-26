@@ -8,7 +8,6 @@ import Change_password from './profileComponent/change_password/Change_password'
 import Crop_image_avatar from './profileComponent/crop_image_avatar/Crop_image_avatar';
 import SideBar_Profile from './profileComponent/sideBar_profile/SideBar_Profile';
 import { Tabs } from 'antd';
-import { AppleOutlined, AndroidOutlined, WindowsOutlined } from '@ant-design/icons';
 
 import styles from './Profile.module.css';
 import './Profile.css';

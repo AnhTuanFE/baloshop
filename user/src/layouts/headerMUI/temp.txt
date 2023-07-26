@@ -124,3 +124,90 @@ function Header2() {
 }
 
 export default Header2;
+
+================================================================
+import { Box, Button } from '@mui/material';
+import axios from 'axios';
+import { useEffect, useLayoutEffect, useState, useRef } from 'react';
+import { Document, Page, pdfjs } from 'react-pdf';
+import pdfjsLib from 'pdfjs-dist';
+import pdfFile from './sample.pdf';
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
+
+export default function Header2() {
+    // hủy đơn hàng
+    const checkDataAPI = async () => {
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            };
+            // const { data } = await axios.get(`/api/ghtk/get_fee_ship`, config);
+            const { data } = await axios.get(`/api/ghtk/cancel_order_by_id`, config);
+            console.log('data nhận được = ', data);
+        } catch (error) {
+            console.log('error = ', error);
+        }
+    };
+    // lấy thông tin đơn hàng
+    const checkDataAPI1 = async () => {
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            };
+            const { data } = await axios.get(`/api/ghtk/get_order_by_id`, config);
+            console.log('data nhận được = ', data);
+        } catch (error) {
+            console.log('error = ', error);
+        }
+    };
+    // ====================================================
+    const [numPages1, setNumPages1] = useState(1);
+    const [pdfDocument, setPdfDocument] = useState(null);
+    async function loadPDF() {
+        const loadingTask = pdfjsLib.getDocument(pdfFile);
+        const pdf = await loadingTask.promise;
+        console.log('pdf = ', pdf);
+        setPdfDocument(pdf);
+        setNumPages1(pdf.numPages);
+    }
+    // =========================================
+    const [numPages, setNumPages] = useState(null);
+    const [pageNumber, setPageNumber] = useState(1);
+
+    function onDocumentLoadSuccess({ numPages }) {
+        setNumPages(numPages);
+        setPageNumber(1);
+    }
+
+    function changePage(offSet) {
+        setPageNumber((prevPageNumber) => prevPageNumber + offSet);
+    }
+
+    function changePageBack() {
+        changePage(-1);
+    }
+
+    function changePageNext() {
+        changePage(+1);
+    }
+    return (
+        <div>
+            <h1>hello</h1>
+            <button onClick={loadPDF}>click</button>
+            {pdfDocument && (
+                <div>
+                    <Document file={pdfDocument} onLoadSuccess={onDocumentLoadSuccess}>
+                        <Page pageNumber={pageNumber} />
+                    </Document>
+                    <p>
+                        Page {pageNumber} of {numPages}
+                    </p>
+                </div>
+            )}
+        </div>
+    );
+}

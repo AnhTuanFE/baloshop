@@ -1,6 +1,7 @@
 import express from 'express';
 import asyncHandler from 'express-async-handler';
 import axios from 'axios';
+
 const GHTK_Router = express.Router();
 
 // const apiBase = 'https://services.giaohangtietkiem.vn';
@@ -204,16 +205,46 @@ GHTK_Router.post(
         try {
             const { id_Ghtk } = req.body;
             const url = `${apiBase}/services/label/${id_Ghtk}`;
-            const config = {
-                // 'Content-Type': 'application/json',
-                headers: {
-                    Token: 'dfdb4cb9647b5130ea49d5216fda3c60f9a712cd',
-                },
+            // ===================================================
+            const headers = {
+                Token: 'dfdb4cb9647b5130ea49d5216fda3c60f9a712cd',
             };
-            const { data } = await axios.get(url, config);
-            if (data) {
-                res.status(200).json(data);
-            }
+            fetch(url, { headers })
+                .then((response) => response.blob())
+                .then((blob) => {
+                    console.log('blob = ', blob);
+                    const filename = 'file.pdf';
+                    const contentType = 'application/pdf';
+                    res.setHeader('Content-Type', contentType);
+                    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+                    // res.send(blob);
+                    res.status(200).send(blob);
+                })
+                .catch((error) => {
+                    console.error('Lỗi:', error);
+                });
+            // ===================================================
+            // const config = {
+            //     // 'Content-Type': 'application/json',
+            //     headers: {
+            //         Token: 'dfdb4cb9647b5130ea49d5216fda3c60f9a712cd',
+            //     },
+            // };
+            // const { data } = await axios.get(url, config);
+
+            // if (data) {
+            //     res.status(200).send(data);
+            //     // fs.writeFile('file.pdf', data, 'binary', function (err) {
+            //     //     if (err) throw err;
+            //     //     console.log('Tệp PDF đã được lưu vào đĩa mềm.');
+            //     // });
+            //     // res.writeHead(200, {
+            //     //     'Content-Type': 'application/pdf',
+            //     //     'Content-Disposition': 'attachment; filename=file.pdf',
+            //     //     'Content-Length': data.length,
+            //     // });
+            //     // res.end(new Buffer.from(data, 'binary'));
+            // }
         } catch (error) {
             res.status(500).json(error);
         }

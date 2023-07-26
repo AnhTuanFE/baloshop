@@ -12,6 +12,7 @@ import { logout, getUserDetails } from '~/redux/Actions/userActions'; //updateUs
 import { usersRemainingSelector } from '~/redux/Selector/usersSelector';
 import { cartsRemainingSelector } from '~/redux/Selector/cartsSelector';
 import { imageDefaul, logoDefaul } from '~/utils/data';
+import { Avatar as AvatarAntd, Badge, Space } from 'antd';
 
 export default function Header2(props) {
     const { keysearch } = props;
@@ -168,32 +169,19 @@ export default function Header2(props) {
                         </MenuItem>
                     </Select>
                 </Box>
+
                 <Link to="/cart">
-                    <IconButton
-                        aria-label="delete"
-                        size="medium"
-                        sx={{
-                            marginTop: '12px',
-                        }}
-                    >
-                        <LocalMall
-                            fontSize="medium"
-                            sx={{
-                                color: 'black',
-                            }}
-                        />
-                        <Box
-                            sx={{
-                                borderRadius: '50%',
-                                backgroundColor: 'red',
-                                fontSize: '14px',
-                                padding: '0px 4px',
-                                color: 'var(--white-color)',
-                            }}
-                        >
-                            {cartItems ? cartItems?.length : 0}
-                        </Box>
-                    </IconButton>
+                    <Space size="middle" className="ml-1 mt-3">
+                        <Badge count={cartItems ? cartItems?.length : 0}>
+                            {/* <AvatarAntd shape="square" size="large" /> */}
+                            <LocalMall
+                                fontSize="medium"
+                                sx={{
+                                    color: 'black',
+                                }}
+                            />
+                        </Badge>
+                    </Space>
                 </Link>
             </Box>
         );
@@ -201,12 +189,6 @@ export default function Header2(props) {
     return (
         <Box className="mx-auto my-auto max-w-screen-2xl">
             <ContactInformation />
-            {/*
-                sx={{
-                    '& > :not(style)': {
-                        m: 3,
-                    },
-             */}
             <Box
                 sx={{
                     display: 'flex',

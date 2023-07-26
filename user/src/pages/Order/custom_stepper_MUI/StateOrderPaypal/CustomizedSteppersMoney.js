@@ -1,17 +1,12 @@
-import { useEffect, useState } from 'react';
+import moment from 'moment';
+import { useEffect, useState, Fragment } from 'react';
 import { styled } from '@mui/material/styles';
-import Stack from '@mui/material/Stack';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
-import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
-//
-import Box from '@mui/material/Box';
+import { Box, Stack, Stepper, Step, StepLabel, StepConnector, stepConnectorClasses } from '@mui/material';
+// import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
 import AssuredWorkloadIcon from '@mui/icons-material/AssuredWorkload';
 import LocalShippingSharpIcon from '@mui/icons-material/LocalShippingSharp';
 import LocalAtmSharpIcon from '@mui/icons-material/LocalAtmSharp';
 import LibraryAddCheckSharpIcon from '@mui/icons-material/LibraryAddCheckSharp';
-import moment from 'moment';
 import CancelSharpIcon from '@mui/icons-material/CancelSharp';
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
@@ -73,21 +68,36 @@ function ColorlibStepIcon(props) {
     );
 }
 
-export default function CustomizedSteppers({ order }) {
+export default function CustomizedSteppersMoney({ order }) {
     const [actiStep, setActiStep] = useState(0);
     useEffect(() => {
         if (order) {
-            if (order.confirm) {
-                setActiStep(0);
-            }
-            if (order.delivered) {
-                setActiStep(1);
-            }
-            if (order.isPaid) {
-                setActiStep(2);
-            }
-            if (order.completeAdmin && order.completeUser) {
-                setActiStep(3);
+            if (order?.paypalOrder) {
+                if (order.confirm) {
+                    setActiStep(0);
+                }
+                if (order.isPaid) {
+                    setActiStep(1);
+                }
+                if (order.delivered) {
+                    setActiStep(2);
+                }
+                if (order.completeAdmin && order.completeUser) {
+                    setActiStep(3);
+                }
+            } else {
+                if (order.confirm) {
+                    setActiStep(0);
+                }
+                if (order.delivered) {
+                    setActiStep(1);
+                }
+                if (order.isPaid) {
+                    setActiStep(2);
+                }
+                if (order.completeAdmin && order.completeUser) {
+                    setActiStep(3);
+                }
             }
         } else {
             return <div>không có đơn hàng nào</div>;
@@ -126,6 +136,7 @@ export default function CustomizedSteppers({ order }) {
                                 </StepLabel>
                             </Step>
                         )}
+                        {/* {order?.paypalOrder ? handleConfigPayByPaypal() : handleConfigPayByMoney()} */}
                         {order.isDelivered ? (
                             <Step key={2}>
                                 <div>
