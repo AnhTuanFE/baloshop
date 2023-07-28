@@ -22,7 +22,7 @@ const Orders = (props) => {
             ) : (
                 <>
                     {orders.length === 0 ? (
-                        <div className="col-12 alert alert-info text-center mt-3">
+                        <div className="col-12 alert alert-info mt-3 text-center">
                             Không có đơn hàng nào
                             <Link
                                 className="btn btn-success mx-2 px-3 py-2"

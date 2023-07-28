@@ -119,7 +119,7 @@ const Login = () => {
                     <div className="w-full">
                         <button
                             type="submit"
-                            className="w-full rounded-lg bg-custom-background-color px-5 py-3 text-center text-sm font-medium uppercase text-white hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300 "
+                            className="w-full rounded-lg bg-[var(--main-color)] px-5 py-3 text-center text-sm font-medium uppercase text-white hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300 "
                         >
                             Đăng nhập
                         </button>

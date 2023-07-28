@@ -1,38 +1,14 @@
-import React, { useState } from 'react';
-import { Radio, Tabs } from 'antd';
-export default function Header2() {
-    const [mode, setMode] = useState('top');
-    const handleModeChange = (e) => {
-        setMode(e.target.value);
+import { Pagination } from 'antd';
+
+function Header2() {
+    const onChange = (pageNumber) => {
+        console.log('Page: ', pageNumber);
     };
     return (
-        <div>
-            <Radio.Group
-                onChange={handleModeChange}
-                value={mode}
-                style={{
-                    marginBottom: 8,
-                }}
-            >
-                <Radio.Button value="top">Horizontal</Radio.Button>
-                <Radio.Button value="left">Vertical</Radio.Button>
-            </Radio.Group>
-            <Tabs
-                defaultActiveKey="1"
-                tabPosition={mode}
-                style={{
-                    height: 220,
-                }}
-                items={new Array(30).fill(null).map((_, i) => {
-                    const id = String(i);
-                    return {
-                        label: `Tab-${id}`,
-                        key: id,
-                        disabled: i === 28,
-                        children: `Content of tab ${id}`,
-                    };
-                })}
-            />
+        <div className=" my-8">
+            <Pagination showQuickJumper defaultCurrent={1} total={500} onChange={onChange} />
         </div>
     );
 }
+
+export default Header2;

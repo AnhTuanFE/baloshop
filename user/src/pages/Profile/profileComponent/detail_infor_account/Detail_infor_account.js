@@ -34,8 +34,6 @@ TabPanel.propTypes = {
 
 function Detail_infor_account({ user }) {
     const dispatch = useDispatch();
-    console.log('user = ', user);
-
     const {
         register,
         watch,
@@ -66,7 +64,6 @@ function Detail_infor_account({ user }) {
     const submitUpdateProfile = (data) => {
         const { name, dateOfBirth, phone, address, city, distric, ward } = data;
         const dateOfBirthTemp = moment(dateOfBirth).format('YYYY-MM-DD');
-        console.log('dateOfBirthTemp = ', dateOfBirthTemp);
         let userInforNeedUpdate = new FormData();
         userInforNeedUpdate.append('id', user._id);
         userInforNeedUpdate.append('name', name);

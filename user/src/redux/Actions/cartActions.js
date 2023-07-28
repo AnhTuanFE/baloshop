@@ -41,7 +41,6 @@ export const addToCart = (data_post) => async (dispatch, getState) => {
             userLogin: { userInfo },
         } = getState();
 
-        const { _id } = userInfo;
         const config = {
             headers: {
                 Authorization: `Bearer ${userInfo.token}`,

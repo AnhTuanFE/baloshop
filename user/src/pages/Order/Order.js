@@ -267,7 +267,7 @@ function Order() {
                                     </table>
 
                                     {order?.cancel === 1 && (
-                                        <div className="bg-dark col-12 fs-6 p-2 text-center text-white">
+                                        <div className="bg-dark col-12 fs-6 rounded-md p-2 text-center text-white">
                                             Đơn hàng này đã bị hủy bỏ
                                         </div>
                                     )}
@@ -298,10 +298,10 @@ function Order() {
                                         </div>
                                     )}
                                     {!order?.waitConfirmation && (
-                                        <div className="pt-6">
+                                        <div className="pt-4">
                                             <button
                                                 onClick={cancelOrderHandler}
-                                                className="cursor-pointer rounded-lg bg-red-600 px-1 py-3 text-lg font-semibold uppercase text-white"
+                                                className="w-full cursor-pointer rounded-lg bg-red-600 py-3 text-lg font-semibold uppercase text-white"
                                                 disabled={order?.isPaid || order?.cancel == 1}
                                             >
                                                 HỦY ĐƠN HÀNG NÀY

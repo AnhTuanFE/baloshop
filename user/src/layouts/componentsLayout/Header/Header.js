@@ -12,7 +12,7 @@ import { logout, getUserDetails } from '~/redux/Actions/userActions'; //updateUs
 import { usersRemainingSelector } from '~/redux/Selector/usersSelector';
 import { cartsRemainingSelector } from '~/redux/Selector/cartsSelector';
 import { imageDefaul, logoDefaul } from '~/utils/data';
-import { Avatar as AvatarAntd, Badge, Space } from 'antd';
+import { Badge, Space } from 'antd';
 
 export default function Header2(props) {
     const { keysearch } = props;
@@ -187,7 +187,7 @@ export default function Header2(props) {
         );
     };
     return (
-        <Box className="mx-auto my-auto max-w-screen-2xl">
+        <Box className="">
             <ContactInformation />
             <Box
                 sx={{
@@ -204,7 +204,7 @@ export default function Header2(props) {
                     }}
                 >
                     <Link to={'/'}>
-                        <img alt="Logo" src={logoDefaul} style={{ width: '124px' }} />
+                        <img alt="Logo" src={logoDefaul} style={{ width: '160px' }} />
                     </Link>
                 </Box>
                 <Box
@@ -223,10 +223,7 @@ export default function Header2(props) {
                                 disablePortal
                                 id="combo-box-demo"
                                 options={key}
-                                sx={{
-                                    width: '70%',
-                                    borderRadius: '6px',
-                                }}
+                                className="w-[70%] rounded-md border-none"
                                 onChange={(e) => {
                                     setKeyword(e.target.outerText);
                                 }}
@@ -235,9 +232,7 @@ export default function Header2(props) {
                                         onChange={(e) => {
                                             setKeyword(e.target.value);
                                         }}
-                                        sx={{
-                                            backgroundColor: 'white',
-                                        }}
+                                        className="border-none bg-[var(--white-color)]"
                                         {...params}
                                         label="Tìm kiếm"
                                     />
@@ -262,15 +257,11 @@ export default function Header2(props) {
                                 />
                             </IconButton>
                         </Box>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'center',
-                            }}
-                        >
-                            <NavBar />
-                        </Box>
                     </form>
+
+                    <div className="flex justify-center">
+                        <NavBar />
+                    </div>
                 </Box>
 
                 <Box

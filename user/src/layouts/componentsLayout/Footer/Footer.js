@@ -4,8 +4,8 @@ import { faFacebook, faInstagramSquare } from '@fortawesome/free-brands-svg-icon
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 function Footer() {
     return (
-        <div className="mx-auto my-auto max-w-screen-2xl">
-            <div className="flex bg-custom-background-color p-4 text-fuchsia-50">
+        <div className="">
+            <div className="flex bg-[var(--color-footer)] p-4 text-fuchsia-50">
                 <div className="flex-1 text-left">
                     <h3 className="pb-2 text-lg font-semibold">Người phát triển</h3>
                     <p className="pb-1 pl-2 text-sm">Nguyễn Anh tuấn</p>

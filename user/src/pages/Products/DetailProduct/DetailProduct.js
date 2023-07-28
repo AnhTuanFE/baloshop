@@ -113,7 +113,7 @@ function DetailProduct() {
 
     const AddToCartHandle = (e) => {
         e.preventDefault();
-        const id_product = product?.id_product || 123456789;
+        const id_product = product?.id_product || 151138769223;
         if (userInfo) {
             dispatch(addToCart({ productId, color, id_product, qty, _id: userInfo._id }));
         } else navigate('/login');
@@ -123,7 +123,7 @@ function DetailProduct() {
         return (
             <>
                 {contextHolder}
-                <div className="row">
+                <div className="row mx-5">
                     <div className="col-md-12 product-avatar">
                         <div className="row">
                             <div className="col-md-5">
@@ -136,7 +136,6 @@ function DetailProduct() {
                                     <div className="product-info">
                                         <div className="product-name">{product.name}</div>
                                     </div>
-
                                     <div className="product-baner">
                                         <img
                                             style={{ width: '100%' }}
@@ -204,7 +203,7 @@ function DetailProduct() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="product-description">
+                            <div className="product-description ">
                                 <h2 className="product-description__h2">Chi Tiết Sản Phẩm</h2>
                                 <div dangerouslySetInnerHTML={{ __html: product.description }}></div>
                             </div>

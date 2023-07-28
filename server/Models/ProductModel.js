@@ -38,7 +38,7 @@ const commentSchema = mongoose.Schema(
     {
         name: { type: String, required: true },
         nameProduct: { type: String, required: true },
-        imageProduct: { type: String, required: true },
+        imageProduct: { type: String },
         idProduct: { type: String, required: true },
         question: { type: String, required: true },
         commentChilds: [commentChildsSchema],
@@ -72,7 +72,7 @@ const productSchema = mongoose.Schema(
         },
         id_product: {
             type: Number,
-            required: true,
+            // required: true,
         },
         image: {
             type: Array,

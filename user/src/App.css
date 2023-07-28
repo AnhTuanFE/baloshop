@@ -1,6 +1,9 @@
 :root {
     --white-color: #fff;
-    --main-color: #00483d;
+    --main-color: #e85d97;
+    --color-infor-store: #252a2b;
+    --color-footer: #333f48;
+    --main-color-old: #00483d;
     --main-color2: #007fff;
     --content-color: #f4f4f4;
 }
@@ -88,7 +91,6 @@ input,
 .corousel-link:active {
     border: none;
 }
-
 
 /*========================================= start phân trang================================*/
 

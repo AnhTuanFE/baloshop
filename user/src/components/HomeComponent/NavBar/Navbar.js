@@ -1,53 +1,31 @@
-import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ListCategory } from '~/redux/Actions/ProductActions';
-// import { listProduct } from '~/redux/Actions/ProductActions';
 import { productsRemainingSelector } from '~/redux/Selector/productsSelector';
-import { Radio, Tabs } from 'antd';
-
-import styles from './Navbar.module.scss';
+import { Menu } from 'antd';
+import MenuItem from 'antd/es/menu/MenuItem';
 
 export default function NavBar() {
     const dispatch = useDispatch();
     const { CategoryList } = useSelector(productsRemainingSelector);
     const { categories } = CategoryList;
-    const [mode, setMode] = useState('top');
-    const handleModeChange = (e) => {
-        setMode(e.target.value);
-    };
     useEffect(() => {
         dispatch(ListCategory());
     }, []);
     return (
         <>
             {/* Pc-navbar */}
-            <div>
-                {/* <ul className={clsx(styles.navbar_list)}>
+            <div className="w-1/2">
+                <Menu mode="horizontal" className="bg-[#f4f4f4]">
                     {categories.map((category, index) => (
-                        <li key={index} className={clsx(styles.navbar_list_li)}>
-                            <Link to={`/category/${category._id}`}>{category.name}</Link>
-                        </li>
+                        <MenuItem key={index}>
+                            <Link className="font-medium uppercase" to={`/category/${category._id}`}>
+                                {category.name}
+                            </Link>
+                        </MenuItem>
                     ))}
-                </ul> */}
-                <Tabs
-                    defaultActiveKey="1"
-                    tabPosition="top"
-                    style={{
-                        height: 220,
-                    }}
-                    className="m-auto w-[30%]"
-                    items={new Array(30).fill(null).map((_, i) => {
-                        const id = String(i);
-                        return {
-                            label: `Tab-${id}`,
-                            key: id,
-                            // disabled: i === 8,
-                            // children: `Content of tab ${id}`,
-                        };
-                    })}
-                />
+                </Menu>
             </div>
             {/* tablet-mobile modal */}
             {/* <div className="navbar-tablet">

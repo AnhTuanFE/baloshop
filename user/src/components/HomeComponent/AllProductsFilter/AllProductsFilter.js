@@ -58,6 +58,7 @@ const AllProducts_Filter = (props) => {
             navigate(`/category/${category}/sortProducts/${sortProducts}/rating/${value}/page/${'1'}`);
         }
     };
+
     return (
         <>
             <div className="mx-auto my-auto max-w-screen-2xl pt-10">
@@ -98,9 +99,6 @@ const AllProducts_Filter = (props) => {
                             <select
                                 className="form-select"
                                 value={rating === undefined ? '0' : rating}
-                                // onChange={(e) => {
-                                //     setRating(e.target.value);
-                                // }}
                                 onChange={(e) => {
                                     handlerRating(e.target.value);
                                 }}

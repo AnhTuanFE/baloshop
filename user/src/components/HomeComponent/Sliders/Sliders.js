@@ -25,7 +25,7 @@ export default function Sliders() {
     };
     return (
         <div className="mx-auto my-auto ml-7 mr-7 max-w-screen-2xl">
-            <div className="m-4  rounded-xl bg-custom-background-color pb-4 pt-6">
+            <div className="m-4  rounded-xl bg-[var(--main-color)] pb-4 pt-6">
                 <Slider {...settings}>
                     {slider?.map((value, index) => {
                         return (

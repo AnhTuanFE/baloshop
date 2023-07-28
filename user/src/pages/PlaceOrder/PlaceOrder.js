@@ -440,7 +440,7 @@ function PlaceOrder() {
                                 ) : (
                                     <button
                                         type="submit"
-                                        className="m-auto flex justify-center rounded-lg bg-custom-background-color px-16 py-3 text-fuchsia-50"
+                                        className="m-auto flex justify-center rounded-lg bg-[var(--main-color)] px-16 py-3 text-fuchsia-50"
                                         data-bs-toggle="modal"
                                         data-bs-target="#staticBackdrop"
                                     >

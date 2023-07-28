@@ -29,7 +29,7 @@ const orderSchema = mongoose.Schema(
                 price: { type: Number, required: true },
                 id_product: {
                     type: Number,
-                    required: true,
+                    // required: true,
                 },
                 productReview: [productReviewSchema],
                 product: {
