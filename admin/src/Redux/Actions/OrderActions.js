@@ -212,14 +212,15 @@ export const waitConfirmationOrder = (id, status) => async (dispatch, getState) 
         const {
             userLogin: { userInfo },
         } = getState();
-
+        console.log('userInfo = ', userInfo);
+        let address_shop = userInfo.address_shop;
         const config = {
             headers: {
                 Authorization: `Bearer ${userInfo.token}`,
             },
         };
 
-        const { data } = await axios.put(`/api/orders/${id}/waitConfirmation`, { status }, config);
+        const { data } = await axios.put(`/api/orders/${id}/waitConfirmation`, { status, address_shop }, config);
         dispatch({ type: ORDER_WAITCONFIRMATION_SUCCESS, payload: data });
     } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;

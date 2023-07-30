@@ -223,18 +223,39 @@ export default function Header2(props) {
                                 disablePortal
                                 id="combo-box-demo"
                                 options={key}
-                                className="w-[70%] rounded-md border-none"
+                                className="w-[70%] rounded-md border-none outline-lime-950 focus:border-none"
                                 onChange={(e) => {
                                     setKeyword(e.target.outerText);
                                 }}
+                                // sx={{
+                                //     // border: "1px solid blue",
+                                //     '& .MuiOutlinedInput-root': {
+                                //         // border: "1px solid yellow",
+                                //         borderRadius: '0',
+                                //         padding: '0',
+                                //     },
+                                //     '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                                //         border: '1px solid #eee',
+                                //     },
+                                // }}
                                 renderInput={(params) => (
                                     <TextField
                                         onChange={(e) => {
                                             setKeyword(e.target.value);
                                         }}
-                                        className="border-none bg-[var(--white-color)]"
+                                        className="bg-[var(--white-color)]"
                                         {...params}
                                         label="Tìm kiếm"
+                                        // margin="none"
+                                        // inputProps={{
+                                        //     ...params.inputProps,
+                                        //     style: {
+                                        //         // padding: 'calc(0.5vw + 5px)',
+                                        //         padding: '18px 0px',
+                                        //         fontSize: 'calc(0.5vw + 5px)',
+                                        //         // border: "1px solid red"
+                                        //     },
+                                        // }}
                                     />
                                 )}
                             />
@@ -242,6 +263,7 @@ export default function Header2(props) {
                                 aria-label="search"
                                 size="large"
                                 type="submit"
+                                className="hover:bg-[var(--main-color2)]"
                                 sx={{
                                     bgcolor: 'var(--main-color)',
                                     borderRadius: '4px 8px 8px 4px',

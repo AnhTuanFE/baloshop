@@ -24,7 +24,7 @@ function ContactInformation() {
                     },
                     display: 'flex',
                     justifyContent: 'space-between',
-                    bgcolor: 'var(--color-footer)',
+                    bgcolor: 'var(--color-layout)',
                 }}
             >
                 <Box sx={{ color: 'var(--white-color)' }}>Đường dây nóng: 123456789</Box>

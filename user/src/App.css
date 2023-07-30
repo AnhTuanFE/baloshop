@@ -1,11 +1,30 @@
 :root {
     --white-color: #fff;
     --main-color: #e85d97;
-    --color-infor-store: #252a2b;
-    --color-footer: #333f48;
     --main-color-old: #00483d;
+    --color-infor-store: #252a2b;
+    --color-layout: #333f48;
     --main-color2: #007fff;
     --content-color: #f4f4f4;
+    --tw-ring-color: transparent;
+}
+
+[type='text']:focus,
+[type='email']:focus,
+[type='url']:focus,
+[type='password']:focus,
+[type='number']:focus,
+[type='date']:focus,
+[type='datetime-local']:focus,
+[type='month']:focus,
+[type='search']:focus,
+[type='tel']:focus,
+[type='time']:focus,
+[type='week']:focus,
+[multiple]:focus,
+textarea:focus,
+select:focus {
+    @apply border-none;
 }
 body {
     margin: 0;

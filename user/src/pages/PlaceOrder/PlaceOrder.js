@@ -28,7 +28,6 @@ function PlaceOrder() {
     const paymentMethods_from_localStorage = localStorage.getItem('paymentMethod');
 
     const [messageApi, contextHolder] = message.useMessage();
-
     const successPlaceholder = () => {
         messageApi.open({
             type: 'success',
@@ -307,7 +306,7 @@ function PlaceOrder() {
                     <div className="m-auto  ">
                         <PayModal
                             Title="Mua hàng"
-                            Body="Bạn có đồng ý mua hay không?"
+                            Body="Bạn xác nhận đặt hàng?"
                             HandleSubmit={placeOrderHandler}
                             Close="modal"
                         ></PayModal>

@@ -19,7 +19,7 @@ cartRoutes.get(
 
 cartRoutes.post(
     '/',
-    protect,
+    // protect,
     asyncHandler(async (req, res) => {
         const { productId, id_product, color, qty, _id } = req.body;
         // const product = await Pcolorroduct.findById(productId);
@@ -81,7 +81,7 @@ cartRoutes.post(
 
 cartRoutes.post(
     '/delete',
-    // protect,
+    protect,
     asyncHandler(async (req, res) => {
         const { user, pr } = req.body;
 

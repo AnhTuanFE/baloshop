@@ -80,6 +80,48 @@ GHTK_Router.post(
         }
     }),
 );
+// Dự đoán thời gian giao hàng
+GHTK_Router.post(
+    '/get_deliver_time',
+    asyncHandler(async (req, res) => {
+        let currentDate = new Date();
+        currentDate.setDate(currentDate.getDate() + 1);
+        let year = currentDate.getFullYear();
+        let month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+        let day = currentDate.getDate().toString().padStart(2, '0');
+        let dateString = `${year}-${month}-${day}`;
+        try {
+            const { pick_province, pick_district, pick_ward, pick_address, province, district, ward, address } =
+                req?.body;
+            const url = `${apiBase}/services/shipment/deliver-time`;
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Token: 'dfdb4cb9647b5130ea49d5216fda3c60f9a712cd',
+                },
+            };
+            const data1 = {
+                pick_province: pick_province,
+                pick_district: pick_district,
+                // pick_ward: pick_ward,
+                pick_date: dateString,
+                pick_work_shift: 1, //3 là tối, 2 là chiều, 1 là sáng
+                pick_address: pick_address,
+                customer_province: province,
+                customer_district: district,
+                // customer_address: address,
+            };
+            console.log('data1 = ', data1);
+
+            const { data } = await axios.get(url, data1, config);
+            if (data) {
+                res.status(200).json(data);
+            }
+        } catch (error) {
+            res.status(500).json('lỗi', error);
+        }
+    }),
+);
 // tạo đơn hàng mới
 GHTK_Router.get(
     '/create_order_ghtk',
@@ -151,8 +193,7 @@ GHTK_Router.get(
     '/get_order_by_id',
     asyncHandler(async (req, res) => {
         try {
-            // const data1 = 'S22223996.SG01-A26.1250011557';
-            const data1 = 'S22223996.SG01-A26.1000020635';
+            const data1 = 'S22223996.BO.MB14-05-D6.1250012891';
 
             const url = `${apiBase}/services/shipment/v2/${data1}`;
 
@@ -177,8 +218,11 @@ GHTK_Router.get(
     '/cancel_order_by_id',
     asyncHandler(async (req, res) => {
         try {
-            const data1 = 'S22223996.SG01-A26.1000020635';
+            const data1 = 'S22223996.BO.MB14-05-D6.1050014187';
             const url = `${apiBase}/services/shipment/cancel/${data1}`;
+
+            // const data1 = '5f91ade1-b788-4d07-b016-';
+            // const url = `${apiBase} /services/shipment/cancel/partner_id:${data1}`;
 
             const config = {
                 headers: {
@@ -250,4 +294,5 @@ GHTK_Router.post(
         }
     }),
 );
+
 export default GHTK_Router;

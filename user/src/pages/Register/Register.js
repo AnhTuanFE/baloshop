@@ -50,11 +50,11 @@ function Register() {
     return (
         <>
             <div>
-                <div className="mb-14 mt-10 flex items-center justify-center">
+                <div className="mb-14 mt-8 flex items-center justify-center">
                     <form className="Login col-md-6 col-lg-4 col-10" onSubmit={handleSubmit(submitHandler)}>
                         {error && <Message variant="alert-danger block">{error}</Message>}
                         {loading && <Loading />}
-                        <div className="my-3 text-center text-xl font-semibold"> Đăng ký tài khoản</div>
+                        <div className="mb-3 text-center text-2xl font-semibold"> Đăng ký tài khoản</div>
                         <div className=" ">
                             <Controller
                                 name="name"
@@ -223,13 +223,13 @@ function Register() {
 
                         <button
                             type="submit"
-                            className="w-full rounded-lg bg-[var(--main-color)] px-5 py-3 text-center text-sm font-medium uppercase text-white hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300 "
+                            className="w-full rounded-lg bg-[var(--main-color)] px-5 py-3 text-center text-base font-bold uppercase text-white hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300 "
                         >
                             Đăng ký
                         </button>
                         <p className=" mt-3 text-center">
                             <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>
-                                Tôi đã có tài khoản <strong>Đăng nhập</strong>
+                                Tôi đã có tài khoản <strong className="text-xl text-blue-600">Đăng nhập</strong>
                             </Link>
                         </p>
                     </form>

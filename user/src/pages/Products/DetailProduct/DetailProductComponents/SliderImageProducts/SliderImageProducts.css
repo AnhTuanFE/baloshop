@@ -100,7 +100,7 @@
 }
 .round-black-btn:hover,
 .round-black-btn:focus {
-    background: #056859;
+    background: var(--main-color2);
 }
 .bg-orange {
     background: #ff5722;

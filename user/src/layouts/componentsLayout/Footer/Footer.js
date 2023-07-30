@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 function Footer() {
     return (
         <div className="">
-            <div className="flex bg-[var(--color-footer)] p-4 text-fuchsia-50">
+            <div className="flex bg-[var(--color-layout)] p-4 text-fuchsia-50">
                 <div className="flex-1 text-left">
                     <h3 className="pb-2 text-lg font-semibold">Người phát triển</h3>
                     <p className="pb-1 pl-2 text-sm">Nguyễn Anh tuấn</p>

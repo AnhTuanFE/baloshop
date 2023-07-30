@@ -7,7 +7,6 @@ const CategoryRouter = express.Router();
 
 CategoryRouter.get(
     '/',
-    // protect,
     asyncHandler(async (req, res) => {
         const categories = await Category.find({}).sort({ _id: -1 });
         if (categories) {
@@ -20,8 +19,8 @@ CategoryRouter.get(
 );
 CategoryRouter.delete(
     '/:id',
-    // admin,
-    // protect,
+    admin,
+    protect,
     asyncHandler(async (req, res) => {
         const categories = await Category.findById(req.params.id);
         if (categories) {
@@ -43,6 +42,7 @@ export default CategoryRouter;
 CategoryRouter.post(
     '/',
     protect,
+    admin,
     asyncHandler(async (req, res) => {
         const { name, description } = req.body;
         const category = await Category.findOne({ name: name.trim() });
@@ -64,6 +64,7 @@ CategoryRouter.post(
 CategoryRouter.put(
     '/',
     protect,
+    admin,
     asyncHandler(async (req, res) => {
         const { idCategory, name, description } = req.body;
         const exitCategory = await Category.findOne({ name: name.trim() });

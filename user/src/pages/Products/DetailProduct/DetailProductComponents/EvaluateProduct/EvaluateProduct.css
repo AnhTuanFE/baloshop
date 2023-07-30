@@ -97,7 +97,7 @@
 }
 .round-black-btn:hover,
 .round-black-btn:focus {
-    background: #056859;
+    background: var(--main-color2);
 }
 .bg-orange {
     background: #ff5722;
@@ -301,7 +301,7 @@ td {
     box-shadow: 0 1px 2px 0 rgb(60 64 67 / 10%), 0 2px 6px 2px rgb(60 64 67 / 15%);
 }
 .question-product {
-    width: calc(100% - 80px);
+    width: calc(100% - 160px);
     border-radius: 10px;
     box-shadow: 0 0 10px 0 rgb(60 64 67 / 10%), 0 2px 6px 2px rgb(60 64 67 / 15%);
     border: 0;

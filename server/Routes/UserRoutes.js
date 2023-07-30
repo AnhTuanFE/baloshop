@@ -97,10 +97,10 @@ userRouter.get(
     '/user',
     protect,
     asyncHandler(async (req, res) => {
-        let token = req.headers.authorization.split(' ')[1];
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-        const user = await User.findById(decoded.id).select('-password');
+        // let token = req.headers.authorization.split(' ')[1];
+        // const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        // const user = await User.findById(decoded.id).select('-password');
+        const user = req.user;
         const information_admin = await User.findOne({ email: 'admin@gmail.com' });
 
         if (user && information_admin) {
@@ -159,7 +159,9 @@ userRouter.put(
             // console.log('req.body = ', req.body);
             // console.log('imagePath = ', req.file?.path);
 
-            const user = await User.findById(id);
+            // const user = await User.findById(id);
+            console.log('req.user = ', req?.user._id);
+            const user = req?.user;
             const information_admin = await User.findOne({ email: 'admin@gmail.com' });
 
             if (user && information_admin) {
@@ -192,7 +194,7 @@ userRouter.put(
                             const imageURL = result.secure_url;
                             const imageID = result.public_id;
 
-                            const filter = { _id: id };
+                            const filter = { _id: user._id };
                             const update = {
                                 $set: {
                                     name: name || user.name,
@@ -210,7 +212,7 @@ userRouter.put(
                             };
                             const updataStatus = await User.updateOne(filter, update);
                             res.json({
-                                _id: id || user.id,
+                                _id: user._id,
                                 name: name || user.name,
                                 dateOfBirth: dateOfBirth || user.dateOfBirth,
                                 phone: phone || user.phone,
@@ -325,7 +327,9 @@ userRouter.put(
     admin,
     asyncHandler(async (req, res) => {
         const { disabled } = req.body;
-        const user = await User.findById(req.params.id);
+        // const user = await User.findById(req.params.id);
+        // console.log('req.user = ', req?.user._id);
+        const user = req?.user;
         if (user.isAdmin) {
             res.status(400);
             throw new Error('error');
