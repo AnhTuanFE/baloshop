@@ -36,7 +36,7 @@ const OrderDetailScreen = () => {
 
     const orderDetails = useSelector((state) => state.orderDetails);
     const { loading, error, order } = orderDetails;
-
+    // console.log('order = ', order);
     // const orderUser = useSelector((state) => state.orderPaid);
     const orderwaitGetConfirmation = useSelector((state) => state.orderwaitGetConfirmation);
     const { success: successwaitGetConfirmation } = orderwaitGetConfirmation;
@@ -59,7 +59,6 @@ const OrderDetailScreen = () => {
         successwaitGetConfirmation,
         successCompleteAdmin,
     ]);
-
     const setTrueCancel = () => {
         setCancel(true);
     };

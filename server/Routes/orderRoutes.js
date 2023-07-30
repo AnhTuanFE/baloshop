@@ -11,7 +11,7 @@ const orderRouter = express.Router();
 // API giao hàng tiết kiệm
 // const apiBase = 'https://services.giaohangtietkiem.vn';
 const apiBase = 'https://services-staging.ghtklab.com';
-
+const Token = 'dfdb4cb9647b5130ea49d5216fda3c60f9a712cd';
 // CREATE ORDER
 const handleConfigProducts = (orderItems) => {
     const products = [];
@@ -58,25 +58,26 @@ orderRouter.post(
                     order: {
                         id: id_predefined,
                         pick_name: 'SHOP BALO',
+                        order_id: id_predefined,
+                        pick_money: 0,
                         pick_province: address_shop?.city,
                         pick_district: address_shop?.distric,
                         pick_address: address_shop?.address,
-                        // pick_ward: address_shop?.ward,
+                        pick_ward: address_shop?.ward,
                         pick_tel: address_shop?.phone,
-                        tel: phone,
                         name: name,
+                        tel: phone,
                         email: email,
                         address: shippingAddress.address,
                         province: shippingAddress.city,
                         district: shippingAddress.distric,
                         ward: shippingAddress.ward,
                         hamlet: 'Khác',
-                        // is_freeship: '1',
-                        // pick_date: dateString,
-                        pick_money: 0,
-                        // note: 'Khối lượng tính cước tối đa: 1.00 kg',
                         value: totalPrice,
                         transport: 'road',
+                        // is_freeship: '1',
+                        // pick_date: dateString,
+                        // note: 'Khối lượng tính cước tối đa: 1.00 kg',
                         // pick_option: 'cod', // Đơn hàng xfast yêu cầu bắt buộc pick_option là COD
                         // deliver_option: 'xteam', // nếu lựa chọn kiểu vận chuyển xfast
                         // pick_session: 2, // Phiên lấy xfast
@@ -260,7 +261,7 @@ orderRouter.post(
 // GET ALL ORDERS
 orderRouter.get(
     '/productbestseller',
-    //protect,
+    // protect,
     asyncHandler(async (req, res) => {
         const orders = await Order.find({});
         const products = await Product.find({}).sort({ _id: -1 });
@@ -301,8 +302,8 @@ orderRouter.get(
 // ADMIN GET ALL ORDERS
 orderRouter.get(
     '/all',
-    // protect,
-    // admin,
+    protect,
+    admin,
     asyncHandler(async (req, res) => {
         const pageSize = 15;
         const page = Number(req.query.pageNumber) || 1;
@@ -445,16 +446,61 @@ orderRouter.put(
 // ORDER IS WAITCONFIRMATION
 orderRouter.put(
     '/:id/waitConfirmation',
-    // protect,
-    // admin,
+    protect,
+    admin,
     asyncHandler(async (req, res) => {
-        const { status } = req.body;
+        const { status, address_shop } = req.body;
+        console.log('address_shop = ', address_shop);
         const order = await Order.findById(req.params.id);
 
         if (order) {
             if (status) {
                 order.waitConfirmation = true;
                 order.waitConfirmationAt = Date.now();
+                // ============
+                //   const handleCreateOrderGHTK = async (products) => {
+                //     const data12 = {
+                //         products: products,
+                //         order: {
+                //             id: order.id_predefined,
+                //             pick_name: 'SHOP BALO',
+                //             pick_money: 0,
+                //             pick_province: address_shop?.city,
+                //             pick_district: address_shop?.distric,
+                //             pick_address: address_shop?.address,
+                //             pick_ward: address_shop?.ward,
+                //             pick_tel: address_shop?.phone,
+                //             name: order.name,
+                //             tel: order.phone,
+                //             email: order.email,
+                //             address: order.shippingAddress.address,
+                //             province: order.shippingAddress.city,
+                //             district: order.shippingAddress.distric,
+                //             ward: order.shippingAddress.ward,
+                //             hamlet: 'Khác',
+                //             value: order.totalPrice,
+                //             transport: 'road',
+                //             // is_freeship: '1',
+                //             // pick_date: dateString,
+                //             // note: 'Khối lượng tính cước tối đa: 1.00 kg',
+                //             // pick_option: 'cod', // Đơn hàng xfast yêu cầu bắt buộc pick_option là COD
+                //             // deliver_option: 'xteam', // nếu lựa chọn kiểu vận chuyển xfast
+                //             // pick_session: 2, // Phiên lấy xfast
+                //             // booking_id: 2,
+                //             // tags: [1, 7],
+                //         },
+                //     };
+                //     const url = `${apiBase}/services/shipment/order`;
+                //     const config = {
+                //         headers: {
+                //             'Content-Type': 'application/json',
+                //             Token: Token,
+                //         },
+                //     };
+                //     const { data } = await axios.post(url, data12, config);
+                //     return data;
+                // };
+                // ===========
             } else {
                 order.waitConfirmation = false;
                 order.waitConfirmationAt = Date.now();
@@ -491,8 +537,8 @@ orderRouter.put(
 // ORDER IS COMMPLETE ADMIN
 orderRouter.put(
     '/:id/completeAdmin',
-    // protect,
-    // admin,
+    protect,
+    admin,
     asyncHandler(async (req, res) => {
         const order = await Order.findById(req.params.id);
 
@@ -513,6 +559,7 @@ orderRouter.put(
 orderRouter.put(
     '/:id/delivered',
     protect,
+    admin,
     asyncHandler(async (req, res) => {
         const order = await Order.findById(req.params.id);
 
@@ -532,6 +579,7 @@ orderRouter.put(
 orderRouter.put(
     '/:id/paid',
     protect,
+    admin,
     asyncHandler(async (req, res) => {
         const order = await Order.findById(req.params.id);
 
