@@ -1,5 +1,5 @@
-import CustomizedSteppersMoney from './StateOrderPaypal/CustomizedSteppersMoney';
-import CustomizedSteppersPaypal from './StateOrderMoney/CustomizedSteppersPaypal';
+import CustomizedSteppersMoney from './StateOrderMoney/CustomizedSteppersMoney';
+import CustomizedSteppersPaypal from './StateOrderPaypal/CustomizedSteppersPaypal';
 export default function Steppers({ order }) {
     return (
         <>

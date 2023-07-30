@@ -110,7 +110,7 @@ function PlaceOrder() {
         }
         if (success) {
             successPlaceholder();
-            handleUp();
+            // handleUp();
             setTimeout(() => {
                 navigate(`/order/${order.ShopOrder._id}`);
             }, 3000);
@@ -196,9 +196,7 @@ function PlaceOrder() {
         const usd = (vnd / 23000).toFixed(1);
         return usd;
     };
-
     let moneyNeedPaid = handleExchangeCurrency(cart.totalPrice);
-
     const createOrderPaypal = (data, actions) => {
         // console.log('data create order = ', data);
         // paymentSource: 'paypal

@@ -218,12 +218,12 @@ GHTK_Router.get(
     '/cancel_order_by_id',
     asyncHandler(async (req, res) => {
         try {
-            const data1 = 'S22223996.BO.MB14-05-D6.1050014187';
-            const url = `${apiBase}/services/shipment/cancel/${data1}`;
+            // const data1 = 'S22223996.BO.MB14-05-D6.1250012891';
+            // const url = `${apiBase}/services/shipment/cancel/${data1}`;
 
-            // const data1 = '5f91ade1-b788-4d07-b016-';
-            // const url = `${apiBase} /services/shipment/cancel/partner_id:${data1}`;
-
+            const data1 = '5f91ade1-b788-4d07-b016-';
+            const url = `${apiBase}/services/shipment/cancel/partner_id:${data1}`;
+            console.log('url = ', url);
             const config = {
                 headers: {
                     'Content-Type': 'application/json',

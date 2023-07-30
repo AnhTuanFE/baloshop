@@ -212,7 +212,6 @@ export const waitConfirmationOrder = (id, status) => async (dispatch, getState) 
         const {
             userLogin: { userInfo },
         } = getState();
-        console.log('userInfo = ', userInfo);
         let address_shop = userInfo.address_shop;
         const config = {
             headers: {

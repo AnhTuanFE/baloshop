@@ -33,11 +33,6 @@ orderRouter.post(
     protect,
     asyncHandler(async (req, res) => {
         let id_predefined = uuidv4().slice(0, 24);
-        // let currentDate = new Date();
-        // let year = currentDate.getFullYear();
-        // let month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-        // let day = currentDate.getDate().toString().padStart(2, '0');
-        // let dateString = `${year}-${month}-${day}`;
         try {
             const {
                 orderItems,
@@ -52,49 +47,49 @@ orderRouter.post(
                 paypalOrder,
                 address_shop,
             } = req.body;
-            const handleCreateOrderGHTK = async (products) => {
-                const data12 = {
-                    products: products,
-                    order: {
-                        id: id_predefined,
-                        pick_name: 'SHOP BALO',
-                        order_id: id_predefined,
-                        pick_money: 0,
-                        pick_province: address_shop?.city,
-                        pick_district: address_shop?.distric,
-                        pick_address: address_shop?.address,
-                        pick_ward: address_shop?.ward,
-                        pick_tel: address_shop?.phone,
-                        name: name,
-                        tel: phone,
-                        email: email,
-                        address: shippingAddress.address,
-                        province: shippingAddress.city,
-                        district: shippingAddress.distric,
-                        ward: shippingAddress.ward,
-                        hamlet: 'Khác',
-                        value: totalPrice,
-                        transport: 'road',
-                        // is_freeship: '1',
-                        // pick_date: dateString,
-                        // note: 'Khối lượng tính cước tối đa: 1.00 kg',
-                        // pick_option: 'cod', // Đơn hàng xfast yêu cầu bắt buộc pick_option là COD
-                        // deliver_option: 'xteam', // nếu lựa chọn kiểu vận chuyển xfast
-                        // pick_session: 2, // Phiên lấy xfast
-                        // booking_id: 2,
-                        // tags: [1, 7],
-                    },
-                };
-                const url = `${apiBase}/services/shipment/order`;
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Token: 'dfdb4cb9647b5130ea49d5216fda3c60f9a712cd',
-                    },
-                };
-                const { data } = await axios.post(url, data12, config);
-                return data;
-            };
+            // const handleCreateOrderGHTK = async (products) => {
+            //     const data12 = {
+            //         products: products,
+            //         order: {
+            //             id: id_predefined,
+            //             pick_name: 'SHOP BALO',
+            //             order_id: id_predefined,
+            //             pick_money: 0,
+            //             pick_province: address_shop?.city,
+            //             pick_district: address_shop?.distric,
+            //             pick_address: address_shop?.address,
+            //             pick_ward: address_shop?.ward,
+            //             pick_tel: address_shop?.phone,
+            //             name: name,
+            //             tel: phone,
+            //             email: email,
+            //             address: shippingAddress.address,
+            //             province: shippingAddress.city,
+            //             district: shippingAddress.distric,
+            //             ward: shippingAddress.ward,
+            //             hamlet: 'Khác',
+            //             value: totalPrice,
+            //             transport: 'road',
+            //             // is_freeship: '1',
+            //             // pick_date: dateString,
+            //             // note: 'Khối lượng tính cước tối đa: 1.00 kg',
+            //             // pick_option: 'cod', // Đơn hàng xfast yêu cầu bắt buộc pick_option là COD
+            //             // deliver_option: 'xteam', // nếu lựa chọn kiểu vận chuyển xfast
+            //             // pick_session: 2, // Phiên lấy xfast
+            //             // booking_id: 2,
+            //             // tags: [1, 7],
+            //         },
+            //     };
+            //     const url = `${apiBase}/services/shipment/order`;
+            //     const config = {
+            //         headers: {
+            //             'Content-Type': 'application/json',
+            //             Token: 'dfdb4cb9647b5130ea49d5216fda3c60f9a712cd',
+            //         },
+            //     };
+            //     const { data } = await axios.post(url, data12, config);
+            //     return data;
+            // };
             if (orderItems.length != 0) {
                 for (let i = 0; i < orderItems.length; i++) {
                     const product = await Product.findById(orderItems[i].product);
@@ -146,11 +141,11 @@ orderRouter.post(
                     await Product.findOneAndUpdate({ _id: orderItem.product }, { optionColor: arrOption });
                 }
                 const createOrder = await order.save();
-                const productConfiged = await handleConfigProducts(orderItems);
-                const dataOrderGHTK = await handleCreateOrderGHTK(productConfiged);
-                console.log('dataOrderGHTK paypal = ', dataOrderGHTK);
-
-                res.status(201).json({ ShopOrder: createOrder, GHTK_Order: dataOrderGHTK });
+                // const productConfiged = await handleConfigProducts(orderItems);
+                // const dataOrderGHTK = await handleCreateOrderGHTK(productConfiged);
+                // console.log('dataOrderGHTK paypal = ', dataOrderGHTK);
+                // , GHTK_Order: dataOrderGHTK
+                res.status(201).json({ ShopOrder: createOrder });
             } else {
                 const order = new Order({
                     orderItems,
@@ -178,11 +173,10 @@ orderRouter.post(
                     await Product.findOneAndUpdate({ _id: orderItem.product }, { optionColor: arrOption });
                 }
                 const createOrder = await order.save();
-                const productConfiged = await handleConfigProducts(orderItems);
-                const dataOrderGHTK = await handleCreateOrderGHTK(productConfiged);
-                console.log('dataOrderGHTK = ', dataOrderGHTK);
-
-                res.status(201).json({ ShopOrder: createOrder, GHTK_Order: dataOrderGHTK });
+                // const productConfiged = await handleConfigProducts(orderItems);
+                // const dataOrderGHTK = await handleCreateOrderGHTK(productConfiged);
+                // , GHTK_Order: dataOrderGHTK
+                res.status(201).json({ ShopOrder: createOrder });
             }
         } catch (err) {
             res.status(500).json(err);
@@ -450,62 +444,64 @@ orderRouter.put(
     admin,
     asyncHandler(async (req, res) => {
         const { status, address_shop } = req.body;
-        console.log('address_shop = ', address_shop);
         const order = await Order.findById(req.params.id);
-
+        const handleCreateOrderGHTK = async (products) => {
+            const data12 = {
+                products: products,
+                order: {
+                    id: order._id,
+                    pick_name: 'SHOP BALO',
+                    pick_money: 0,
+                    pick_province: address_shop?.city,
+                    pick_district: address_shop?.distric,
+                    pick_address: address_shop?.address,
+                    pick_ward: address_shop?.ward,
+                    pick_tel: address_shop?.phone,
+                    name: order.name,
+                    tel: order.phone,
+                    email: order.email,
+                    address: order.shippingAddress.address,
+                    province: order.shippingAddress.city,
+                    district: order.shippingAddress.distric,
+                    ward: order.shippingAddress.ward,
+                    hamlet: 'Khác',
+                    value: order.totalPrice,
+                    transport: 'road',
+                    // is_freeship: '1',
+                    // pick_date: dateString,
+                    // note: 'Khối lượng tính cước tối đa: 1.00 kg',
+                    // pick_option: 'cod', // Đơn hàng xfast yêu cầu bắt buộc pick_option là COD
+                    // deliver_option: 'xteam', // nếu lựa chọn kiểu vận chuyển xfast
+                    // pick_session: 2, // Phiên lấy xfast
+                    // booking_id: 2,
+                    // tags: [1, 7],
+                },
+            };
+            const url = `${apiBase}/services/shipment/order`;
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Token: Token,
+                },
+            };
+            const { data } = await axios.post(url, data12, config);
+            return data;
+        };
+        const handleUpdateLabel_id_GHTK = (dataOrderGHTK) => {
+            order.label_id_GiaoHangTK = dataOrderGHTK.order.label;
+        };
         if (order) {
             if (status) {
+                const productConfiged = await handleConfigProducts(order.orderItems);
+                const dataOrderGHTK = await handleCreateOrderGHTK(productConfiged);
+                await handleUpdateLabel_id_GHTK(dataOrderGHTK);
                 order.waitConfirmation = true;
                 order.waitConfirmationAt = Date.now();
-                // ============
-                //   const handleCreateOrderGHTK = async (products) => {
-                //     const data12 = {
-                //         products: products,
-                //         order: {
-                //             id: order.id_predefined,
-                //             pick_name: 'SHOP BALO',
-                //             pick_money: 0,
-                //             pick_province: address_shop?.city,
-                //             pick_district: address_shop?.distric,
-                //             pick_address: address_shop?.address,
-                //             pick_ward: address_shop?.ward,
-                //             pick_tel: address_shop?.phone,
-                //             name: order.name,
-                //             tel: order.phone,
-                //             email: order.email,
-                //             address: order.shippingAddress.address,
-                //             province: order.shippingAddress.city,
-                //             district: order.shippingAddress.distric,
-                //             ward: order.shippingAddress.ward,
-                //             hamlet: 'Khác',
-                //             value: order.totalPrice,
-                //             transport: 'road',
-                //             // is_freeship: '1',
-                //             // pick_date: dateString,
-                //             // note: 'Khối lượng tính cước tối đa: 1.00 kg',
-                //             // pick_option: 'cod', // Đơn hàng xfast yêu cầu bắt buộc pick_option là COD
-                //             // deliver_option: 'xteam', // nếu lựa chọn kiểu vận chuyển xfast
-                //             // pick_session: 2, // Phiên lấy xfast
-                //             // booking_id: 2,
-                //             // tags: [1, 7],
-                //         },
-                //     };
-                //     const url = `${apiBase}/services/shipment/order`;
-                //     const config = {
-                //         headers: {
-                //             'Content-Type': 'application/json',
-                //             Token: Token,
-                //         },
-                //     };
-                //     const { data } = await axios.post(url, data12, config);
-                //     return data;
-                // };
-                // ===========
-            } else {
-                order.waitConfirmation = false;
-                order.waitConfirmationAt = Date.now();
             }
-
+            // else {
+            //     order.waitConfirmation = false;
+            //     order.waitConfirmationAt = Date.now();
+            // }
             const updatedOrder = await order.save();
             res.json(updatedOrder);
         } else {

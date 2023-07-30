@@ -1,7 +1,8 @@
 import moment from 'moment';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Fragment } from 'react';
 import { styled } from '@mui/material/styles';
 import { Box, Stack, Stepper, Step, StepLabel, StepConnector, stepConnectorClasses } from '@mui/material';
+// import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
 import AssuredWorkloadIcon from '@mui/icons-material/AssuredWorkload';
 import LocalShippingSharpIcon from '@mui/icons-material/LocalShippingSharp';
 import LocalAtmSharpIcon from '@mui/icons-material/LocalAtmSharp';
@@ -67,7 +68,7 @@ function ColorlibStepIcon(props) {
     );
 }
 
-export default function CustomizedSteppersPaypal({ order }) {
+export default function CustomizedSteppersMoney({ order }) {
     const [actiStep, setActiStep] = useState(0);
     useEffect(() => {
         if (order) {
@@ -85,18 +86,19 @@ export default function CustomizedSteppersPaypal({ order }) {
                     setActiStep(3);
                 }
             } else {
-                if (order.confirm) {
+                if (order.waitConfirmation) {
                     setActiStep(0);
-                }
-                if (order.delivered) {
                     setActiStep(1);
                 }
-                if (order.isPaid) {
+                if (order.isDelivered) {
                     setActiStep(2);
                 }
-                if (order.completeAdmin && order.completeUser) {
+                if (order.isPaid) {
                     setActiStep(3);
                 }
+                // if (order.completeAdmin || order.completeUser) {
+                //     setActiStep(3);
+                // }
             }
         } else {
             return <div>không có đơn hàng nào</div>;
@@ -135,8 +137,36 @@ export default function CustomizedSteppersPaypal({ order }) {
                                 </StepLabel>
                             </Step>
                         )}
-                        {order.isPaid ? (
+                        {order.isDelivered ? (
                             <Step key={2}>
+                                <div>
+                                    <StepLabel
+                                        StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={2} />}
+                                    >
+                                        Đã giao
+                                    </StepLabel>
+                                    <span className=" mt-2 flex justify-center text-sm font-semibold text-[red]">
+                                        {moment(order?.deliveredAt).hours()}
+                                        {':'}
+                                        {moment(order?.deliveredAt).minutes() < 10
+                                            ? `0${moment(order?.deliveredAt).minutes()}`
+                                            : moment(order?.deliveredAt).minutes()}{' '}
+                                        {moment(order?.deliveredAt).format('DD/MM/YYYY')}{' '}
+                                    </span>
+                                </div>
+                            </Step>
+                        ) : (
+                            <Step key={2}>
+                                {/* icon={<LocalShippingSharpIcon fontSize="large" />} */}
+                                <StepLabel
+                                    StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={2} />}
+                                >
+                                    Đang giao
+                                </StepLabel>
+                            </Step>
+                        )}
+                        {order.isPaid ? (
+                            <Step key={3}>
                                 <div>
                                     <StepLabel
                                         StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={3} />}
@@ -155,34 +185,16 @@ export default function CustomizedSteppersPaypal({ order }) {
                                 </div>
                             </Step>
                         ) : (
-                            <Step key={2}>
-                                <StepLabel icon={<LocalAtmSharpIcon fontSize="large" />}>Thanh toán</StepLabel>
+                            <Step key={3}>
+                                {/* icon={<LocalAtmSharpIcon fontSize="large" />} */}
+                                <StepLabel
+                                    StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={3} />}
+                                >
+                                    Chờ thanh toán
+                                </StepLabel>
                             </Step>
                         )}
-                        {order.isDelivered ? (
-                            <Step key={3}>
-                                <div>
-                                    <StepLabel
-                                        StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={2} />}
-                                    >
-                                        Đã giao
-                                    </StepLabel>
-                                    <span className=" mt-2 flex justify-center text-sm font-semibold text-[red]">
-                                        {moment(order?.deliveredAt).hours()}
-                                        {':'}
-                                        {moment(order?.deliveredAt).minutes() < 10
-                                            ? `0${moment(order?.deliveredAt).minutes()}`
-                                            : moment(order?.deliveredAt).minutes()}{' '}
-                                        {moment(order?.deliveredAt).format('DD/MM/YYYY')}{' '}
-                                    </span>
-                                </div>
-                            </Step>
-                        ) : (
-                            <Step key={3}>
-                                <StepLabel icon={<LocalShippingSharpIcon fontSize="large" />}>Đang giao</StepLabel>
-                            </Step>
-                        )}
-                        {order.completeAdmin && order.completeUser ? (
+                        {order.completeAdmin || order.completeUser ? (
                             <Step key={4}>
                                 <div>
                                     <StepLabel
@@ -202,7 +214,12 @@ export default function CustomizedSteppersPaypal({ order }) {
                             </Step>
                         ) : (
                             <Step key={4}>
-                                <StepLabel icon={<LibraryAddCheckSharpIcon fontSize="large" />}>Hoàn tất</StepLabel>
+                                {/* icon={<LibraryAddCheckSharpIcon fontSize="large" />} */}
+                                <StepLabel
+                                    StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={4} />}
+                                >
+                                    Khách hàng xác nhận hoàn tất
+                                </StepLabel>
                             </Step>
                         )}
                     </Stepper>
