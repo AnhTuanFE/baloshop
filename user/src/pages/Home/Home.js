@@ -1,14 +1,11 @@
 import { useSelector } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
-// import NewsMain from '~/components/news/NewsMain';// tin tức sự kiện
 import AllProductsFilter from '~/components/HomeComponent/AllProductsFilter/AllProductsFilter'; // ShopSection
 import Sliders from '~/components/HomeComponent/Sliders/Sliders';
 import LatestProduct from '~/components/HomeComponent/SliderProducts/LatestProduct/LatestProduct'; //  Corousel
 import BestSellingProduct from '~/components/HomeComponent/SliderProducts/BestSellingProduct/BestSellingProduct'; // CorouselOder
-
+// import NewsMain from '~/components/news/NewsMain';
 function Home() {
-    const userRegister = useSelector((state) => state.userRegister);
-
     const params = useParams();
 
     const keyword = params.keyword;
@@ -29,6 +26,7 @@ function Home() {
                 sortProducts={sortProducts}
                 rating={rating}
             />
+            {/* <NewsMain /> */}
         </div>
     );
 }

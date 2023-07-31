@@ -277,7 +277,7 @@ function Order() {
                                             <ViewOrderInformation id_Ghtk={order?.label_id_GiaoHangTK} />
                                         </Modal>
                                     </div>
-                                    {order?.isPaid && order?.completeUser !== true && (
+                                    {order?.isPaid && order?.isDelivered && order?.completeUser !== true && (
                                         <div className="">
                                             <div className="">
                                                 <button

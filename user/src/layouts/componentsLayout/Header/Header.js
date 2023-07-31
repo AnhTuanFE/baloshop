@@ -1,4 +1,6 @@
 import { Box, IconButton, Typography, Avatar, TextField, MenuItem, Select, Autocomplete } from '@mui/material';
+import { AutoComplete as AutoCompleteAntD, Input } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 import { Search, LocalMall } from '@mui/icons-material';
 import clsx from 'clsx';
 import styles from './Header.module.css';
@@ -186,6 +188,55 @@ export default function Header2(props) {
             </Box>
         );
     };
+
+    // =================
+    const renderTitle = (title) => (
+        <span>
+            {title}
+            <a
+                style={{
+                    float: 'right',
+                }}
+                href="https://www.google.com/search?q=antd"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                more
+            </a>
+        </span>
+    );
+    const renderItem = (title, count) => ({
+        value: title,
+        label: (
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                }}
+            >
+                {title}
+                <span>
+                    <UserOutlined /> {count}
+                </span>
+            </div>
+        ),
+    });
+
+    const options = [
+        {
+            label: renderTitle('Libraries'),
+            options: [renderItem('AntDesign', 10000), renderItem('AntDesign UI', 10600)],
+        },
+        {
+            label: renderTitle('Solutions'),
+            options: [renderItem('AntDesign UI FAQ', 60100), renderItem('AntDesign FAQ', 30010)],
+        },
+        {
+            label: renderTitle('Articles'),
+            options: [renderItem('AntDesign design language', 100000)],
+        },
+    ];
+    // ============
     return (
         <Box className="">
             <ContactInformation />
@@ -227,17 +278,6 @@ export default function Header2(props) {
                                 onChange={(e) => {
                                     setKeyword(e.target.outerText);
                                 }}
-                                // sx={{
-                                //     // border: "1px solid blue",
-                                //     '& .MuiOutlinedInput-root': {
-                                //         // border: "1px solid yellow",
-                                //         borderRadius: '0',
-                                //         padding: '0',
-                                //     },
-                                //     '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
-                                //         border: '1px solid #eee',
-                                //     },
-                                // }}
                                 renderInput={(params) => (
                                     <TextField
                                         onChange={(e) => {
@@ -246,19 +286,25 @@ export default function Header2(props) {
                                         className="bg-[var(--white-color)]"
                                         {...params}
                                         label="Tìm kiếm"
-                                        // margin="none"
-                                        // inputProps={{
-                                        //     ...params.inputProps,
-                                        //     style: {
-                                        //         // padding: 'calc(0.5vw + 5px)',
-                                        //         padding: '18px 0px',
-                                        //         fontSize: 'calc(0.5vw + 5px)',
-                                        //         // border: "1px solid red"
-                                        //     },
-                                        // }}
                                     />
                                 )}
                             />
+                            {/* <AutoCompleteAntD
+                                popupClassName="certain-category-search-dropdown"
+                                dropdownMatchSelectWidth={500}
+                                options={key.map((item) => ({ value: item }))}
+                                onChange={(e) => {
+                                    setKeyword(e);
+                                }}
+                            >
+                                <Input
+                                    onChange={(e) => {
+                                        setKeyword(e.target.value);
+                                    }}
+                                    size="large"
+                                    placeholder="Tìm kiếm"
+                                />
+                            </AutoCompleteAntD> */}
                             <IconButton
                                 aria-label="search"
                                 size="large"
