@@ -12,11 +12,6 @@
             "dest": "/"
         }
     ],
-    "env": {
-        "NODE_ENV": "production",
-        "JWT_SECRET": "baloshop",
-        "MONGO_URL": "mongodb+srv://balostore:balostorepass@cluster0.zqr14rw.mongodb.net/balostoredb?retryWrites=true&w=majority"
-    },
     "github": {
         "auto_alias": true,
         "silent": true,
