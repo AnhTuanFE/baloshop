@@ -99,13 +99,18 @@ export const createUserReducer = (state = [], action) => {
 // GET PROVINCE
 export const ProvinceReducer = (state = { province: [] }, action) => {
     switch (action.type) {
-        case types.PROVINCE_SUCCESS:
+        case types.PROVINCE_REQUEST:
             return {
                 ...state,
+                loading: true,
+            };
+        case types.PROVINCE_SUCCESS:
+            return {
+                loading: false,
                 province: action.payload,
             };
         case types.PROVINCE_FAIL:
-            return { ...state, error: action.payload };
+            return { loading: false, province: [], error: action.payload };
         default:
             return state;
     }

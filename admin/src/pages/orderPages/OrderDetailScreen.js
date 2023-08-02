@@ -36,7 +36,7 @@ const OrderDetailScreen = () => {
 
     const orderDetails = useSelector((state) => state.orderDetails);
     const { loading, error, order } = orderDetails;
-
+    // console.log('order = ', order);
     // const orderUser = useSelector((state) => state.orderPaid);
     const orderwaitGetConfirmation = useSelector((state) => state.orderwaitGetConfirmation);
     const { success: successwaitGetConfirmation } = orderwaitGetConfirmation;
@@ -59,7 +59,6 @@ const OrderDetailScreen = () => {
         successwaitGetConfirmation,
         successCompleteAdmin,
     ]);
-
     const setTrueCancel = () => {
         setCancel(true);
     };
@@ -210,7 +209,7 @@ const OrderDetailScreen = () => {
                         Quay lại
                     </Link>
                 </div>
-                {order?.waitConfirmation && order?.isDelivered !== true && (
+                {/* {order?.waitConfirmation && order?.isDelivered !== true && (
                     <div className="col-lg-3 col-md-3 d-flex justify-content-end">
                         <button
                             className="btn btn-success text-white"
@@ -221,7 +220,7 @@ const OrderDetailScreen = () => {
                             Thu hồi
                         </button>
                     </div>
-                )}
+                )} */}
                 <div className="col-lg-3 col-md-3">
                     <select className="form-select" value={status} onChange={(e) => setStatus(e.target.value)}>
                         {order?.cancel !== 1 && (

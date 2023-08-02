@@ -87,7 +87,7 @@
 }
 .round-black-btn {
     border-radius: 4px;
-    background: #00483d;
+    background: var(--main-color);
     bottom: 0;
     color: #fff;
     width: 100%;
@@ -100,7 +100,7 @@
 }
 .round-black-btn:hover,
 .round-black-btn:focus {
-    background: #056859;
+    background: var(--main-color2);
 }
 .bg-orange {
     background: #ff5722;
@@ -290,7 +290,7 @@ td {
     height: 35px;
     text-align: center;
     border-radius: 15px;
-    background-color: #00483d;
+    background-color: var(--main-color);
     cursor: pointer;
     border: none;
     color: #fff;
@@ -315,7 +315,7 @@ td {
 .button {
     width: 70px;
     color: #fff;
-    background-color: #00483d;
+    background-color: var(--main-color);
     border-radius: 8px;
     grid-gap: 5px;
     gap: 5px;

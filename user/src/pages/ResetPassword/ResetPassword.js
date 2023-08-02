@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { usersRemainingSelector } from '~/redux/Selector/usersSelector';
 import { ResetPassWordAction } from '~/redux/Actions/userActions';
 import { useForm, Controller } from 'react-hook-form';
-import { Button, notification } from 'antd';
+import { notification } from 'antd';
 import { SmileOutlined } from '@ant-design/icons';
 
 //

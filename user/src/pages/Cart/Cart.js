@@ -2,21 +2,23 @@ import { useEffect } from 'react';
 import { Link, useParams, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Checkbox } from 'primereact/checkbox';
-import { toast } from 'react-toastify';
 //
 import { CART_CREATE_RESET } from '~/redux/Constants/CartConstants';
 import { addToCart, listCart, removefromcart } from '~/redux/Actions/cartActions';
 
-import Toast from '~/components/HomeComponent/LoadingError/Toast';
 import Loading from '~/components/HomeComponent/LoadingError/Loading';
+import { notification } from 'antd';
+
 import './Cart.css';
 
 function Cart() {
-    const Toastobjects = {
-        pauseOnFocusLoss: false,
-        draggable: false,
-        pauseOnHover: false,
-        autoClose: 2000,
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (placement, notify, type) => {
+        api[type]({
+            message: `Thông báo `,
+            description: `${notify}`,
+            placement,
+        });
     };
 
     const dispatch = useDispatch();
@@ -58,7 +60,8 @@ function Cart() {
     };
     useEffect(() => {
         if (errorCreate === 'account lock up') {
-            toast.error('Tài khoản của bạn đã bị khóa', Toastobjects);
+            openNotification('top', 'Tài khoản của bạn đã bị khóa', 'error');
+
             dispatch({ type: CART_CREATE_RESET });
         }
     }, [dispatch, errorCreate]);
@@ -85,7 +88,18 @@ function Cart() {
                             <Checkbox
                                 checked={item?.isBuy}
                                 onChange={() => {
-                                    dispatch(addToCart(item?.product._id, item?.color, true, userInfo._id));
+                                    dispatch(
+                                        addToCart(
+                                            {
+                                                productId: item?.product._id,
+                                                color: item?.color,
+                                                id_product: cartItems.id_product,
+                                                qty: true,
+                                                _id: userInfo._id,
+                                            },
+                                            // true,
+                                        ),
+                                    );
                                 }}
                             />
                         </div>
@@ -111,17 +125,25 @@ function Cart() {
         const findCart = optionColor?.find((option) => option.color === item.color);
         return (
             <>
-                <div className="cart-qty col-md-2 col-sm-5 mt-3 mt-md-0 d-flex flex-column justify-content-center quantity-css">
+                <div className="cart-qty col-md-2 col-sm-5 mt-md-0 d-flex flex-column justify-content-center quantity-css mt-3">
                     <h6>Phân loại hàng</h6>
                     <h5>{item?.color}</h5>
                 </div>
-                <div className="cart-qty col-md-2 col-sm-5 mt-3 mt-md-0 d-flex flex-column justify-content-center quantity-css">
+                <div className="cart-qty col-md-2 col-sm-5 mt-md-0 d-flex flex-column justify-content-center quantity-css mt-3">
                     <h6>Số lượng</h6>
                     <select
                         disabled={findCart?.countInStock <= 0}
                         value={item?.qty}
                         onChange={(e) => {
-                            dispatch(addToCart(item?.product._id, item?.color, e.target.value, userInfo._id));
+                            dispatch(
+                                addToCart({
+                                    productId: item?.product._id,
+                                    color: item?.color,
+                                    id_product: cartItems.id_product,
+                                    qty: e.target.value,
+                                    _id: userInfo._id,
+                                }),
+                            );
                         }}
                     >
                         {[...Array(findCart?.countInStock).keys()].map((x) => (
@@ -137,10 +159,10 @@ function Cart() {
     return (
         <>
             {loadingCreate && <Loading />}
-            <Toast />
+            {contextHolder}
             <div className="container">
                 {cartItems?.length === 0 ? (
-                    <div className=" alert alert-info text-center mt-3">
+                    <div className=" alert alert-info mt-3 text-center">
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <img
                                 style={{ width: '100px', height: '100px', margin: '0 auto' }}
@@ -167,7 +189,7 @@ function Cart() {
                                 Về trang chủ
                             </Link>
                         </div>
-                        <div className=" alert alert-info text-center mt-3">
+                        <div className=" alert alert-info mt-3 text-center">
                             Tổng sản phẩm trong giỏ
                             <Link className="text-success mx-2" to="/cart">
                                 ({cartItems?.length ?? 0})
@@ -187,7 +209,7 @@ function Cart() {
                                         </Link>
                                     </div>
                                     {findCartColor(item)}
-                                    <div className="cart-price mt-3 mt-md-0 col-md-2 align-items-sm-end align-items-start  d-flex flex-column justify-content-center col-sm-7 quantity-css">
+                                    <div className="cart-price mt-md-0 col-md-2 align-items-sm-end align-items-start d-flex  flex-column justify-content-center col-sm-7 quantity-css mt-3">
                                         <h6>Giá</h6>
                                         <h4>{item.product?.price?.toLocaleString('de-DE')}đ</h4>
                                     </div>
@@ -212,7 +234,7 @@ function Cart() {
                                 <span className="total-price">{Number(total)?.toLocaleString('de-DE')}đ</span>
                             </div>
                             {total > 0 && (
-                                <div className="col-md-6 d-flex justify-content-md-end mt-3 mt-md-0">
+                                <div className="col-md-6 d-flex justify-content-md-end mt-md-0 mt-3">
                                     <button className="round-black-btn" onClick={checkOutHandler}>
                                         Tiến hành thanh toán
                                     </button>

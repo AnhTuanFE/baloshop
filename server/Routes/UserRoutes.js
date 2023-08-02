@@ -14,13 +14,20 @@ userRouter.post(
     '/login',
     asyncHandler(async (req, res) => {
         const { email, password } = req.body;
-
         const user = await User.findOne({ email });
+        const information_admin = await User.findOne({ email: 'admin@gmail.com' });
         if (user?.disabled) {
             res.status(400);
             throw new Error('Tài khoản đã bạn đã bị khóa, vui lòng liên hệ shop để có thể lấy lại');
         }
-        if (user && (await user.matchPassword(password))) {
+        if (user && (await user.matchPassword(password)) && information_admin) {
+            const data = {
+                city: information_admin.city,
+                distric: information_admin.distric,
+                ward: information_admin.ward,
+                address: information_admin.address,
+                phone: information_admin.phone,
+            };
             res.json({
                 _id: user._id,
                 name: user.name,
@@ -34,6 +41,7 @@ userRouter.post(
                 country: user.country,
                 image: user.image,
                 disabled: user.disabled,
+                address_shop: data,
             });
         } else {
             res.status(401);
@@ -52,7 +60,7 @@ userRouter.post(
 
         if (userExists) {
             res.status(400);
-            throw new Error('User already exists');
+            throw new Error('Tài khoản đã tồn tại');
         }
 
         const user = await User.create({
@@ -66,6 +74,7 @@ userRouter.post(
             res.status(201).json({
                 _id: user._id,
                 name: user.name,
+                dateOfBirth: user.dateOfBirth,
                 email: user.email,
                 phone: user.phone,
                 isAdmin: user.isAdmin,
@@ -88,27 +97,35 @@ userRouter.get(
     '/user',
     protect,
     asyncHandler(async (req, res) => {
-        // const user = await User.findById(req.user._id);
-        let token = req.headers.authorization.split(' ')[1];
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        // console.log('decoded = ', decoded);
-        // console.log('token = ', token);
+        // let token = req.headers.authorization.split(' ')[1];
+        // const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        // const user = await User.findById(decoded.id).select('-password');
+        const user = req.user;
+        const information_admin = await User.findOne({ email: 'admin@gmail.com' });
 
-        const user = await User.findById(decoded.id).select('-password');
-
-        if (user) {
+        if (user && information_admin) {
+            const data = {
+                city: information_admin.city,
+                distric: information_admin.distric,
+                ward: information_admin.ward,
+                address: information_admin.address,
+                phone: information_admin.phone,
+            };
             res.json({
                 _id: user._id,
                 name: user.name,
+                dateOfBirth: user.dateOfBirth,
                 email: user.email,
                 phone: user.phone,
                 isAdmin: user.isAdmin,
                 createdAt: user.createdAt,
-                address: user.address,
                 city: user.city,
-                country: user.country,
+                distric: user.distric,
+                ward: user.ward,
+                address: user.address,
                 image: user.image,
                 disabled: user.disabled,
+                address_shop: data,
             });
         } else {
             res.status(404);
@@ -138,12 +155,23 @@ userRouter.put(
     asyncHandler(async (req, res) => {
         try {
             const imagePath = req?.file?.path;
-            const { id, name, phone, country, city, address, nameImage } = req?.body;
+            const { id, name, dateOfBirth, phone, city, distric, ward, address, nameImage } = req?.body;
             // console.log('req.body = ', req.body);
             // console.log('imagePath = ', req.file?.path);
-            const user = await User.findById(id);
 
-            if (user) {
+            // const user = await User.findById(id);
+            const user = req?.user;
+            const information_admin = await User.findOne({ email: 'admin@gmail.com' });
+
+            if (user && information_admin) {
+                const data = {
+                    city: information_admin.city,
+                    distric: information_admin.distric,
+                    ward: information_admin.ward,
+                    address: information_admin.address,
+                    phone: information_admin.phone,
+                };
+
                 if (user?.disabled) {
                     res.status(400);
                     throw new Error('account lock up');
@@ -165,14 +193,16 @@ userRouter.put(
                             const imageURL = result.secure_url;
                             const imageID = result.public_id;
 
-                            const filter = { _id: id };
+                            const filter = { _id: user._id };
                             const update = {
                                 $set: {
-                                    name: name,
-                                    phone: phone,
-                                    country: country,
-                                    city: city,
-                                    address: address,
+                                    name: name || user.name,
+                                    dateOfBirth: dateOfBirth || user.dateOfBirth,
+                                    phone: phone || user.phone,
+                                    city: city || user.city,
+                                    distric: distric || user.distric,
+                                    ward: ward || user.ward,
+                                    address: address || user.address,
                                     image: {
                                         urlImageCloudinary: imageURL,
                                         idImageCloudinary: imageID,
@@ -181,21 +211,24 @@ userRouter.put(
                             };
                             const updataStatus = await User.updateOne(filter, update);
                             res.json({
-                                _id: id || user.id,
+                                _id: user._id,
                                 name: name || user.name,
+                                dateOfBirth: dateOfBirth || user.dateOfBirth,
                                 phone: phone || user.phone,
                                 isAdmin: user.isAdmin,
                                 createdAt: user.createdAt,
                                 token: generateToken(user.id),
                                 email: user.email,
-                                address: address || user.address,
                                 city: city || user.city,
-                                country: country || user.country,
+                                distric: distric || user.distric,
+                                ward: ward || user.ward,
+                                address: address || user.address,
                                 image: {
                                     urlImageCloudinary: imageURL,
                                     idImageCloudinary: imageID,
                                 },
                                 disabled: user.disabled,
+                                address_shop: data,
                             });
                         },
                     );
@@ -203,45 +236,53 @@ userRouter.put(
                     if (await user.matchPassword(req.body.oldPassword)) {
                         user.password = req.body.password;
                         const updatedPassword = await user.save();
-                        res.json({
-                            _id: updatedPassword._id,
+                        res.status(201).json({
+                            _id: user._id,
                             name: updatedPassword.name,
-                            email: updatedPassword.email,
-                            phone: updatedPassword.phone,
-                            isAdmin: updatedPassword.isAdmin,
-                            createdAt: updatedPassword.createdAt,
-                            token: generateToken(updatedPassword._id),
-                            address: user.address,
+                            dateOfBirth: user.dateOfBirth,
+                            email: user.email,
+                            phone: user.phone,
+                            isAdmin: user.isAdmin,
+                            createdAt: user.createdAt,
+                            token: generateToken(user._id),
                             city: user.city,
-                            country: user.country,
+                            distric: user.distric,
+                            ward: user.ward,
+                            address: user.address,
                             image: user.image,
                             disabled: user.disabled,
+                            address_shop: data,
                         });
                     } else {
                         res.status(404);
                         throw new Error('Old Password is not correct!');
                     }
                 } else {
-                    user.name = req.body.name || user.name;
-                    user.phone = req.body.phone || user.phone;
-                    user.address = req.body.address || user.address;
-                    user.city = req.body.city || user.city;
-                    user.country = req.body.country || user.country;
+                    user.name = name || user.name;
+                    user.dateOfBirth = dateOfBirth || user.dateOfBirth;
+                    user.phone = phone || user.phone;
+                    user.city = city || user.city;
+                    user.distric = distric || user.distric;
+                    user.ward = ward || user.ward;
+                    user.address = address || user.address;
 
                     const updatedUser = await user.save();
                     res.json({
                         _id: updatedUser._id,
                         name: updatedUser.name,
+                        dateOfBirth: updatedUser.dateOfBirth,
                         phone: updatedUser.phone,
-                        address: updatedUser.address,
                         city: updatedUser.city,
-                        country: updatedUser.country,
+                        distric: updatedUser.distric,
+                        ward: updatedUser.ward,
+                        address: updatedUser.address,
                         email: user.email,
                         isAdmin: updatedUser.isAdmin,
                         createdAt: updatedUser.createdAt,
                         token: generateToken(updatedUser._id),
                         image: user.image,
                         disabled: user.disabled,
+                        address_shop: data,
                     });
                 }
             } else {
@@ -285,7 +326,9 @@ userRouter.put(
     admin,
     asyncHandler(async (req, res) => {
         const { disabled } = req.body;
-        const user = await User.findById(req.params.id);
+        // const user = await User.findById(req.params.id);
+        // console.log('req.user = ', req?.user._id);
+        const user = req?.user;
         if (user.isAdmin) {
             res.status(400);
             throw new Error('error');

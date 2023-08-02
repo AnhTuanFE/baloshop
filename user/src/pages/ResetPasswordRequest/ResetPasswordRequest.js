@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import clsx from 'clsx';
 import { Link } from 'react-router-dom';
-import styles from './ResetPasswordRequest.module.css';
 import { ForgotPassWord } from '~/redux/Actions/userActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { usersRemainingSelector } from '~/redux/Selector/usersSelector';
@@ -42,23 +40,23 @@ export default function ResetPasswordRequest() {
         setLinkEmail(!linkEmail);
     };
     return (
-        <div className={clsx(styles.wrapper)}>
+        <div className="m-auto flex h-[460px] bg-[#e9ebee]">
             {contextHolder}
-            <div className={clsx(styles.wrap_global)}>
-                <div className={clsx(styles.wrap_child)}>
-                    <div className={clsx(styles.insert_space)}>
-                        <div className={clsx(styles.wrap_instruct)}>
-                            <h2 className={clsx(styles.title)}>Tìm lại mật khẩu của bạn</h2>
+            <div className="m-auto flex">
+                <div className="rounded-xl bg-[var(--white-color)]">
+                    <div className="mx-4 my-4">
+                        <div>
+                            <h2 className="mt-4">Tìm lại mật khẩu của bạn</h2>
                             <hr></hr>
-                            <ul className={clsx(styles.wrap_content)}>
-                                <li className={clsx(styles.content)}>
+                            <ul className="list-none text-left">
+                                <li>
                                     <span>1. </span>Nhập địa chỉ email của bạn vào bên dưới.
                                 </li>
-                                <li className={clsx(styles.content)}>
+                                <li>
                                     <span>2. </span>Hệ thống của chúng tôi sẽ gửi cho bạn một liên kết tạm thời qua
                                     email
                                 </li>
-                                <li className={clsx(styles.content)}>
+                                <li>
                                     <span>3. </span>Mở email và sử dụng liên kết để đặt lại mật khẩu của bạn
                                 </li>
                             </ul>
@@ -68,7 +66,7 @@ export default function ResetPasswordRequest() {
                                 <div>
                                     <h2>Nhập địa chỉ email của bạn</h2>
                                     <input
-                                        className={clsx(styles.input_email)}
+                                        className="my-4 w-4/5 rounded-md border border-solid border-[#ddd] p-3 text-center leading-[100%]"
                                         id="email-for-pass"
                                         type="email"
                                         placeholder="Email@gmail.com"
@@ -80,21 +78,21 @@ export default function ResetPasswordRequest() {
                                     />
                                 </div>
                             </div>
-                            <div className={clsx(styles.wrap_button)}>
+                            <div>
                                 <Button
-                                    className={clsx(styles.buton)}
                                     type="primary"
+                                    className="mr-4 bg-[var(--main-color)]"
                                     icon={<SmileOutlined />}
                                     onClick={handleSubmit}
                                     disabled={disabled}
                                 >
                                     Gửi
                                 </Button>
-                                <Button className={clsx(styles.buton)} type="primary">
+                                <Button type="primary" className="mr-4 bg-[var(--main-color)]">
                                     <Link to={'/'}>Trở lại trang chủ</Link>
                                 </Button>
                                 {linkEmail && (
-                                    <Button className={clsx(styles.buton)} type="primary">
+                                    <Button type="primary" className="mr-4 bg-[var(--main-color)]">
                                         <a href="https://accounts.google.com/">
                                             <i
                                                 class="fa fa-chevron-circle-right"

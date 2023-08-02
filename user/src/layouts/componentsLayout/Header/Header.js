@@ -1,25 +1,28 @@
-import { useEffect, useState, memo } from 'react';
+import { Box, IconButton, Typography, Avatar, TextField, MenuItem, Select, Autocomplete } from '@mui/material';
+import { AutoComplete as AutoCompleteAntD, Input } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
+import { Search, LocalMall } from '@mui/icons-material';
 import clsx from 'clsx';
+import styles from './Header.module.css';
+import { useEffect, useState, memo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import {} from '@fortawesome/free-brands-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import styles from './Header.module.scss';
 import NavBar from '~/components/HomeComponent/NavBar/Navbar';
-import ContactInformation from '../ContactInformation';
+import ContactInformation from '../ContactInformation/ContactInformation';
 
 import { logout, getUserDetails } from '~/redux/Actions/userActions'; //updateUserProfile,
-
 import { usersRemainingSelector } from '~/redux/Selector/usersSelector';
 import { cartsRemainingSelector } from '~/redux/Selector/cartsSelector';
 import { imageDefaul, logoDefaul } from '~/utils/data';
-const Header = (props) => {
+import { Badge, Space } from 'antd';
+
+export default function Header2(props) {
     const { keysearch } = props;
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [keyword, setKeyword] = useState('');
-    const navigate = useNavigate();
+    const [key, setKey] = useState([]);
 
     const { cart } = useSelector(cartsRemainingSelector);
     const { cartItems } = cart;
@@ -27,9 +30,6 @@ const Header = (props) => {
     const { userLogin, userDetails } = useSelector(usersRemainingSelector);
     const { userInfo } = userLogin;
     const { user } = userDetails;
-
-    const [checkScroll, setCheckScroll] = useState(false);
-    const [key, setKey] = useState([]);
 
     useEffect(() => {
         const getSearch = JSON.parse(localStorage.getItem('keySearch'));
@@ -62,7 +62,6 @@ const Header = (props) => {
             }
         }
     };
-
     useEffect(() => {
         dispatch(getUserDetails());
     }, [userInfo]);
@@ -77,11 +76,6 @@ const Header = (props) => {
         }
     }, [user]);
 
-    function avatarUser() {
-        const stringUser = userInfo.name;
-        const value = stringUser.slice(0, 1);
-        return value;
-    }
     // xư lý lấy 1 phần kí tự từ chuổi username khi trả dữ liệu ra màn hình
     function notiUser() {
         let returnUser;
@@ -94,145 +88,259 @@ const Header = (props) => {
         }
         return returnUser;
     }
+    const UINotLogin = () => {
+        return (
+            <Box
+                sx={{
+                    display: 'flex',
+                    paddingTop: '12px',
+                }}
+            >
+                <Typography
+                    align="center"
+                    sx={{
+                        fontSize: '18px',
+                        verticalAlign: 'center',
+                        fontWeight: 'bold',
+                        padding: '4px 0px',
+                        margin: 'auto',
+                    }}
+                >
+                    <Link to="/login">Đăng nhập</Link>
+                </Typography>
+                <Typography
+                    align="center"
+                    sx={{
+                        margin: '0px 8px',
+                        fontSize: '18px',
+                        verticalAlign: 'center',
+                        fontWeight: 'bold',
+                        padding: '4px 0px',
+                        margin: 'auto',
+                    }}
+                >
+                    <Link to="/register">Đăng ký</Link>
+                </Typography>
+            </Box>
+        );
+    };
+    const UILogined = () => {
+        return (
+            <Box
+                sx={{
+                    display: 'flex',
+                }}
+                className={clsx(styles.wrap_info_user)}
+            >
+                <Avatar
+                    id="simple-select"
+                    alt="Remy Sharp"
+                    src={`${
+                        userInfo?.image?.urlImageCloudinary === undefined
+                            ? imageDefaul
+                            : userInfo?.image?.urlImageCloudinary
+                    }`}
+                    sx={{ width: 48, height: 48 }}
+                    className={clsx(styles.avatar)}
+                />
+                <Box className={clsx(styles.dropdown_info_user)}>
+                    <Select
+                        disableUnderline
+                        id="simple-select"
+                        sx={{
+                            width: '200px',
+                            padding: '8px 0px',
+                            paddingTop: '4px',
+                        }}
+                        value={10}
+                        variant="standard"
+                    >
+                        <MenuItem
+                            value={10}
+                            sx={{
+                                display: 'none',
+                            }}
+                        >
+                            <span className={clsx(styles.name_user)}>{notiUser()}</span>
+                        </MenuItem>
+                        <MenuItem value={20}>
+                            <Link to="/profile">Tài khoản của tôi</Link>
+                        </MenuItem>
+                        <MenuItem value={30} onClick={logoutHandler}>
+                            <Link to="#">Đăng xuất</Link>
+                        </MenuItem>
+                    </Select>
+                </Box>
 
-    window.addEventListener('scroll', () => {
-        const x = Math.floor(window.pageYOffset);
-        if (x > 300) {
-            setCheckScroll(true);
-        } else {
-            setCheckScroll(false);
-        }
-    });
-
-    const handlerScroll = () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth',
-        });
+                <Link to="/cart">
+                    <Space size="middle" className="ml-1 mt-3">
+                        <Badge count={cartItems ? cartItems?.length : 0}>
+                            {/* <AvatarAntd shape="square" size="large" /> */}
+                            <LocalMall
+                                fontSize="medium"
+                                sx={{
+                                    color: 'black',
+                                }}
+                            />
+                        </Badge>
+                    </Space>
+                </Link>
+            </Box>
+        );
     };
 
-    return (
-        <>
-            <div>
-                <ContactInformation />
-                <div className={clsx(styles.header)}>
-                    <div className={clsx(styles.container)}>
-                        <div className={clsx(styles.pc_header)}>
-                            <div className="row">
-                                <div className="col-md-3 col-4 d-flex align-items-center">
-                                    <Link className={clsx(styles.navbar_brand)} to="/">
-                                        <img alt="logo" src={logoDefaul} />
-                                    </Link>
-                                </div>
-                                <div className="col-md-6 col-8 header-nav__search">
-                                    <form
-                                        onSubmit={submitHandler}
-                                        /* className="input-group__search"*/ className={clsx(styles.input_group)}
-                                    >
-                                        <input
-                                            type="search"
-                                            placeholder="Tìm kiếm"
-                                            value={keyword}
-                                            onChange={(e) => setKeyword(e.target.value)}
-                                            className="form-control rounded search button-search dropdown-toggle"
-                                            data-toggle="dropdown"
-                                            aria-haspopup="true"
-                                            // aria-expanded="false"
-                                        />
-                                        <button type="submit" className={clsx(styles.search_button)}>
-                                            <FontAwesomeIcon
-                                                icon={faMagnifyingGlass}
-                                                className={clsx(styles.submit_search)}
-                                            />
-                                        </button>
-                                        <div className="dropdown-menu input-group__search">{/* <Suggestions /> */}</div>
-                                    </form>
-                                    <NavBar />
-                                </div>
-                                <div className="col-md-3 d-flex align-items-center justify-content-end Login-Register">
-                                    {userInfo ? (
-                                        <div className="btn-group">
-                                            <button
-                                                type="button"
-                                                className="name-button dropdown-toggle name-button__user"
-                                                data-toggle="dropdown"
-                                                aria-haspopup="true"
-                                                aria-expanded="false"
-                                                style={{
-                                                    display: 'flex',
-                                                }}
-                                            >
-                                                <img
-                                                    src={`${
-                                                        userInfo?.image?.urlImageCloudinary === undefined
-                                                            ? imageDefaul
-                                                            : userInfo?.image?.urlImageCloudinary
-                                                    }`}
-                                                    alt=""
-                                                    style={{
-                                                        height: '45px',
-                                                        width: '45px',
-                                                        borderRadius: '100%',
-                                                        objectFit: 'cover',
-                                                        flexShrink: '0',
-                                                    }}
-                                                    className="fix-none"
-                                                />
-                                                <span className="name-button__p ps-1">{notiUser()}</span>
-                                            </button>
-                                            <div className="dropdown-menu">
-                                                <Link
-                                                    className="dropdown-item"
-                                                    style={{ textTransform: 'capitalize' }}
-                                                    to="/profile"
-                                                >
-                                                    Tài khoản của tôi
-                                                </Link>
-
-                                                <Link
-                                                    className="dropdown-item"
-                                                    to="#"
-                                                    style={{ textTransform: 'capitalize' }}
-                                                    onClick={logoutHandler}
-                                                >
-                                                    Đăng xuất
-                                                </Link>
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <>
-                                            <Link
-                                                to="/register"
-                                                style={{ textTransform: 'capitalize', fontWeight: '600' }}
-                                                className={clsx(styles.user_Button)}
-                                            >
-                                                Đăng kí
-                                            </Link>
-                                            <Link
-                                                to="/login"
-                                                style={{ textTransform: 'capitalize', fontWeight: '600' }}
-                                                className={clsx(styles.user_Button)}
-                                            >
-                                                Đăng nhập
-                                            </Link>
-                                        </>
-                                    )}
-
-                                    <Link to="/cart" className={clsx(styles.user_Button)}>
-                                        <i className="fas fa-shopping-bag"></i>
-                                        <span className={clsx(styles.badge)}>{cartItems ? cartItems?.length : 0}</span>
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className="back-to-top" onClick={handlerScroll} style={checkScroll ? {} : { display: 'none' }}>
-                <i class="fas fa-chevron-double-up"></i>
-            </div>
-        </>
+    // =================
+    const renderTitle = (title) => (
+        <span>
+            {title}
+            <a
+                style={{
+                    float: 'right',
+                }}
+                href="https://www.google.com/search?q=antd"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                more
+            </a>
+        </span>
     );
-};
+    const renderItem = (title, count) => ({
+        value: title,
+        label: (
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                }}
+            >
+                {title}
+                <span>
+                    <UserOutlined /> {count}
+                </span>
+            </div>
+        ),
+    });
 
-export default memo(Header);
+    const options = [
+        {
+            label: renderTitle('Libraries'),
+            options: [renderItem('AntDesign', 10000), renderItem('AntDesign UI', 10600)],
+        },
+        {
+            label: renderTitle('Solutions'),
+            options: [renderItem('AntDesign UI FAQ', 60100), renderItem('AntDesign FAQ', 30010)],
+        },
+        {
+            label: renderTitle('Articles'),
+            options: [renderItem('AntDesign design language', 100000)],
+        },
+    ];
+    // ============
+    return (
+        <Box className="">
+            <ContactInformation />
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    bgcolor: 'var(--content-color)',
+                    paddingTop: '20px',
+                }}
+            >
+                <Box
+                    sx={{
+                        flex: '1',
+                        marginLeft: '128px',
+                    }}
+                >
+                    <Link to={'/'}>
+                        <img alt="Logo" src={logoDefaul} style={{ width: '160px' }} />
+                    </Link>
+                </Box>
+                <Box
+                    sx={{
+                        flex: '3',
+                    }}
+                >
+                    <form onSubmit={submitHandler}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            <Autocomplete
+                                disablePortal
+                                id="combo-box-demo"
+                                options={key}
+                                className="w-[70%] rounded-md border-none outline-lime-950 focus:border-none"
+                                onChange={(e) => {
+                                    setKeyword(e.target.outerText);
+                                }}
+                                renderInput={(params) => (
+                                    <TextField
+                                        onChange={(e) => {
+                                            setKeyword(e.target.value);
+                                        }}
+                                        className="bg-[var(--white-color)]"
+                                        {...params}
+                                        label="Tìm kiếm"
+                                    />
+                                )}
+                            />
+                            {/* <AutoCompleteAntD
+                                popupClassName="certain-category-search-dropdown"
+                                dropdownMatchSelectWidth={500}
+                                options={key.map((item) => ({ value: item }))}
+                                onChange={(e) => {
+                                    setKeyword(e);
+                                }}
+                            >
+                                <Input
+                                    onChange={(e) => {
+                                        setKeyword(e.target.value);
+                                    }}
+                                    size="large"
+                                    placeholder="Tìm kiếm"
+                                />
+                            </AutoCompleteAntD> */}
+                            <IconButton
+                                aria-label="search"
+                                size="large"
+                                type="submit"
+                                className="hover:bg-[var(--main-color2)]"
+                                sx={{
+                                    bgcolor: 'var(--main-color)',
+                                    borderRadius: '4px 8px 8px 4px',
+                                    padding: '0px 10px',
+                                    height: '54px',
+                                }}
+                            >
+                                <Search
+                                    fontSize="large"
+                                    sx={{
+                                        color: 'var(--white-color)',
+                                    }}
+                                />
+                            </IconButton>
+                        </Box>
+                    </form>
+
+                    <div className="flex justify-center">
+                        <NavBar />
+                    </div>
+                </Box>
+
+                <Box
+                    sx={{
+                        flex: '1',
+                        marginRight: '40px',
+                    }}
+                >
+                    {userInfo ? <UILogined /> : <UINotLogin />}
+                </Box>
+            </Box>
+        </Box>
+    );
+}

@@ -2,11 +2,9 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import './product.css';
-import { toast } from 'react-toastify';
 
 // component child
 import Loading from '~/components/HomeComponent/LoadingError/Loading';
-import Toast from '~/components/HomeComponent/LoadingError/Toast';
 import Message from '~/components/HomeComponent/LoadingError/Error';
 import Rating from '~/components/HomeComponent/Rating/Rating';
 
@@ -20,15 +18,17 @@ import { CART_CREATE_RESET } from '~/redux/Constants/CartConstants';
 import { addToCart } from '~/redux/Actions/cartActions';
 
 import SimilarProducts from './DetailProductComponents/SimilarProducts/SimilarProducts';
-
-const Toastobjects = {
-    pauseOnFocusLoss: false,
-    draggable: false,
-    pauseOnHover: false,
-    autoClose: 2000,
-};
+import { notification } from 'antd';
 
 function DetailProduct() {
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (placement, notify, type) => {
+        api[type]({
+            message: `Thông báo `,
+            description: `${notify}`,
+            placement,
+        });
+    };
     const param = useParams();
     const productId = param.id;
     const navigate = useNavigate();
@@ -105,22 +105,25 @@ function DetailProduct() {
             navigate(`/cart/${productId}?qty=${qty}?color=${color}`);
         }
         if (errorAddCart) {
-            toast.error(errorAddCart, Toastobjects);
+            openNotification('top', 'Thêm sản phẩm vào giỏ hàng thất bại', 'error');
+
             dispatch({ type: CART_CREATE_RESET });
         }
     }, [dispatch, successAddCart, errorAddCart]);
 
     const AddToCartHandle = (e) => {
         e.preventDefault();
+        const id_product = product?.id_product || 151138769223;
         if (userInfo) {
-            dispatch(addToCart(productId, color, qty, userInfo._id));
+            dispatch(addToCart({ productId, color, id_product, qty, _id: userInfo._id }));
         } else navigate('/login');
     };
 
     const handleRender = () => {
         return (
             <>
-                <div className="row">
+                {contextHolder}
+                <div className="row mx-5">
                     <div className="col-md-12 product-avatar">
                         <div className="row">
                             <div className="col-md-5">
@@ -133,7 +136,6 @@ function DetailProduct() {
                                     <div className="product-info">
                                         <div className="product-name">{product.name}</div>
                                     </div>
-
                                     <div className="product-baner">
                                         <img
                                             style={{ width: '100%' }}
@@ -171,7 +173,7 @@ function DetailProduct() {
                                                         }}
                                                         class={
                                                             optionIndex === index
-                                                                ? 'btn btn-outline-primary mx-1 active'
+                                                                ? 'btn btn-outline-primary active mx-1'
                                                                 : 'btn btn-outline-primary mx-1'
                                                         }
                                                         style={{ marginTop: '8px' }}
@@ -201,7 +203,7 @@ function DetailProduct() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="product-description">
+                            <div className="product-description ">
                                 <h2 className="product-description__h2">Chi Tiết Sản Phẩm</h2>
                                 <div dangerouslySetInnerHTML={{ __html: product.description }}></div>
                             </div>
@@ -225,8 +227,7 @@ function DetailProduct() {
     }
     return (
         <>
-            <div className="container single-product">
-                <Toast />
+            <div className="single-product container">
                 {loadingAddCart && <Loading />}
                 {content}
             </div>

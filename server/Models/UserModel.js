@@ -20,18 +20,25 @@ const userSchema = mongoose.Schema(
             type: String,
             required: true,
         },
+        dateOfBirth: {
+            type: Date,
+            // required: true,
+        },
         isAdmin: {
             type: Boolean,
             required: true,
             default: false,
         },
-        address: {
-            type: String,
-        },
         city: {
             type: String,
         },
-        country: {
+        distric: {
+            type: String,
+        },
+        ward: {
+            type: String,
+        },
+        address: {
             type: String,
         },
         image: {

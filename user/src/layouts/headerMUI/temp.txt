@@ -1,0 +1,213 @@
+import { Box, Button } from '@mui/material';
+import axios from 'axios';
+import { Select } from 'flowbite-react';
+import { useEffect, useState, useLayoutEffect } from 'react';
+
+export default function Header2() {
+    const getPhiShip = async () => {
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            };
+            // const { data } = await axios.get(`/api/ghtk/get_fee_ship`, config);
+            const { data } = await axios.get(`/api/ghtk/cancel_order_by_id`, config);
+            console.log('data nhận được = ', data);
+        } catch (error) {
+            console.log('error = ', error);
+        }
+    };
+
+    const [state1, setState1] = useState(0);
+    const [state2, setState2] = useState(0);
+
+    const CongSo1 = () => {
+        setState1(state1 + 1);
+    };
+
+    const CongSo2 = () => {
+        if (state2 > 3) {
+            setState2(0);
+        } else {
+            setState2(state2 + 1);
+        }
+    };
+
+    useEffect(() => {
+        console.log('1. useEffect no dependencies ');
+    });
+
+    useEffect(() => {
+        console.log('2. useEffect have dependencies state1 ');
+        if (state1 >= 3) {
+            setState1(0);
+        }
+    }, [state1]);
+
+    useEffect(() => {
+        console.log('3. useEffect have dependencies state2 ');
+    }, [state2]);
+
+    useEffect(() => {
+        console.log('4. useEffect - did mount render - []');
+    }, []);
+    return (
+        <Box
+            sx={{
+                '& > :not(style)': {
+                    m: 5,
+                },
+            }}
+        >
+            {console.log('UI render')}
+            <div className="flex justify-between">
+                <div className="flex">
+                    <h1 className="mx-3">state1: {state1}</h1>
+                    <Button size="large" variant="contained" onClick={CongSo1}>
+                        Tăng State1
+                    </Button>
+                </div>
+                <div className="flex">
+                    <h1 className="mx-3">state2: {state2}</h1>
+                    <Button size="large" variant="contained" onClick={CongSo2}>
+                        Tăng State2
+                    </Button>
+                </div>
+            </div>
+            <h1 className="w-full bg-orange-300 text-center">Tổng = {state1 + state2}</h1>
+        </Box>
+    );
+}
+
+
+
+===================================================================
+
+
+///////////////////////////////////////
+import React, { useState } from 'react';
+import { Document, Page } from 'react-pdf';
+
+function Header2() {
+    const [pdf, setPdf] = useState(null);
+    const [numPages, setNumPages] = useState(null);
+
+    function handlePdfChange(e) {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+            setPdf(event.target.result);
+        };
+
+        reader.readAsDataURL(file);
+    }
+
+    function onDocumentLoadSuccess({ numPages }) {
+        setNumPages(numPages);
+    }
+
+    console.log('pdf = ', pdf);
+    return (
+        <div>
+            <input type="file" accept=".pdf" onChange={handlePdfChange} />
+            {pdf && (
+                <Document file={pdf} onLoadSuccess={onDocumentLoadSuccess}>
+                    {Array.from(new Array(numPages), (el, index) => (
+                        <Page key={`page_${index + 1}`} pageNumber={index + 1} />
+                    ))}
+                </Document>
+            )}
+        </div>
+    );
+}
+
+export default Header2;
+
+================================================================
+import { Box, Button } from '@mui/material';
+import axios from 'axios';
+import { useEffect, useLayoutEffect, useState, useRef } from 'react';
+import { Document, Page, pdfjs } from 'react-pdf';
+import pdfjsLib from 'pdfjs-dist';
+import pdfFile from './sample.pdf';
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
+
+export default function Header2() {
+    // hủy đơn hàng
+    const checkDataAPI = async () => {
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            };
+            // const { data } = await axios.get(`/api/ghtk/get_fee_ship`, config);
+            const { data } = await axios.get(`/api/ghtk/cancel_order_by_id`, config);
+            console.log('data nhận được = ', data);
+        } catch (error) {
+            console.log('error = ', error);
+        }
+    };
+    // lấy thông tin đơn hàng
+    const checkDataAPI1 = async () => {
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            };
+            const { data } = await axios.get(`/api/ghtk/get_order_by_id`, config);
+            console.log('data nhận được = ', data);
+        } catch (error) {
+            console.log('error = ', error);
+        }
+    };
+    // ====================================================
+    const [numPages1, setNumPages1] = useState(1);
+    const [pdfDocument, setPdfDocument] = useState(null);
+    async function loadPDF() {
+        const loadingTask = pdfjsLib.getDocument(pdfFile);
+        const pdf = await loadingTask.promise;
+        console.log('pdf = ', pdf);
+        setPdfDocument(pdf);
+        setNumPages1(pdf.numPages);
+    }
+    // =========================================
+    const [numPages, setNumPages] = useState(null);
+    const [pageNumber, setPageNumber] = useState(1);
+
+    function onDocumentLoadSuccess({ numPages }) {
+        setNumPages(numPages);
+        setPageNumber(1);
+    }
+
+    function changePage(offSet) {
+        setPageNumber((prevPageNumber) => prevPageNumber + offSet);
+    }
+
+    function changePageBack() {
+        changePage(-1);
+    }
+
+    function changePageNext() {
+        changePage(+1);
+    }
+    return (
+        <div>
+            <h1>hello</h1>
+            <button onClick={loadPDF}>click</button>
+            {pdfDocument && (
+                <div>
+                    <Document file={pdfDocument} onLoadSuccess={onDocumentLoadSuccess}>
+                        <Page pageNumber={pageNumber} />
+                    </Document>
+                    <p>
+                        Page {pageNumber} of {numPages}
+                    </p>
+                </div>
+            )}
+        </div>
+    );
+}

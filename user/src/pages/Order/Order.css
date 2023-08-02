@@ -1,4 +1,4 @@
-.order-detail p {
+/* .order-detail p {
     margin-top: 2px;
     font-size: 14px;
 }
@@ -54,7 +54,17 @@
     border: 0px;
     text-transform: uppercase;
     font-size: 13px;
-    background-color: #00483d;
+    background-color: var(--main-color);
     color: #ffffff;
     margin: 0 10px;
 }
+.btn_return {
+    margin-top: 5px;
+    text-transform: capitalize;
+    border-radius: 4px;
+    font-size: 17px;
+    cursor: pointer;
+}
+.box_mui {
+    background-color: aqua;
+} */

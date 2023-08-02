@@ -1,124 +1,99 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import moment from 'moment';
-
-import ProfileTabs from '~/components/profileComponents/ProfileTabs';
-import { imageDefaul } from '~/utils/data';
+import { Box, Typography } from '@mui/material';
+import clsx from 'clsx';
+import { useSelector } from 'react-redux';
+import Detail_infor_account from './profileComponent/detail_infor_account/Detail_infor_account';
+import Change_password from './profileComponent/change_password/Change_password';
+import Crop_image_avatar from './profileComponent/crop_image_avatar/Crop_image_avatar';
+import SideBar_Profile from './profileComponent/sideBar_profile/SideBar_Profile';
+import { Tabs, Spin, notification } from 'antd';
+import styles from './Profile.module.css';
 import './Profile.css';
+import Loading from '~/components/HomeComponent/LoadingError/Loading';
+import Message from '~/components/HomeComponent/LoadingError/Error';
+import { useEffect } from 'react';
+const { TabPane } = Tabs;
+export default function Profile() {
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (placement, notify, type) => {
+        api[type]({
+            message: `Thông báo `,
+            description: `${notify}`,
+            placement,
+        });
+    };
 
-function Profile() {
-    const dispatch = useDispatch();
-    const userUpdate = useSelector((state) => state.userUpdateProfile);
-    const { success: successUpdate } = userUpdate;
+    const userDetails = useSelector((state) => state.userDetails);
+    const { loading, error, user, success } = userDetails;
+
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
-    const [buleanProfile, setBuleanProfile] = useState(true);
 
+    const items = [
+        {
+            label: <span className={clsx(styles.head_swipe_view_label)}>Thông tin</span>,
+            key: '1',
+            children: <Detail_infor_account user={user} />,
+        },
+        {
+            label: <span className={clsx(styles.head_swipe_view_label)}>Đổi mật khẩu</span>,
+            key: '2',
+            children: <Change_password user={user} />,
+        },
+    ];
+    // openNotification('top', 'Cập nhập thông tin thành công', 'success');
     return (
-        <>
-            <div className="container mt-lg-5 mt-3">
-                <div className="row align-items-start">
-                    <div className="col-lg-4 p-0 ">
-                        <div className="author-card pb-0">
-                            <div
-                                className="row fix-culum"
-                                style={{
-                                    display: 'flex',
+        <div className="mx-auto my-auto max-w-screen-2xl">
+            {contextHolder}
+            {loading ? (
+                <Loading />
+            ) : error ? (
+                <Message variant="alert-danger">{error}</Message>
+            ) : (
+                <div>
+                    <Box
+                        sx={{
+                            '& > :not(style)': {
+                                m: 5,
+                            },
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                display: 'flex',
+                            }}
+                        >
+                            <SideBar_Profile userInfo={userInfo} />
+                            <Box
+                                sx={{
+                                    flex: '2',
                                     alignItems: 'center',
                                 }}
                             >
-                                <div
-                                    className="col-md-4"
-                                    style={{
-                                        marginTop: '12px',
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignItems: 'center',
-                                    }}
-                                >
-                                    <img
-                                        src={
-                                            userInfo?.image?.urlImageCloudinary !== undefined
-                                                ? userInfo?.image?.urlImageCloudinary
-                                                : imageDefaul
-                                        }
-                                        alt=""
-                                        style={{
-                                            height: '100px',
-                                            width: '100px',
-                                            borderRadius: '100%',
-                                            objectFit: 'cover',
-                                            flexShrink: '0',
-                                            marginBottom: '5px',
-                                        }}
-                                        className="fix-none"
-                                    />
-                                    {/* Nút button Avatar */}
+                                <div className="ml-12 mr-12">
+                                    <Tabs defaultActiveKey="1" items={items} className={clsx(styles.head_swipe)}>
+                                        {items.map((item) => (
+                                            <TabPane
+                                                tab={item.label}
+                                                key={item.key}
+                                                className={clsx(styles.head_swipe_view)}
+                                            >
+                                                {item.children}
+                                            </TabPane>
+                                        ))}
+                                    </Tabs>
                                 </div>
-                                <div className="col-md-8">
-                                    <h5 className="author-card-name mb-2">
-                                        <strong>{userInfo.name}</strong>
-                                    </h5>
-                                    <span className="author-card-position">
-                                        <>Ngày tham gia: {moment(userInfo.createdAt).format('DD/MM/YYYY')}</>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="wizard pt-3 fix-top" style={{ marginTop: '10px' }}>
-                            <div class="d-flex align-items-start">
-                                <div
-                                    class="nav align-items-start flex-column col-12 nav-pills me-3 "
-                                    id="v-pills-tab"
-                                    role="tablist"
-                                    aria-orientation="vertical"
-                                >
-                                    <button
-                                        class={buleanProfile ? 'nav-link active color-red' : 'nav-link'}
-                                        id="v-pills-home-tab"
-                                        data-bs-toggle="pill"
-                                        data-bs-target="#v-pills-home"
-                                        type="button"
-                                        role="tab"
-                                        aria-controls="v-pills-home"
-                                        aria-selected="true"
-                                        style={{ display: 'flex', alignItems: 'center', fontWeight: '600' }}
-                                    >
-                                        <div style={{ fontSize: '18px', paddingRight: '10px' }}>
-                                            <i class="fas fa-cogs"></i>
-                                        </div>
-                                        Hồ Sơ Cá Nhân
-                                    </button>
-                                    <button
-                                        className="nav-link d-flex"
-                                        style={{ display: 'flex', alignItems: 'center', fontWeight: '600' }}
-                                    >
-                                        <div style={{ fontSize: '18px', paddingRight: '10px' }}>
-                                            <i class="fas fa-shopping-cart"></i>
-                                        </div>
-                                        <Link to="/purchasehistory">Danh Sách Mua Hàng</Link>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* panels */}
-                    <div class="tab-content col-lg-8 pb-5 pt-lg-0 pt-3" id="v-pills-tabContent">
-                        <div
-                            class="tab-pane fade show active"
-                            id="v-pills-home"
-                            role="tabpanel"
-                            aria-labelledby="v-pills-home-tab"
-                        >
-                            <ProfileTabs />
-                        </div>
-                    </div>
+                            </Box>
+                            <Box
+                                sx={{
+                                    flex: '1',
+                                }}
+                            >
+                                <Crop_image_avatar user={user} />
+                            </Box>
+                        </Box>
+                    </Box>
                 </div>
-            </div>
-        </>
+            )}
+        </div>
     );
 }
-
-export default Profile;
