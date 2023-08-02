@@ -13,7 +13,6 @@ const HomeScreen = () => {
     const dispatch = useDispatch();
 
     const orderListComplete = useSelector((state) => state.orderListComplete);
-    // const { orders: AllOrders } = orderListComplete;
     const { orders } = orderListComplete;
 
     const productList = useSelector((state) => state.productList);
@@ -27,7 +26,7 @@ const HomeScreen = () => {
         dispatch(listOrders());
         dispatch(listUser());
         dispatch(getOrderCompleteAll());
-    }, [dispatch]);
+    }, []);
 
     return (
         <>
