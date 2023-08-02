@@ -73,10 +73,10 @@ function SimilarProducts(data) {
                         {products?.map((product, index) => {
                             return (
                                 <div key={index} className="corousel-div" style={{ maxHeight: '300px' }}>
-                                    <Link to={`/products/${product._id}`} className="corousel-link">
+                                    <Link to={`/product/${product._id}`} className="corousel-link">
                                         <img
                                             // src={`/productImage/${product?.image[0]?.image}`}
-                                            src={`${product?.image[0]}`}
+                                            src={`${product?.image[0].urlImage}`}
                                             className="corousel-img"
                                             alt=""
                                         ></img>

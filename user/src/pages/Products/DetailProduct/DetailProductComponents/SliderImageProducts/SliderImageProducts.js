@@ -5,8 +5,7 @@ function SliderImageProducts({ images }) {
     const [imageOne, setImageOne] = useState();
     useEffect(() => {
         if (images) {
-            // setImageOne(images[0]?.image);
-            setImageOne(images[0]);
+            setImageOne(images[0].urlImage);
         }
     }, [images]);
     return (
@@ -25,7 +24,12 @@ function SliderImageProducts({ images }) {
                         <>
                             {product.id !== images[0].id && (
                                 <div key={product?.key} class={`carousel-item`}>
-                                    <img class="d-block w-100" src={`/productImage/${product?.image}`} alt=""></img>
+                                    <img
+                                        class="d-block w-100"
+                                        // src={`/productImage/${product?.image}`}
+                                        src={`${product?.image}`}
+                                        alt=""
+                                    ></img>
                                 </div>
                             )}
                         </>
@@ -34,11 +38,9 @@ function SliderImageProducts({ images }) {
             </div>
             <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
                 <span class="carousel-control-prev-icon css-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
             </a>
             <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
                 <span class="carousel-control-next-icon css-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
             </a>
         </div>
     );

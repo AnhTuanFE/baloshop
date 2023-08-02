@@ -4,6 +4,7 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import Message from '~/components/HomeComponent/LoadingError/Error';
 import Loading from '~/components/HomeComponent/LoadingError/Loading';
+import { imageDefaul } from '~/utils/data';
 //
 import { PRODUCT_CREATE_COMMENTCHILD_RESET, PRODUCT_CREATE_COMMENT_RESET } from '~/redux/Constants/ProductConstants';
 import { createProductComment, createProductCommentChild, getAllComments } from '~/redux/Actions/ProductActions';
@@ -85,7 +86,7 @@ function AskAndAnswer({ productId }) {
 
         return (
             <img
-                src={`/userProfile/${findUser?.image}` || '/images/logo2.png'} // upload ảnh
+                src={`${findUser?.image.urlImageCloudinary}` || imageDefaul} // upload ảnh
                 alt=""
                 style={{
                     height: '40px',
@@ -109,7 +110,7 @@ function AskAndAnswer({ productId }) {
                 }}
             >
                 <h2 className="noti-view">Hỏi và đáp</h2>
-                <form onSubmit={submitComment} style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <form onSubmit={submitComment} className="flex justify-between">
                     <textarea
                         value={question}
                         className="question-product"
@@ -126,14 +127,17 @@ function AskAndAnswer({ productId }) {
                             Gửi
                         </button>
                     ) : (
-                        <div className="my-3 flex-padding">
-                            <Message variant={'alert-warning'}>
-                                <Link to="/login">
-                                    <strong data-bs-dismiss="modal" style={{ fontSize: '13px', padding: '0px 2px' }}>
-                                        Đăng nhập
-                                    </strong>
-                                </Link>
-                            </Message>
+                        <div className="mb-3  mt-5">
+                            {/* <Message variant={'alert-warning'}> */}
+                            <Link to="/login">
+                                <strong
+                                    data-bs-dismiss="modal"
+                                    className="mr-5 w-full rounded bg-[var(--main-color)] px-4 py-3 text-sm text-white"
+                                >
+                                    Đăng nhập
+                                </strong>
+                            </Link>
+                            {/* </Message> */}
                         </div>
                     )}
                 </form>
@@ -142,7 +146,7 @@ function AskAndAnswer({ productId }) {
                         {loadingCreateComment && <Loading />}
                         {errorCreateCommentChild && <Message variant="alert-danger">{errorCreateCommentChild}</Message>}
                         {comments?.map((review) => (
-                            <div key={review._id} className="mb-2 mb-md-2 p-3 rounded-5 backgroud">
+                            <div key={review._id} className="mb-md-2 rounded-5 backgroud mb-2 p-3">
                                 <div
                                     style={{
                                         display: 'flex',
@@ -152,7 +156,7 @@ function AskAndAnswer({ productId }) {
                                 >
                                     <div className="rating-review__flex">
                                         <img
-                                            src={`/userProfile/${review?.user?.image}` || '/images/logo.png'}
+                                            src={`${review?.user?.image?.urlImageCloudinary}` || imageDefaul}
                                             alt=""
                                             style={{
                                                 height: '40px',
@@ -179,7 +183,7 @@ function AskAndAnswer({ productId }) {
                                     </div>
                                 </div>
                                 <div
-                                    className="alert mt-3 product-review"
+                                    className="alert product-review mt-3"
                                     style={{ display: 'flex', flexDirection: 'column' }}
                                 >
                                     <span>{review.question}</span>
@@ -198,7 +202,7 @@ function AskAndAnswer({ productId }) {
                                     {review.commentChilds?.map((child) => (
                                         <div
                                             key={child._id}
-                                            className="mb-2 mb-md-2 p-3 rounded-5 backgroud marginbottom"
+                                            className="mb-md-2 rounded-5 backgroud marginbottom mb-2 p-3"
                                         >
                                             <div
                                                 style={{
@@ -225,7 +229,7 @@ function AskAndAnswer({ productId }) {
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div className="alert mt-3 product-review">
+                                            <div className="alert product-review mt-3">
                                                 <span>{child.questionChild}</span>
                                             </div>
                                         </div>
@@ -250,7 +254,7 @@ function AskAndAnswer({ productId }) {
                                                 Gửi
                                             </button>
                                         ) : (
-                                            <div className="my-3 flex-padding">
+                                            <div className="flex-padding my-3">
                                                 <Message variant={'alert-warning'}>
                                                     <Link to="/login">
                                                         <strong

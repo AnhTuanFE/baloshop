@@ -33,7 +33,7 @@ const OrderDetailProducts = (props) => {
                             <Link className="itemside" to="#">
                                 <div className="left">
                                     <img
-                                        src={`/productImage/${item?.image}`}
+                                        src={`${item?.image}`}
                                         alt={item.name}
                                         style={{ width: '40px', height: '40px' }}
                                         className="img-xs"

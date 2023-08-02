@@ -38,7 +38,7 @@ const commentSchema = mongoose.Schema(
     {
         name: { type: String, required: true },
         nameProduct: { type: String, required: true },
-        imageProduct: { type: String, required: true },
+        imageProduct: { type: String },
         idProduct: { type: String, required: true },
         question: { type: String, required: true },
         commentChilds: [commentChildsSchema],
@@ -56,6 +56,7 @@ const commentSchema = mongoose.Schema(
 const optionColorSchema = mongoose.Schema(
     {
         color: { type: String, required: true },
+        weight: { type: Number, required: true, default: 1 },
         countInStock: { type: Number, required: true, default: 0 },
     },
     {
@@ -68,6 +69,10 @@ const productSchema = mongoose.Schema(
         name: {
             type: String,
             required: true,
+        },
+        id_product: {
+            type: Number,
+            // required: true,
         },
         image: {
             type: Array,

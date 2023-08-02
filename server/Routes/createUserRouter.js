@@ -25,8 +25,8 @@ createUserRouter.post(
             expiresIn: '2m',
         });
         if (token) {
-            // const link = `${baseURL.url}/api/verifiedEmail/verified/${token}`;
-            const link = `http://localhost:9000/api/verifiedEmail/verified/${token}`;
+            const link = `${baseURL.url}/api/verifiedEmail/verified/${token}`;
+            // const link = `http://localhost:9000/api/verifiedEmail/verified/${token}`;
             var transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {

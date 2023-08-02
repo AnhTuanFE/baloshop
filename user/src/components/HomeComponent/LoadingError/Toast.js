@@ -1,11 +1,19 @@
 import React from 'react';
-import { ToastContainer } from 'react-toastify';
+import { notification } from 'antd';
 
-const Toast = () => {
+const Toast = ({ childrent }) => {
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (placement, notify, type) => {
+        api[type]({
+            message: `Thông báo `,
+            description: `${notify}`,
+            placement,
+        });
+    };
     return (
         <div>
-            <ToastContainer position="top-right" hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} />
-            <ToastContainer />
+            {contextHolder}
+            {childrent}
         </div>
     );
 };

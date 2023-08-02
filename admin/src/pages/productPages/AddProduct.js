@@ -27,15 +27,24 @@ const ToastObjects = {
 };
 
 const AddProduct = () => {
-    let uuId = uuidv4();
+    // let uuId = uuidv4();
 
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     const [category, setCategory] = useState('');
 
-    const [image, setImage] = useState('');
+    // const [image, setImage] = useState('');
+    const [image, setImage] = useState();
+    const [imgUrl, setImgUrl] = useState('');
 
-    const [arrImage, setArrImage] = useState([]);
+    useEffect(() => {
+        if (image) {
+            URL.revokeObjectURL(image);
+            let url = URL.createObjectURL(image);
+            setImgUrl(url);
+        }
+    }, [image]);
+    // const [arrImage, setArrImage] = useState([]);
     const [countInStock, setCountInStock] = useState('');
     const [description, setDescription] = useState('');
     const [color, setColor] = useState('');
@@ -94,10 +103,10 @@ const AddProduct = () => {
                 msg.borderRed3 = 'border-red';
             }
         }
-        if (isEmpty(image)) {
-            msg.image = 'Vui lòng nhập hình ảnh sản phẩm';
-            msg.borderRed4 = 'border-red';
-        }
+        // if (isEmpty(image)) {
+        //     msg.image = 'Vui lòng nhập hình ảnh sản phẩm';
+        //     msg.borderRed4 = 'border-red';
+        // }
         if (isEmpty(description)) {
             msg.description = 'Vui lòng nhập mô tả sản phẩm';
             msg.borderRed6 = 'border-red';
@@ -112,7 +121,16 @@ const AddProduct = () => {
         const isEmptyValidate = isEmptyCheckEdit();
         if (!isEmptyValidate) return;
         if (category !== -1) {
-            dispatch(createProduct(name, price, description, category, image, countInStock));
+            let formData = new FormData();
+            formData.append('name', name);
+            formData.append('price', price);
+            formData.append('description', description);
+            formData.append('category', category);
+            formData.append('countInStock', countInStock);
+            formData.append('image', image);
+
+            dispatch(createProduct(formData));
+            // dispatch(createProduct(name, price, description, category, image, countInStock));
             setDisabledProduct(false);
             setDisabledOptionColor(true);
         }
@@ -301,7 +319,7 @@ const AddProduct = () => {
                                                             >
                                                                 <img
                                                                     className="img_css col-10 col-sm-10 col-md-10 col-lg-10"
-                                                                    src={image}
+                                                                    src={imgUrl}
                                                                     alt="product img"
                                                                 ></img>
                                                             </div>
@@ -310,8 +328,11 @@ const AddProduct = () => {
                                                 </div>
                                                 <div style={{ display: 'flex' }}>
                                                     <input
-                                                        type="text"
-                                                        onChange={(e) => setImage(e.target.value)}
+                                                        type="file"
+                                                        // onChange={(e) => setImage(e.target.value)}
+                                                        onChange={(e) => {
+                                                            setImage(e.target.files[0]);
+                                                        }}
                                                         className="form-control"
                                                     ></input>
                                                 </div>

@@ -20,8 +20,7 @@ const Product = (props) => {
                     <td style={{ width: '10%' }}>{index + 1}</td>
                     <td style={{ width: '20%' }}>
                         <img
-                            // src={`/productImage/${product?.image[0]?.image}`}
-                            src={`${product?.image[0]}`}
+                            src={`${product?.image[0].urlImage}`}
                             alt="Product"
                             style={{ height: '40px', width: '40px' }}
                         />

@@ -10,7 +10,7 @@ import Loading from '../LoadingError/Loading';
 import Message from '../LoadingError/Error';
 import { listCart } from '~/redux/Actions/cartActions';
 import { productsRemainingSelector } from '~/redux/Selector/productsSelector';
-
+import { Divider, Chip } from '@mui/material';
 import styles from './AllProductsFilter.module.scss';
 
 const AllProducts_Filter = (props) => {
@@ -58,13 +58,21 @@ const AllProducts_Filter = (props) => {
             navigate(`/category/${category}/sortProducts/${sortProducts}/rating/${value}/page/${'1'}`);
         }
     };
+
     return (
         <>
-            <div className="container mt-2">
-                <h2 className="section-title container mt-5">
-                    <b></b>
-                    <span className="section-title-main">Tất Cả Sản Phẩm</span>
-                    <b></b>
+            <div className="mx-auto my-auto max-w-screen-2xl pt-10">
+                <h2 className="pb-10 text-center">
+                    <Divider>
+                        <Chip
+                            className="font-semibold"
+                            sx={{
+                                fontSize: '24px',
+                                bgcolor: '#ffff',
+                            }}
+                            label="Tất Cả Sản Phẩm"
+                        />
+                    </Divider>
                 </h2>
                 <div className=" pt-0">
                     <div className={clsx(styles.wrapFilter)}>
@@ -72,9 +80,6 @@ const AllProducts_Filter = (props) => {
                             <select
                                 className="form-select"
                                 value={sortProducts === undefined ? '1' : sortProducts}
-                                // onChange={(e) => {
-                                //     setSortProducts(e.target.value);
-                                // }}
                                 onChange={(e) => {
                                     handlerSort(e.target.value);
                                 }}
@@ -94,9 +99,6 @@ const AllProducts_Filter = (props) => {
                             <select
                                 className="form-select"
                                 value={rating === undefined ? '0' : rating}
-                                // onChange={(e) => {
-                                //     setRating(e.target.value);
-                                // }}
                                 onChange={(e) => {
                                     handlerRating(e.target.value);
                                 }}
@@ -151,7 +153,7 @@ const AllProducts_Filter = (props) => {
                                                             <div className={clsx(styles.shopBack)}>
                                                                 <img
                                                                     // src={`/productImage/${product?.image[0]?.image}`}
-                                                                    src={`${product?.image[0]}`}
+                                                                    src={`${product?.image[0].urlImage}`}
                                                                     alt={product?.name}
                                                                 />
                                                             </div>

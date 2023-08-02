@@ -1,7 +1,6 @@
 import * as types from '../Constants/UserContants';
 import axios from 'axios';
 import { ORDER_LIST_MY_RESET } from '../Constants/OrderConstants';
-// import { addToCart, listCart } from './cartActions';
 import { CART_LIST_MY_RESET } from '../Constants/CartConstants';
 
 // LOGIN
@@ -60,7 +59,7 @@ export const register = (name, email, phone, password) => async (dispatch) => {
 };
 
 // USER DETAILS
-export const getUserDetails = (id) => async (dispatch, getState) => {
+export const getUserDetails = () => async (dispatch, getState) => {
     try {
         dispatch({ type: types.USER_DETAILS_REQUEST });
         const {
@@ -98,7 +97,6 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
 
         const config = {
             headers: {
-                'Content-Type': 'application/json',
                 Authorization: `Bearer ${userInfo.token}`,
             },
         };
@@ -107,6 +105,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
         dispatch({ type: types.USER_UPDATE_PROFILE_SUCCESS, payload: data });
         dispatch({ type: types.USER_LOGIN_SUCCESS, payload: data });
 
+        // localStorage.removeItem('userInfo');
         localStorage.setItem('userInfo', JSON.stringify(data));
     } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;
@@ -199,9 +198,9 @@ export const createUser =
     };
 
 // PROVINCE
-export const ListProvince = () => async (dispatch) => {
+export const getListProvincesAction = () => async (dispatch) => {
     try {
-        // dispatch({ type: PROVINCE_REQUEST })
+        dispatch({ type: types.PROVINCE_REQUEST });
         const { data } = await axios.get(`https://provinces.open-api.vn/api/?depth=3`);
         dispatch({ type: types.PROVINCE_SUCCESS, payload: data });
     } catch (error) {
@@ -221,6 +220,66 @@ export const ListAvatar = () => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: types.AVATAR_FAIL,
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+        });
+    }
+};
+
+export const ForgotPassWord = (email) => async (dispatch) => {
+    try {
+        dispatch({ type: types.FORGOT_PASS_WORD_REQUEST });
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                'Access-Control-Allow-Origin': '*',
+            },
+        };
+        const { data } = await axios.post(`/api/forgotPass/forgotPassword`, email, config);
+        dispatch({ type: types.FORGOT_PASS_WORD_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({
+            type: types.FORGOT_PASS_WORD_FAIL,
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+        });
+    }
+};
+
+export const VerifyResetPassWordAction = (verifyData) => async (dispatch) => {
+    try {
+        dispatch({ type: types.VERIFY_RESET_PASS_WORD_REQUEST });
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                'Access-Control-Allow-Origin': '*',
+            },
+        };
+        const { data } = await axios.post(`/api/forgotPass/verify-reset-password`, verifyData, config);
+        dispatch({ type: types.VERIFY_RESET_PASS_WORD_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({
+            type: types.VERIFY_RESET_PASS_WORD_FAIL,
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+        });
+    }
+};
+
+export const ResetPassWordAction = (newPassword) => async (dispatch) => {
+    try {
+        dispatch({ type: types.RESET_PASS_WORD_REQUEST });
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                'Access-Control-Allow-Origin': '*',
+            },
+        };
+        const { data } = await axios.post(`/api/forgotPass/reset-password`, newPassword, config);
+        dispatch({ type: types.RESET_PASS_WORD_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({
+            type: types.RESET_PASS_WORD_FAIL,
             payload: error.response && error.response.data.message ? error.response.data.message : error.message,
         });
     }

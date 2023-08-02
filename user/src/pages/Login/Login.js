@@ -1,20 +1,34 @@
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import isEmpty from 'validator/lib/isEmpty';
 import Message from '~/components/HomeComponent/LoadingError/Error';
 import Loading from '~/components/HomeComponent/LoadingError/Loading';
-import { login, getUserDetails } from '~/redux/Actions/userActions';
-import './Login.css';
-//{ location, navigate }
+import { useForm, Controller } from 'react-hook-form';
+import { login } from '~/redux/Actions/userActions';
+
+const renderError = (errors) => {
+    const message = errors.find((error) => error?.error)?.message;
+    if (message)
+        return (
+            <div className="min-h-[28px]">
+                <span className="mt-1 text-[red]">{message}</span>
+            </div>
+        );
+    return <div className="min-h-[28px]"></div>;
+};
+
 const Login = () => {
     let location = useLocation();
     let navigate = useNavigate();
-    // window.scrollTo(0, 0);//bỏ
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [loginCheck, setLoginCheck] = useState('');
+
+    const {
+        register,
+        watch,
+        control,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
 
     const dispatch = useDispatch();
     const redirect = location.search ? location.search.split('=')[1] : '/';
@@ -27,100 +41,97 @@ const Login = () => {
         }
     }, [userInfo, navigate, redirect]);
 
-    const funtionCheck = () => {
-        const msg = {};
-        let re = /\S+@\S+\.\S+/;
-        if (isEmpty(email)) {
-            msg.email = 'Vui lòng nhập email của bạn';
-            msg.borderRed1 = 'border-red';
-            msg.colorRed1 = 'color-red';
-        } else {
-            if (!re.test(email)) {
-                msg.email = 'Email không hợp lệ';
-                msg.borderRed1 = 'border-red';
-                msg.colorRed1 = 'color-red';
-            }
-        }
-        if (isEmpty(password)) {
-            msg.password = 'Vui lòng nhập mật khẩu';
-            msg.borderRed2 = 'border-red';
-            msg.colorRed2 = 'color-red';
-        } else {
-            if (password.length < 6) {
-                msg.password = 'Mật khẩu phải có it nhất 6 ký tự';
-                msg.borderRed2 = 'border-red';
-                msg.colorRed2 = 'color-red';
-            }
-        }
-        setLoginCheck(msg);
-        if (Object.keys(msg).length > 0) return false;
-        return true;
-    };
-
-    const submitHandler = (e) => {
-        e.preventDefault();
-        const isEmptyLogin = funtionCheck();
-        if (!isEmptyLogin) return;
+    const submitHandler = (data) => {
+        const { email, password } = data;
         dispatch(login(email, password));
     };
 
     return (
         <>
-            <div className="container d-flex flex-column justify-content-center align-items-center login-center">
-                {error && <Message variant="alert-danger">{error}</Message>}
-                {loading && <Loading />}
-                <form className="Login col-md-6 col-lg-4 col-10" onSubmit={submitHandler}>
-                    <div className="Login-from from-login">
-                        <input
-                            type="text"
-                            className={loginCheck.borderRed1}
-                            value={email}
-                            onClick={() => {
-                                setLoginCheck((object) => {
-                                    const x = { ...object };
-                                    x.borderRed1 = ' ';
-                                    x.colorRed1 = ' ';
-                                    x.email = ' ';
-                                    return x;
-                                });
+            <div className="m-8 flex items-center justify-center p-10 text-center ">
+                <form className=" w-1/3 px-10 py-14 shadow-custom-shadow" onSubmit={handleSubmit(submitHandler)}>
+                    {error && <Message variant="alert-danger">{error}</Message>}
+                    {loading && <Loading />}
+                    <div className="  ">
+                        <Controller
+                            name="email"
+                            control={control}
+                            defaultValue=""
+                            rules={{
+                                required: 'Bạn chưa nhập email',
                             }}
-                            onChange={(e) => setEmail(e.target.value)}
+                            render={({ field, fieldState }) => (
+                                <Fragment>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        className=" block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 py-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                                        placeholder="Email"
+                                        {...field}
+                                    />
+                                    {renderError([
+                                        {
+                                            error: fieldState?.error?.type === 'required',
+                                            message: 'Bạn chưa nhập email',
+                                        },
+                                    ])}
+                                </Fragment>
+                            )}
                         />
-                        <p className="from-login__email-pass noti-validate">{loginCheck.email}</p>
-                        <p className={`from-login__email-pass-color Login-from__email ${loginCheck.colorRed1}`}>
-                            Email
-                        </p>
                     </div>
-                    <div className="Login-from from-login">
-                        <input
-                            type="password"
-                            //placeholder="Password"
-                            className={loginCheck.borderRed2}
-                            value={password}
-                            onClick={() => {
-                                setLoginCheck((object) => {
-                                    const x = { ...object };
-                                    x.borderRed2 = ' ';
-                                    x.colorRed2 = ' ';
-                                    x.password = ' ';
-                                    return x;
-                                });
+                    <div className="">
+                        <Controller
+                            name="password"
+                            control={control}
+                            defaultValue=""
+                            rules={{
+                                minLength: 6,
+                                maxLength: 255,
+                                required: 'Bạn chưa nhập mật khẩu',
                             }}
-                            onChange={(e) => setPassword(e.target.value)}
+                            render={({ field, fieldState }) => (
+                                <Fragment>
+                                    <input
+                                        type="password"
+                                        id="password"
+                                        placeholder="Mật khẩu"
+                                        className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 py-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                                        {...field}
+                                    />
+                                    {renderError([
+                                        {
+                                            error: fieldState?.error?.type === 'required',
+                                            message: 'Bạn chưa nhập mật khẩu',
+                                        },
+                                        {
+                                            error: fieldState?.error?.type === 'minLength',
+                                            message: 'Mật khẩu phải lớn hơn hoặc bằng 6 ký tự',
+                                        },
+                                        {
+                                            error: fieldState?.error?.type === 'maxLength',
+                                            message: 'Mật khẩu phải nhỏ hơn hoặc bằng 255 ký tự',
+                                        },
+                                    ])}
+                                </Fragment>
+                            )}
                         />
-                        <p className="from-login__email-pass noti-validate">{loginCheck.password}</p>
-                        <p className={`from-login__email-pass-color1 Login-from__password ${loginCheck.colorRed2}`}>
-                            Mật khẩu
-                        </p>
                     </div>
-                    <button type="submit">Đăng nhập</button>
-                    <p>
-                        <Link to={'/resetpassword'}>Quên mật khẩu</Link>
-                    </p>
-                    <p>
-                        <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>Tạo tài khoản mới</Link>
-                        {/* <Link to={'/register'}>Tạo tài khoản mới</Link> */}
-                    </p>
+                    <div className="w-full">
+                        <button
+                            type="submit"
+                            className="w-full rounded-lg bg-[var(--main-color)] px-5 py-3 text-center text-base font-semibold uppercase text-white hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300 "
+                        >
+                            Đăng nhập
+                        </button>
+                    </div>
+                    <div className=" mt-3 text-center">
+                        <Link to={'/resetpassword-request'}>
+                            <p className="m-1 text-gray-500">Quên mật khẩu</p>
+                        </Link>
+                        <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>
+                            <p className="m-1 text-gray-500">Tạo tài khoản mới</p>
+                        </Link>
+                    </div>
                 </form>
             </div>
         </>

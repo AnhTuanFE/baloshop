@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Rating from '../../Rating/Rating';
 import { listAllOrderAction } from '~/redux/Actions/OrderActions';
 import { ordersRemainingSelector } from '~/redux/Selector/ordersSelector';
-
+import { Divider, Chip } from '@mui/material';
 import styles from './BestSellingProduct.module.scss';
 
 export default function BestSellingProduct() {
@@ -61,11 +61,18 @@ export default function BestSellingProduct() {
     };
     return (
         <>
-            <div className="container corousel-container corousel-oder">
-                <h2 className={clsx(styles.section_title)}>
-                    <b></b>
-                    <span className={clsx(styles.section_title_main)}>Sản Phẩm Bán Chạy</span>
-                    <b></b>
+            <div className="mx-auto my-auto max-w-screen-2xl pt-10">
+                <h2 className="pb-10 text-center">
+                    <Divider>
+                        <Chip
+                            className="font-semibold"
+                            sx={{
+                                fontSize: '24px',
+                                bgcolor: '#ffff',
+                            }}
+                            label="Sản Phẩm Bán Chạy"
+                        />
+                    </Divider>
                 </h2>
                 <div></div>
                 <div className="corousel">
@@ -73,11 +80,10 @@ export default function BestSellingProduct() {
                         {products &&
                             products?.map((product, index) => {
                                 return (
-                                    <div key={index} className={clsx(styles.corousel_div)}>
+                                    <div key={index} className="max-h-80">
                                         <Link to={`/product/${product._id}`} className={clsx(styles.corousel_link)}>
                                             <img
-                                                // src={`/productImage/${product?.image[0]?.image}`}
-                                                src={`${product?.image[0]}`}
+                                                src={`${product?.image[0].urlImage}`}
                                                 className={clsx(styles.corousel_img)}
                                                 alt=""
                                             ></img>

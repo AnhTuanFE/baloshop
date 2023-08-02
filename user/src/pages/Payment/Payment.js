@@ -2,7 +2,14 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { savePaymentMethod } from '~/redux/Actions/cartActions';
 import { useNavigate } from 'react-router-dom';
-import './Payment.css';
+import clsx from 'clsx';
+import styles from './Payment.module.css';
+
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 
 function Payment() {
     const navigate = useNavigate();
@@ -23,25 +30,49 @@ function Payment() {
     };
     return (
         <>
-            <div className="container d-flex justify-content-center align-items-center login-center">
-                <form className="Login2 col-md-8 col-lg-4 col-11" onSubmit={submitHandler}>
-                    <h4>Phương thức thanh toán</h4>
-                    <div className="payment-container">
-                        <div className="radio-container">
-                            <input
-                                className="form-check-input"
-                                type="radio"
-                                checked
-                                value={paymentMethod}
+            <div className={clsx(styles.wrapper)}>
+                <form className={clsx(styles.form)} onSubmit={submitHandler}>
+                    <FormControl>
+                        <FormLabel id="demo-radio-buttons-group-label" className={clsx(styles.title)}>
+                            Phương thức thanh toán
+                        </FormLabel>
+                        <RadioGroup
+                            aria-labelledby="demo-radio-buttons-group-label"
+                            defaultValue="Thanh toán bằng tiền mặt"
+                            name="radio-buttons-group"
+                        >
+                            <FormControlLabel
+                                value="Thanh toán bằng tiền mặt"
+                                control={<Radio />}
+                                label="Thanh toán bằng tiền mặt"
                                 onChange={(e) => {
                                     setPaymentMethod(e.target.value);
+                                    console.log('e.target.value = ', e.target.value);
                                 }}
                             />
-                            <label className="form-check-label">Thanh toán bằng tiền mặt</label>
-                        </div>
-                    </div>
-
-                    <button type="submit">Tiếp tục</button>
+                            <FormControlLabel
+                                value="Thanh toán qua paypal"
+                                control={<Radio />}
+                                label="Thanh toán qua paypal"
+                                onChange={(e) => {
+                                    setPaymentMethod(e.target.value);
+                                    console.log('e.target.value = ', e.target.value);
+                                }}
+                            />
+                            <FormControlLabel
+                                value="Thanh toán qua momo"
+                                control={<Radio />}
+                                label="Thanh toán qua momo"
+                                onChange={(e) => {
+                                    setPaymentMethod(e.target.value);
+                                    console.log('e.target.value = ', e.target.value);
+                                }}
+                            />
+                        </RadioGroup>
+                        <button type="submit" className={clsx(styles.btn_continue)}>
+                            Tiếp tục
+                        </button>
+                    </FormControl>
                 </form>
             </div>
         </>

@@ -1,5 +1,4 @@
 import express from 'express';
-
 import Cart from '../Models/CartModel.js';
 import Product from '../Models/ProductModel.js';
 import { admin, protect } from './../Middleware/AuthMiddleware.js';
@@ -20,9 +19,9 @@ cartRoutes.get(
 
 cartRoutes.post(
     '/',
-    protect,
+    // protect,
     asyncHandler(async (req, res) => {
-        const { productId, color, qty, _id } = req.body;
+        const { productId, id_product, color, qty, _id } = req.body;
         // const product = await Pcolorroduct.findById(productId);
         const cartExist = await Cart.findOne({ user: _id });
         if (req?.user?.disabled) {
@@ -53,6 +52,7 @@ cartRoutes.post(
                 product: productId,
                 color: color,
                 qty: qty,
+                id_product: id_product,
             };
             cartExist.cartItems.push(cartadd);
             await cartExist.save();
@@ -67,6 +67,7 @@ cartRoutes.post(
                         product: productId,
                         color,
                         qty,
+                        id_product,
                     },
                 ],
             });
@@ -80,7 +81,7 @@ cartRoutes.post(
 
 cartRoutes.post(
     '/delete',
-    // protect,
+    protect,
     asyncHandler(async (req, res) => {
         const { user, pr } = req.body;
 

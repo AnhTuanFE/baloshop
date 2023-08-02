@@ -5,10 +5,13 @@ import news from '../Models/NewsModel.js';
 
 const newsRouter = express.Router();
 //GET ALL NEWS
-newsRouter.get('/', async (req, res) => {
-    const News = await news.find({}).sort({ _id: -1 });
-    res.json(News);
-});
+newsRouter.get(
+    '/',
+    asyncHandler(async (req, res) => {
+        const News = await news.find({}).sort({ _id: -1 });
+        res.json(News);
+    }),
+);
 
 //GET NEWS
 newsRouter.get('/:id', async (req, res) => {

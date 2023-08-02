@@ -1,5 +1,5 @@
 import { Link, NavLink } from 'react-router-dom';
-
+import { logoDefaul } from '~/data/data';
 const Sidebar = () => {
     return (
         <div>
@@ -7,7 +7,7 @@ const Sidebar = () => {
                 <div className="aside-top">
                     <Link to="/" className="brand-wrap">
                         <img
-                            src="/images/logo2.png"
+                            src={logoDefaul}
                             style={{ height: '84' }}
                             className="logo"
                             alt="Ecommerce dashboard template"

@@ -2,11 +2,15 @@ import express from 'express';
 import asyncHandler from 'express-async-handler';
 import Product from './../Models/ProductModel.js';
 import { admin, protect } from './../Middleware/AuthMiddleware.js';
-import Category from '../Models/CategoryModel.js';
+// import Category from '../Models/CategoryModel.js';
 import Order from './../Models/OrderModel.js';
 import Cart from '../Models/CartModel.js';
 import path from 'path';
 import fs from 'fs';
+//
+import multer from 'multer';
+import cloudinary from 'cloudinary';
+import { v4 as uuidv4 } from 'uuid';
 
 const __dirname = path.resolve();
 const productRoute = express.Router();
@@ -164,7 +168,7 @@ productRoute.post(
         let listOrder = [];
         if (rating == '' || color == '' || comment == '') {
             res.status(400);
-            throw new Error(`Nhập đầy đủ thông tin`);
+            throw new Error(` Vui lòng nhập đầy đủ thông tin`);
         }
         if (order) {
             for (let i = 0; i < order.length; i++) {
@@ -307,12 +311,30 @@ productRoute.post(
 );
 
 // CREATE PRODUCT
+let id_product = uuidv4().slice(0, 24);
+
+const storage = multer.diskStorage({
+    filename: function (req, file, callback) {
+        callback(null, Date.now() + file.originalname);
+    },
+});
+const imageFilter = function (req, file, cb) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png|webp|gif|jfif)$/i)) {
+        return cb(new Error('Only image files are accepted!'), false);
+    }
+    cb(null, true);
+};
+const upload = multer({ storage: storage, fileFilter: imageFilter });
+
 productRoute.post(
     '/',
     protect,
     admin,
+    upload.single('image'),
     asyncHandler(async (req, res) => {
-        const { name, price, description, category, image } = req.body;
+        const { name, price, description, category } = req.body;
+        const imagePath = req.file.path;
+
         const productExist = await Product.findOne({ name });
         if (price <= 0) {
             res.status(400);
@@ -322,21 +344,30 @@ productRoute.post(
             res.status(400);
             throw new Error('Product name already exist');
         } else {
-            const product = new Product({
-                name,
-                price,
-                description,
-                category,
-                image,
-                user: req.user._id,
+            cloudinary.v2.uploader.upload(imagePath, { folder: 'baloshopImage' }, function (err, result) {
+                if (err) {
+                    req.json(err.message);
+                }
+                req.body.image = result.secure_url;
+                req.body.imageId = result.public_id; //name image trong cloudinary
+
+                const product = new Product({
+                    name,
+                    price,
+                    description,
+                    category,
+                    image: { urlImage: req.body.image, nameCloudinary: req.body.imageId },
+                    id_product: id_product,
+                    // user: req.user._id,
+                });
+                if (product) {
+                    const createdproduct = Product.create(product);
+                    res.status(201).json(createdproduct);
+                } else {
+                    res.status(400);
+                    throw new Error("Invalid product data or Can't upload image");
+                }
             });
-            if (product) {
-                const createdproduct = await product.save();
-                res.status(201).json(createdproduct);
-            } else {
-                res.status(400);
-                throw new Error('Invalid product data');
-            }
         }
     }),
 );
@@ -380,23 +411,54 @@ productRoute.put(
     '/:id',
     protect,
     admin,
+    upload.single('image'),
     asyncHandler(async (req, res) => {
-        const { name, price, description, category, image } = req.body;
-        const product = await Product.findById(req.params.id);
+        const { id, name, price, description, category, nameImage } = req?.body;
+        const imagePath = req?.file?.path;
+        // console.log('data = ', req.body);
+        // console.log('imagePath = ', imagePath);
+
+        const product = await Product.findById(id);
+
         if (price <= 0) {
             res.status(400);
             throw new Error('Price or Count in stock is not valid, please correct it and try again');
         }
         if (product) {
-            product.name = name || product.name;
-            product.price = price || product.price;
-            product.description = description || product.description;
-            product.category = category || product.category;
-            product.image = image || product.image;
-            // product.countInStock = countInStock || product.countInStock;
-
-            const updatedProduct = await product.save();
-            res.json(updatedProduct);
+            cloudinary.uploader.destroy(nameImage, function (error, result) {
+                try {
+                    console.log('result = ', result, 'error = ', error);
+                } catch (err) {
+                    console.log('lỗi = '.err);
+                }
+            });
+            // ===================
+            cloudinary.v2.uploader.upload(imagePath, { folder: 'baloshopImage' }, async function (err, result) {
+                if (err) {
+                    req.json(err.message);
+                }
+                const urlImageCloudinary = result.secure_url;
+                const nameImageCloudinary = result.public_id; //name image trong cloudinary
+                // ======================
+                const filter = { _id: id };
+                const update = {
+                    $set: {
+                        name: name,
+                        price: price,
+                        description: description,
+                        category: category,
+                        image: [
+                            {
+                                urlImage: urlImageCloudinary,
+                                nameCloudinary: nameImageCloudinary,
+                            },
+                        ],
+                    },
+                };
+                const updataStatus = await Product.updateOne(filter, update);
+                // ======================
+                res.json(updataStatus);
+            });
         } else {
             res.status(404);
             throw new Error('Product not found');

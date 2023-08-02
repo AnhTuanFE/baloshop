@@ -3,6 +3,27 @@ import axios from 'axios';
 import { CART_CLEAR_ITEMS } from '../Constants/CartConstants';
 import { logout } from './userActions';
 
+//CALCULATE FEE SHIP
+export const calculate_fee_ship_action = (data_calculate) => async (dispatch) => {
+    try {
+        dispatch({ type: types.CALCULATE_FEE_SHIP_REQUEST });
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+
+        const { data } = await axios.post(`/api/ghtk/get_fee_ship`, data_calculate, config);
+        dispatch({ type: types.CALCULATE_FEE_SHIP_SUCCESS, payload: data });
+    } catch (error) {
+        const message = error.response?.data.message ? error.response.data.message : error.message;
+        dispatch({
+            type: types.CALCULATE_FEE_SHIP_FAIL,
+            payload: message,
+        });
+    }
+};
 // CREATE ORDER
 
 export const createOrder = (order) => async (dispatch, getState) => {
@@ -13,9 +34,9 @@ export const createOrder = (order) => async (dispatch, getState) => {
             userLogin: { userInfo },
         } = getState();
 
+        // 'Content-Type': 'application/json',
         const config = {
             headers: {
-                'Content-Type': 'application/json',
                 Authorization: `Bearer ${userInfo.token}`,
             },
         };
@@ -188,35 +209,6 @@ export const orderGetAddress = () => async (dispatch, getState) => {
     }
 };
 
-//GET ORDER ORDER ITEMS
-export const orderGetItemOrder = (id) => async (dispatch, getState) => {
-    try {
-        dispatch({ type: types.ORDER_GET_REVIEW_REQUEST });
-
-        const {
-            userLogin: { userInfo },
-        } = getState();
-
-        const config = {
-            headers: {
-                Authorization: `Bearer ${userInfo.token}`,
-            },
-        };
-
-        const { data } = await axios.get(`/api/orders/${id}/orderItem`, config);
-        dispatch({ type: types.ORDER_GET_REVIEW_SUCCESS, payload: data });
-    } catch (error) {
-        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
-        if (message === 'Not authorized, token failed') {
-            dispatch(logout());
-        }
-        dispatch({
-            type: types.ORDER_GET_REVIEW_FAIL,
-            payload: message,
-        });
-    }
-};
-
 // ODERS LIST ALL
 export const listAllOrderAction = () => async (dispatch) => {
     try {
@@ -314,6 +306,99 @@ export const returnAmountProduct = (orderItems) => async (dispatch, getState) =>
         }
         dispatch({
             type: types.ORDER_RETURN_AMOUNT_PRODUCT_FAIL,
+            payload: message,
+        });
+    }
+};
+// =========================================================
+
+export const paypalCreateOrderAction = () => async (dispatch, getState) => {
+    try {
+        dispatch({ type: types.ORDER_PAYPAL_PAID_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+        //                Authorization: `Bearer ${userInfo.token}`,
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+
+        const { data } = await axios.post(`/api/paypal/create-paypal-order`, config);
+        dispatch({ type: types.ORDER_PAYPAL_PAID_SUCCESS, payload: data });
+    } catch (error) {
+        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+        if (message === 'Not authorized, token failed') {
+            dispatch(logout());
+        }
+        dispatch({
+            type: types.ORDER_PAYPAL_PAID_FAIL,
+            payload: message,
+        });
+    }
+};
+
+export const paypalConfirmPaidOrderAction = (orderID) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: types.ORDER_PAYPAL_PAID_CONFIRM_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+        //                Authorization: `Bearer ${userInfo.token}`,
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+
+        const { data } = await axios.post(`/api/paypal/capture-paypal-order`, { orderID });
+        dispatch({ type: types.ORDER_PAYPAL_PAID_CONFIRM_SUCCESS, payload: data });
+    } catch (error) {
+        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+        if (message === 'Not authorized, token failed') {
+            dispatch(logout());
+        }
+        dispatch({
+            type: types.ORDER_PAYPAL_PAID_CONFIRM_FAIL,
+            payload: message,
+        });
+    }
+};
+
+// ===============
+
+export const getLabelOrderGHTKAction = (id_Ghtk) => async (dispatch, getState) => {
+    const apiBase = 'https://services-staging.ghtklab.com';
+    console.log('id_Ghtk = ', id_Ghtk);
+    try {
+        dispatch({ type: types.GET_LABEL_ORDER_GHTK_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+        //                Authorization: `Bearer ${userInfo.token}`,
+
+        const url = `${apiBase}/services/label/${id_Ghtk}`;
+        const config = {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                Token: 'dfdb4cb9647b5130ea49d5216fda3c60f9a712cd',
+            },
+        };
+        const { data } = await axios.get(url, config);
+        dispatch({ type: types.GET_LABEL_ORDER_GHTK_SUCCESS, payload: data });
+    } catch (error) {
+        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+        if (message === 'Not authorized, token failed') {
+            dispatch(logout());
+        }
+        dispatch({
+            type: types.GET_LABEL_ORDER_GHTK_FAIL,
             payload: message,
         });
     }

@@ -9,13 +9,14 @@ import Cart from '~/pages/Cart';
 import DeliveryAddress from '~/pages/DeliveryAddress';
 import Payment from '~/pages/Payment/Payment';
 import PlaceOrder from '~/pages/PlaceOrder/PlaceOrder';
-import Order from '~/pages/Order/Order';
+import Order from '~/pages/Order';
 import Profile from '~/pages/Profile/Profile';
 import PurchaseHistory from '~/pages/PurchaseHistory';
+import ResetPasswordRequest from '~/pages/ResetPasswordRequest/ResetPasswordRequest';
+import VerifyResetPassWord from '~/pages/VerifyResetPassWord/VerifyResetPassWord';
 import ResetPassword from '~/pages/ResetPassword/ResetPassword';
+import Header2 from '~/layouts/headerMUI/Header2';
 import NotFound from '~/pages/NotFound/NotFound';
-// test private route tý xóa
-import TestPage from '~/pages/TestPage/TestPage';
 
 const publicRoutes = [
     { path: '/', component: Home },
@@ -37,18 +38,21 @@ const publicRoutes = [
     { path: '/product/:id', component: DetailProduct },
     { path: '/login', component: Login, layout: HeaderOnly },
     { path: '/register', component: Register, layout: HeaderOnly },
+    { path: '/resetpassword-request', component: ResetPasswordRequest, layout: HeaderOnly },
+    { path: '/verify-reset-password/:id/:token', component: VerifyResetPassWord, layout: HeaderOnly },
     { path: '/resetpassword', component: ResetPassword, layout: HeaderOnly },
+    { path: '/header2', component: Header2, layout: null },
 
     { path: '*', component: NotFound, layout: HeaderOnly },
 ];
 
 const privateRoutes = [
-    { path: '/test', component: TestPage },
     { path: '/profile', component: Profile, layout: HeaderOnly },
 
     { path: '/cart/:id?', component: Cart, layout: HeaderOnly },
     { path: '/deliveryaddress', component: DeliveryAddress, layout: HeaderOnly },
     { path: '/payment', component: Payment, layout: HeaderOnly },
+
     { path: '/placeorder', component: PlaceOrder, layout: HeaderOnly },
     { path: '/order/:id', component: Order, layout: HeaderOnly },
     { path: '/purchasehistory', component: PurchaseHistory, layout: HeaderOnly },

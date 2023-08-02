@@ -1,23 +1,34 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import isEmpty from 'validator/lib/isEmpty';
 import Message from '~/components/HomeComponent/LoadingError/Error';
 import Loading from '~/components/HomeComponent/LoadingError/Loading';
-import { register, createUser } from '~/redux/Actions/userActions';
-import clsx from 'clsx';
-import styles from './Register.module.scss';
+import { register } from '~/redux/Actions/userActions';
+import { useForm, Controller } from 'react-hook-form';
+
+const renderError = (errors) => {
+    const message = errors.find((error) => error?.error)?.message;
+    if (message)
+        return (
+            <div className="min-h-[28px]">
+                <span className="mt-1 text-[red]">{message}</span>
+            </div>
+        );
+    return <div className="min-h-[28px]"></div>;
+};
 
 function Register() {
     const location = useLocation();
     const navigate = useNavigate();
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
-    const [password, setPassword] = useState('');
-    const [cfpassword, setCfPassword] = useState('');
 
-    const [checkValidate, setCheckValidate] = useState({}); // tao một usestate mới để check from
+    const {
+        watch,
+        control,
+        handleSubmit,
+        formState: { errors },
+        reset,
+    } = useForm();
+
     const dispatch = useDispatch();
     const redirect = location.search ? location.search.split('=')[1] : '/';
 
@@ -30,204 +41,199 @@ function Register() {
         }
     }, [userInfo, navigate, redirect]);
 
-    const validateAll = () => {
-        const msg = {};
-        let re = /\S+@\S+\.\S+/;
-        if (isEmpty(name)) {
-            msg.name = 'Vui lòng nhập tên của bạn';
-            msg.borderRed1 = 'border-red';
-            msg.colorRed1 = 'color-red';
-        }
-
-        if (isEmpty(email)) {
-            msg.email = 'Vui lòng nhập email của bạn';
-            msg.borderRed2 = 'border-red';
-            msg.colorRed2 = 'color-red';
-        } else {
-            if (!re.test(email)) {
-                msg.email = 'Email sai';
-                msg.borderRed2 = 'border-red';
-                msg.colorRed2 = 'color-red';
-            }
-        }
-
-        if (isEmpty(phone)) {
-            msg.phone = 'Vui lòng nhập số điện thoại của bạn';
-            msg.borderRed3 = 'border-red';
-            msg.colorRed3 = 'color-red';
-        } else {
-            if (isNaN(phone)) {
-                msg.phone = 'Số điện thoại không hợp lệ';
-                msg.borderRed3 = 'border-red';
-                msg.colorRed3 = 'color-red';
-            }
-        }
-        if (isEmpty(password)) {
-            msg.password = 'Vui lòng nhập mật khẩu';
-            msg.borderRed4 = 'border-red';
-            msg.colorRed4 = 'color-red';
-        } else {
-            if (password.length < 6) {
-                msg.password = 'Mật khẩu phải có ít nhất 6 ký tự';
-                msg.borderRed4 = 'border-red';
-                msg.colorRed4 = 'color-red';
-            }
-        }
-
-        if (isEmpty(cfpassword)) {
-            msg.cfpassword = 'Vui lòng nhập lại mật khẩu';
-            msg.borderRed5 = 'border-red';
-            msg.colorRed5 = 'color-red';
-        } else {
-            if (cfpassword.length < 6) {
-                msg.cfpassword = 'Mật khẩu nhập lại không khớp';
-                msg.borderRed5 = 'border-red';
-                msg.colorRed5 = 'color-red';
-            } else {
-                if (cfpassword !== password) {
-                    msg.cfpassword = 'Nhập lại mật khẩu không khớp';
-                    msg.borderRed5 = 'border-red';
-                    msg.colorRed5 = 'color-red';
-                }
-            }
-        }
-        setCheckValidate(msg);
-        if (Object.keys(msg).length > 0) return false;
-        return true;
-    };
-
-    const submitHandler = (e) => {
-        e.preventDefault();
-        const isValid = validateAll();
-        if (!isValid) return;
+    const submitHandler = (data) => {
+        console.log('data = ', data);
+        const { name, email, phone, password } = data;
         dispatch(register(name, email, phone, password));
+        reset();
     };
     return (
         <>
-            <div className="container d-flex flex-column justify-content-center align-items-center login-center">
-                {error && <Message variant="alert-danger">{error}</Message>}
-                {loading && <Loading />}
+            <div>
+                <div className="mb-14 mt-8 flex items-center justify-center">
+                    <form className="Login col-md-6 col-lg-4 col-10" onSubmit={handleSubmit(submitHandler)}>
+                        {error && <Message variant="alert-danger block">{error}</Message>}
+                        {loading && <Loading />}
+                        <div className="mb-3 text-center text-2xl font-semibold"> Đăng ký tài khoản</div>
+                        <div className=" ">
+                            <Controller
+                                name="name"
+                                control={control}
+                                defaultValue=""
+                                rules={{
+                                    required: 'Bạn chưa nhập tên tài khoản',
+                                }}
+                                render={({ field, fieldState }) => (
+                                    <Fragment>
+                                        <input
+                                            type="text"
+                                            id="name"
+                                            className=" block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 py-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                                            {...field}
+                                            placeholder="Tên tài khoản"
+                                        />
+                                        {renderError([
+                                            {
+                                                error: fieldState?.error?.type === 'required',
+                                                message: 'Bạn chưa nhập tên tài khoản',
+                                            },
+                                        ])}
+                                    </Fragment>
+                                )}
+                            />
+                        </div>
 
-                <form className="Login col-md-6 col-lg-4 col-10" onSubmit={submitHandler}>
-                    <div className="Login-from">
-                        <input
-                            type="text"
-                            className={checkValidate.borderRed1}
-                            //placeholder="Username"
-                            value={name}
-                            onClick={() => {
-                                setCheckValidate((object) => {
-                                    const x = { ...object };
-                                    x.borderRed1 = ' ';
-                                    x.colorRed1 = ' ';
-                                    x.name = ' ';
-                                    return x;
-                                });
-                            }}
-                            onChange={(e) => {
-                                setName(e.target.value);
-                            }}
-                        />
-                        <p className="noti-validate">{checkValidate.name}</p>
-                        <p className={`Login-from__name ${checkValidate.colorRed1}`}>Tên người dùng</p>
-                    </div>
+                        <div className=" ">
+                            <Controller
+                                name="email"
+                                control={control}
+                                defaultValue=""
+                                rules={{
+                                    required: 'Bạn chưa nhập email',
+                                }}
+                                render={({ field, fieldState }) => (
+                                    <Fragment>
+                                        <input
+                                            type="email"
+                                            id="email"
+                                            className=" block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 py-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                                            {...field}
+                                            placeholder="Email"
+                                        />
+                                        {renderError([
+                                            {
+                                                error: fieldState?.error?.type === 'required',
+                                                message: 'Bạn chưa nhập email',
+                                            },
+                                        ])}
+                                    </Fragment>
+                                )}
+                            />
+                        </div>
 
-                    <div className="Login-from">
-                        <input
-                            type="email"
-                            //placeholder="Email"
-                            className={checkValidate.borderRed2}
-                            value={email}
-                            onClick={() => {
-                                setCheckValidate((object) => {
-                                    const x = { ...object };
-                                    x.borderRed2 = ' ';
-                                    x.colorRed2 = ' ';
-                                    x.email = ' ';
-                                    return x;
-                                });
-                            }}
-                            onChange={(e) => {
-                                setEmail(e.target.value);
-                            }}
-                        />
-                        <p className="noti-validate">{checkValidate.email}</p>
-                        <p className={`Login-from__email ${checkValidate.colorRed2}`}>Email</p>
-                    </div>
+                        <div className=" ">
+                            <Controller
+                                name="phone"
+                                control={control}
+                                defaultValue=""
+                                rules={{
+                                    required: 'Bạn chưa nhập số điện thoại',
+                                }}
+                                render={({ field, fieldState }) => (
+                                    <Fragment>
+                                        <input
+                                            type="text"
+                                            id="phone"
+                                            className=" block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 py-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                                            {...field}
+                                            placeholder="Số điện thoại"
+                                        />
+                                        {renderError([
+                                            {
+                                                error: fieldState?.error?.type === 'required',
+                                                message: 'Bạn chưa nhập số điện thoại',
+                                            },
+                                        ])}
+                                    </Fragment>
+                                )}
+                            />
+                        </div>
 
-                    <div className="Login-from">
-                        <input
-                            type="text"
-                            className={checkValidate.borderRed3}
-                            value={phone}
-                            onClick={() => {
-                                setCheckValidate((object) => {
-                                    const x = { ...object };
-                                    x.borderRed3 = ' ';
-                                    x.colorRed3 = ' ';
-                                    x.phone = ' ';
-                                    return x;
-                                });
-                            }}
-                            onChange={(e) => {
-                                setPhone(e.target.value);
-                            }}
-                        />
-                        <p className="noti-validate">{checkValidate.phone}</p>
-                        <p className={`Login-from__phone ${checkValidate.colorRed3}`}>Số ĐT</p>
-                    </div>
+                        <div className=" ">
+                            <Controller
+                                name="password"
+                                control={control}
+                                defaultValue=""
+                                rules={{
+                                    minLength: 6,
+                                    maxLength: 255,
+                                    required: 'Bạn chưa nhập mật khẩu',
+                                }}
+                                render={({ field, fieldState }) => (
+                                    <Fragment>
+                                        <input
+                                            type="password"
+                                            id="password"
+                                            className=" block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 py-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                                            {...field}
+                                            placeholder="Mật khẩu"
+                                        />
+                                        {renderError([
+                                            {
+                                                error: fieldState?.error?.type === 'required',
+                                                message: 'Bạn chưa nhập mật khẩu',
+                                            },
+                                            {
+                                                error: fieldState?.error?.type === 'minLength',
+                                                message: 'Mật khẩu phải lớn hơn hoặc bằng 6 ký tự',
+                                            },
+                                            {
+                                                error: fieldState?.error?.type === 'maxLength',
+                                                message: 'Mật khẩu phải nhỏ hơn hoặc bằng 255 ký tự',
+                                            },
+                                        ])}
+                                    </Fragment>
+                                )}
+                            />
+                        </div>
 
-                    <div className="Login-from">
-                        <input
-                            type="password"
-                            className={checkValidate.borderRed4}
-                            value={password}
-                            onClick={() => {
-                                setCheckValidate((object) => {
-                                    const x = { ...object };
-                                    x.borderRed4 = ' ';
-                                    x.colorRed4 = ' ';
-                                    x.password = ' ';
-                                    return x;
-                                });
-                            }}
-                            onChange={(e) => {
-                                setPassword(e.target.value);
-                            }}
-                        />
-                        <p className="noti-validate">{checkValidate.password}</p>
-                        <p className={`Login-from__password ${checkValidate.colorRed4}`}>Mật khẩu</p>
-                    </div>
+                        <div className=" ">
+                            <Controller
+                                name="cfpassword"
+                                control={control}
+                                defaultValue=""
+                                rules={{
+                                    minLength: 6,
+                                    maxLength: 255,
+                                    required: 'Bạn chưa nhập lại mật khẩu',
+                                    validate: (value) => value === watch('password'),
+                                }}
+                                render={({ field, fieldState }) => (
+                                    <Fragment>
+                                        <input
+                                            type="password"
+                                            id="cfpassword"
+                                            className=" block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 py-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                                            {...field}
+                                            placeholder="Nhập lại mật khẩu"
+                                        />
+                                        {renderError([
+                                            {
+                                                error: fieldState?.error?.type === 'required',
+                                                message: 'Bạn chưa nhập lại mật khẩu',
+                                            },
+                                            {
+                                                error: fieldState?.error?.type === 'minLength',
+                                                message: 'Mật khẩu phải lớn hơn hoặc bằng 6 ký tự',
+                                            },
+                                            {
+                                                error: fieldState?.error?.type === 'maxLength',
+                                                message: 'Mật khẩu phải nhỏ hơn hoặc bằng 255 ký tự',
+                                            },
+                                            ,
+                                            {
+                                                error: fieldState?.error?.type === 'validate',
+                                                message: 'Mật khẩu không khớp',
+                                            },
+                                        ])}
+                                    </Fragment>
+                                )}
+                            />
+                        </div>
 
-                    <div className="Login-from">
-                        <input
-                            type="password"
-                            className={checkValidate.borderRed5}
-                            value={cfpassword}
-                            onClick={() => {
-                                setCheckValidate((object) => {
-                                    const x = { ...object };
-                                    x.borderRed5 = ' ';
-                                    x.colorRed5 = ' ';
-                                    x.cfpassword = ' ';
-                                    return x;
-                                });
-                            }}
-                            onChange={(e) => {
-                                setCfPassword(e.target.value);
-                            }}
-                        />
-                        <p className="noti-validate">{checkValidate.cfpassword}</p>
-                        <p className={`Login-from__cfpassword ${checkValidate.colorRed5}`}>Nhập lại mật khẩu</p>
-                    </div>
-
-                    <button type="submit">Đăng ký</button>
-                    <p>
-                        <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>
-                            Tôi đã có tài khoản <strong>Đăng nhập</strong>
-                        </Link>
-                    </p>
-                </form>
+                        <button
+                            type="submit"
+                            className="w-full rounded-lg bg-[var(--main-color)] px-5 py-3 text-center text-base font-bold uppercase text-white hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300 "
+                        >
+                            Đăng ký
+                        </button>
+                        <p className=" mt-3 text-center">
+                            <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>
+                                Tôi đã có tài khoản <strong className="text-xl text-blue-600">Đăng nhập</strong>
+                            </Link>
+                        </p>
+                    </form>
+                </div>
             </div>
         </>
     );

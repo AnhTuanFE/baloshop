@@ -18,13 +18,19 @@ const orderSchema = mongoose.Schema(
             required: true,
             ref: 'User',
         },
+        // id_predefined: { type: String, required: false },
         orderItems: [
             {
                 name: { type: String, required: true },
                 color: { type: String, required: true },
                 qty: { type: Number, required: true },
+                weight: { type: Number, required: true, default: 0 },
                 image: { type: String, required: true },
                 price: { type: Number, required: true },
+                id_product: {
+                    type: Number,
+                    // required: true,
+                },
                 productReview: [productReviewSchema],
                 product: {
                     type: mongoose.Schema.Types.ObjectId,
@@ -33,27 +39,32 @@ const orderSchema = mongoose.Schema(
                 },
             },
         ],
+        label_id_GiaoHangTK: {
+            type: String,
+            required: false,
+        },
         shippingAddress: {
-            address: { type: String, required: true },
             city: { type: String, required: true },
+            distric: { type: String, required: true },
+            ward: { type: String, required: true },
+            address: { type: String, required: true },
             postalCode: { type: String, required: false },
-            country: { type: String, required: true },
         },
         paymentMethod: {
             type: String,
             required: true,
-            default: 'Payment in cash',
+            default: 'Thanh toán bằng tiền mặt',
+        },
+        paypalOrder: {
+            orderID: { type: String, required: false },
+            payerID: { type: String, required: false },
+            cost: { type: Number, required: false },
         },
         paymentResult: {
             id: { type: String },
             status: { type: String },
             update_time: { type: String },
             email_address: { type: String },
-        },
-        taxPrice: {
-            type: Number,
-            required: true,
-            default: 0.0,
         },
         shippingPrice: {
             type: Number,

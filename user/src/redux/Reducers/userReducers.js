@@ -99,13 +99,18 @@ export const createUserReducer = (state = [], action) => {
 // GET PROVINCE
 export const ProvinceReducer = (state = { province: [] }, action) => {
     switch (action.type) {
-        case types.PROVINCE_SUCCESS:
+        case types.PROVINCE_REQUEST:
             return {
                 ...state,
+                loading: true,
+            };
+        case types.PROVINCE_SUCCESS:
+            return {
+                loading: false,
                 province: action.payload,
             };
         case types.PROVINCE_FAIL:
-            return { ...state, error: action.payload };
+            return { loading: false, province: [], error: action.payload };
         default:
             return state;
     }
@@ -123,6 +128,50 @@ export const Avatarload = (state = { avatar: [] }, action) => {
             };
         case types.AVATAR_FAIL:
             return { loading: false, error: action.payload };
+        default:
+            return state;
+    }
+};
+export const userForgotPassWord = (state = {}, action) => {
+    switch (action.type) {
+        case types.FORGOT_PASS_WORD_REQUEST:
+            return { loading: true, state: {} };
+        case types.FORGOT_PASS_WORD_SUCCESS: {
+            return { loading: false, state: action.payload };
+        }
+        case types.FORGOT_PASS_WORD_FAIL: {
+            return { loading: false, error: action.payload };
+        }
+        default:
+            return state;
+    }
+};
+
+export const userVerifyResetPassWordReducer = (state = {}, action) => {
+    switch (action.type) {
+        case types.VERIFY_RESET_PASS_WORD_REQUEST:
+            return { loading: true, state: {} };
+        case types.VERIFY_RESET_PASS_WORD_SUCCESS: {
+            return { loading: false, state: action.payload };
+        }
+        case types.VERIFY_RESET_PASS_WORD_FAIL: {
+            return { loading: false, error: action.payload };
+        }
+        default:
+            return state;
+    }
+};
+
+export const ResetPassWordReducer = (state = {}, action) => {
+    switch (action.type) {
+        case types.RESET_PASS_WORD_REQUEST:
+            return { loading: true, state: {} };
+        case types.RESET_PASS_WORD_SUCCESS: {
+            return { loading: false, state: action.payload };
+        }
+        case types.RESET_PASS_WORD_FAIL: {
+            return { loading: false, error: action.payload };
+        }
         default:
             return state;
     }

@@ -1,25 +1,24 @@
-import Login from '~/pages/LoginScreen';
-import HomeScreen from '~/pages/HomeScreen';
+import Login from '~/pages/loginPage/LoginScreen';
+import HomeScreen from '~/pages/HomePage/HomeScreen';
 
-// import ProductScreen from '~/pages/productPages/ProductScreen';
 import ProductScreen from '~/pages/productPages/ProductScreen';
 import AddProduct from '~/pages/productPages/AddProduct';
 import ProductEditScreen from '~/pages/productPages/ProductEditScreen';
 
-import CategoriesScreen from '~/pages/CategoriesScreen';
+import CategoriesScreen from '~/pages/categoryPage/CategoriesScreen';
 
 import OrderScreen from '~/pages/orderPages/OrderScreen';
 import OrderDetailScreen from '~/pages/orderPages/OrderDetailScreen';
 
-import UsersScreen from '~/pages/UsersScreen';
-import SliderScreen from '~/pages/SliderScreen';
+import UsersScreen from '~/pages/userPages/UsersScreen';
+import SliderScreen from '~/pages/sliderPages/SliderScreen';
 import CommentScreen from '~/pages/comment/CommentScreen';
 
 import AddNewsScreen from '~/pages/news/AddNewsScreen';
 import EditNewsScreen from '~/pages/news/EditNewsScreen';
 import NewsScreen from '~/pages/news/NewsScreen';
 
-import NotFound from '~/pages/NotFound';
+import NotFound from '~/pages/notFound/NotFound';
 
 const privateRoutes = [
     { path: '/', component: HomeScreen },
@@ -30,6 +29,7 @@ const privateRoutes = [
     { path: '/products/category/:category', component: ProductScreen },
     { path: '/products/search/:keyword/page/:pageNumber', component: ProductScreen },
     { path: '/products/category/:category/page/:pageNumber', component: ProductScreen },
+    { path: '/product/:id/edit', component: ProductEditScreen },
 
     { path: '/category', component: CategoriesScreen },
 
@@ -52,7 +52,6 @@ const privateRoutes = [
     { path: '/news', component: NewsScreen },
     { path: '/addnews', component: AddNewsScreen },
     { path: '/editnews/:id/edit', component: EditNewsScreen },
-    { path: '/product/:id/edit', component: ProductEditScreen },
 
     { path: '*', component: NotFound },
 ];

@@ -20,7 +20,6 @@ import {
     PRODUCT_UPDATE_OPTION_RESET,
     PRODUCT_OPTIONCOLOR_RESET,
     PRODUCT_DELETE_OPTION_RESET,
-    PRODUCT_CREATE_IMAGE_RESET,
     PRODUCT_DELETE_IMAGE_RESET,
 } from '~/Redux/Constants/ProductConstants';
 import { ListCategory } from '~/Redux/Actions/categoryActions';
@@ -42,11 +41,11 @@ const ProductEditScreen = () => {
     const [category, setCategory] = useState('');
     const [name, setName] = useState('');
     const [price, setPrice] = useState(0);
-    // const [image, setImage] = useState([]);
     const [image, setImage] = useState('');
+    const [nameImage, setNameImage] = useState('');
 
-    const [inputImage, setInputImage] = useState([]);
-    const [arrImage, setArrImage] = useState([]);
+    const [imageTemp, setImageTemp] = useState();
+
     const [countInStock, setCountInStock] = useState('');
     const [description, setDescription] = useState('');
     const [color, setColor] = useState('');
@@ -55,7 +54,6 @@ const ProductEditScreen = () => {
     const [AddCountInStock, setAddCountInStock] = useState('');
     const [checkEdit, setCheckEdit] = useState(false);
     const [checkAdd, setCheckAdd] = useState(true);
-    const [check, setCheck] = useState(false);
     const dispatch = useDispatch();
 
     const productEdit = useSelector((state) => state.productEdit);
@@ -75,8 +73,9 @@ const ProductEditScreen = () => {
     const { success: successDelete } = productOptionDelete;
     const lcategories = useSelector((state) => state.CategoryList);
     const { categories } = lcategories;
-    const productCreateImage = useSelector((state) => state.productCreateImage);
-    const { urlImages, success: successCreactImage } = productCreateImage;
+
+    // const productCreateImage = useSelector((state) => state.productCreateImage);
+    // const { urlImages, success: successCreactImage } = productCreateImage;
     const productDeleteImage = useSelector((state) => state.productDeleteImage);
     const { success: successDeleteImage } = productDeleteImage;
 
@@ -111,36 +110,6 @@ const ProductEditScreen = () => {
     }, [optionId]);
 
     useEffect(() => {
-        if (check) {
-            dispatch(
-                updateProduct({
-                    _id: productId,
-                    name,
-                    price,
-                    category,
-                    description,
-                    image,
-                }),
-            );
-            dispatch({ type: PRODUCT_CREATE_IMAGE_RESET });
-            setCheck(false);
-        }
-    }, [check]);
-    useEffect(() => {
-        if (successCreactImage) {
-            for (let i = 0; i < urlImages.length; i++) {
-                setImage((image) => [...image, { image: urlImages[i].filename, id: uuidv4() }]);
-            }
-            setCheck(true);
-            setArrImage([]);
-        }
-    }, [urlImages, successCreactImage]);
-    useEffect(() => {
-        for (let i = 0; i < inputImage.length; i++) {
-            setArrImage((image) => [...image, { image: inputImage[i], id: arrImage.length + i }]);
-        }
-    }, [inputImage]);
-    useEffect(() => {
         dispatch(ListCategory());
         if (successUpdate) {
             dispatch({ type: PRODUCT_UPDATE_RESET });
@@ -153,7 +122,8 @@ const ProductEditScreen = () => {
                 setDescription(product.description);
                 setCountInStock(product.countInStock);
                 setCategory(product.category);
-                setImage(product.image);
+                setImage(product.image[0]?.urlImage);
+                setNameImage(product.image[0]?.nameCloudinary);
                 setPrice(product.price);
             }
         }
@@ -162,16 +132,16 @@ const ProductEditScreen = () => {
     const submitHandler = (e) => {
         e.preventDefault();
         if (category != -1) {
-            dispatch(
-                updateProduct({
-                    _id: productId,
-                    name,
-                    price,
-                    category,
-                    description,
-                    image,
-                }),
-            );
+            let formData = new FormData();
+            formData.append('id', productId);
+            formData.append('name', name);
+            formData.append('price', price);
+            formData.append('category', category);
+            formData.append('description', description);
+            formData.append('image', image);
+            formData.append('nameImage', nameImage);
+
+            dispatch(updateProduct(formData));
         }
     };
     const submitOptionHandler = (e) => {
@@ -184,18 +154,7 @@ const ProductEditScreen = () => {
         setAddColor('');
         setAddCountInStock('');
     };
-    const handlerSubmitImage = () => {
-        let images = new FormData();
-        for (let i = 0; i < arrImage.length; i++) {
-            images.append('image', arrImage[i].image);
-        }
-        if (arrImage.length !== 0) {
-            dispatch(createImageProduct(images));
-        }
-        if (arrImage.length === 0) {
-            toast.error('Không thể gửi đi', ToastObjects);
-        }
-    };
+
     const modules = {
         toolbar: [
             [{ header: [1, 2, false] }],
@@ -235,11 +194,7 @@ const ProductEditScreen = () => {
                             Trở về Trang sản phẩm
                         </Link>
                         <h2 className="content-title">Cập nhật sản phẩm</h2>
-                        <div>
-                            {/* <button type="submit" className="btn btn-primary">
-                                Update now
-                            </button> */}
-                        </div>
+                        <div></div>
                     </div>
 
                     <div className="row mb-0">
@@ -306,108 +261,37 @@ const ProductEditScreen = () => {
                                                 </select>
                                             </div>
 
+                                            {imageTemp ? (
+                                                <div className="col-2 col-sm-2 col-md-2 col-lg-2 product_image_arr">
+                                                    <div className="row" style={{ display: 'flex', flexWrap: 'wrap' }}>
+                                                        <img
+                                                            className="img_css col-10 col-sm-10 col-md-10 col-lg-10"
+                                                            src={imageTemp}
+                                                            alt=""
+                                                        />
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <div className="col-2 col-sm-2 col-md-2 col-lg-2 product_image_arr">
+                                                    <div className="row" style={{ display: 'flex', flexWrap: 'wrap' }}>
+                                                        <img
+                                                            className="img_css col-10 col-sm-10 col-md-10 col-lg-10"
+                                                            src={image}
+                                                            alt=""
+                                                        />
+                                                    </div>
+                                                </div>
+                                            )}
                                             <div className="mb-0">
                                                 <label className="form-label">Ảnh</label>
                                                 <input
                                                     className={`form-control `}
-                                                    type="text"
-                                                    placeholder="URL"
-                                                    value={image}
-                                                    //required
-
-                                                    onChange={(e) => setImage(e.target.value)}
+                                                    type="file"
+                                                    onChange={(e) => {
+                                                        setImageTemp(URL.createObjectURL(e.target.files[0]));
+                                                        setImage(e.target.files[0]);
+                                                    }}
                                                 />
-                                                {/* ============cũ */}
-                                                {/* <div className="row">
-                                                    {image &&
-                                                        image?.map((img) => {
-                                                            return (
-                                                                <div
-                                                                    key={img.id}
-                                                                    className="col-2 col-sm-2 col-md-2 col-lg-2 product_image_arr"
-                                                                >
-                                                                    <div className="row">
-                                                                        <img
-                                                                            className="img_css col-10 col-sm-10 col-md-10 col-lg-10"
-                                                                            src={`/productImage/${img?.image}`}
-                                                                            alt=""
-                                                                        ></img>
-                                                                        <p
-                                                                            className="product_image_p"
-                                                                            onClick={() => {
-                                                                                dispatch(
-                                                                                    deleteImageProduct(
-                                                                                        productId,
-                                                                                        img.id,
-                                                                                    ),
-                                                                                );
-                                                                            }}
-                                                                        >
-                                                                            <i class="far fa-times-circle"></i>
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                            );
-                                                        })}
-                                                    {arrImage !== ' ' &&
-                                                        arrImage?.map((ima) => {
-                                                            return (
-                                                                <div
-                                                                    key={ima.id}
-                                                                    className="col-2 col-sm-2 col-md-2 col-lg-2 product_image_arr"
-                                                                >
-                                                                    <div
-                                                                        className="row"
-                                                                        style={{ display: 'flex', flexWrap: 'wrap' }}
-                                                                    >
-                                                                        <img
-                                                                            className="img_css col-10 col-sm-10 col-md-10 col-lg-10"
-                                                                            src={
-                                                                                ima.image !== undefined
-                                                                                    ? `${URL.createObjectURL(
-                                                                                          ima?.image,
-                                                                                      )}`
-                                                                                    : ''
-                                                                            }
-                                                                        ></img>
-                                                                        <p
-                                                                            className="product_image_p"
-                                                                            onClick={() => {
-                                                                                const retult = arrImage?.filter(
-                                                                                    (image) => image.id !== ima.id,
-                                                                                );
-                                                                                setArrImage(retult);
-                                                                            }}
-                                                                        >
-                                                                            <i class="far fa-times-circle"></i>
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                            );
-                                                        })}
-                                                </div> 
-                                                <div style={{ display: 'flex' }}>
-                                                    <label
-                                                        for="inputFile"
-                                                        className="form-control mt-2 col-10 col-sm-10 col-md-10 col-lg-10"
-                                                        style={{ cursor: 'pointer' }}
-                                                    >
-                                                        Chọn tệp
-                                                    </label>
-                                                    <input
-                                                        id="inputFile"
-                                                        className="d-none"
-                                                        onChange={(e) => setInputImage(e.target.files)}
-                                                        type="file"
-                                                        multiple
-                                                    />
-                                                    <input
-                                                        type="button"
-                                                        className="col-2 col-sm-2 col-md-2 col-lg-2 mt-2 mb-2"
-                                                        onClick={handlerSubmitImage}
-                                                        value="Lưu tệp"
-                                                    ></input>
-                                                </div>*/}
                                             </div>
                                             <div className="mb-0">
                                                 <label className="form-label">Nội dung</label>

@@ -1,0 +1,21 @@
+.wrap_info_user {
+    position: relative;
+}
+.avatar {
+    position: absolute !important;
+    z-index: 1;
+    margin-left: 50px;
+    margin-top: 8px;
+}
+.dropdown_info_user {
+    z-index: 2;
+    padding-left: 50px;
+    margin-top: 12px;
+}
+.name_user {
+    margin-left: 60px;
+}
+.category {
+    margin: 0px 6px;
+    padding-top: 8px;
+}

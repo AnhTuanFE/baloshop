@@ -1,24 +1,58 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 
 import Rating from '~/components/HomeComponent/Rating/Rating';
 import Message from '~/components/HomeComponent/LoadingError/Error';
-
+import { imageDefaul } from '~/utils/data';
 import { createProductReview, getAllReviews } from '~/redux/Actions/ProductActions';
 import { PRODUCT_CREATE_REVIEW_RESET } from '~/redux/Constants/ProductConstants';
-
+// ==== rating
+import Box from '@mui/material/Box';
+import { Rating as RatingMUI } from '@mui/material';
+import StarIcon from '@mui/icons-material/Star';
 import './EvaluateProduct.css';
 
+const labels = {
+    1: 'Không hài lòng',
+    2: 'Tạm được',
+    3: 'Hài lòng',
+    4: 'Tốt',
+    5: 'Rất tốt',
+};
+
+function getLabelText(value) {
+    return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;
+}
 function EvaluateProduct({ productId }) {
     const dispatch = useDispatch();
+    // modal
+    const modalRef = useRef(null);
+
+    const handleOpenModal = () => {
+        modalRef.current.showModal();
+    };
+
+    const handleCloseModal = () => {
+        modalRef.current.close();
+    };
+
+    const handleOverlayClick = (event) => {
+        if (event.target === modalRef.current) {
+            handleCloseModal();
+        }
+    };
+    // modal
 
     const [mediumReview, setMediumReview] = useState();
     const [bulean, setBulean] = useState(false);
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState('');
     const [reviewColor, setReviewColor] = useState('');
+
+    const [rating1, setRating1] = useState(0);
+    const [hover, setHover] = useState(-1);
 
     const listAllReviews = useSelector((state) => state.getAllReviewsProduct);
     const { reviews } = listAllReviews;
@@ -100,30 +134,23 @@ function EvaluateProduct({ productId }) {
         dispatch(createProductReview(productId, rating, reviewColor, comment));
     };
     return (
-        <div
-            style={{
-                borderRadius: '10px',
-                boxShadow: '0 1px 2px 0 rgb(60 64 67 / 10%), 0 2px 6px 2px rgb(60 64 67 / 15%)',
-                paddingTop: '10px',
-            }}
-        >
-            <div className="col-md-12 col-sm-12">
-                <h2 className="noti-view">Đánh giá & nhận xét</h2>
+        <div className="mt-3 rounded-xl shadow-custom-shadow">
+            <div className="m-5">
+                <h2 className="mt-3 py-2 text-center text-xl font-bold">Đánh giá & nhận xét</h2>
                 <div style={{ border: '2px solid #ccc', borderRadius: '10px' }}>
                     <div className="row">
-                        <div className="col-md-4 col-sm-5 text-center pt-4">
+                        <div className="col-md-4 col-sm-5 pt-4 text-center">
                             <div class="rating-box">
                                 <h1 class="pt-4">{mediumReview}</h1>
-                                <p class="">out of 5</p>
                             </div>
                             <div className="reviewMedium">
                                 <Rating value={mediumReview} />
                             </div>
-                            <p class="">{reviewCart.length} đánh giá và nhận xét</p>
+                            <p>{reviewCart.length} đánh giá và nhận xét</p>
                         </div>
                         <div class="col-md-8 col-sm-7">
                             <div class="rating-bar0 justify-content-center">
-                                <table class="text-left mx-auto">
+                                <table class="mx-auto text-left">
                                     {returnStar.map((star, index) => {
                                         return (
                                             <tr key={index}>
@@ -151,127 +178,123 @@ function EvaluateProduct({ productId }) {
                     </div>
                 </div>
                 <div className="buttonReview" style={{ textAlign: 'center', marginTop: '10px' }}>
-                    <p>Bạn đánh giá sao sản phẩm này</p>
-                    <Link className="text-white">
-                        <button>Đánh giá ngay</button>
-                    </Link>
+                    <button className="text-white" onClick={handleOpenModal}>
+                        Đánh giá ngay
+                    </button>
                 </div>
             </div>
-            <div className="col-md-12 product-rating">
-                <div
-                    class="modal fade"
-                    id="staticBackdrop"
-                    data-bs-backdrop="static"
-                    data-bs-keyboard="false"
-                    tabindex="-1"
-                    aria-labelledby="staticBackdropLabel"
-                    aria-hidden="true"
-                >
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header" style={{ padding: '0.5rem 1rem' }}>
-                                <button
-                                    type="button"
-                                    class="btn-close"
-                                    data-bs-dismiss="modal"
-                                    aria-label="Close"
-                                    onClick={() => {
-                                        setBulean(true);
-                                    }}
-                                ></button>
+            {/* ============================================== bên dưới là modal ============================================= */}
+            <dialog ref={modalRef} className="w-1/3 rounded-lg" onClose={handleCloseModal} onClick={handleOverlayClick}>
+                <h3 className="mb-2 text-center text-lg font-bold">Đánh giá sản phẩm!</h3>
+                <form method="dialog">
+                    <button
+                        onClick={handleCloseModal}
+                        className="btn-sm btn-circle btn absolute right-2 top-2 bg-[var(--main-color2)] font-extrabold text-white"
+                    >
+                        ✕
+                    </button>
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div className="my-4">
+                                {errorCreateReview && <Message variant="alert-danger">{errorCreateReview}</Message>}
+                                {successCreateReview && (
+                                    <Message class="alert-primary alert">Cảm ơn bạn đã đánh giá</Message>
+                                )}
                             </div>
-                            <div class="modal-body">
-                                <div>
-                                    <h6 className="write-review text-center" style={{ fontSize: '20px' }}>
-                                        Đánh giá sản phẩm
-                                    </h6>
+                            {userInfo ? (
+                                <form onSubmit={submitHandler}>
                                     <div className="my-4">
-                                        {errorCreateReview && (
-                                            <Message variant="alert-danger">{errorCreateReview}</Message>
-                                        )}
-                                        {successCreateReview && (
-                                            <Message class="alert alert-primary">Cảm ơn bạn đã đánh giá</Message>
-                                        )}
-                                    </div>
-                                    {userInfo ? (
-                                        <form onSubmit={submitHandler}>
-                                            <div className="my-4">
-                                                <strong>Đánh giá</strong>
-                                                <select
+                                        <strong>Đánh giá</strong>
+                                        <Box className=" flex justify-center">
+                                            <div>
+                                                <RatingMUI
+                                                    name="hover1-feedback"
                                                     value={rating}
-                                                    onChange={(e) => setRating(e.target.value)}
-                                                    className="col-12 p-3 mt-2 border-0 rounded"
-                                                    style={{ backgroundColor: '#e9eaed80' }}
-                                                >
-                                                    <option value="">Lựa chọn...</option>
-                                                    <option value="1">1 - Rất tệ</option>
-                                                    <option value="2">2 - Tệ</option>
-                                                    <option value="3">3 - Bình thường</option>
-                                                    <option value="4">4 - Tốt</option>
-                                                    <option value="5">5 - Rất tốt</option>
-                                                </select>
+                                                    size="large"
+                                                    getLabelText={getLabelText}
+                                                    onChange={(event, newValue) => {
+                                                        setRating(newValue);
+                                                    }}
+                                                    onChangeActive={(event, newHover) => {
+                                                        setHover(newHover);
+                                                    }}
+                                                    emptyIcon={
+                                                        <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
+                                                    }
+                                                />
+                                                <div className="min-h-[40px]">
+                                                    {rating !== null && (
+                                                        <Box className="text-center">
+                                                            {labels[hover !== -1 ? hover : rating]}
+                                                        </Box>
+                                                    )}
+                                                </div>
                                             </div>
-                                            <div className="my-4">
-                                                <strong>Màu sắc</strong>
-                                                <select
-                                                    value={reviewColor}
-                                                    onChange={(e) => setReviewColor(e.target.value)}
-                                                    className="col-12 p-3 mt-2 border-0 rounded"
-                                                    style={{ backgroundColor: '#e9eaed80' }}
-                                                >
-                                                    <option value="">Lựa chọn...</option>
-                                                    {optionColor?.map((option) => {
-                                                        return (
-                                                            <option key={option._id} value={option.color}>
-                                                                {option.color}
-                                                            </option>
-                                                        );
-                                                    })}
-                                                </select>
-                                            </div>
-                                            <div className="my-4">
-                                                <strong>Bình luận</strong>
-                                                <textarea
-                                                    row="3"
-                                                    value={comment}
-                                                    onChange={(e) => setComment(e.target.value)}
-                                                    className="col-12 p-3 mt-2 border-0 rounded"
-                                                    style={{ backgroundColor: '#e9eaed80' }}
-                                                ></textarea>
-                                            </div>
-                                            <div className="my-3">
-                                                <button
-                                                    disabled={loadingCreateReview}
-                                                    className="col-12 bg-orange border-0 p-3 rounded text-white"
-                                                    type="submit"
-                                                >
-                                                    <p>Gửi đánh giá</p>
-                                                </button>
-                                            </div>
-                                        </form>
-                                    ) : (
-                                        <div className="my-3">
-                                            <Message variant={'alert-warning'}>
-                                                Làm ơn{' '}
-                                                <Link to="/login">
-                                                    " <strong data-bs-dismiss="modal">Đăng nhập</strong> "
-                                                </Link>{' '}
-                                                và mua sản phẩm để đánh giá{' '}
-                                            </Message>
-                                        </div>
-                                    )}
+                                        </Box>
+                                    </div>
+                                    <div className="my-4">
+                                        <strong>Màu sắc</strong>
+                                        <select
+                                            value={reviewColor}
+                                            onChange={(e) => setReviewColor(e.target.value)}
+                                            className="col-12 mt-2 rounded border-0 bg-[var(--content-color)] p-3"
+                                        >
+                                            <option value="">Chọn màu...</option>
+                                            {optionColor?.map((option) => {
+                                                return (
+                                                    <option key={option._id} value={option.color}>
+                                                        {option.color}
+                                                    </option>
+                                                );
+                                            })}
+                                        </select>
+                                    </div>
+                                    <div className="my-4">
+                                        <strong>Bình luận</strong>
+                                        <textarea
+                                            row="3"
+                                            value={comment}
+                                            onChange={(e) => setComment(e.target.value)}
+                                            className="col-12 mt-2 rounded border-0 bg-[var(--content-color)] p-3"
+                                        ></textarea>
+                                    </div>
+                                    <div className="">
+                                        <button
+                                            disabled={loadingCreateReview}
+                                            className="col-12 rounded-md border-0 bg-[var(--main-color)] p-3 font-semibold text-white"
+                                            type="submit"
+                                        >
+                                            Gửi đánh giá
+                                        </button>
+                                    </div>
+                                </form>
+                            ) : (
+                                <div className="my-3 w-full">
+                                    <Message variant={'alert-warning'}>
+                                        Vui lòng{' '}
+                                        <Link to="/login">
+                                            <strong data-bs-dismiss="modal">Đăng nhập</strong>
+                                        </Link>{' '}
+                                        và mua sản phẩm để đánh giá{' '}
+                                    </Message>
                                 </div>
-                            </div>
+                            )}
                         </div>
                     </div>
-                </div>
-            </div>
+                    {/* <div className="modal-action">
+                        <button className="btn bg-red-500 px-3 py-1" onClick={handleCloseModal}>
+                            Đóng
+                        </button>
+                    </div> */}
+                </form>
+            </dialog>
+
             <div className="col-md-12 product-rating" style={{ paddingTop: '20px' }}>
                 <div className="rating-review">
                     {reviews?.map((review) => (
                         <div
                             key={review._id}
-                            className="mb-2 mb-md-3 bg-light p-3 shadow-sm rounded-5"
+                            className="mb-md-3 bg-light rounded-5 mb-2 p-3 shadow-sm"
                             style={{ borderRadius: '10px' }}
                         >
                             <div
@@ -283,7 +306,7 @@ function EvaluateProduct({ productId }) {
                             >
                                 <div className="rating-review__flex">
                                     <img
-                                        src={`/userProfile/${review?.user?.image}` || '/images/logo.png'} // upload ảnh
+                                        src={`${review?.user?.image?.urlImageCloudinary}` || imageDefaul} // upload ảnh
                                         alt=""
                                         style={{
                                             height: '40px',
@@ -300,7 +323,6 @@ function EvaluateProduct({ productId }) {
                                 </div>
                                 <div style={{ paddingLeft: '10px' }}>
                                     <span>
-                                        {/* {moment(review.createdAt).calendar()} */}
                                         {moment(review.createdAt).format('DD/MM/YYYY')}{' '}
                                         {moment(review.createdAt).hours()}
                                         {':'}
