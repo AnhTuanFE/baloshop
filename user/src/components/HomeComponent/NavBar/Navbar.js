@@ -15,7 +15,6 @@ export default function NavBar() {
     }, []);
     return (
         <>
-            {/* Pc-navbar */}
             <div className="w-1/2">
                 <Menu mode="horizontal" className="bg-[#f4f4f4]">
                     {categories.map((category, index) => (
@@ -27,27 +26,6 @@ export default function NavBar() {
                     ))}
                 </Menu>
             </div>
-            {/* tablet-mobile modal */}
-            {/* <div className="navbar-tablet">
-                <div className="modal-tablet"></div>
-                <div className="modal-nav">
-                    <div className="modal-nav__img">
-                        <img src="/images/logo2.png" alt=""></img>
-                    </div>
-                    <ul className="modal-nav__list">
-                        {categories.map((category) => (
-                            <Link to={`/category/${category._id}`}>
-                                <li className="navbar-list__li" onClick={onRemove}>
-                                    {category.name}
-                                </li>
-                            </Link>
-                        ))}
-                    </ul>
-                    <div className="modal-icon" onClick={onRemove}>
-                        <i class="fas fa-times-circle"></i>
-                    </div>
-                </div>
-            </div> */}
         </>
     );
 }

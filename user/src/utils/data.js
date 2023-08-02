@@ -5,4 +5,7 @@ const imageDefaul = 'https://res.cloudinary.com/tlsbaloshop/image/upload/v168457
 const logoDefaul =
     'https://res.cloudinary.com/dt0iazjvh/image/upload/v1690535205/baloshopDefaulLogo/LOGO_BALOSHOP_cttdjk.png';
 
-export { imageDefaul, logoDefaul };
+const imageNotFound =
+    'https://res.cloudinary.com/dt0iazjvh/image/upload/v1690984958/baloshopDefaulLogo/not-found_hqcoyv.png';
+
+export { imageDefaul, logoDefaul, imageNotFound };
