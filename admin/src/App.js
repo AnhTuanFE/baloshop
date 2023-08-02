@@ -10,10 +10,7 @@ import RouteConfirmation from './Routes/RouteConfirmation';
 import './App.css';
 import './responsive.css';
 
-// axios.defaults.baseURL = "https://dp-balo-store-api.vercel.app"
-
 axios.defaults.baseURL = 'https://baloshop-api.vercel.app/';
-
 function App() {
     return (
         <div>
