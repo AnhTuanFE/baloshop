@@ -168,7 +168,7 @@ productRoute.post(
         let listOrder = [];
         if (rating == '' || color == '' || comment == '') {
             res.status(400);
-            throw new Error(`Nhập đầy đủ thông tin`);
+            throw new Error(` Vui lòng nhập đầy đủ thông tin`);
         }
         if (order) {
             for (let i = 0; i < order.length; i++) {

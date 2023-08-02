@@ -209,35 +209,6 @@ export const orderGetAddress = () => async (dispatch, getState) => {
     }
 };
 
-//GET ORDER ORDER ITEMS
-export const orderGetItemOrder = (id) => async (dispatch, getState) => {
-    try {
-        dispatch({ type: types.ORDER_GET_REVIEW_REQUEST });
-
-        const {
-            userLogin: { userInfo },
-        } = getState();
-
-        const config = {
-            headers: {
-                Authorization: `Bearer ${userInfo.token}`,
-            },
-        };
-
-        const { data } = await axios.get(`/api/orders/${id}/orderItem`, config);
-        dispatch({ type: types.ORDER_GET_REVIEW_SUCCESS, payload: data });
-    } catch (error) {
-        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
-        if (message === 'Not authorized, token failed') {
-            dispatch(logout());
-        }
-        dispatch({
-            type: types.ORDER_GET_REVIEW_FAIL,
-            payload: message,
-        });
-    }
-};
-
 // ODERS LIST ALL
 export const listAllOrderAction = () => async (dispatch) => {
     try {

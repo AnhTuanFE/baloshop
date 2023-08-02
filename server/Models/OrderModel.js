@@ -18,7 +18,7 @@ const orderSchema = mongoose.Schema(
             required: true,
             ref: 'User',
         },
-        id_predefined: { type: String, required: false },
+        // id_predefined: { type: String, required: false },
         orderItems: [
             {
                 name: { type: String, required: true },

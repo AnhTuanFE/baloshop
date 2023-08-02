@@ -160,7 +160,6 @@ userRouter.put(
             // console.log('imagePath = ', req.file?.path);
 
             // const user = await User.findById(id);
-            console.log('req.user = ', req?.user._id);
             const user = req?.user;
             const information_admin = await User.findOne({ email: 'admin@gmail.com' });
 

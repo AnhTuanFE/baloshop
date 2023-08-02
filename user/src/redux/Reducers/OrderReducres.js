@@ -45,20 +45,6 @@ export const orderDetailsReducer = (state = { loading: true, orderItems: [], shi
     }
 };
 
-// ORDER GET ITEM
-export const orderGetItem = (state = {}, action) => {
-    switch (action.type) {
-        case types.ORDER_GET_REVIEW_REQUEST:
-            return { ...state, loading: true };
-        case types.ORDER_GET_REVIEW_SUCCESS:
-            return { loading: false, itemOrder: action.payload };
-        case types.ORDER_GET_REVIEW_FAIL:
-            return { loading: false, error: action.payload };
-        default:
-            return state;
-    }
-};
-
 // ORDER PAY
 export const orderPayReducer = (state = {}, action) => {
     switch (action.type) {

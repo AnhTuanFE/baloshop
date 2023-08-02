@@ -6,7 +6,7 @@ import { clearFromCart, listCart } from '~/redux/Actions/cartActions';
 import { createOrder } from '~/redux/Actions/OrderActions';
 import { ORDER_CREATE_RESET } from '~/redux/Constants/OrderConstants';
 
-import PayModal from '~/components/Modal/PayModal';
+import ModalDaiSyUI from '~/components/Modal/ModalDaiSyUI';
 import Message from '~/components/HomeComponent/LoadingError/Error';
 import Loading from '~/components/HomeComponent/LoadingError/Loading';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
@@ -16,9 +16,6 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import { ordersRemainingSelector } from '~/redux/Selector/ordersSelector';
 import { calculate_fee_ship_action } from '~/redux/Actions/OrderActions';
 
-// react query
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 // import './PlaceOrder.css';
 
 function PlaceOrder() {
@@ -41,20 +38,6 @@ function PlaceOrder() {
         });
     };
 
-    const mutationVariable = useMutation({
-        mutationFn: (new_label) => {
-            return axios.put('/api/orders/update_label_ghtk', new_label);
-        },
-        // onSuccess: (data) => {
-        //     console.log('Mutation was successful!', data);
-        // },
-        // onError: (error) => {
-        //     console.error('Mutation failed!', error);
-        // },
-    });
-    const handleUp = () => {
-        mutationVariable.mutate({ idOrder: order?.ShopOrder?._id, label_GHTK: order?.GHTK_Order?.order?.label });
-    };
     const cart = useSelector((state) => state.cart);
     const { cartItems } = cart;
     const userLogin = useSelector((state) => state.userLogin);
@@ -110,12 +93,11 @@ function PlaceOrder() {
         }
         if (success) {
             successPlaceholder();
-            // handleUp();
-            setTimeout(() => {
-                navigate(`/order/${order.ShopOrder._id}`);
-            }, 3000);
+            // setTimeout(() => {
+            // }, 3000);
             dispatch({ type: ORDER_CREATE_RESET });
             dispatch(clearFromCart(userInfo._id));
+            navigate(`/order/${order.ShopOrder._id}`);
         }
     }, [error, success]);
     const placeOrderHandler = () => {
@@ -302,12 +284,11 @@ function PlaceOrder() {
             <div className="mx-auto my-auto max-w-screen-2xl">
                 <div className="mx-20 ">
                     <div className="m-auto  ">
-                        <PayModal
+                        <ModalDaiSyUI
                             Title="Mua hàng"
                             Body="Bạn xác nhận đặt hàng?"
                             HandleSubmit={placeOrderHandler}
-                            Close="modal"
-                        ></PayModal>
+                        ></ModalDaiSyUI>
                         <div className="mb-4 h-32 px-4 shadow-custom-shadow">
                             <div className="my-3 flex items-center justify-around rounded-md pt-3">
                                 <div className="flex">
@@ -438,8 +419,7 @@ function PlaceOrder() {
                                     <button
                                         type="submit"
                                         className="m-auto flex justify-center rounded-lg bg-[var(--main-color)] px-16 py-3 text-fuchsia-50"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#staticBackdrop"
+                                        onClick={() => window.my_modal_1.showModal()}
                                     >
                                         Đặt hàng
                                     </button>

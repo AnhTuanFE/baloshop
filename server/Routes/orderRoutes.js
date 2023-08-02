@@ -32,7 +32,7 @@ orderRouter.post(
     '/',
     protect,
     asyncHandler(async (req, res) => {
-        let id_predefined = uuidv4().slice(0, 24);
+        // let id_predefined = uuidv4().slice(0, 24);
         try {
             const {
                 orderItems,
@@ -80,7 +80,7 @@ orderRouter.post(
                     phone,
                     name,
                     email,
-                    id_predefined: id_predefined,
+                    // id_predefined: id_predefined,
                     paypalOrder,
                     waitConfirmation: true,
                     isPaid: true,
@@ -115,7 +115,7 @@ orderRouter.post(
                     phone,
                     name,
                     email,
-                    id_predefined: id_predefined,
+                    // id_predefined: id_predefined,
                 });
                 for (const orderItem of orderItems) {
                     const findProduct = await Product.findById(orderItem.product);
@@ -137,21 +137,6 @@ orderRouter.post(
             }
         } catch (err) {
             res.status(500).json(err);
-        }
-    }),
-);
-orderRouter.put(
-    '/update_label_ghtk',
-    asyncHandler(async (req, res) => {
-        try {
-            const { idOrder, label_GHTK } = req.body;
-            const find_order_by_id_pre = await Order.findById(idOrder);
-            // console.log('find_order_by_id_pre = ', find_order_by_id_pre);
-            find_order_by_id_pre.label_id_GiaoHangTK = label_GHTK;
-            const orderUpdate = await find_order_by_id_pre.save();
-            res.status(200).json(orderUpdate);
-        } catch (error) {
-            res.status(500).json(error);
         }
     }),
 );
@@ -320,19 +305,6 @@ orderRouter.get(
 
         if (orders) {
             res.json(orders);
-        }
-    }),
-);
-
-// USER GET ORDERS ITEMS
-orderRouter.get(
-    '/:id/orderItem',
-    protect,
-    asyncHandler(async (req, res) => {
-        const order = await Order.findById(req.params.id);
-        if (order) {
-            const orderItems = order?.orderItems;
-            res.json(orderItems);
         }
     }),
 );

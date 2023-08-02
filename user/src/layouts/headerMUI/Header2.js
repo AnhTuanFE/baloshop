@@ -101,68 +101,28 @@
 //         </div>
 //     );
 // }
-import React from 'react';
-import { UserOutlined } from '@ant-design/icons';
-import { AutoComplete, Input } from 'antd';
-const renderTitle = (title) => (
-    <span>
-        {title}
-        <a
-            style={{
-                float: 'right',
-            }}
-            href="https://www.google.com/search?q=antd"
-            target="_blank"
-            rel="noopener noreferrer"
-        >
-            more
-        </a>
-    </span>
-);
-const renderItem = (title, count) => ({
-    value: title,
-    label: (
-        <div
-            style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-            }}
-        >
-            {title}
-            <span>
-                <UserOutlined /> {count}
-            </span>
-        </div>
-    ),
-});
-const options = [
-    {
-        label: renderTitle('Libraries'),
-        options: [renderItem('AntDesign', 10000), renderItem('AntDesign UI', 10600)],
-    },
-    {
-        label: renderTitle('Solutions'),
-        options: [renderItem('AntDesign UI FAQ', 60100), renderItem('AntDesign FAQ', 30010)],
-    },
-    {
-        label: renderTitle('Articles'),
-        options: [renderItem('AntDesign design language', 100000)],
-    },
-];
-const Header2 = () => (
-    <div className="m-auto flex">
-        <div className="m-auto">
-            <AutoComplete
-                popupClassName="certain-category-search-dropdown"
-                dropdownMatchSelectWidth={500}
-                options={options}
-                onChange={(e) => {
-                    console.log('e.target.value = ', e);
-                }}
-            >
-                <Input size="large" placeholder="input here" />
-            </AutoComplete>
-        </div>
-    </div>
-);
+import { useRef, useEffect } from 'react';
+import ModalMain from '~/components/Modal/ModalMain';
+function Header2() {
+    const modalChildRef = useRef();
+    console.log('modalChildRef = ', modalChildRef);
+    const content = {
+        title: 'nội dung',
+        child: (
+            <div className="flex justify-center">
+                <div>
+                    <h1>nội dung chính</h1>
+                    <p>chào anh chị em</p>
+                </div>
+            </div>
+        ),
+    };
+    return (
+        <>
+            <button onClick={modalChildRef.current?.openModal}>open modal</button>
+            <ModalMain content={content} ref={modalChildRef} />
+        </>
+    );
+}
+
 export default Header2;
