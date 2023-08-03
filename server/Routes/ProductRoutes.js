@@ -272,13 +272,6 @@ productRoute.delete(
     asyncHandler(async (req, res) => {
         const product = await Product.findById(req.params.id);
         const listImage = product?.image;
-        if (listImage) {
-            for (let i = 0; i < listImage.length; i++) {
-                fs.unlink(path.join(__dirname, 'public/productImage', listImage[i].image), (err) => {
-                    if (err) console.log('Delete old productImage have err:', err);
-                });
-            }
-        }
         if (product) {
             await Cart.updateMany({}, { $pull: { cartItems: { product: req.params.id } } });
             await product.remove();
@@ -509,11 +502,6 @@ productRoute.post(
         const product = await Product.findById(req.params.id);
         const listImage = product?.image;
         const finDelete = listImage.find((image) => image.id == imageId);
-        if (finDelete) {
-            fs.unlink(path.join(__dirname, 'public/productImage', finDelete.image), (err) => {
-                if (err) console.log('Delete old productImage have err:', err);
-            });
-        }
         if (product) {
             const filterImage = listImage.filter((image) => image.id != imageId);
             product.image = filterImage;

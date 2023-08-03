@@ -67,7 +67,7 @@ function SimilarProducts(data) {
                 <span className="section-title-main">Sản Phẩm Tương Tự</span>
                 <p></p>
             </h2>
-            <div className="container corousel-container">
+            <div className="corousel-container container">
                 <div className="corousel">
                     <Slider {...settings}>
                         {products?.map((product, index) => {
@@ -75,7 +75,6 @@ function SimilarProducts(data) {
                                 <div key={index} className="corousel-div" style={{ maxHeight: '300px' }}>
                                     <Link to={`/product/${product._id}`} className="corousel-link">
                                         <img
-                                            // src={`/productImage/${product?.image[0]?.image}`}
                                             src={`${product?.image[0].urlImage}`}
                                             className="corousel-img"
                                             alt=""

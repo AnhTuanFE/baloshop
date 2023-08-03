@@ -32,19 +32,16 @@ function ModalMain(prop, ref) {
         console.log('content = ', content);
     });
     return (
-        <dialog ref={modalRef} onClose={handleCloseModal} onClick={handleOverlayClick}>
-            <form method="dialog" className="modal-box">
-                <button
-                    onClick={handleCloseModal}
-                    className="btn-sm btn-circle btn absolute right-2 top-2 bg-[var(--main-color2)] font-extrabold text-white"
-                >
-                    ✕
-                </button>
-                <div>
-                    <h3 className="text-center text-lg font-bold">{content?.title}</h3>
-                    <p className="py-4">Press ESC key or click on ✕ button to close</p>
-                    {content?.child}
-                </div>
+        <dialog ref={modalRef} className="w-1/3 rounded-lg" onClick={handleOverlayClick}>
+            <button
+                onClick={handleCloseModal}
+                className="btn-sm btn-circle btn absolute right-2 top-2 bg-[var(--main-color2)] font-extrabold text-white"
+            >
+                ✕
+            </button>
+            <h3 className="text-center text-lg font-bold">{content?.title}</h3>
+            <form method="dialog" className="modal-box w-full">
+                {content?.child}
             </form>
         </dialog>
     );
