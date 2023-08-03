@@ -109,17 +109,28 @@ function Header2() {
     const content = {
         title: 'nội dung',
         child: (
-            <div className="flex justify-center">
+            <div className="flex justify-center ">
                 <div>
                     <h1>nội dung chính</h1>
                     <p>chào anh chị em</p>
+                    <button
+                        onClick={() => {
+                            console.log('hello anh chị em');
+                        }}
+                        className="bg-red-400 px-8 py-2 text-white"
+                    >
+                        click show
+                    </button>
                 </div>
             </div>
         ),
     };
+
     return (
         <>
-            <button onClick={modalChildRef.current?.openModal}>open modal</button>
+            <button className="bg-red-400 px-8 py-2 text-white" onClick={modalChildRef.current?.openModal}>
+                open modal
+            </button>
             <ModalMain content={content} ref={modalChildRef} />
         </>
     );

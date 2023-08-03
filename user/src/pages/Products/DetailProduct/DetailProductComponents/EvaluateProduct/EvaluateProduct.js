@@ -140,35 +140,35 @@ function EvaluateProduct({ productId }) {
                 <div style={{ border: '2px solid #ccc', borderRadius: '10px' }}>
                     <div className="row">
                         <div className="col-md-4 col-sm-5 pt-4 text-center">
-                            <div class="rating-box">
+                            <div className="rating-box">
                                 <h1 class="pt-4">{mediumReview}</h1>
                             </div>
-                            <div className="reviewMedium">
+                            <div className="mx-1 text-sm">
                                 <Rating value={mediumReview} />
                             </div>
                             <p>{reviewCart.length} đánh giá và nhận xét</p>
                         </div>
-                        <div class="col-md-8 col-sm-7">
-                            <div class="rating-bar0 justify-content-center">
-                                <table class="mx-auto text-left">
+                        <div className="col-md-8 col-sm-7">
+                            <div className="rating-bar0 justify-content-center">
+                                <table className="mx-auto text-left">
                                     {returnStar.map((star, index) => {
                                         return (
                                             <tr key={index}>
-                                                <td class="rating-label">
+                                                <td className="rating-label">
                                                     {star.rating}
-                                                    <span class="fa fa-star star-active mx-1"></span>
+                                                    <span className="fa fa-star star-active mx-1"></span>
                                                 </td>
-                                                <td class="rating-bar">
-                                                    <div class="bar-container">
+                                                <td className="rating-bar">
+                                                    <div className="bar-container">
                                                         <div
-                                                            class="bar-5"
+                                                            className="bar-5"
                                                             style={{
                                                                 width: `${star.percentage}%`,
                                                             }}
                                                         ></div>
                                                     </div>
                                                 </td>
-                                                <td class="text-right">{star.numReview} đánh giá</td>
+                                                <td className="text-right">{star.numReview} đánh giá</td>
                                             </tr>
                                         );
                                     })}
@@ -177,8 +177,11 @@ function EvaluateProduct({ productId }) {
                         </div>
                     </div>
                 </div>
-                <div className="buttonReview" style={{ textAlign: 'center', marginTop: '10px' }}>
-                    <button className="text-white" onClick={handleOpenModal}>
+                <div className="mt-3 text-center hover:opacity-[0.9]">
+                    <button
+                        className="h-9 w-[300px] cursor-pointer rounded-2xl bg-[var(--main-color)] text-white"
+                        onClick={handleOpenModal}
+                    >
                         Đánh giá ngay
                     </button>
                 </div>
@@ -193,7 +196,7 @@ function EvaluateProduct({ productId }) {
                     >
                         ✕
                     </button>
-                    <div class="modal-content">
+                    <div className="shadow-[0 1px 2px 0 rgb(60 64 67 / 10%), 0 2px 6px 2px rgb(60 64 67 / 15%)] rounded-2xl">
                         <div class="modal-body">
                             <div className="my-4">
                                 {errorCreateReview && <Message variant="alert-danger">{errorCreateReview}</Message>}
@@ -289,39 +292,22 @@ function EvaluateProduct({ productId }) {
                 </form>
             </dialog>
 
-            <div className="col-md-12 product-rating" style={{ paddingTop: '20px' }}>
+            <div className="col-md-10 pt-5">
                 <div className="rating-review">
                     {reviews?.map((review) => (
-                        <div
-                            key={review._id}
-                            className="mb-md-3 bg-light rounded-5 mb-2 p-3 shadow-sm"
-                            style={{ borderRadius: '10px' }}
-                        >
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                }}
-                            >
-                                <div className="rating-review__flex">
+                        <div key={review._id} className="mb-md-3 bg-light rounded-5 mb-2 rounded-xl p-3 shadow-sm">
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center">
                                     <img
                                         src={`${review?.user?.image?.urlImageCloudinary}` || imageDefaul} // upload ảnh
                                         alt=""
-                                        style={{
-                                            height: '40px',
-                                            width: '40px',
-                                            borderRadius: '50%',
-                                            marginRight: '5px',
-                                            objectFit: 'cover',
-                                        }}
-                                        className="fix-none"
+                                        className="fix-none mr-1 h-10 w-10 rounded-[50%] object-cover"
                                     />
                                     <div className="review-rating">
                                         <strong>{review.name}</strong>
                                     </div>
                                 </div>
-                                <div style={{ paddingLeft: '10px' }}>
+                                <div className="pl-3">
                                     <span>
                                         {moment(review.createdAt).format('DD/MM/YYYY')}{' '}
                                         {moment(review.createdAt).hours()}
@@ -332,42 +318,17 @@ function EvaluateProduct({ productId }) {
                                     </span>
                                 </div>
                             </div>
-                            <div className="alert alert-info mt-3">
-                                <div style={{ display: 'flex', alignItems: 'center' }}>
-                                    <span
-                                        style={{
-                                            paddingRight: '5px',
-                                            fontSize: '15px',
-                                            fontWeight: '600',
-                                        }}
-                                    >
-                                        Đánh giá:{' '}
-                                    </span>
+                            {/* <div className="alert alert-info mt-3"> */}
+                            <div className=" mt-3 rounded-lg bg-[#3abff8] px-2 py-1">
+                                <div className="flex items-center">
+                                    <span className="pr-1 text-base font-semibold">Đánh giá: </span>
                                     <Rating value={review.rating} />
                                 </div>
-                                <div style={{ fontSize: '16px' }}>
-                                    <span
-                                        style={{
-                                            paddingRight: '5px',
-                                            fontSize: '15px',
-                                            fontWeight: '600',
-                                        }}
-                                    >
-                                        Màu sắc:
-                                    </span>{' '}
-                                    {review.color}
+                                <div className="text-base">
+                                    <span className="pr-1 text-base font-semibold">Màu sắc:</span> {review.color}
                                 </div>
-                                <div style={{ fontSize: '16px' }}>
-                                    <span
-                                        style={{
-                                            paddingRight: '5px',
-                                            fontSize: '15px',
-                                            fontWeight: '600',
-                                        }}
-                                    >
-                                        Nhận xét:
-                                    </span>{' '}
-                                    {review.comment}
+                                <div className="text-base">
+                                    <span className="pr-1 text-base font-semibold">Nhận xét:</span> {review.comment}
                                 </div>
                             </div>
                         </div>

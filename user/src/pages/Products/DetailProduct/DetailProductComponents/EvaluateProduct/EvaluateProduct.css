@@ -1,74 +1,3 @@
-.product-info {
-    width: 100%;
-}
-.product-dtl p {
-    line-height: 24px;
-    color: #7a7a7a;
-}
-.product-count {
-    /* border: 2px solid #f3f3f3; */
-    border-radius: 5px;
-    margin-top: 10px;
-}
-.product-count .flex-box {
-    padding: 12px 25px;
-    /* border-bottom: 2px solid #f3f3f3; */
-}
-.product-description {
-    padding-top: 20px;
-    margin-top: 10px;
-    background-color: #fff;
-    border-radius: 4px;
-}
-.product-description__h2 {
-    border-bottom: 2px solid rgba(250, 154, 10, 0.8);
-    font-size: 24px !important;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    font-weight: 600;
-}
-.product-description h2 {
-    font-size: 20px;
-}
-.product-description p {
-    padding: 20px 0;
-}
-.product-count .flex-box h6 {
-    font-size: 16px;
-}
-.product-count .flex-box span {
-    font-weight: 600;
-    color: #000000;
-}
-.product-count .flex-box select {
-    background-color: #f3f3f3;
-    width: 100px;
-    height: 40px;
-    text-align: center;
-    border: 0px;
-    border-radius: 5px;
-}
-.round-black-btn {
-    border-radius: 4px;
-    background: var(--main-color);
-    bottom: 0;
-    color: #fff;
-    width: 100%;
-    height: 50px;
-    border: 0;
-    text-transform: uppercase;
-    font-weight: bold;
-    font-size: 15px;
-    transition: all 0.5s ease-in-out 0s;
-}
-.round-black-btn:hover,
-.round-black-btn:focus {
-    background: var(--main-color2);
-}
-.bg-orange {
-    background: #ff5722;
-}
 .rating-review {
     max-height: 50vh;
     overflow-y: scroll;
@@ -80,58 +9,11 @@
     background: #ff5722;
     border-radius: 8px;
 }
-.rating-review__flex {
-    display: flex;
-    align-items: center;
-}
-.rating-review__flex p {
-    height: 40px;
-    width: 40px;
-    border-radius: 50%;
-    background-color: #f5f5f5;
-    text-align: center;
-    line-height: 40px;
-    font-size: 18px;
-    font-weight: 600;
-    border: 1px solid #ff5722;
-}
 .alert-info {
     /* background-color: #f0eeeb; */
     border: none;
 }
-.review-rating .rating {
-    padding-left: 5px;
-}
-.product-avatar {
-    background-color: #fff;
-    padding: 15px 0;
-    border-radius: 4px;
-}
-.product-rating {
-    background-color: #fff;
-    margin-top: 10px;
-    border-radius: 4px;
-}
 /* ===================================================================================== */
-a {
-    text-decoration: none !important;
-    color: inherit;
-}
-
-a:hover {
-    color: #455a64;
-}
-
-.card {
-    border-radius: 5px;
-    background-color: #fff;
-    padding-left: 60px;
-    padding-right: 60px;
-    margin-top: 30px;
-    padding-top: 30px;
-    padding-bottom: 30px;
-}
-
 .rating-box {
     width: 130px;
     height: 125px;
@@ -150,7 +32,6 @@ a:hover {
     padding: 0 4px;
     border-radius: 5px;
 }
-
 .bar-container {
     width: 100%;
     background-color: #f1f1f1;
@@ -160,7 +41,6 @@ a:hover {
     cursor: pointer;
     margin-bottom: 5px;
 }
-
 .bar-5 {
     /* width: 70%; */
     height: 13px;
@@ -248,73 +128,4 @@ td {
 .reviewMedium i {
     margin: 0 2px;
     font-size: 14px;
-}
-.buttonReview button {
-    width: 300px;
-    height: 35px;
-    text-align: center;
-    border-radius: 15px;
-    background-color: var(--main-color);
-    cursor: pointer;
-    border: none;
-    color: #fff;
-}
-.buttonReview button:hover {
-    opacity: 0.9;
-}
-
-.modal-content {
-    border-radius: 15px;
-    box-shadow: 0 1px 2px 0 rgb(60 64 67 / 10%), 0 2px 6px 2px rgb(60 64 67 / 15%);
-}
-.question-product {
-    width: calc(100% - 160px);
-    border-radius: 10px;
-    box-shadow: 0 0 10px 0 rgb(60 64 67 / 10%), 0 2px 6px 2px rgb(60 64 67 / 15%);
-    border: 0;
-    font-size: 15px;
-    height: 160px;
-    padding: 5px 10px;
-}
-.button {
-    width: 70px;
-    color: #fff;
-    background-color: var(--main-color);
-    border-radius: 8px;
-    grid-gap: 5px;
-    gap: 5px;
-    border: 0;
-    height: 40px;
-    line-height: 40px;
-}
-.button:hover {
-    opacity: 0.8;
-}
-.product-review {
-    width: calc(100% - 25px);
-    margin-left: auto;
-    padding: 10px;
-    border-radius: 10px;
-    background: #fff;
-    box-shadow: 0 1px 2px 0 rgb(60 64 67 / 10%), 0 2px 6px 2px rgb(60 64 67 / 15%);
-    overflow: hidden;
-}
-.commentChild {
-    background-color: rgb(255, 255, 255);
-    line-height: 20px;
-    color: red;
-    font-size: 15px;
-    cursor: pointer;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-}
-.marginbottom {
-    margin-bottom: 0px !important;
-}
-.flex-padding .alert {
-    padding: 0 !important;
-}
-.backgroud {
-    background-color: #ebeced85;
 }
