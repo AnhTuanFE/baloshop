@@ -331,32 +331,6 @@ export const createProductCommentChild = (productId, question) => async (dispatc
     }
 };
 
-// nhận vào 1 dữ liệu là mảng các image sau đó lưu vào db
-export const createImageProduct = (images) => async (dispatch) => {
-    try {
-        dispatch({ type: PRODUCT_CREATE_IMAGE_REQUEST });
-
-        const config = {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        };
-
-        const { data } = await axios.post(`/api/imageProfile/`, images, config);
-
-        dispatch({ type: PRODUCT_CREATE_IMAGE_SUCCESS, payload: data });
-    } catch (error) {
-        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
-        if (message === 'Not authorized, token failed') {
-            dispatch(logout());
-        }
-        dispatch({
-            type: PRODUCT_CREATE_IMAGE_FAIL,
-            payload: message,
-        });
-    }
-};
-
 export const deleteImageProduct = (productId, imageId) => async (dispatch, getState) => {
     try {
         dispatch({ type: PRODUCT_DELETE_IMAGE_REQUEST });

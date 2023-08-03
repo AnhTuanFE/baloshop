@@ -12,8 +12,6 @@ import {
     updateProduct,
     updateOptionProduct,
     deleteOptionProduct,
-    createImageProduct,
-    deleteImageProduct,
 } from '~/Redux/Actions/ProductActions';
 import {
     PRODUCT_UPDATE_RESET,
@@ -360,7 +358,7 @@ const ProductEditScreen = () => {
                                                         <div className="d-grid" style={{ marginTop: '10px' }}>
                                                             <button
                                                                 onClick={submitOptionHandler}
-                                                                className="btn btn-primary py-2 color-orange"
+                                                                className="btn btn-primary color-orange py-2"
                                                             >
                                                                 Cập nhật
                                                             </button>
@@ -369,7 +367,7 @@ const ProductEditScreen = () => {
                                                 </div>
                                             )}
                                             <div className="col-md-9 col-lg-9">
-                                                <table className="table slider-data">
+                                                <table className="slider-data table">
                                                     <thead>
                                                         <tr>
                                                             <th>Stt</th>
@@ -470,7 +468,7 @@ const ProductEditScreen = () => {
                                                         <div className="d-grid" style={{ marginTop: '10px' }}>
                                                             <button
                                                                 onClick={submitOptionSaveHandler}
-                                                                className="btn btn-primary py-2 color-orange"
+                                                                className="btn btn-primary color-orange py-2"
                                                             >
                                                                 Thêm
                                                             </button>

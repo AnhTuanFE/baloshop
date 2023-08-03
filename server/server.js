@@ -19,7 +19,6 @@ import GHTK_Router from './Routes/GHTK_Router.js';
 import cors from 'cors';
 dotenv.config();
 import { Server } from 'http'; //deploy thì comment
-import imageProfile from './Routes/imageProfile.js';
 
 connectDatabase();
 connectCloudinary();
@@ -54,7 +53,6 @@ app.use('/api/category', categoryRoute);
 app.get('/api/config/paypal', (req, res) => {
     res.send(process.env.PAYPAL_CLIENT_ID);
 });
-app.use('/api/imageProfile', imageProfile);
 // forgot
 app.use('/api/forgotPass', forgotPassRouter);
 app.use('/api/verifiedEmail', createUserRouter);

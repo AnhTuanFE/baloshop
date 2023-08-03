@@ -152,7 +152,6 @@ const AllProducts_Filter = (props) => {
                                                         <Link to={`/product/${product?._id}`}>
                                                             <div className={clsx(styles.shopBack)}>
                                                                 <img
-                                                                    // src={`/productImage/${product?.image[0]?.image}`}
                                                                     src={`${product?.image[0].urlImage}`}
                                                                     alt={product?.name}
                                                                 />

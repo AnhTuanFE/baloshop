@@ -13,7 +13,7 @@ import {
     PRODUCT_OPTIONCOLOR_RESET,
     PRODUCT_CREATE_IMAGE_RESET,
 } from '~/Redux/Constants/ProductConstants';
-import { createProduct, createOptionColor, editProduct, createImageProduct } from '~/Redux/Actions/ProductActions';
+import { createProduct, createOptionColor, editProduct } from '~/Redux/Actions/ProductActions';
 
 import Toast from '~/components/LoadingError/Toast';
 import Message from '~/components/LoadingError/Error';
@@ -140,66 +140,6 @@ const AddProduct = () => {
         dispatch(createOptionColor(productId, { color, countInStock }));
     };
 
-    // const [image, setImage] = useState([]); // image là một mảng gồm nhiều image
-    // const [inputImage, setInputImage] = useState([]); // input image cũng là một mảng
-    // const [ble, setBle] = useState(false);
-    // const [check, setCheck] = useState(0);
-
-    // tạo image product state sẽ lưu trữ các data như url Images, success
-    // const productCreateImage = useSelector((state) => state.productCreateImage);
-    // const { urlImages, success: successCreactImage } = productCreateImage;
-
-    // useEffect(() => {
-    //     if (successOption) {
-    //         dispatch({ type: PRODUCT_OPTIONCOLOR_RESET });
-    //         setColor('');
-    //         setCountInStock(1);
-    //     }
-    //     if (successCreactImage) {
-    //         dispatch({ type: PRODUCT_CREATE_IMAGE_RESET });
-    //     }
-    // }, [successOption, successCreactImage, dispatch]);
-
-    // useEffect(() => {
-    //     if (urlImages) {
-    //         for (let i = 0; i < urlImages.length; i++) {
-    //             setImage((image) => [...image, { image: urlImages[i].filename, id: uuidv4() }]);
-    //         }
-    //     }
-    // }, [urlImages]);
-
-    // một khi chọn image nó sẽ set giá trị của input image sau đó nó hiện nút lưu
-    // const handlerOnchane = (e) => {
-    //     setInputImage(e.target.files);
-    //     if (check === 0) {
-    //         setCheck(1);
-    //         setBle(true);
-    //     }
-    // };
-    // sau đó lấy các phần tử của mảng input image gán vào phần tử arrImage
-    // useEffect(() => {
-    //     for (let i = 0; i < inputImage.length; i++) {
-    //         setArrImage((image) => [...image, { image: inputImage[i], id: arrImage.length + i }]);
-    //     }
-    // }, [inputImage]);
-
-    // sau khi
-    // const handlerSubmitImage = () => {
-    //     let images = new FormData();
-    //     for (let i = 0; i < arrImage.length; i++) {
-    //         images.append('image', arrImage[i].image);
-    //     }
-    // mỗi khi nhập hình ảnh xong rồi nhấn nút lưu
-    // ===================
-    // const handlerSubmitImage = () => {
-    //     let images = new FormData();
-    //     for (let image of arrImage) {
-    //         images.append('image', image.image);
-    //     }
-    //     dispatch(createImageProduct(images));
-    //     setBle(false);
-    //     setCheck(2);
-    // };
     return (
         <>
             <Toast />
@@ -439,7 +379,7 @@ const AddProduct = () => {
                                                         {disabledOptionColor && (
                                                             <button
                                                                 onClick={submitOptionHandler}
-                                                                className="btn btn-primary py-2 color-orange"
+                                                                className="btn btn-primary color-orange py-2"
                                                             >
                                                                 Lưu
                                                             </button>
@@ -448,7 +388,7 @@ const AddProduct = () => {
                                                 </form>
                                             </div>
                                             <div className="col-md-8 col-lg-8">
-                                                <table className="table slider-data">
+                                                <table className="slider-data table">
                                                     <thead>
                                                         <tr>
                                                             <th>Stt</th>
