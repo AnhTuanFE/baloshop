@@ -13,18 +13,6 @@
     position: relative;
 }
 
-.remove-button {
-    background-color: red;
-    width: 25px;
-    height: 25px;
-    border-radius: 100px;
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    font-size: 12px;
-    color: #ffffff;
-    cursor: pointer;
-}
 .cart-image img {
     width: 100%;
     height: 100px;
@@ -37,12 +25,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-}
-.delete-cart {
-    line-height: 100px;
-}
-.delete-cart:hover {
-    color: orange;
 }
 .cart-price h4 {
     height: 32px;
@@ -108,9 +90,6 @@
 }
 .cart-buttons a:nth-child(1) button {
     background-color: #000000;
-}
-.backTo:hover {
-    color: orange;
 }
 .cart-scroll {
     max-height: 70.5vh;

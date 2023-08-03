@@ -162,36 +162,35 @@ function Cart() {
             {contextHolder}
             <div className="container">
                 {cartItems?.length === 0 ? (
-                    <div className=" alert alert-info mt-3 text-center">
-                        <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <img
-                                style={{ width: '100px', height: '100px', margin: '0 auto' }}
-                                src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/cart/9bdd8040b334d31946f49e36beaf32db.png"
-                                alt=""
-                            />
-                            GIỎ HÀNG CỦA BẠN ĐANG TRỐNG
+                    <div className=" alert alert-info mt-3 flex justify-center text-center">
+                        <div>
+                            <div className="mb-4">
+                                <img
+                                    className="m-auto h-[100px] w-[100px]"
+                                    src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/cart/9bdd8040b334d31946f49e36beaf32db.png"
+                                    alt="Giỏ hàng trống"
+                                />
+                                GIỎ HÀNG CỦA BẠN ĐANG TRỐNG
+                            </div>
+                            <Link className="btn-success btn mx-5 px-5 pb-4 pt-3 text-base font-extrabold" to="/">
+                                BẮT ĐẦU MUA SẮM
+                            </Link>
                         </div>
-                        <Link
-                            className="btn btn-success mx-5 px-5 py-3"
-                            to="/"
-                            style={{
-                                fontSize: '12px',
-                            }}
-                        >
-                            BẮT ĐẦU MUA SẮM
-                        </Link>
                     </div>
                 ) : (
                     <>
-                        <div className="backTo" style={{ paddingTop: '10px' }}>
-                            <Link to="/" className="col-md-6 ">
-                                <i class="fas fa-undo" style={{ paddingRight: '5px' }}></i>
+                        <div className="pt-3">
+                            <Link
+                                to="/"
+                                className="col-md-6 rounded-xl bg-[var(--main-color)] px-3 py-2 font-bold text-white"
+                            >
+                                <i className="fas fa-undo pr-2"></i>
                                 Về trang chủ
                             </Link>
                         </div>
                         <div className=" alert alert-info mt-3 text-center">
                             Tổng sản phẩm trong giỏ
-                            <Link className="text-success mx-2" to="/cart">
+                            <Link className="mx-2 text-success" to="/cart">
                                 ({cartItems?.length ?? 0})
                             </Link>
                         </div>
@@ -214,13 +213,16 @@ function Cart() {
                                         <h4>{item.product?.price?.toLocaleString('de-DE')}đ</h4>
                                     </div>
                                     <div
-                                        className=" col-md-1 delete-cart"
-                                        onClick={() => {
-                                            removeFromCartHandle(item?._id);
-                                        }}
+                                        className=" col-md-1 bg-red-500 leading-[100px] hover:bg-orange-400"
                                         style={{ display: 'flex', justifyContent: 'right', cursor: 'pointer' }}
                                     >
-                                        Xóa
+                                        <button
+                                            onClick={() => {
+                                                removeFromCartHandle(item?._id);
+                                            }}
+                                        >
+                                            Xóa
+                                        </button>
                                     </div>
                                 </div>
                             ))}
