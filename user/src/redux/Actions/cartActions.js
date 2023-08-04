@@ -18,7 +18,6 @@ export const listCart = () => async (dispatch, getState) => {
 
         const { data } = await axios.get(`/api/cart/${userInfo._id}`, config);
         localStorage.setItem('cartItems', JSON.stringify(data));
-
         dispatch({ type: types.CART_LIST_SUCCESS, payload: data });
     } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;
