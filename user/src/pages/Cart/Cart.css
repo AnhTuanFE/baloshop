@@ -1,125 +1,12 @@
 /* CART */
-.cart-iterm:first-child {
-    margin-top: 0;
-}
-.cart-iterm:last-child {
-    margin-bottom: 0;
-}
-.cart-iterm {
-    margin: 15px 0;
-    padding: 10px;
-    background-color: white;
-    /* box-shadow: 0 12px 20px 1px rgba(64, 64, 64, 0.09); */
-    position: relative;
-}
-
-.remove-button {
-    background-color: red;
-    width: 25px;
-    height: 25px;
-    border-radius: 100px;
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    font-size: 12px;
-    color: #ffffff;
-    cursor: pointer;
-}
-.cart-image img {
-    width: 100%;
-    height: 100px;
-    object-fit: contain;
-}
-.cart-check {
-    line-height: 100px;
-}
-.cart-checkbok {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.delete-cart {
-    line-height: 100px;
-}
-.delete-cart:hover {
-    color: orange;
-}
-.cart-price h4 {
-    height: 32px;
-    line-height: 32px;
-    text-align: center;
-}
-.cart-text a h4,
-.cart-price h4 {
-    font-size: 17px;
-    font-weight: bold;
-}
-.cart-text p {
-    margin-top: 10px;
-    font-size: 15px;
-    color: #7a7a7a;
-}
-.cart-qty select {
-    width: 70%;
-    font-size: 15px;
-    padding: 10px;
-    border: 1px solid #c5c5c5;
-    border-radius: 5px;
-}
-.cart-qty h6,
-.cart-price h6 {
-    margin-bottom: 10px;
-    color: #2c2c2c;
-    font-size: 14px;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-.total {
-    display: flex;
-    text-align: end;
-    padding: 0 30px;
-}
-.total .sub {
-    color: #8c8c8c;
-    font-size: 20px;
-    /* text-transform: uppercase; */
-    margin-right: 20px;
-}
-.total .total-price {
-    font-size: 20px;
-    color: red;
-    font-weight: bold;
-}
-.cart-buttons {
-    padding: 20px 0;
-    background-color: #fff;
-    margin-bottom: 30px;
-}
-.cart-buttons a button,
-.cart-buttons div button {
-    width: 80%;
-    padding: 15px 0;
-    border: 0px;
-    margin-right: 10px;
-    text-transform: uppercase;
-    font-size: 13px;
-    background-color: var(--main-color);
-    color: #ffffff;
-}
-.cart-buttons a:nth-child(1) button {
-    background-color: #000000;
-}
-.backTo:hover {
-    color: orange;
-}
 .cart-scroll {
-    max-height: 70.5vh;
+    max-height: 74vh;
     overflow-y: scroll;
 }
 .cart-scroll::-webkit-scrollbar {
-    width: 5px;
+    width: 2px;
 }
 .cart-scroll::-webkit-scrollbar-thumb {
     border-radius: 8px;
-    background-color: red;
+    background-color: var(--main-color2);
 }

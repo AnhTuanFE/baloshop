@@ -193,7 +193,7 @@ GHTK_Router.get(
     '/get_order_by_id',
     asyncHandler(async (req, res) => {
         try {
-            const data1 = 'S22223996.BO.MB14-05-D6.1250012891';
+            const data1 = 'S22223996.SG01-A31.1250013072';
 
             const url = `${apiBase}/services/shipment/v2/${data1}`;
 
