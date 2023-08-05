@@ -183,7 +183,7 @@ function Cart() {
         <>
             {loadingCreate && <Loading />}
             {contextHolder}
-            <div className="container">
+            <div className="">
                 {cartItems?.length === 0 ? (
                     <div className=" alert alert-info mt-3 flex justify-center text-center">
                         <div>

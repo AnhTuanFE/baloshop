@@ -18,11 +18,11 @@ function PurchaseHistory() {
 
     return (
         <>
-            <div className="container mt-lg-5 mt-3">
+            <div className="mt-lg-5 mt-3">
                 <div className="row align-items-start">
                     <SideBar_Profile userInfo={userInfo} />
-                    <div className='flex-[2] m-auto w-full'>
-                        <div class="tab-content col-lg-8 pb-5 pt-lg-0 pt-3" id="v-pills-tabContent">
+                    <div className="m-auto w-full flex-[2]">
+                        <div class="tab-content col-lg-8 pt-lg-0 pb-5 pt-3" id="v-pills-tabContent">
                             <div
                                 class="tab-pane fade show active"
                                 id="v-pills-profile"

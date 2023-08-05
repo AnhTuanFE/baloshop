@@ -121,7 +121,7 @@ function DetailProduct() {
 
     const handleRender = () => {
         return (
-            <>
+            <div className="mx-[5%]">
                 {contextHolder}
                 <div className="row mx-5">
                     <div className="col-md-12 product-avatar">
@@ -173,8 +173,8 @@ function DetailProduct() {
                                                         }}
                                                         class={
                                                             optionIndex === index
-                                                                ? 'btn btn-outline-primary active mx-1'
-                                                                : 'btn btn-outline-primary mx-1'
+                                                                ? 'btn-outline-primary active btn mx-1'
+                                                                : 'btn-outline-primary btn mx-1'
                                                         }
                                                         style={{ marginTop: '8px' }}
                                                     >
@@ -213,7 +213,7 @@ function DetailProduct() {
                 <EvaluateProduct productId={productId} />
                 <AskAndAnswer productId={productId} />
                 <SimilarProducts products={products} />
-            </>
+            </div>
         );
     };
 
@@ -227,7 +227,7 @@ function DetailProduct() {
     }
     return (
         <>
-            <div className="single-product container">
+            <div className="single-product">
                 {loadingAddCart && <Loading />}
                 {content}
             </div>
