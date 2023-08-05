@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import Slider from 'react-slick';
 import Rating from '~/components/HomeComponent/Rating/Rating';
 import 'slick-carousel/slick/slick.css';
@@ -9,10 +9,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ListProductAll } from '~/redux/Actions/ProductActions';
 
 function SimilarProducts(data) {
-    //
-    // const { products } = data;
-    // console.log('products = ', products);
-    // console.log('data = ', data);
     const dispatch = useDispatch();
 
     const allProduct = useSelector((state) => state.productAll);
@@ -62,36 +58,40 @@ function SimilarProducts(data) {
         ],
     };
     return (
-        <>
-            <h2 className="section-title" style={{ padding: '0', margin: '30px 0 10px 0' }}>
-                <span className="section-title-main">Sản Phẩm Tương Tự</span>
-                <p></p>
+        <div className="mt-5">
+            <h2 className="mb-3 ml-2 mt-7">
+                <span className="text-2xl font-semibold">Sản Phẩm Tương Tự</span>
             </h2>
-            <div className="corousel-container container">
-                <div className="corousel">
-                    <Slider {...settings}>
-                        {products?.map((product, index) => {
-                            return (
-                                <div key={index} className="corousel-div" style={{ maxHeight: '300px' }}>
-                                    <Link to={`/product/${product._id}`} className="corousel-link">
-                                        <img
-                                            src={`${product?.image[0].urlImage}`}
-                                            className="corousel-img"
-                                            alt=""
-                                        ></img>
-                                        <p className="corousel-noti">{product?.name}</p>
-                                        <p className="corousel-price">{product?.price?.toLocaleString('de-DE')}đ</p>
-                                        <div className="corousel-rating">
-                                            <Rating value={product?.rating} text={`(${product?.numReviews})`} />
+            <div className="">
+                <Slider {...settings}>
+                    {products?.map((product, index) => {
+                        return (
+                            <div
+                                key={index}
+                                className="max-h-[300px] hover:-translate-y-4 hover:transform hover:transition hover:duration-200 hover:ease-linear"
+                            >
+                                <Link to={`/product/${product._id}`}>
+                                    <img
+                                        src={`${product?.image[0].urlImage}`}
+                                        className="filter-[brightness(1)] m-auto h-[200px]"
+                                        alt=""
+                                    />
+                                    <div className="flex justify-center">
+                                        <div className="text-center">
+                                            <p className="">{product?.name}</p>
+                                            <p className="font-bold">{product?.price?.toLocaleString('de-DE')}đ</p>
+                                            <div className="">
+                                                <Rating value={product?.rating} text={`(${product?.numReviews})`} />
+                                            </div>
                                         </div>
-                                    </Link>
-                                </div>
-                            );
-                        })}
-                    </Slider>
-                </div>
+                                    </div>
+                                </Link>
+                            </div>
+                        );
+                    })}
+                </Slider>
             </div>
-        </>
+        </div>
     );
 }
 export default SimilarProducts;

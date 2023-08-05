@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
-import './product.css';
-
 // component child
 import Loading from '~/components/HomeComponent/LoadingError/Loading';
 import Message from '~/components/HomeComponent/LoadingError/Error';
@@ -121,47 +119,49 @@ function DetailProduct() {
 
     const handleRender = () => {
         return (
-            <>
+            <div className="mx-[5%]">
                 {contextHolder}
                 <div className="row mx-5">
-                    <div className="col-md-12 product-avatar">
+                    <div className="col-md-12 rounded bg-white py-4">
                         <div className="row">
                             <div className="col-md-5">
-                                <div className="single-image">
+                                <div className="mr-5 flex h-[500px] justify-center bg-[#fafafa]">
                                     <SliderImageProducts images={product.image} />
                                 </div>
                             </div>
-                            <div className="col-md-7 product-postion">
-                                <div className="product-dtl">
-                                    <div className="product-info">
-                                        <div className="product-name">{product.name}</div>
+                            <div className="col-md-7">
+                                <div className="">
+                                    <div className="w-full">
+                                        <div className="mb-2 text-2xl font-semibold">{product.name}</div>
                                     </div>
                                     <div className="product-baner">
                                         <img
-                                            style={{ width: '100%' }}
+                                            className="w-full"
                                             src="https://res.cloudinary.com/tlsbaloshop/image/upload/v1685002777/baloshopSlider/ant_index_bottom_banner_big_2_isoowv.jpg"
                                             alt=""
                                         />
                                     </div>
-                                    <div className="product-count col-lg-12 ">
-                                        <div className="flex-box d-flex justify-content-between align-items-center">
-                                            <h6>Giá</h6>
-                                            <span>{product?.price?.toLocaleString('de-DE')}đ</span>
+                                    <div className="col-lg-12 mt-2 rounded ">
+                                        <div className=" d-flex justify-content-between align-items-center px-6 py-3">
+                                            <h6 className="text-base font-semibold">Giá</h6>
+                                            <span className="font-semibold text-[#000000]">
+                                                {product?.price?.toLocaleString('de-DE')}đ
+                                            </span>
                                         </div>
-                                        <div className="flex-box d-flex justify-content-between align-items-center">
-                                            <h6>Trạng thái</h6>
+                                        <div className=" d-flex justify-content-between align-items-center px-6 py-3">
+                                            <h6 className="text-base font-semibold">Trạng thái</h6>
                                             {optionsArrColor?.countInStock > 0 ? (
-                                                <span>Còn hàng</span>
+                                                <span className="font-semibold text-[#000000]">Còn hàng</span>
                                             ) : (
-                                                <span>Hết hàng</span>
+                                                <span className="font-semibold text-[#000000]">Hết hàng</span>
                                             )}
                                         </div>
-                                        <div className="flex-box d-flex justify-content-between align-items-center">
-                                            <h6>Đánh giá</h6>
-                                            <Rating value={product.rating} text={`${product.numReviews} đánh giá`} />
+                                        <div className=" d-flex justify-content-between align-items-center px-6 py-3">
+                                            <h6 className="text-base font-semibold">Đánh giá</h6>
+                                            <Rating value={product.rating} text={`(${product.numReviews}) đánh giá`} />
                                         </div>
-                                        <div className="flex-box d-flex justify-content-between align-items-center">
-                                            <h6>Màu sắc</h6>
+                                        <div className=" d-flex justify-content-between align-items-center px-6 py-3">
+                                            <h6 className="text-base font-semibold">Màu sắc</h6>
                                             <div>
                                                 {optionColor?.map((option, index) => (
                                                     <button
@@ -173,8 +173,8 @@ function DetailProduct() {
                                                         }}
                                                         class={
                                                             optionIndex === index
-                                                                ? 'btn btn-outline-primary active mx-1'
-                                                                : 'btn btn-outline-primary mx-1'
+                                                                ? 'btn-outline-primary active btn mx-1'
+                                                                : 'btn-outline-primary btn mx-1'
                                                         }
                                                         style={{ marginTop: '8px' }}
                                                     >
@@ -183,11 +183,16 @@ function DetailProduct() {
                                                 ))}
                                             </div>
                                         </div>
+
                                         {optionsArrColor?.countInStock > 0 ? (
                                             <>
-                                                <div className="flex-box d-flex justify-content-between align-items-center">
-                                                    <h6>Số lượng</h6>
-                                                    <select value={qty} onChange={(e) => setQty(e.target.value)}>
+                                                <div className=" d-flex justify-content-between align-items-center px-6 py-3">
+                                                    <h6 className="text-base font-semibold">Số lượng</h6>
+                                                    <select
+                                                        className="h-10 w-[100px] cursor-pointer rounded bg-[#f3f3f3] text-center"
+                                                        value={qty}
+                                                        onChange={(e) => setQty(e.target.value)}
+                                                    >
                                                         {[...Array(optionsArrColor.countInStock).keys()].map((x) => (
                                                             <option key={x + 1} value={x + 1}>
                                                                 {x + 1}
@@ -195,7 +200,10 @@ function DetailProduct() {
                                                         ))}
                                                     </select>
                                                 </div>
-                                                <button onClick={AddToCartHandle} className="round-black-btn">
+                                                <button
+                                                    onClick={AddToCartHandle}
+                                                    className="h-12 w-full rounded bg-[var(--main-color)] text-base font-bold uppercase text-white hover:opacity-80"
+                                                >
                                                     Thêm vào giỏ
                                                 </button>
                                             </>
@@ -203,8 +211,15 @@ function DetailProduct() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="product-description ">
-                                <h2 className="product-description__h2">Chi Tiết Sản Phẩm</h2>
+                            <div className="mt-2 rounded bg-white pt-5">
+                                <h2
+                                    style={{
+                                        borderBottom: '2px solid rgba(250, 154, 10, 0.8)',
+                                    }}
+                                    className="mb-5 mt-2 text-2xl font-semibold uppercase"
+                                >
+                                    Chi Tiết Sản Phẩm
+                                </h2>
                                 <div dangerouslySetInnerHTML={{ __html: product.description }}></div>
                             </div>
                         </div>
@@ -213,7 +228,7 @@ function DetailProduct() {
                 <EvaluateProduct productId={productId} />
                 <AskAndAnswer productId={productId} />
                 <SimilarProducts products={products} />
-            </>
+            </div>
         );
     };
 
@@ -227,7 +242,7 @@ function DetailProduct() {
     }
     return (
         <>
-            <div className="single-product container">
+            <div className="mb-12 mt-12">
                 {loadingAddCart && <Loading />}
                 {content}
             </div>

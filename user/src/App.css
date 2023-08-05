@@ -68,24 +68,7 @@ input,
     outline: none;
 }
 
-/* START CSS CHUNG*/
-.Announcement .container {
-    padding-left: 0;
-    padding-right: 0;
-}
-
-/* ========================================= start thư viện corousel===============================*/
-.corousel-div:hover {
-    transform: translateY(-4px);
-    transition: linear 0.2s;
-}
-.corousel-img {
-    height: 200px;
-    margin: auto;
-    filter: brightness(1);
-    -webkit-filter: brightness(1);
-}
-
+/* ========================================= start thư viện Corousel===============================*/
 .slick-next::before {
     color: var(--main-color2) !important;
     font-size: 40px !important;
@@ -105,23 +88,4 @@ input,
 
 .slick-next:hover {
     font-size: 30px !important;
-}
-
-.corousel-link:active {
-    border: none;
-}
-
-/*========================================= start phân trang================================*/
-
-.page-item:first-child .page-link,
-.page-item:last-child .page-link {
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-    text-align: center;
-    border-radius: 50%;
-}
-.p-rating-icon {
-    color: yellow !important;
 }

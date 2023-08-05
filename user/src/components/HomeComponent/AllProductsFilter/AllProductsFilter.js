@@ -61,7 +61,7 @@ const AllProducts_Filter = (props) => {
 
     return (
         <>
-            <div className="mx-auto my-auto max-w-screen-2xl pt-10">
+            <div className="mx-auto my-auto mb-7 max-w-screen-2xl pt-10">
                 <h2 className="pb-10 text-center">
                     <Divider>
                         <Chip
@@ -75,7 +75,7 @@ const AllProducts_Filter = (props) => {
                     </Divider>
                 </h2>
                 <div className=" pt-0">
-                    <div className={clsx(styles.wrapFilter)}>
+                    <div className="mb-9 mr-9 flex justify-end">
                         <div className="">
                             <select
                                 className="form-select"
@@ -84,13 +84,13 @@ const AllProducts_Filter = (props) => {
                                     handlerSort(e.target.value);
                                 }}
                             >
-                                <option style={{ fontSize: '13px' }} value="1">
+                                <option className="text-sm font-medium" value="1">
                                     Sản phẩm mới
                                 </option>
-                                <option style={{ fontSize: '13px' }} value="3">
+                                <option className="text-sm font-medium" value="3">
                                     Giá tăng dần
                                 </option>
-                                <option style={{ fontSize: '13px' }} value="4">
+                                <option className="text-sm font-medium" value="4">
                                     Giá giảm dần
                                 </option>
                             </select>
@@ -103,22 +103,22 @@ const AllProducts_Filter = (props) => {
                                     handlerRating(e.target.value);
                                 }}
                             >
-                                <option style={{ fontSize: '13px' }} value="0">
+                                <option className="text-sm font-medium" value="0">
                                     Đánh giá
                                 </option>
-                                <option style={{ fontSize: '13px' }} value="5">
+                                <option className="text-sm font-medium" value="5">
                                     5 sao
                                 </option>
-                                <option style={{ fontSize: '13px' }} value="4">
+                                <option className="text-sm font-medium" value="4">
                                     4 sao trở lên
                                 </option>
-                                <option style={{ fontSize: '13px' }} value="3">
+                                <option className="text-sm font-medium" value="3">
                                     3 sao trở lên
                                 </option>
-                                <option style={{ fontSize: '13px' }} value="2">
+                                <option className="text-sm font-medium" value="2">
                                     2 sao trở lên
                                 </option>
-                                <option style={{ fontSize: '13px' }} value="1">
+                                <option className="text-sm font-medium" value="1">
                                     1 sao trở lên
                                 </option>
                             </select>
@@ -133,9 +133,8 @@ const AllProducts_Filter = (props) => {
                             minPrice={minPrice}
                             maxPrice={maxPrice}
                         ></FilterSection> */}
-
                         <div className="col-lg-12 col-md-12 article">
-                            <div className="shopcontainer row">
+                            <div className="row">
                                 {loading ? (
                                     <div className="mb-5">
                                         <Loading />
@@ -144,20 +143,19 @@ const AllProducts_Filter = (props) => {
                                     <Message variant="alert-danger">{error}</Message>
                                 ) : (
                                     <>
-                                        {' '}
                                         {products?.length !== 0 ? (
                                             products?.map((product) => (
                                                 <div className="shop col-lg-3 col-md-4 col-sm-12" key={product?._id}>
                                                     <div className="border-product text-center">
                                                         <Link to={`/product/${product?._id}`}>
-                                                            <div className={clsx(styles.shopBack)}>
+                                                            <div className="hover:-translate-y-4 hover:transform hover:transition hover:duration-200 hover:ease-linear">
                                                                 <img
                                                                     src={`${product?.image[0].urlImage}`}
                                                                     alt={product?.name}
+                                                                    className="filter-[brightness(1)] m-auto h-[200px]"
                                                                 />
                                                             </div>
                                                         </Link>
-
                                                         <div className={clsx(styles.shoptext)}>
                                                             <p>
                                                                 <Link to={`/products/${product?._id}`}>
@@ -179,18 +177,18 @@ const AllProducts_Filter = (props) => {
                                         )}
                                     </>
                                 )}
-                                <Pagination
-                                    pages={pages}
-                                    page={page}
-                                    category={category ? category : ''}
-                                    keyword={keyword ? keyword : ''}
-                                    sortProducts={sortProducts ? sortProducts : ''}
-                                    rating={rating ? rating : ''}
-                                />
                             </div>
                         </div>
                     </div>
                 </div>
+                <Pagination
+                    pages={pages}
+                    page={page}
+                    category={category ? category : ''}
+                    keyword={keyword ? keyword : ''}
+                    sortProducts={sortProducts ? sortProducts : ''}
+                    rating={rating ? rating : ''}
+                />
             </div>
         </>
     );

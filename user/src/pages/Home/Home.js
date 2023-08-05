@@ -1,4 +1,3 @@
-import { useSelector } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
 import AllProductsFilter from '~/components/HomeComponent/AllProductsFilter/AllProductsFilter'; // ShopSection
 import Sliders from '~/components/HomeComponent/Sliders/Sliders';
