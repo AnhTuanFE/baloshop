@@ -7,7 +7,7 @@ import styles from './Header.module.css';
 import { useEffect, useState, memo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import NavBar from '~/components/HomeComponent/NavBar/Navbar';
+import NavBar from './NavBar/Navbar';
 import ContactInformation from '../ContactInformation/ContactInformation';
 
 import { logout, getUserDetails } from '~/redux/Actions/userActions'; //updateUserProfile,

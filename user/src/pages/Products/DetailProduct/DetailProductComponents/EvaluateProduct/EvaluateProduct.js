@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 
-import Rating from '~/components/HomeComponent/Rating/Rating';
-import Message from '~/components/HomeComponent/LoadingError/Error';
+import Rating from '~/components/Rating/Rating';
+import Message from '~/components/LoadingError/Error';
 import { imageDefaul } from '~/utils/data';
 import { createProductReview, getAllReviews } from '~/redux/Actions/ProductActions';
 import { PRODUCT_CREATE_REVIEW_RESET } from '~/redux/Constants/ProductConstants';

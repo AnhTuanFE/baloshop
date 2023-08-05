@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 // component child
-import Loading from '~/components/HomeComponent/LoadingError/Loading';
-import Message from '~/components/HomeComponent/LoadingError/Error';
-import Rating from '~/components/HomeComponent/Rating/Rating';
+import Loading from '~/components/LoadingError/Loading';
+import Message from '~/components/LoadingError/Error';
+import Rating from '~/components/Rating/Rating';
 
 import SliderImageProducts from './DetailProductComponents/SliderImageProducts/SliderImageProducts';
 import AskAndAnswer from './DetailProductComponents/AskAndAnswer/AskAndAnswer';

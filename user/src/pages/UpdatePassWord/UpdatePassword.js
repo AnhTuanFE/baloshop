@@ -3,7 +3,7 @@ import isEmpty from 'validator/lib/isEmpty';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { updateUserProfile } from '~/redux/Actions/userActions';
-import Message from '~/components/HomeComponent/LoadingError/Error';
+import Message from '~/components/LoadingError/Error';
 import { notification } from 'antd';
 
 export default function UpdatePassword({ uploadPassword }) {

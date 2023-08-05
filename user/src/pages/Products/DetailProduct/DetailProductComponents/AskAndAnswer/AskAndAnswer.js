@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import Message from '~/components/HomeComponent/LoadingError/Error';
-import Loading from '~/components/HomeComponent/LoadingError/Loading';
+import Message from '~/components/LoadingError/Error';
+import Loading from '~/components/LoadingError/Loading';
 import { imageDefaul } from '~/utils/data';
 //
 import { PRODUCT_CREATE_COMMENTCHILD_RESET, PRODUCT_CREATE_COMMENT_RESET } from '~/redux/Constants/ProductConstants';

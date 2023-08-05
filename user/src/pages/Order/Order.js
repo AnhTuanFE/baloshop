@@ -22,8 +22,8 @@ import {
 } from '~/redux/Constants/OrderConstants';
 import { ORDER_PAY_RESET } from '~/redux/Constants/OrderConstants';
 import { listCart } from '~/redux/Actions/cartActions';
-import Loading from '~/components/HomeComponent/LoadingError/Loading';
-import Message from '~/components/HomeComponent/LoadingError/Error';
+import Loading from '~/components/LoadingError/Loading';
+import Message from '~/components/LoadingError/Error';
 import Steppers from './custom_stepper_MUI/Steppers';
 import DisabledByDefaultSharpIcon from '@mui/icons-material/DisabledByDefaultSharp';
 import InfoPayer from './InfoPayer';
