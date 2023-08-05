@@ -79,7 +79,7 @@ function SimilarProducts(data) {
                                     <div className="flex justify-center">
                                         <div className="text-center">
                                             <p className="">{product?.name}</p>
-                                            <p className="">{product?.price?.toLocaleString('de-DE')}đ</p>
+                                            <p className="font-bold">{product?.price?.toLocaleString('de-DE')}đ</p>
                                             <div className="">
                                                 <Rating value={product?.rating} text={`(${product?.numReviews})`} />
                                             </div>

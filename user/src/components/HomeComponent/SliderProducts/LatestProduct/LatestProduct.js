@@ -1,14 +1,12 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
-import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 import Rating from '../../Rating/Rating';
 import { ListProductAll } from '~/redux/Actions/ProductActions';
-import styles from './LatestProduct.module.scss';
 import { productsRemainingSelector } from '~/redux/Selector/productsSelector';
 import { Divider, Chip } from '@mui/material';
 
@@ -78,19 +76,25 @@ export default function LatestProduct() {
                 <Slider {...settings}>
                     {products?.map((product, index) => {
                         return (
-                            <div key={product._id} className={clsx(styles.corousel_div)}>
-                                <Link to={`/product/${product._id}`} className={clsx(styles.corousel_link)}>
-                                    <img
-                                        src={`${product?.image[0].urlImage}`}
-                                        className={clsx(styles.corousel_img)}
-                                        alt=""
-                                    ></img>
-                                    <p className={clsx(styles.corousel_noti)}>{product.name}</p>
-                                    <p className={clsx(styles.corousel_price)}>
-                                        {product?.price?.toLocaleString('de-DE')}đ
-                                    </p>
-                                    <div className={clsx(styles.corousel_rating)}>
-                                        <Rating value={product.rating} text={`(${product.numReviews})`} />
+                            <div key={product._id} className="max-h-[300px]">
+                                <Link to={`/product/${product._id}`}>
+                                    <div className="hover:-translate-y-4 hover:transform hover:transition hover:duration-200 hover:ease-linear">
+                                        <img
+                                            src={`${product?.image[0].urlImage}`}
+                                            className="filter-[brightness(1)] m-auto h-[200px]"
+                                            alt=""
+                                        ></img>
+                                    </div>
+                                    <div className="flex justify-center text-center">
+                                        <div>
+                                            <p className="">{product.name}</p>
+                                            <p className="text-base font-semibold">
+                                                {product?.price?.toLocaleString('de-DE')}đ
+                                            </p>
+                                            <div>
+                                                <Rating value={product.rating} text={`(${product.numReviews})`} />
+                                            </div>
+                                        </div>
                                     </div>
                                 </Link>
                             </div>

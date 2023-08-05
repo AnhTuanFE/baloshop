@@ -1,4 +1,3 @@
-import clsx from 'clsx';
 import Slider from 'react-slick';
 import { useEffect, useState } from 'react';
 import 'slick-carousel/slick/slick.css';
@@ -10,7 +9,6 @@ import Rating from '../../Rating/Rating';
 import { listAllOrderAction } from '~/redux/Actions/OrderActions';
 import { ordersRemainingSelector } from '~/redux/Selector/ordersSelector';
 import { Divider, Chip } from '@mui/material';
-import styles from './BestSellingProduct.module.scss';
 
 export default function BestSellingProduct() {
     const { listAllOrder } = useSelector(ordersRemainingSelector);
@@ -81,17 +79,19 @@ export default function BestSellingProduct() {
                             products?.map((product, index) => {
                                 return (
                                     <div key={index} className="max-h-80">
-                                        <Link to={`/product/${product._id}`} className={clsx(styles.corousel_link)}>
-                                            <img
-                                                src={`${product?.image[0].urlImage}`}
-                                                className={clsx(styles.corousel_img)}
-                                                alt=""
-                                            ></img>
-                                            <p className={clsx(styles.corousel_noti)}>{product.name}</p>
-                                            <p className={clsx(styles.corousel_price)}>
+                                        <Link to={`/product/${product._id}`}>
+                                            <div className="hover:-translate-y-4 hover:transform hover:transition hover:duration-200 hover:ease-linear">
+                                                <img
+                                                    src={`${product?.image[0].urlImage}`}
+                                                    className="filter-[brightness(1)] h-[200px]"
+                                                    alt=""
+                                                ></img>
+                                            </div>
+                                            <p className=" py-1 text-center">{product.name}</p>
+                                            <p className="text-center text-base font-semibold">
                                                 {product?.price?.toLocaleString('de-DE')}đ
                                             </p>
-                                            <div className={clsx(styles.corousel_rating)}>
+                                            <div className="text-center">
                                                 <Rating value={product.rating} text={`(${product.numReviews})`} />
                                             </div>
                                         </Link>

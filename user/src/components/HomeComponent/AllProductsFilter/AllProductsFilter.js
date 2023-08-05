@@ -148,7 +148,7 @@ const AllProducts_Filter = (props) => {
                                                 <div className="shop col-lg-3 col-md-4 col-sm-12" key={product?._id}>
                                                     <div className="border-product text-center">
                                                         <Link to={`/product/${product?._id}`}>
-                                                            <div className="">
+                                                            <div className="hover:-translate-y-4 hover:transform hover:transition hover:duration-200 hover:ease-linear">
                                                                 <img
                                                                     src={`${product?.image[0].urlImage}`}
                                                                     alt={product?.name}
