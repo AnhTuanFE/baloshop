@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import 'slick-carousel/slick/slick-theme.css';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Rating from '../../Rating/Rating';
+import Rating from '~/components/Rating/Rating';
 import { listAllOrderAction } from '~/redux/Actions/OrderActions';
 import { ordersRemainingSelector } from '~/redux/Selector/ordersSelector';
 import { Divider, Chip } from '@mui/material';

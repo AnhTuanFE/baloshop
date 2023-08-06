@@ -5,7 +5,7 @@ import { Checkbox } from 'primereact/checkbox';
 import { CART_CREATE_RESET } from '~/redux/Constants/CartConstants';
 import { addToCart, listCart, removefromcart } from '~/redux/Actions/cartActions';
 
-import Loading from '~/components/HomeComponent/LoadingError/Loading';
+import Loading from '~/components/LoadingError/Loading';
 import { notification, Select, Space } from 'antd';
 import './Cart.css';
 

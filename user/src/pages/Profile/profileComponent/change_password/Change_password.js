@@ -166,6 +166,10 @@ function Change_password({ user }) {
                             padding: '16px 0px',
                             borderRadius: '6px',
                             fontSize: '16px',
+                            background: 'var(--main-color)',
+                            '&:hover': {
+                                background: 'var(--color-button2)',
+                            },
                         }}
                     >
                         Cập nhật mật khẩu

@@ -1,10 +1,9 @@
 import moment from 'moment';
 import { Link } from 'react-router-dom';
+import Message from '~/components/LoadingError/Error';
+import Loading from '~/components/LoadingError/Loading';
 
-import Message from '../HomeComponent/LoadingError/Error';
-import Loading from '../HomeComponent/LoadingError/Loading';
-
-const Orders = (props) => {
+const HistoryOrdersBought = (props) => {
     const { loading, error, orders } = props;
 
     const checkPay = (order) => {
@@ -25,7 +24,7 @@ const Orders = (props) => {
                         <div className="col-12 alert alert-info mt-3 text-center">
                             Không có đơn hàng nào
                             <Link
-                                className="btn btn-success mx-2 px-3 py-2"
+                                className="btn-success btn mx-2 px-3 py-2"
                                 to="/"
                                 style={{
                                     fontSize: '12px',
@@ -131,4 +130,4 @@ const Orders = (props) => {
     );
 };
 
-export default Orders;
+export default HistoryOrdersBought;

@@ -1,18 +1,5 @@
 import React from 'react';
-
-// import { withStyles } from '@material-ui/core/styles';
 import { withStyles, Dialog, AppBar, Toolbar, IconButton, Typography, Slide } from '@mui/material';
-
-// import Dialog from '@material-ui/core/Dialog';
-// import Dialog from '@mui/material';
-// import AppBar from '@material-ui/core/AppBar';
-
-// import  from '@material-ui/core/Toolbar';
-// import  from '@material-ui/core/IconButton';
-// import  from '@material-ui/core/Typography';
-// import  from '@material-ui/core/Slide';
-
-// import CloseIcon from '@material-ui/icons/Close';
 import { Close } from '@mui/icons-material';
 
 const styles = {

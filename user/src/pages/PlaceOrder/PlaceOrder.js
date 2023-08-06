@@ -7,8 +7,8 @@ import { createOrder } from '~/redux/Actions/OrderActions';
 import { ORDER_CREATE_RESET } from '~/redux/Constants/OrderConstants';
 
 import ModalDaiSyUI from '~/components/Modal/ModalDaiSyUI';
-import Message from '~/components/HomeComponent/LoadingError/Error';
-import Loading from '~/components/HomeComponent/LoadingError/Loading';
+import Message from '~/components/LoadingError/Error';
+import Loading from '~/components/LoadingError/Loading';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import AccountCircleSharpIcon from '@mui/icons-material/AccountCircleSharp';
 import AddLocationSharpIcon from '@mui/icons-material/AddLocationSharp';

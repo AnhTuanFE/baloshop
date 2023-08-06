@@ -7,7 +7,7 @@ import styles from './Header.module.css';
 import { useEffect, useState, memo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import NavBar from '~/components/HomeComponent/NavBar/Navbar';
+import NavBar from './NavBar/Navbar';
 import ContactInformation from '../ContactInformation/ContactInformation';
 
 import { logout, getUserDetails } from '~/redux/Actions/userActions'; //updateUserProfile,
@@ -289,27 +289,10 @@ export default function Header2(props) {
                                     />
                                 )}
                             />
-                            {/* <AutoCompleteAntD
-                                popupClassName="certain-category-search-dropdown"
-                                dropdownMatchSelectWidth={500}
-                                options={key.map((item) => ({ value: item }))}
-                                onChange={(e) => {
-                                    setKeyword(e);
-                                }}
-                            >
-                                <Input
-                                    onChange={(e) => {
-                                        setKeyword(e.target.value);
-                                    }}
-                                    size="large"
-                                    placeholder="Tìm kiếm"
-                                />
-                            </AutoCompleteAntD> */}
                             <IconButton
                                 aria-label="search"
                                 size="large"
                                 type="submit"
-                                className="hover:bg-[var(--main-color2)]"
                                 sx={{
                                     bgcolor: 'var(--main-color)',
                                     borderRadius: '4px 8px 8px 4px',

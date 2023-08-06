@@ -2,8 +2,8 @@ import { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import Message from '~/components/HomeComponent/LoadingError/Error';
-import Loading from '~/components/HomeComponent/LoadingError/Loading';
+import Message from '~/components/LoadingError/Error';
+import Loading from '~/components/LoadingError/Loading';
 import { useForm, Controller } from 'react-hook-form';
 import { login } from '~/redux/Actions/userActions';
 

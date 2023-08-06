@@ -6,8 +6,8 @@ import { saveShippingAddress } from '~/redux/Actions/cartActions';
 import { getUserDetails, updateUserProfile, getListProvincesAction } from '~/redux/Actions/userActions';
 import { USER_UPDATE_PROFILE_RESET } from '~/redux/Constants/UserContants';
 
-import Message from '~/components/HomeComponent/LoadingError/Error';
-import Loading from '~/components/HomeComponent/LoadingError/Loading';
+import Message from '~/components/LoadingError/Error';
+import Loading from '~/components/LoadingError/Loading';
 import { notification } from 'antd';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';

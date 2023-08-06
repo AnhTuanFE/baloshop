@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SideBar_Profile from '../Profile/profileComponent/sideBar_profile/SideBar_Profile';
-import Orders from '~/components/profileComponents/Orders';
+import HistoryOrdersBought from './HistoryOrdersBought/HistoryOrdersBought';
 import { listMyOrders } from '~/redux/Actions/OrderActions';
 import './PurchaseHistory.css';
 function PurchaseHistory() {
@@ -29,7 +29,7 @@ function PurchaseHistory() {
                                 role="tabpanel"
                                 aria-labelledby="v-pills-profile-tab"
                             >
-                                <Orders orders={orders} loading={loading} error={error} />
+                                <HistoryOrdersBought orders={orders} loading={loading} error={error} />
                             </div>
                         </div>
                     </div>

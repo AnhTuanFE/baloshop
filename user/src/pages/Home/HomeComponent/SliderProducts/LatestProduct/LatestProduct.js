@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-import Rating from '../../Rating/Rating';
+import Rating from '~/components/Rating/Rating';
 import { ListProductAll } from '~/redux/Actions/ProductActions';
 import { productsRemainingSelector } from '~/redux/Selector/productsSelector';
 import { Divider, Chip } from '@mui/material';

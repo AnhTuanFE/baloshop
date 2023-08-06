@@ -365,6 +365,10 @@ function Detail_infor_account({ user }) {
                             padding: '16px 0px',
                             borderRadius: '6px',
                             fontSize: '16px',
+                            background: 'var(--main-color)',
+                            '&:hover': {
+                                background: 'var(--color-button2)',
+                            },
                         }}
                     >
                         Cập nhật thông tin

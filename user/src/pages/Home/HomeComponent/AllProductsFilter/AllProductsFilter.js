@@ -3,17 +3,17 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Rating from '../Rating/Rating';
+import Rating from '~/components/Rating/Rating';
 import Pagination from '../Pagination/Pagination';
 import { listProduct } from '~/redux/Actions/ProductActions';
-import Loading from '../LoadingError/Loading';
-import Message from '../LoadingError/Error';
+import Loading from '~/components/LoadingError/Loading';
+import Message from '~/components/LoadingError/Error';
 import { listCart } from '~/redux/Actions/cartActions';
 import { productsRemainingSelector } from '~/redux/Selector/productsSelector';
 import { Divider, Chip } from '@mui/material';
 import styles from './AllProductsFilter.module.scss';
 
-const AllProducts_Filter = (props) => {
+const AllProductsFilter = (props) => {
     const { category, keyword, pageNumber, sortProducts, rating } = props;
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -194,4 +194,4 @@ const AllProducts_Filter = (props) => {
     );
 };
 
-export default AllProducts_Filter;
+export default AllProductsFilter;

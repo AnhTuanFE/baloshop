@@ -1,16 +1,16 @@
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import clsx from 'clsx';
 import { useSelector } from 'react-redux';
 import Detail_infor_account from './profileComponent/detail_infor_account/Detail_infor_account';
 import Change_password from './profileComponent/change_password/Change_password';
 import Crop_image_avatar from './profileComponent/crop_image_avatar/Crop_image_avatar';
 import SideBar_Profile from './profileComponent/sideBar_profile/SideBar_Profile';
-import { Tabs, Spin, notification } from 'antd';
+import { Tabs, notification } from 'antd';
 import styles from './Profile.module.css';
 import './Profile.css';
-import Loading from '~/components/HomeComponent/LoadingError/Loading';
-import Message from '~/components/HomeComponent/LoadingError/Error';
-import { useEffect } from 'react';
+import Loading from '~/components/LoadingError/Loading';
+import Message from '~/components/LoadingError/Error';
+
 const { TabPane } = Tabs;
 export default function Profile() {
     const [api, contextHolder] = notification.useNotification();

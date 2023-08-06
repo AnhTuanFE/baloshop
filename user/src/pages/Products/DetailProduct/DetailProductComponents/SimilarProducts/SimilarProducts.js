@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import Slider from 'react-slick';
-import Rating from '~/components/HomeComponent/Rating/Rating';
+import Rating from '~/components/Rating/Rating';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { Link } from 'react-router-dom';
