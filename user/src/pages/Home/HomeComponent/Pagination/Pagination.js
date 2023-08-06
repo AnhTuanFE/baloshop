@@ -91,9 +91,8 @@ const Pagination = (props) => {
                 <PaginationAntd
                     defaultCurrent={page}
                     defaultPageSize={1}
-                    // total={Number(pages)}
-                    total={30}
-                    // onChange={handlerPage}
+                    total={Number(pages)}
+                    onChange={handlerPage}
                     itemRender={itemRender}
                 />
             </div>
