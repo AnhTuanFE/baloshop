@@ -28,7 +28,7 @@ export default function LatestProduct() {
         initialSlide: 0,
         autoplay: true,
         autoplaySpeed: 4000,
-
+        customPaging: (a) => <button className="bg-red-500 p-6">button {a}</button>,
         responsive: [
             {
                 breakpoint: 1200,
@@ -72,7 +72,7 @@ export default function LatestProduct() {
                     />
                 </Divider>
             </h2>
-            <div className="corousel">
+            <div className="">
                 <Slider {...settings}>
                     {products?.map((product, index) => {
                         return (
@@ -83,7 +83,7 @@ export default function LatestProduct() {
                                             src={`${product?.image[0].urlImage}`}
                                             className="filter-[brightness(1)] m-auto h-[200px]"
                                             alt=""
-                                        ></img>
+                                        />
                                     </div>
                                     <div className="flex justify-center text-center">
                                         <div>

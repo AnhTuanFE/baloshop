@@ -73,7 +73,7 @@ export default function BestSellingProduct() {
                     </Divider>
                 </h2>
                 <div></div>
-                <div className="corousel">
+                <div className="">
                     <Slider {...settings}>
                         {products &&
                             products?.map((product, index) => {

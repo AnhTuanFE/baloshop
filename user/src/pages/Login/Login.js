@@ -49,7 +49,10 @@ const Login = () => {
     return (
         <>
             <div className="m-8 flex items-center justify-center p-10 text-center ">
-                <form className=" w-1/3 px-10 py-14 shadow-custom-shadow" onSubmit={handleSubmit(submitHandler)}>
+                <form
+                    className=" w-1/3 rounded-2xl px-10 py-14 shadow-custom-shadow"
+                    onSubmit={handleSubmit(submitHandler)}
+                >
                     {error && <Message variant="alert-danger">{error}</Message>}
                     {loading && <Loading />}
                     <div className="  ">
