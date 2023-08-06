@@ -289,27 +289,10 @@ export default function Header2(props) {
                                     />
                                 )}
                             />
-                            {/* <AutoCompleteAntD
-                                popupClassName="certain-category-search-dropdown"
-                                dropdownMatchSelectWidth={500}
-                                options={key.map((item) => ({ value: item }))}
-                                onChange={(e) => {
-                                    setKeyword(e);
-                                }}
-                            >
-                                <Input
-                                    onChange={(e) => {
-                                        setKeyword(e.target.value);
-                                    }}
-                                    size="large"
-                                    placeholder="Tìm kiếm"
-                                />
-                            </AutoCompleteAntD> */}
                             <IconButton
                                 aria-label="search"
                                 size="large"
                                 type="submit"
-                                className="hover:bg-[var(--main-color2)]"
                                 sx={{
                                     bgcolor: 'var(--main-color)',
                                     borderRadius: '4px 8px 8px 4px',

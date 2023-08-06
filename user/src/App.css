@@ -1,12 +1,16 @@
 :root {
     --white-color: #fff;
     --main-color: #e85d97;
-    --main-color-old: #00483d;
-    --color-infor-store: #252a2b;
-    --color-layout: #333f48;
     --main-color2: #007fff;
+
+    --color-button1: #ffff;
+    --color-button2: #007fff;
+
+    --color-layout: #333f48;
     --content-color: #f4f4f4;
+
     --tw-ring-color: transparent;
+    --color-infor-store: #252a2b;
 }
 
 [type='text']:focus,
@@ -70,11 +74,11 @@ input,
 
 /* ========================================= start thư viện Corousel===============================*/
 .slick-next::before {
-    color: var(--main-color2) !important;
+    color: var(--color-button2) !important;
     font-size: 40px !important;
 }
 .slick-prev::before {
-    color: var(--main-color2) !important;
+    color: var(--color-button2) !important;
     font-size: 40px !important;
 }
 .slick-prev {

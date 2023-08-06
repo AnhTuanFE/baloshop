@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Pagination as PaginationAntd } from 'antd';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowAltCircleLeft, faArrowAltCircleRight } from '@fortawesome/free-solid-svg-icons';
+import './Pagination.css';
+
 // PHÂN TRANG
 const Pagination = (props) => {
     const navigate = useNavigate();
@@ -48,48 +48,53 @@ const Pagination = (props) => {
             setPageProduct(x);
         }
     }, [page, pages]);
+
+    const itemRender = (item, type, originalElement) => {
+        if (type === 'prev') {
+            return (
+                <span
+                    style={{
+                        fontSize: '24px',
+                    }}
+                    className=" rounded-[50%] px-2 py-1 font-bold text-[var(--main-color2)]"
+                >
+                    <i className="fas fa-angle-double-left"></i>
+                </span>
+            );
+        }
+        if (type === 'next') {
+            return (
+                <span
+                    style={{
+                        fontSize: '24px',
+                    }}
+                    className="rounded-[50%] px-2 py-1 font-bold text-[var(--main-color2)]"
+                >
+                    <i className="fas fa-angle-double-right"></i>
+                </span>
+            );
+        }
+        return (
+            <div
+                style={{
+                    fontSize: '18px',
+                }}
+                className="h-full w-full rounded-[50%] bg-[#f3f5f7] font-medium"
+            >
+                {originalElement}
+            </div>
+        );
+    };
     return (
         pages > 1 && (
-            // <nav className="mb-3 mt-3 flex items-center justify-center" aria-label="Page navigation">
-            //     <div className=" border-[1px solid #ccc] h-6 w-6 cursor-pointer rounded-[50%] text-center text-xl text-[#6785db] hover:text-[#fb5533]">
-            //         <div onClick={() => handlerPage(page > 1 ? page - 1 : page)}>
-            //             <i class="fas fa-angle-double-left"></i>
-            //         </div>
-            //     </div>
-            //     <ul className="flex justify-center">
-            //         {(page > 5 ? pageProduct : [...Array(pages > 5 ? 5 : pages).keys()]).map((x) => (
-            //             <li
-            //                 className={`page-item  mx-1 ${x + 1 === page ? 'active' : ''}`}
-            //                 key={x + 1}
-            //                 onClick={() => handlerPage(x + 1)}
-            //             >
-            //                 <div className="page-link cursor-pointer hover:text-[#fb5533]">{x + 1}</div>
-            //             </li>
-            //         ))}
-            //     </ul>
-            //     <div className=" border-[1px solid #ccc] h-6 w-6 cursor-pointer rounded-[50%] text-center text-xl text-[#6785db] hover:text-[#fb5533]">
-            //         <div onClick={() => handlerPage(page < pages ? page + 1 : page)}>
-            //             <i class="fas fa-angle-double-right"></i>
-            //         </div>
-            //     </div>
-            // </nav>
-            <div className="my-8 flex justify-center ">
+            <div className="my-8 flex justify-center">
                 <PaginationAntd
-                    className=" rounded-[50%] text-xl font-extrabold text-[var(--main-color2)]"
-                    showQuickJumper
                     defaultCurrent={page}
-                    total={Number(pages * 10)}
-                    onChange={handlerPage}
-                    prevIcon={
-                        <span className="text-[var(--main-color2)]">
-                            <i class="fas fa-angle-double-left"></i>
-                        </span>
-                    }
-                    nextIcon={
-                        <span className="text-[var(--main-color2)]">
-                            <i class="fas fa-angle-double-right"></i>
-                        </span>
-                    }
+                    defaultPageSize={1}
+                    // total={Number(pages)}
+                    total={30}
+                    // onChange={handlerPage}
+                    itemRender={itemRender}
                 />
             </div>
         )

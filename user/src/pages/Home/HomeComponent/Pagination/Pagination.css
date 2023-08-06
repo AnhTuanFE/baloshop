@@ -1,0 +1,32 @@
+.ant-pagination-item {
+    border: none !important;
+    margin-left: 4px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    /* outline: none !important; */
+}
+.ant-pagination-item a:hover {
+    border-radius: 50%;
+    background-color: var(--main-color) !important;
+}
+.ant-pagination-item-active {
+    color: #ffff;
+}
+.ant-pagination-item-active a {
+    background-color: var(--main-color);
+    border-radius: 50%;
+}
+.anticon-double-right {
+}
+.anticon {
+    font-size: 18px !important;
+    width: 100%;
+    /* display: flex; */
+    /* justifycontent: center;
+    align-items: center; */
+}
+.anticon svg {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 8px;
+}
