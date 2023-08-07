@@ -1,9 +1,5 @@
 import { Box, IconButton, Typography, Avatar, TextField, MenuItem, Select, Autocomplete } from '@mui/material';
-import { AutoComplete as AutoCompleteAntD, Input } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
 import { Search, LocalMall } from '@mui/icons-material';
-import clsx from 'clsx';
-import styles from './Header.module.css';
 import { useEffect, useState, memo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,7 +12,7 @@ import { cartsRemainingSelector } from '~/redux/Selector/cartsSelector';
 import { imageDefaul, logoDefaul } from '~/utils/data';
 import { Badge, Space } from 'antd';
 
-export default function Header2(props) {
+function Header(props) {
     const { keysearch } = props;
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -130,7 +126,7 @@ export default function Header2(props) {
                 sx={{
                     display: 'flex',
                 }}
-                className={clsx(styles.wrap_info_user)}
+                className="relative"
             >
                 <Avatar
                     id="simple-select"
@@ -141,9 +137,9 @@ export default function Header2(props) {
                             : userInfo?.image?.urlImageCloudinary
                     }`}
                     sx={{ width: 48, height: 48 }}
-                    className={clsx(styles.avatar)}
+                    className="!absolute z-[1] ml-12 mt-2"
                 />
-                <Box className={clsx(styles.dropdown_info_user)}>
+                <Box className="z-[2] mt-3 pl-12">
                     <Select
                         disableUnderline
                         id="simple-select"
@@ -161,11 +157,11 @@ export default function Header2(props) {
                                 display: 'none',
                             }}
                         >
-                            <span className={clsx(styles.name_user)}>{notiUser()}</span>
+                            <span className="ml-[60px]">{notiUser()}</span>
                         </MenuItem>
-                        <MenuItem value={20}>
-                            <Link to="/profile">Tài khoản của tôi</Link>
-                        </MenuItem>
+                        <Link to="/profile">
+                            <MenuItem value={20}>Tài khoản của tôi</MenuItem>
+                        </Link>
                         <MenuItem value={30} onClick={logoutHandler}>
                             <Link to="#">Đăng xuất</Link>
                         </MenuItem>
@@ -175,7 +171,6 @@ export default function Header2(props) {
                 <Link to="/cart">
                     <Space size="middle" className="ml-1 mt-3">
                         <Badge count={cartItems ? cartItems?.length : 0}>
-                            {/* <AvatarAntd shape="square" size="large" /> */}
                             <LocalMall
                                 fontSize="medium"
                                 sx={{
@@ -190,53 +185,6 @@ export default function Header2(props) {
     };
 
     // =================
-    const renderTitle = (title) => (
-        <span>
-            {title}
-            <a
-                style={{
-                    float: 'right',
-                }}
-                href="https://www.google.com/search?q=antd"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                more
-            </a>
-        </span>
-    );
-    const renderItem = (title, count) => ({
-        value: title,
-        label: (
-            <div
-                style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                }}
-            >
-                {title}
-                <span>
-                    <UserOutlined /> {count}
-                </span>
-            </div>
-        ),
-    });
-
-    const options = [
-        {
-            label: renderTitle('Libraries'),
-            options: [renderItem('AntDesign', 10000), renderItem('AntDesign UI', 10600)],
-        },
-        {
-            label: renderTitle('Solutions'),
-            options: [renderItem('AntDesign UI FAQ', 60100), renderItem('AntDesign FAQ', 30010)],
-        },
-        {
-            label: renderTitle('Articles'),
-            options: [renderItem('AntDesign design language', 100000)],
-        },
-    ];
-    // ============
     return (
         <Box className="">
             <ContactInformation />
@@ -298,6 +246,9 @@ export default function Header2(props) {
                                     borderRadius: '4px 8px 8px 4px',
                                     padding: '0px 10px',
                                     height: '54px',
+                                    '&:hover': {
+                                        bgcolor: 'var(--color-button2)',
+                                    },
                                 }}
                             >
                                 <Search
@@ -327,3 +278,4 @@ export default function Header2(props) {
         </Box>
     );
 }
+export default Header;

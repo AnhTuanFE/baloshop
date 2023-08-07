@@ -20,7 +20,7 @@ export default function Sliders() {
         slidesToScroll: 1,
         autoplay: true,
         speed: 1000,
-        autoplaySpeed: 4000,
+        autoplaySpeed: 2000,
         cssEase: 'linear',
     };
     return (

@@ -19,18 +19,13 @@ function PurchaseHistory() {
     return (
         <>
             <div className="mt-lg-5 mt-3">
-                <div className="row align-items-start">
-                    <SideBar_Profile userInfo={userInfo} />
-                    <div className="m-auto w-full flex-[2]">
-                        <div class="tab-content col-lg-8 pt-lg-0 pb-5 pt-3" id="v-pills-tabContent">
-                            <div
-                                class="tab-pane fade show active"
-                                id="v-pills-profile"
-                                role="tabpanel"
-                                aria-labelledby="v-pills-profile-tab"
-                            >
-                                <HistoryOrdersBought orders={orders} loading={loading} error={error} />
-                            </div>
+                <div className="flex justify-between">
+                    <div className="ml-12 flex-[1]">
+                        <SideBar_Profile userInfo={userInfo} />
+                    </div>
+                    <div className="ml-10 flex-[2]">
+                        <div className="col-lg-8 pt-lg-0 pb-5 pt-3">
+                            <HistoryOrdersBought orders={orders} loading={loading} error={error} />
                         </div>
                     </div>
                 </div>

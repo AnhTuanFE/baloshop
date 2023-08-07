@@ -21,17 +21,15 @@ const HistoryOrdersBought = (props) => {
             ) : (
                 <>
                     {orders.length === 0 ? (
-                        <div className="col-12 alert alert-info mt-3 text-center">
-                            Không có đơn hàng nào
-                            <Link
-                                className="btn-success btn mx-2 px-3 py-2"
-                                to="/"
-                                style={{
-                                    fontSize: '12px',
-                                }}
-                            >
-                                BẮT ĐẦU MUA SẮM
-                            </Link>
+                        <div className="col-12 alert alert-info mt-3 flex justify-center text-center">
+                            <div className="">
+                                <div className="mb-2 text-lg">
+                                    <p>Không có đơn hàng nào</p>
+                                </div>
+                                <Link className="btn-success btn mx-2 px-3 py-2 text-sm font-bold text-white" to="/">
+                                    BẮT ĐẦU MUA SẮM
+                                </Link>
+                            </div>
                         </div>
                     ) : (
                         <div className="table-responsive" style={{ overflowX: 'scroll' }}>

@@ -72,7 +72,7 @@ input,
     outline: none;
 }
 
-/* ========================================= start thư viện Corousel===============================*/
+/* ========================================= css thư viện Corousel===============================*/
 .slick-next::before {
     color: var(--color-button2) !important;
     font-size: 40px !important;
@@ -86,10 +86,9 @@ input,
     z-index: 2;
 }
 .slick-next {
-    right: 3% !important;
+    right: 4% !important;
     z-index: 2;
 }
-
-.slick-next:hover {
+/* .slick-next:hover {
     font-size: 30px !important;
-}
+} */

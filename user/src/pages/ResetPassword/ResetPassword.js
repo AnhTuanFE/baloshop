@@ -6,11 +6,9 @@ import { ResetPassWordAction } from '~/redux/Actions/userActions';
 import { useForm, Controller } from 'react-hook-form';
 import { notification } from 'antd';
 import { SmileOutlined } from '@ant-design/icons';
-
-//
 import { Link } from 'react-router-dom';
-import clsx from 'clsx';
-import styles from './ResetPassword.module.css';
+import Loading from '~/components/LoadingError/Loading';
+import Message from '~/components/LoadingError/Error';
 
 function ResetPassword() {
     const navigate = useNavigate();
@@ -25,12 +23,15 @@ function ResetPassword() {
     } = useForm();
 
     const { verifyState, resetPasswordState } = useSelector(usersRemainingSelector);
-    const { email, id, token } = verifyState?.state;
-
+    const { loading, error, state } = verifyState;
+    // const { email, id, token } = verifyState?.state;
     // const { status } = resetPasswordState?.state;
+    let email;
     // console.log('verifyState page resetpassword = ', verifyState);
     // console.log('resetPasswordState = ', resetPasswordState);
+
     const [api, contextHolder] = notification.useNotification();
+
     const openNotification = (placement) => {
         api.info({
             message: `Thông báo `,
@@ -53,18 +54,24 @@ function ResetPassword() {
     const handleUpdatePassword = (data) => {
         const { newPassword } = data;
         dispatch(ResetPassWordAction({ newPassword, id, token }));
-        // console.log('data = ', data);
+        console.log('data = ', data);
     };
     return (
-        <div className={clsx(styles.wrapper)}>
+        <div className="h-[80vh] bg-[#e9ebee] pt-3">
             {contextHolder}
-            <div className={clsx(styles.wrap_content)}>
-                <div className={clsx(styles.wrap_content_child)}>
-                    <div className={clsx(styles.content_child)}>
-                        <h5>Cập nhập mật khẩu cho email {email}</h5>
+            <div className="flex justify-center">
+                <div className="w-1/4">
+                    {loading && <Loading />}
+                    {error && <Message variant="alert-info text-lg">{error}</Message>}
+                </div>
+            </div>
+            <div className="flex justify-center">
+                <div className="mt-2 w-1/4 rounded-2xl bg-white">
+                    <div className="m-4">
+                        <h5 className="mb-2 mt-3 text-center text-xl font-bold">Cập nhập mật khẩu cho email {email}</h5>
                         <hr></hr>
-                        <form className={clsx(styles.form)} onSubmit={handleSubmit(handleUpdatePassword)}>
-                            <div className={clsx(styles.form_input)}>
+                        <form className="mt-3 text-center" onSubmit={handleSubmit(handleUpdatePassword)}>
+                            <div className="mb-3">
                                 <Controller
                                     name="newPassword"
                                     control={control}
@@ -76,11 +83,11 @@ function ResetPassword() {
                                     render={({ field }) => (
                                         <input
                                             type="password"
-                                            className={clsx(styles.input_password)}
+                                            className="rounded-md px-3 py-2"
+                                            style={{
+                                                border: '1.6px solid #e9ebee',
+                                            }}
                                             {...field}
-                                            // onChange={(e) => {
-                                            //     field.onChange('tuandepzai');
-                                            // }}
                                             placeholder="Mật khẩu mới"
                                         />
                                     )}
@@ -96,7 +103,7 @@ function ResetPassword() {
                                     </p>
                                 ) : null}
                             </div>
-                            <div className={clsx(styles.form_input)}>
+                            <div className="mb-3">
                                 <Controller
                                     name="newConfirmPassword"
                                     control={control}
@@ -109,7 +116,10 @@ function ResetPassword() {
                                     render={({ field }) => (
                                         <input
                                             type="password"
-                                            className={clsx(styles.input_password)}
+                                            className="rounded-md px-3 py-2"
+                                            style={{
+                                                border: '1.6px solid #e9ebee',
+                                            }}
                                             {...field}
                                             placeholder="Xác nhận mật khẩu mới"
                                         />
@@ -131,7 +141,10 @@ function ResetPassword() {
                                     <p className="text-danger m-0">Bạn chưa nhập lại mật khẩu mới</p>
                                 ) : null}
                             </div>
-                            <button className={clsx(styles.button_submit)} type="submit">
+                            <button
+                                className="mb-5 rounded-lg bg-[var(--main-color)] px-4 py-1 text-white hover:bg-[var(--color-button2)]"
+                                type="submit"
+                            >
                                 Cập nhập mật khẩu
                             </button>
                         </form>

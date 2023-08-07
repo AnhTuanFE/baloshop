@@ -50,8 +50,11 @@ function Register() {
     return (
         <>
             <div>
-                <div className="mb-14 mt-8 flex items-center justify-center">
-                    <form className="Login col-md-6 col-lg-4 col-10" onSubmit={handleSubmit(submitHandler)}>
+                <div className="mb-14 mt-3 flex items-center justify-center">
+                    <form
+                        className="Login col-md-6 col-lg-4 col-10 rounded-xl px-10 py-10 shadow-custom-shadow"
+                        onSubmit={handleSubmit(submitHandler)}
+                    >
                         {error && <Message variant="alert-danger block">{error}</Message>}
                         {loading && <Loading />}
                         <div className="mb-3 text-center text-2xl font-semibold"> Đăng ký tài khoản</div>

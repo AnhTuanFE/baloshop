@@ -25,11 +25,11 @@ function SideBar_Profile({ userInfo }) {
                 <Box
                     sx={{
                         display: 'flex',
-                        justifyContent: 'center',
+                        justifyContent: 'flex-start',
                     }}
                 >
                     <Avatar
-                        sx={{ width: 112, height: 112, margin: '0px 12px' }}
+                        sx={{ width: 80, height: 80, margin: '0px 12px' }}
                         src={
                             userInfo?.image?.urlImageCloudinary !== undefined
                                 ? userInfo?.image?.urlImageCloudinary

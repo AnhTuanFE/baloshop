@@ -173,7 +173,11 @@ const AllProductsFilter = (props) => {
                                                 </div>
                                             ))
                                         ) : (
-                                            <div className="alert-warning">Không tìm thấy sản phẩm</div>
+                                            <div className="mb-48 flex justify-center">
+                                                <div className="alert-warning rounded-2xl p-5 font-bold">
+                                                    Không tìm thấy sản phẩm
+                                                </div>
+                                            </div>
                                         )}
                                     </>
                                 )}
