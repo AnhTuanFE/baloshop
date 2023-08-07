@@ -24,9 +24,9 @@ function ResetPassword() {
 
     const { verifyState, resetPasswordState } = useSelector(usersRemainingSelector);
     const { loading, error, state } = verifyState;
-    // const { email, id, token } = verifyState?.state;
-    // const { status } = resetPasswordState?.state;
-    let email;
+    const { email, id, token } = verifyState?.state;
+    const { status } = resetPasswordState?.state;
+
     // console.log('verifyState page resetpassword = ', verifyState);
     // console.log('resetPasswordState = ', resetPasswordState);
 

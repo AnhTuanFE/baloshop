@@ -28,7 +28,6 @@ export default function LatestProduct() {
         initialSlide: 0,
         autoplay: true,
         autoplaySpeed: 4000,
-        customPaging: (a) => <button className="bg-red-500 p-6">button {a}</button>,
         responsive: [
             {
                 breakpoint: 1200,
