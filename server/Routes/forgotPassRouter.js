@@ -53,25 +53,35 @@ forgotPassRouter.post('/forgotPassword', async (req, res) => {
 
 //   xác thực
 forgotPassRouter.post('/verify-reset-password', async (req, res) => {
-    // console.log('req.body = ', req?.body);
-
     const { id, token } = req?.body;
-
-    const oldUser = await User.findOne({ _id: id });
-    const email = oldUser.email;
-    if (!oldUser) {
-        return res.json({ status: 'User Not Exists!!' });
-    }
-    const secret = JWT_SECRET1 + oldUser.password;
+    // console.log('req.body = ', req?.body);
     try {
-        const verify = jwt.verify(token, secret);
-        console.log('verify = ', verify);
-        // res.render('index', { email: verify.email, status: 'Verified Account' });
-        return res.json({ status: 'Verified Account', id, token, email });
+        if (id) {
+            const oldUser = await User.findOne({ _id: id });
+            const email = oldUser.email;
+            if (!oldUser) {
+                return res.json({ status: 'User Not Exists!!' });
+            }
+            if (token) {
+                const secret = JWT_SECRET1 + oldUser.password;
+                try {
+                    const verify = jwt.verify(token, secret);
+                    // console.log('verify = ', verify);
+                    return res.status(200).json({ status: 'Verified Account', id, token, email });
+                } catch (error) {
+                    res.status(200).json({ status: 'Not verified', error });
+                }
+            }
+            res.status(404).json({
+                message: 'Không thể xác thực tài khoản, vui lòng kiểm tra lại link đặt lại mật khẩu',
+            });
+        } else {
+            res.status(404).json({
+                message: 'Không thể xác thực tài khoản, vui lòng kiểm tra lại link đặt lại mật khẩu',
+            });
+        }
     } catch (error) {
-        console.log(error);
-        // res.send('not verified');
-        res.json({ status: 'Not verified', error });
+        res.status(404).json({ message: 'Không thể xác thực tài khoản, vui lòng kiểm tra lại link đặt lại mật khẩu' });
     }
 });
 
@@ -81,29 +91,37 @@ forgotPassRouter.post('/reset-password', async (req, res) => {
     console.log('req?.body = ', req?.body);
     const { newPassword, id, token } = req?.body;
 
-    const oldUser = await User.findOne({ _id: id });
-    if (!oldUser) {
-        return res.json({ status: 'User Not Exists!!' });
-    }
-    const secret = JWT_SECRET1 + oldUser.password;
     try {
-        const verify = jwt.verify(token, secret);
-        const encryptedPassword = await bcrypt.hash(newPassword, 10);
-        await User.updateOne(
-            {
-                _id: id,
-            },
-            {
-                $set: {
-                    password: encryptedPassword,
-                },
-            },
-        );
-        res.json({ status: 'Password updated' });
-        // res.render('index', { email: verify.email, status: 'verified' });
+        if (id && token && newPassword) {
+            const oldUser = await User.findOne({ _id: id });
+            if (!oldUser) {
+                return res.json({ status: 'User Not Exists!!' });
+            }
+            const secret = JWT_SECRET1 + oldUser.password;
+            try {
+                const verify = jwt.verify(token, secret);
+                const encryptedPassword = await bcrypt.hash(newPassword, 10);
+                await User.updateOne(
+                    {
+                        _id: id,
+                    },
+                    {
+                        $set: {
+                            password: encryptedPassword,
+                        },
+                    },
+                );
+                res.json({ status: 'Password updated' });
+            } catch (error) {
+                res.json({ status: 'Something Went Wrong' });
+            }
+        } else {
+            res.status(404).json({
+                message: 'Không thể xác thực tài khoản, vui lòng kiểm tra lại link đặt lại mật khẩu',
+            });
+        }
     } catch (error) {
-        console.log(error);
-        res.json({ status: 'Something Went Wrong' });
+        res.status(404).json({ message: 'Không thể xác thực tài khoản, vui lòng kiểm tra lại link đặt lại mật khẩu' });
     }
 });
 
