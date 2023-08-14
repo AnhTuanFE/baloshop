@@ -112,7 +112,7 @@ const Login = () => {
                                             },
                                             {
                                                 error: fieldState?.error?.type === 'maxLength',
-                                                message: 'Mật khẩu phải nhỏ hơn hoặc bằng 255 ký tự',
+                                                message: 'Mật khẩu phải nhỏ hơn hoặc bằng 256 ký tự',
                                             },
                                         ])}
                                     </Fragment>
