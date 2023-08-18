@@ -62,13 +62,13 @@ const Login = () => {
                             ></img>
                         </div>
                         <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1  rounded bg-cyan-100 shadow">
-                            <h1 className="card-title text-bold fw-bold mb-6 mt-4 text-center uppercase">
+                            <h1 className="card-title text-bold fw-bold mb-4 mt-4 text-center uppercase">
                                 Đăng nhập admin
                             </h1>
                             {error && <Message variant="alert-danger">{error}</Message>}
                             {loading && <Loading />}
                             <form onSubmit={handleSubmit(handleLogin)}>
-                                <div className="mb-3">
+                                <div className="mb-3 mt-2">
                                     <Controller
                                         name="email"
                                         control={control}
