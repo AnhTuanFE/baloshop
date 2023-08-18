@@ -51,14 +51,18 @@ const Login = () => {
     return (
         <>
             <Toast />
-            <section className="vh-100">
+            <section className="vh-100 ">
                 <div className="container-fluid h-custom">
-                    <div className="row d-flex justify-content-center align-items-center h-100">
+                    <div className="row d-flex justify-content-center align-items-center h-100 ">
                         <div class="col-md-9 col-lg-6 col-xl-5">
-                            <image src="https://www.google.com/imgres?imgurl=https%3A%2F%2Fimage.isu.pub%2F190717113451-aead829690340d01433d2c8f9a36253d%2Fjpg%2Fpage_1.jpg&tbnid=7gzovwN0o9WnEM&vet=12ahUKEwjCyNygieWAAxWcklYBHTQoCDIQMygDegQIARBW..i&imgrefurl=https%3A%2F%2Fissuu.com%2Flamhha%2Fdocs%2F__c_th__b_n_chu_n_nh_t_qu____t&docid=XjByUGKRLLFjQM&w=1454&h=1494&q=hack%20n%C3%A3o%20kanji%20pdf&ved=2ahUKEwjCyNygieWAAxWcklYBHTQoCDIQMygDegQIARBW"></image>
+                            <img
+                                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+                                class="img-fluid"
+                                alt="Sample image"
+                            ></img>
                         </div>
-                        <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1 shadow">
-                            <h1 className="card-title text-bold fw-bold mb-6 mt-2 text-center uppercase">
+                        <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1  rounded bg-cyan-100 shadow">
+                            <h1 className="card-title text-bold fw-bold mb-6 mt-4 text-center uppercase">
                                 Đăng nhập admin
                             </h1>
                             {error && <Message variant="alert-danger">{error}</Message>}
@@ -128,8 +132,8 @@ const Login = () => {
                                         )}
                                     />
                                 </div>
-                                <div className="mb-4">
-                                    <button type="submit" className="btn btn-primary w-100">
+                                <div className="d-flex mb-4 justify-center">
+                                    <button type="submit" className="btn fw-bold bg-sky-600 text-white ">
                                         Đăng nhập
                                     </button>
                                 </div>
