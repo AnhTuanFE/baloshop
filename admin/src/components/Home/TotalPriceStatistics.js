@@ -3,7 +3,7 @@ export default function TotalPriceStatistics() {
         <div className="col-xl-4 col-lg-12" style={{ flex: '0 0 100%', maxWidth: '49.333333%' }}>
             <div className="card mb-4 shadow-sm">
                 <article className="card-body">
-                    <h5 className="card-title">Thống kê Doanh thu</h5>
+                    <h4 className="card-title fw-bold">Doanh Thu</h4>
                     <iframe
                         title="Chart"
                         style={{

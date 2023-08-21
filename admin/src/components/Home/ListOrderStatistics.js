@@ -3,7 +3,7 @@ const ListOrderStatistics = () => {
         <div className="col-xl-4 col-lg-12" style={{ flex: '0 0 100%', maxWidth: '49.333333%' }}>
             <div className="card mb-4 shadow-sm">
                 <article className="card-body">
-                    <h5 className="card-title">Thống kê Đon hàng</h5>
+                    <h5 className="card-title fw-bold">Đơn hàng</h5>
                     {
                         <iframe
                             title="list-order"
