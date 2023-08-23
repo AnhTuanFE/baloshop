@@ -9,7 +9,7 @@ const TopTotal = (props) => {
     return (
         <div className="row">
             <div className="col-lg-3">
-                <div className="card card-body boder-dabost mb-4 bg-blue-50 shadow-sm">
+                <div className="card card-body boder-dabost mb-4 bg-blue-50 shadow-sm ">
                     <article className="icontext">
                         <div className="d-flex justify-content-between align-items-center">
                             <span className="icon icon-sm rounded-circle alert-primary">

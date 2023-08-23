@@ -56,14 +56,13 @@ const ProductScreen = () => {
     }, [dispatch, successDelete, category, keyword, pageNumber]);
 
     return (
-        <section className="content-main">
+        <section className="content-main vh-100 bg-slate-300">
             <div className="content-header">
-                <h2 className="content-title">Sản phẩm</h2>
-                <div>
-                    <Link to="/addproduct" className="btn btn-primary color-orange">
-                        Tạo mới
-                    </Link>
-                </div>
+                <h2 className="content-title fw-bold">Sản phẩm</h2>
+
+                <Link to="/addproduct">
+                    <div className="btn fw-bold bg-blue-700 text-white">Thêm sản phẩm mới</div>
+                </Link>
             </div>
 
             <div className="card mb-4 shadow-sm">
@@ -112,7 +111,7 @@ const ProductScreen = () => {
                     ) : (
                         <div className="row">
                             <div className="col-md-12 col-sm-12 col-lg-12">
-                                <table className="table slider-data">
+                                <table className="slider-data table">
                                     <thead>
                                         <tr>
                                             <th style={{ width: '10%' }}>Stt</th>
