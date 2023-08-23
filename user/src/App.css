@@ -81,7 +81,7 @@ input,
     font-size: 30px !important;
 }
 .slick-prev {
-    left: 1% !important;
+    left: 4% !important;
     z-index: 2;
 }
 .slick-next {
@@ -89,7 +89,6 @@ input,
     z-index: 2;
 }
 /* 
-
 .slick-next:hover {
     font-size: 30px !important;
 } */

@@ -195,7 +195,10 @@ function Cart() {
                                 />
                                 GIỎ HÀNG CỦA BẠN ĐANG TRỐNG
                             </div>
-                            <Link className="btn-success btn mx-5 px-5 pb-4 pt-3 text-base font-extrabold" to="/">
+                            <Link
+                                className="btn-success btn mx-5 px-5 text-base font-semibold hover:bg-[#157347]"
+                                to="/"
+                            >
                                 BẮT ĐẦU MUA SẮM
                             </Link>
                         </div>

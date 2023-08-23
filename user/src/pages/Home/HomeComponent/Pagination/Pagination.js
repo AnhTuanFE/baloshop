@@ -1,6 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Pagination as PaginationAntd } from 'antd';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    faCircleLeft,
+    faCircleRight,
+    faChevronCircleLeft,
+    faChevronCircleRight,
+} from '@fortawesome/free-solid-svg-icons';
 import './Pagination.css';
 
 // PHÂN TRANG
@@ -56,9 +63,9 @@ const Pagination = (props) => {
                     style={{
                         fontSize: '24px',
                     }}
-                    className=" rounded-[50%] px-2 py-1 font-bold text-[var(--main-color2)]"
+                    className="   px-2 py-1 font-bold text-black "
                 >
-                    <i className="fas fa-angle-double-left"></i>
+                    <FontAwesomeIcon className="bg-white" icon={faChevronCircleLeft} />
                 </span>
             );
         }
@@ -68,9 +75,9 @@ const Pagination = (props) => {
                     style={{
                         fontSize: '24px',
                     }}
-                    className="rounded-[50%] px-2 py-1 font-bold text-[var(--main-color2)]"
+                    className=" px-2 py-1 font-bold text-black "
                 >
-                    <i className="fas fa-angle-double-right"></i>
+                    <FontAwesomeIcon icon={faChevronCircleRight} />
                 </span>
             );
         }
@@ -87,14 +94,17 @@ const Pagination = (props) => {
     };
     return (
         pages > 1 && (
-            <div className="my-8 flex justify-center">
-                <PaginationAntd
-                    defaultCurrent={page}
-                    defaultPageSize={1}
-                    total={Number(pages)}
-                    onChange={handlerPage}
-                    itemRender={itemRender}
-                />
+            <div className="mb-8 mt-12 flex justify-center">
+                <div>
+                    <PaginationAntd
+                        className="![&>.ant-pagination-item]:hover:bg-white"
+                        defaultCurrent={page}
+                        defaultPageSize={1}
+                        total={Number(pages)}
+                        onChange={handlerPage}
+                        // itemRender={itemRender}
+                    />
+                </div>
             </div>
         )
     );

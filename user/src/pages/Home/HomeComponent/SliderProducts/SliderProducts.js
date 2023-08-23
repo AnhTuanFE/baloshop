@@ -47,13 +47,13 @@ export default function SliderProducts({ products, labelSlider }) {
         ],
     };
     return (
-        <div className="mx-auto my-auto mt-3 max-w-screen-2xl bg-white pb-10 pt-3">
-            <h2 className="pb-10 text-center">
+        <div className="mx-auto my-auto mt-3 max-w-screen-2xl pt-3">
+            <h2 className="pb-3 text-center">
                 <Divider>
                     <Chip
                         className="font-semibold"
                         sx={{
-                            fontSize: '24px',
+                            fontSize: '18px',
                             bgcolor: '#ffff',
                         }}
                         label={labelSlider}
@@ -64,23 +64,25 @@ export default function SliderProducts({ products, labelSlider }) {
                 <Slider className=" " {...settings}>
                     {products?.map((product, index) => {
                         return (
-                            <div key={product._id} className="max-h-[300px]">
-                                <Link to={`/product/${product._id}`}>
-                                    <div className="hover:-translate-y-4 hover:transform hover:transition hover:duration-200 hover:ease-linear">
-                                        <img
-                                            src={`${product?.image[0].urlImage}`}
-                                            className="filter-[brightness(1)] m-auto h-[200px]"
-                                            alt=""
-                                        />
-                                    </div>
-                                    <div className="flex justify-center text-center">
-                                        <div>
-                                            <p className="">{product.name}</p>
-                                            <p className="text-base font-semibold">
-                                                {product?.price?.toLocaleString('de-DE')}đ
-                                            </p>
+                            <div key={product._id} className="max-h-[300px] ">
+                                <Link className="" to={`/product/${product._id}`}>
+                                    <div className="mx-2 bg-white py-3">
+                                        <div className="hover:-translate-y-4 hover:transform hover:transition hover:duration-200 hover:ease-linear">
+                                            <img
+                                                src={`${product?.image[0].urlImage}`}
+                                                className="filter-[brightness(1)] m-auto h-[200px]"
+                                                alt=""
+                                            />
+                                        </div>
+                                        <div className="flex justify-center  text-center">
                                             <div>
-                                                <Rating value={product.rating} text={`(${product.numReviews})`} />
+                                                <p className="">{product.name}</p>
+                                                <p className="text-base font-semibold">
+                                                    {product?.price?.toLocaleString('de-DE')}đ
+                                                </p>
+                                                <div>
+                                                    <Rating value={product.rating} text={`(${product.numReviews})`} />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

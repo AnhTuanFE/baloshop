@@ -24,13 +24,26 @@ function ContactInformation() {
                     },
                     display: 'flex',
                     justifyContent: 'space-between',
+                    padding: '0 32px',
                     bgcolor: 'var(--color-layout)',
                 }}
             >
-                <Box sx={{ color: 'var(--white-color)' }}>Đường dây nóng: 123456789</Box>
+                <Box sx={{ color: 'var(--white-color)' }}>Đường dây nóng: 034765889</Box>
 
                 <ThemeProvider theme={them}>
-                    <Box>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                marginRight: '32px',
+                                color: 'white',
+                            }}
+                        >
+                            Theo dõi chúng tôi
+                        </Box>
                         <LocalPostOfficeSharp />
                         <FacebookSharp />
                         <Instagram />

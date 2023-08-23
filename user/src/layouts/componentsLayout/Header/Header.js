@@ -227,7 +227,7 @@ function Header(props) {
                                 disablePortal
                                 id="combo-box-demo"
                                 options={key}
-                                className="w-[70%] rounded-md border-none outline-lime-950 focus:border-none"
+                                className="z-30 w-[70%] rounded-md border-none outline-lime-950 focus:border-none"
                                 onChange={(e) => {
                                     setKeyword(e.target.outerText);
                                 }}
