@@ -56,7 +56,7 @@ const ProductScreen = () => {
     }, [dispatch, successDelete, category, keyword, pageNumber]);
 
     return (
-        <section className="content-main vh-100 bg-slate-300">
+        <section className="content-main bg-slate-300">
             <div className="content-header">
                 <h2 className="content-title fw-bold">Sản phẩm</h2>
 
@@ -114,12 +114,13 @@ const ProductScreen = () => {
                                 <table className="slider-data table">
                                     <thead>
                                         <tr>
-                                            <th style={{ width: '10%' }}>Stt</th>
-                                            <th style={{ width: '20%' }}>Sản phẩm</th>
-                                            <th style={{ width: '40%' }}>Tên sản phẩm</th>
+                                            <th style={{ width: '5%' }}>Stt</th>
+                                            <th style={{ width: '25%' }}>ID sản phẩm</th>
+                                            <th style={{ width: '10%' }}>Ảnh</th>
+                                            <th style={{ width: '30%' }}>Tên</th>
                                             <th style={{ width: '20%' }}>Giá</th>
                                             <th className="text-end" style={{ width: '10%' }}>
-                                                Action
+                                                Thao tác
                                             </th>
                                         </tr>
                                     </thead>
