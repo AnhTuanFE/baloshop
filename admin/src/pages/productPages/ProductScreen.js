@@ -113,15 +113,13 @@ const ProductScreen = () => {
                             <div className="col-md-12 col-sm-12 col-lg-12">
                                 <table className="slider-data table">
                                     <thead>
-                                        <tr>
+                                        <tr className="text-center">
                                             <th style={{ width: '5%' }}>Stt</th>
                                             <th style={{ width: '25%' }}>ID sản phẩm</th>
                                             <th style={{ width: '10%' }}>Ảnh</th>
                                             <th style={{ width: '30%' }}>Tên</th>
                                             <th style={{ width: '20%' }}>Giá</th>
-                                            <th className="text-end" style={{ width: '10%' }}>
-                                                Thao tác
-                                            </th>
+                                            <th style={{ width: '10%' }}>Thao tác</th>
                                         </tr>
                                     </thead>
                                     <tbody>

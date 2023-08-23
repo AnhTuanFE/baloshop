@@ -16,7 +16,7 @@ const Product = (props) => {
     return (
         <>
             {product && (
-                <tr>
+                <tr className="text-center">
                     <td style={{ width: '5%' }}>{index + 1}</td>
                     <td style={{ width: '25%' }}>
                         <span> {product._id}</span>
@@ -38,23 +38,18 @@ const Product = (props) => {
                         <span> {product.countInStock}</span>
                     </td> */}
                     <td className="text-end" style={{ width: '10%' }}>
-                        <div className="dropdown">
-                            <Link to="#" data-bs-toggle="dropdown" className="btn btn-light">
-                                <i className="fas fa-ellipsis-h"></i>
+                        <div className="d-flex">
+                            <Link to={`/product/${product._id}/edit`} className="dropdown-item">
+                                Sửa
                             </Link>
-                            <div className="dropdown-menu">
-                                <Link to={`/product/${product._id}/edit`} className="dropdown-item">
-                                    Sửa
-                                </Link>
-                                <button
-                                    className="dropdown-item"
-                                    onClick={() => {
-                                        deletehandler(product._id);
-                                    }}
-                                >
-                                    Xóa
-                                </button>
-                            </div>
+                            <button
+                                className="dropdown-item"
+                                onClick={() => {
+                                    deletehandler(product._id);
+                                }}
+                            >
+                                Xóa
+                            </button>
                         </div>
                     </td>
                 </tr>
