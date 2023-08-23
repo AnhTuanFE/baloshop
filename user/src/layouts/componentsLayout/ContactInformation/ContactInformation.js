@@ -20,7 +20,7 @@ function ContactInformation() {
             <Box
                 sx={{
                     '& > :not(style)': {
-                        m: 2,
+                        m: 1,
                     },
                     display: 'flex',
                     justifyContent: 'space-between',

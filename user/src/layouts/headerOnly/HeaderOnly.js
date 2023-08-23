@@ -3,7 +3,7 @@ function HeaderOnly({ children }) {
     return (
         <div>
             <Header />
-            <div>{children}</div>
+            <div className="pt-[170px]">{children}</div>
         </div>
     );
 }

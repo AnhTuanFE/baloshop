@@ -19,7 +19,7 @@ export default function NavBar() {
                 <Menu mode="horizontal" className="bg-[#f4f4f4]">
                     {categories.map((category, index) => (
                         <MenuItem key={index}>
-                            <Link className="font-medium uppercase" to={`/category/${category._id}`}>
+                            <Link className="text-sm font-medium uppercase" to={`/category/${category._id}`}>
                                 {category.name}
                             </Link>
                         </MenuItem>

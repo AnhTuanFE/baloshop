@@ -10,7 +10,8 @@ import { logout, getUserDetails } from '~/redux/Actions/userActions'; //updateUs
 import { usersRemainingSelector } from '~/redux/Selector/usersSelector';
 import { cartsRemainingSelector } from '~/redux/Selector/cartsSelector';
 import { imageDefaul, logoDefaul } from '~/utils/data';
-import { Badge, Space } from 'antd';
+import { Badge, Space, Divider } from 'antd';
+import { shadow } from 'pdfjs-dist';
 
 function Header(props) {
     const { keysearch } = props;
@@ -186,14 +187,18 @@ function Header(props) {
 
     // =================
     return (
-        <Box className="">
+        <Box
+            sx={{
+                boxShadow: '0 0.5rem 1rem rgba(0, 0, 0, 0.15)',
+            }}
+            className="fixed left-0 right-0 top-0 z-10 bg-[var(--content-color)]"
+        >
             <ContactInformation />
             <Box
                 sx={{
                     display: 'flex',
                     justifyContent: 'space-between',
-                    bgcolor: 'var(--content-color)',
-                    paddingTop: '20px',
+                    paddingTop: '12px',
                 }}
             >
                 <Box
@@ -260,12 +265,10 @@ function Header(props) {
                             </IconButton>
                         </Box>
                     </form>
-
                     <div className="flex justify-center">
                         <NavBar />
                     </div>
                 </Box>
-
                 <Box
                     sx={{
                         flex: '1',
