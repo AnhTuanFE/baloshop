@@ -58,7 +58,7 @@ const ProductScreen = () => {
     return (
         <section className="content-main bg-slate-300 pb-0">
             <div className="content-header">
-                <h2 className="content-title fw-bold">Sản phẩm</h2>
+                <h3 className="content-title fw-bold">Sản phẩm</h3>
             </div>
 
             <div className="card mb-4 shadow-sm">
@@ -89,7 +89,7 @@ const ProductScreen = () => {
                                     handleCategory(e);
                                 }}
                             >
-                                <option value={''}> Danh mục</option>
+                                <option value={''}>Tất cả</option>
                                 {categories?.map((category) => (
                                     <option value={category._id}>{category.name}</option>
                                 ))}
@@ -97,7 +97,7 @@ const ProductScreen = () => {
                         </div>
                         <div className="col-lg-2 col-6 col-md-3">
                             <Link to="/addproduct">
-                                <div className="btn fw-bold bg-blue-700 text-white">Thêm sản phẩm mới</div>
+                                <div className="btn fw-bold bg-blue-700 text-white">Thêm sản phẩm</div>
                             </Link>
                         </div>
                     </div>
@@ -115,12 +115,12 @@ const ProductScreen = () => {
                                 <table className="slider-data table">
                                     <thead>
                                         <tr className="text-center">
-                                            <th style={{ width: '5%' }}>Stt</th>
-                                            <th style={{ width: '25%' }}>ID sản phẩm</th>
-                                            <th style={{ width: '10%' }}>Ảnh</th>
-                                            <th style={{ width: '30%' }}>Tên</th>
-                                            <th style={{ width: '20%' }}>Giá</th>
-                                            <th style={{ width: '10%' }}>Thao tác</th>
+                                            <th style={{ width: '5%', color: 'black' }}>Stt</th>
+                                            <th style={{ width: '25%', color: 'black' }}>ID sản phẩm</th>
+                                            <th style={{ width: '10%', color: 'black' }}>Ảnh</th>
+                                            <th style={{ width: '30%', color: 'black' }}>Tên</th>
+                                            <th style={{ width: '20%', color: 'black' }}>Giá</th>
+                                            <th style={{ width: '10%', color: 'black' }}>Thao tác</th>
                                         </tr>
                                     </thead>
                                     <tbody>
