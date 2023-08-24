@@ -48,9 +48,9 @@ const Login = () => {
 
     return (
         <>
-            <div className="m-8 flex items-center justify-center p-10 text-center ">
+            <div className="flex items-center justify-center text-center ">
                 <form
-                    className=" w-1/3 rounded-2xl bg-white px-10 py-14 shadow-custom-shadow"
+                    className=" mt-4 w-[400px] rounded-xl bg-white px-10 py-10 shadow-custom-shadow"
                     onSubmit={handleSubmit(submitHandler)}
                 >
                     {error && <Message variant="alert-danger">{error}</Message>}
@@ -68,7 +68,7 @@ const Login = () => {
                                     <input
                                         type="email"
                                         id="email"
-                                        className=" block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 py-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                                        className=" block w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                                         placeholder="Email"
                                         {...field}
                                     />
@@ -98,7 +98,7 @@ const Login = () => {
                                         type="password"
                                         id="password"
                                         placeholder="Mật khẩu"
-                                        className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 py-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                                        className="block w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                                         {...field}
                                     />
                                     {renderError([
@@ -122,17 +122,17 @@ const Login = () => {
                     <div className="w-full">
                         <button
                             type="submit"
-                            className="w-full rounded-lg bg-[var(--main-color)] px-5 py-3 text-center text-base font-semibold uppercase text-white hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300 "
+                            className="w-full rounded-lg bg-[var(--main-color)] px-5 py-2 text-center text-base font-semibold uppercase text-white hover:bg-[var(--main-color-hover)] focus:outline-none focus:ring-4 focus:ring-blue-300 "
                         >
                             Đăng nhập
                         </button>
                     </div>
                     <div className=" mt-3 text-center">
                         <Link to={'/resetpassword-request'}>
-                            <p className="m-1 text-gray-500">Quên mật khẩu</p>
+                            <p className="m-1 text-gray-500 hover:text-blue-600">Quên mật khẩu</p>
                         </Link>
                         <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>
-                            <p className="m-1 text-gray-500">Tạo tài khoản mới</p>
+                            <p className="m-1 text-gray-500 hover:text-blue-600">Tạo tài khoản mới</p>
                         </Link>
                     </div>
                 </form>

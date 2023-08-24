@@ -8,7 +8,9 @@
     --color-button1: #ffff;
     --color-button2: #007fff;
 
-    --color-layout: #333f48;
+    --color-layout: #000;
+    --color-layout2: #333f48;
+
     --content-color: #f4f4f4;
 
     --tw-ring-color: transparent;
@@ -34,7 +36,7 @@ select:focus {
 }
 body {
     margin: 0;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Montserrat', sans-serif, 'Quicksand';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-size: 17px;
@@ -74,7 +76,6 @@ input,
     border: none;
     outline: none;
 }
-
 /* ========================================= css thư viện Corousel===============================*/
 .slick-next::before {
     font-size: 30px !important;

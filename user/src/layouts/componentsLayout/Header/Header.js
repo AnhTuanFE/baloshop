@@ -11,6 +11,9 @@ import { usersRemainingSelector } from '~/redux/Selector/usersSelector';
 import { cartsRemainingSelector } from '~/redux/Selector/cartsSelector';
 import { imageDefaul, logoDefaul } from '~/utils/data';
 import { Badge, Space, Divider } from 'antd';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faFacebook, faInstagramSquare } from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function Header(props) {
     const { keysearch } = props;
@@ -226,7 +229,7 @@ function Header(props) {
                                 disablePortal
                                 id="combo-box-demo"
                                 options={key}
-                                className="z-30 w-[70%] rounded-md border-none outline-lime-950 focus:border-none"
+                                className="z-30 w-[70%] border-none"
                                 onChange={(e) => {
                                     setKeyword(e.target.outerText);
                                 }}
@@ -241,27 +244,15 @@ function Header(props) {
                                     />
                                 )}
                             />
-                            <IconButton
-                                aria-label="search"
-                                size="large"
+                            <button
                                 type="submit"
-                                sx={{
-                                    bgcolor: 'var(--main-color)',
-                                    borderRadius: '4px 8px 8px 4px',
-                                    padding: '0px 10px',
-                                    height: '54px',
-                                    '&:hover': {
-                                        bgcolor: 'var(--color-button2)',
-                                    },
+                                style={{
+                                    borderRadius: '0px 4px 4px 0px',
                                 }}
+                                className="bg-[var(--main-color)] px-3 py-2 text-white hover:bg-[var(--main-color-hover)]"
                             >
-                                <Search
-                                    fontSize="large"
-                                    sx={{
-                                        color: 'var(--white-color)',
-                                    }}
-                                />
-                            </IconButton>
+                                <FontAwesomeIcon className="text-2xl" icon={faMagnifyingGlass} />
+                            </button>
                         </Box>
                     </form>
                     <div className="flex justify-center">

@@ -212,7 +212,7 @@ function DetailProduct() {
                                                             )}
                                                         </select>
                                                     </div>
-                                                    <div className="mx-10">
+                                                    <div className="mx-6">
                                                         <button
                                                             onClick={AddToCartHandle}
                                                             className="w-full rounded bg-[var(--main-color)] py-2 text-base font-bold uppercase text-white hover:opacity-80"

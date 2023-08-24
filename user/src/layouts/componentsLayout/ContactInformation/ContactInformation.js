@@ -28,7 +28,15 @@ function ContactInformation() {
                     bgcolor: 'var(--color-layout)',
                 }}
             >
-                <Box sx={{ color: 'var(--white-color)' }}>Đường dây nóng: 034765889</Box>
+                <Box sx={{ color: 'var(--white-color)' }}>
+                    <div>
+                        <span className="text-sm">Hotline:</span>{' '}
+                        <span className="text-sm font-medium">033.555.999</span>
+                        <span className="mr-6 text-sm font-thin"> (8-22h) miễn phí</span>
+                        <span className="text-sm font-thin">|</span>
+                        <span className=" ml-6 text-sm font-thin">Hệ thống siêu thị</span>
+                    </div>
+                </Box>
 
                 <ThemeProvider theme={them}>
                     <Box
@@ -42,14 +50,44 @@ function ContactInformation() {
                                 color: 'white',
                             }}
                         >
-                            Theo dõi chúng tôi
+                            <span className=" ml-6 text-sm font-thin">Theo dõi chúng tôi</span>
                         </Box>
-                        <LocalPostOfficeSharp />
-                        <FacebookSharp />
-                        <Instagram />
-                        <YouTube />
-                        <Pinterest />
-                        <LinkedIn />
+                        <div className="mr-2 cursor-pointer">
+                            <img
+                                className="h-[30px] w-[30px]"
+                                src="https://cdn.iconscout.com/icon/free/png-256/free-gmail-30-722694.png"
+                            />
+                        </div>
+                        <div className="mr-2 cursor-pointer">
+                            <img
+                                className="h-[30px] w-[30px]"
+                                src="https://cdn.iconscout.com/icon/free/png-256/free-facebook-logo-2019-1597680-1350125.png"
+                            />
+                        </div>
+                        <div className="mr-2 cursor-pointer">
+                            <img
+                                className="h-[30px] w-[30px]"
+                                src="https://cdn.iconscout.com/icon/free/png-256/free-instagram-1868978-1583142.png"
+                            />
+                        </div>
+                        <div className="mr-2 cursor-pointer">
+                            <img
+                                className="h-[30px] w-[30px]"
+                                src="https://cdn.iconscout.com/icon/free/png-256/free-youtube-268-721990.png"
+                            />
+                        </div>
+                        <div className="mr-2 cursor-pointer">
+                            <img
+                                className="h-[30px] w-[30px]"
+                                src="https://cdn.iconscout.com/icon/free/png-256/free-pinterest-46-189745.png"
+                            />
+                        </div>
+                        <div className="mr-2 cursor-pointer">
+                            <img
+                                className="h-[30px] w-[30px]"
+                                src="https://cdn.iconscout.com/icon/free/png-256/free-linkedin-162-498418.png"
+                            />
+                        </div>
                     </Box>
                 </ThemeProvider>
             </Box>

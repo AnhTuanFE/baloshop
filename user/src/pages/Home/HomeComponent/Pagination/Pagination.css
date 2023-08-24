@@ -3,15 +3,15 @@
 }
 .ant-pagination-item a:hover {
     border-radius: 50%;
-    /* color: #ffff !important;
-    background-color: var(--main-color) !important; */
 }
 .ant-pagination-item:hover {
-    /* background-color: #fff !important; */
     border-radius: 50%;
 }
 .ant-pagination-item-active {
     color: #ffff;
+}
+.ant-pagination-item-active {
+    background-color: var(--content-color) !important;
 }
 .ant-pagination-item-active a {
     background-color: var(--main-color);
@@ -23,10 +23,3 @@
 .ant-pagination-item-link:hover {
     border-radius: 50% !important;
 }
-
-/* .anticon-double-right {
-}
-.anticon {
-    width: 100%;
-}
- */
