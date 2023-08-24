@@ -228,7 +228,7 @@ function Cart() {
                                         />
                                     </div>
                                     <div className="cart-text col-md-3 col-6 d-flex align-items-center">
-                                        <Link to={`/products/${item.product?._id}`}>
+                                        <Link to={`/product/${item.product?._id}`}>
                                             <h4 className="font-bold">{item.product?.name}</h4>
                                         </Link>
                                     </div>

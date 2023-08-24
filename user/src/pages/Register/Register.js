@@ -50,9 +50,9 @@ function Register() {
     return (
         <>
             <div>
-                <div className="mb-14 mt-3 flex items-center justify-center">
+                <div className="mt-3 flex items-center justify-center pb-14">
                     <form
-                        className="Login col-md-6 col-lg-4 col-10 rounded-xl px-10 py-10 shadow-custom-shadow"
+                        className="Login col-md-6 col-lg-4 col-10 rounded-xl bg-white px-10 py-10 shadow-custom-shadow"
                         onSubmit={handleSubmit(submitHandler)}
                     >
                         {error && <Message variant="alert-danger block">{error}</Message>}

@@ -18,13 +18,13 @@ function PurchaseHistory() {
 
     return (
         <>
-            <div className="mt-lg-5 mt-3">
+            <div className="mt-lg-3 mt-3 bg-white pt-3">
                 <div className="flex justify-between">
-                    <div className="ml-12 flex-[1]">
+                    <div className="ml-5 flex-[1]">
                         <SideBar_Profile userInfo={userInfo} />
                     </div>
-                    <div className="ml-10 flex-[2]">
-                        <div className="col-lg-8 pt-lg-0 pb-5 pt-3">
+                    <div className="ml-10 flex-[4]">
+                        <div className="mx-10 pb-5 pt-3">
                             <HistoryOrdersBought orders={orders} loading={loading} error={error} />
                         </div>
                     </div>

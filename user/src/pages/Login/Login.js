@@ -50,7 +50,7 @@ const Login = () => {
         <>
             <div className="m-8 flex items-center justify-center p-10 text-center ">
                 <form
-                    className=" w-1/3 rounded-2xl px-10 py-14 shadow-custom-shadow"
+                    className=" w-1/3 rounded-2xl bg-white px-10 py-14 shadow-custom-shadow"
                     onSubmit={handleSubmit(submitHandler)}
                 >
                     {error && <Message variant="alert-danger">{error}</Message>}
