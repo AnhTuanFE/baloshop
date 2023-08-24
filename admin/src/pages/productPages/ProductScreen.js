@@ -56,7 +56,7 @@ const ProductScreen = () => {
     }, [dispatch, successDelete, category, keyword, pageNumber]);
 
     return (
-        <section className="content-main bg-slate-300">
+        <section className="content-main bg-slate-300 pb-0">
             <div className="content-header">
                 <h2 className="content-title fw-bold">Sản phẩm</h2>
 
@@ -66,9 +66,9 @@ const ProductScreen = () => {
             </div>
 
             <div className="card mb-4 shadow-sm">
-                <header className="card-header bg-white ">
-                    <div className="row gx-3 py-3">
-                        <div className="col-lg-4 col-md-6 me-auto ">
+                <header className="card-header border-none bg-white">
+                    <div className="row gx-3 py-0">
+                        <div className="col-lg-4 col-md-4 me-auto ">
                             <form onSubmit={(e) => handleSearch(e)}>
                                 <div className="input-group" style={{ alignItems: 'center' }}>
                                     <input
@@ -102,14 +102,14 @@ const ProductScreen = () => {
                     </div>
                 </header>
 
-                <div className="card-body">
+                <div className="card-body overflow-auto">
                     {errorDelete && <Message variant="alert-danger">{errorDelete}</Message>}
                     {loading ? (
                         <Loading />
                     ) : error ? (
                         <Message variant="alert-danger">{error}</Message>
                     ) : (
-                        <div className="row">
+                        <div className="row" style={{ height: '55vh' }}>
                             <div className="col-md-12 col-sm-12 col-lg-12">
                                 <table className="slider-data table">
                                     <thead>
