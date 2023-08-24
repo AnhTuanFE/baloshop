@@ -59,10 +59,6 @@ const ProductScreen = () => {
         <section className="content-main bg-slate-300 pb-0">
             <div className="content-header">
                 <h2 className="content-title fw-bold">Sản phẩm</h2>
-
-                <Link to="/addproduct">
-                    <div className="btn fw-bold bg-blue-700 text-white">Thêm sản phẩm mới</div>
-                </Link>
             </div>
 
             <div className="card mb-4 shadow-sm">
@@ -98,6 +94,11 @@ const ProductScreen = () => {
                                     <option value={category._id}>{category.name}</option>
                                 ))}
                             </select>
+                        </div>
+                        <div className="col-lg-2 col-6 col-md-3">
+                            <Link to="/addproduct">
+                                <div className="btn fw-bold bg-blue-700 text-white">Thêm sản phẩm mới</div>
+                            </Link>
                         </div>
                     </div>
                 </header>

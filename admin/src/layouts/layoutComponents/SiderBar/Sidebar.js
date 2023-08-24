@@ -3,7 +3,7 @@ import { logoDefaul } from '~/data/data';
 const Sidebar = () => {
     return (
         <aside className="navbar-aside border-none shadow-none">
-            <div className="aside-top">
+            <div className="aside-top  bg-blue-100" style={{ padding: '0.65rem 0.5rem' }}>
                 <Link to="/" className="brand-wrap">
                     <img
                         src={logoDefaul}
@@ -15,7 +15,7 @@ const Sidebar = () => {
             </div>
 
             <nav>
-                <ul className="menu-aside">
+                <ul className="menu-aside mt-7">
                     <li className="menu-item">
                         <NavLink activeClassName="active" className="menu-link bg-blue-900" to="/" exact={true}>
                             <i className="icon fas fa-home"></i>

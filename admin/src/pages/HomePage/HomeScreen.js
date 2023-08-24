@@ -31,8 +31,8 @@ const HomeScreen = () => {
     return (
         <>
             <section className="content-main">
-                <div className="content-header">
-                    <h4 className="content-title fw-bold text-lg"> Trang chủ </h4>
+                <div className="content-header mb-1">
+                    <h3 className="content-title fw-bold "> Trang chủ </h3>
                 </div>
                 <TopTotal orders={orders} countProducts={countProducts} countUsers={users ? users.length : 0} />
 

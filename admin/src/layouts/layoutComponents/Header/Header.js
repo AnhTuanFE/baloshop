@@ -12,7 +12,7 @@ const Header = () => {
     };
 
     return (
-        <header className="main-header navbar justify-content-end">
+        <header className="main-header navbar justify-content-end border-none bg-blue-100">
             <div className="col-nav">
                 <button className="btn btn-icon btn-mobile me-auto">
                     <i className="md-28 fas fa-bars"></i>
