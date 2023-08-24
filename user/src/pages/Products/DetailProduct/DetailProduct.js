@@ -17,6 +17,8 @@ import { addToCart } from '~/redux/Actions/cartActions';
 
 import SimilarProducts from './DetailProductComponents/SimilarProducts/SimilarProducts';
 import { notification } from 'antd';
+import LoadingLarge from '~/components/LoadingError/LoadingLarge';
+import { listCart } from '~/redux/Actions/cartActions';
 
 function DetailProduct() {
     const [api, contextHolder] = notification.useNotification();
@@ -99,8 +101,9 @@ function DetailProduct() {
 
     useEffect(() => {
         if (successAddCart) {
+            openNotification('top', 'Thêm sản phẩm vào giỏ hàng Thành công', 'success');
             dispatch({ type: CART_CREATE_RESET });
-            navigate(`/cart/${productId}?qty=${qty}?color=${color}`);
+            // navigate(`/cart/${productId}?qty=${qty}?color=${color}`);
         }
         if (errorAddCart) {
             openNotification('top', 'Thêm sản phẩm vào giỏ hàng thất bại', 'error');
@@ -116,125 +119,143 @@ function DetailProduct() {
             dispatch(addToCart({ productId, color, id_product, qty, _id: userInfo._id }));
         } else navigate('/login');
     };
-
+    useEffect(() => {
+        // cập nhập số lượng sản phẩm trong giỏ hàng
+        dispatch(listCart());
+    }, [successAddCart]);
     const handleRender = () => {
         return (
-            <div className="mx-[5%]">
-                {contextHolder}
-                <div className="row mx-5">
-                    <div className="col-md-12 rounded bg-white py-4">
-                        <div className="row">
-                            <div className="col-md-5">
-                                <div className="mr-5 flex h-[500px] justify-center bg-[#fafafa]">
-                                    <SliderImageProducts images={product.image} />
+            <div className="mx-auto my-auto max-w-screen-2xl">
+                <div className="mx-[5%]">
+                    {contextHolder}
+                    <div className="row mx-5">
+                        <div className="col-md-12 rounded bg-white py-2">
+                            <div className="row">
+                                <div className="col-md-5">
+                                    <div className="flex h-[400px] justify-center bg-white">
+                                        <SliderImageProducts images={product.image} />
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="col-md-7">
-                                <div className="">
-                                    <div className="w-full">
-                                        <div className="mb-2 text-2xl font-semibold">{product.name}</div>
-                                    </div>
-                                    <div className="product-baner">
-                                        <img
-                                            className="w-full"
-                                            src="https://res.cloudinary.com/tlsbaloshop/image/upload/v1685002777/baloshopSlider/ant_index_bottom_banner_big_2_isoowv.jpg"
-                                            alt=""
-                                        />
-                                    </div>
-                                    <div className="col-lg-12 mt-2 rounded ">
-                                        <div className=" d-flex justify-content-between align-items-center px-6 py-3">
-                                            <h6 className="text-base font-semibold">Giá</h6>
-                                            <span className="font-semibold text-[#000000]">
-                                                {product?.price?.toLocaleString('de-DE')}đ
-                                            </span>
+                                <div className="col-md-7">
+                                    <div className="">
+                                        <div className="w-full">
+                                            <div className="mb-2 text-xl font-semibold">{product.name}</div>
                                         </div>
-                                        <div className=" d-flex justify-content-between align-items-center px-6 py-3">
-                                            <h6 className="text-base font-semibold">Trạng thái</h6>
-                                            {optionsArrColor?.countInStock > 0 ? (
-                                                <span className="font-semibold text-[#000000]">Còn hàng</span>
-                                            ) : (
-                                                <span className="font-semibold text-[#000000]">Hết hàng</span>
-                                            )}
+                                        <div className="product-baner">
+                                            <img
+                                                className="h-[200px] w-full"
+                                                src="https://res.cloudinary.com/tlsbaloshop/image/upload/v1685002777/baloshopSlider/ant_index_bottom_banner_big_2_isoowv.jpg"
+                                                alt=""
+                                            />
                                         </div>
-                                        <div className=" d-flex justify-content-between align-items-center px-6 py-3">
-                                            <h6 className="text-base font-semibold">Đánh giá</h6>
-                                            <Rating value={product.rating} text={`(${product.numReviews}) đánh giá`} />
-                                        </div>
-                                        <div className=" d-flex justify-content-between align-items-center px-6 py-3">
-                                            <h6 className="text-base font-semibold">Màu sắc</h6>
-                                            <div>
-                                                {optionColor?.map((option, index) => (
-                                                    <button
-                                                        type="button"
-                                                        key={option._id}
-                                                        onClick={() => {
-                                                            setOptionIndex(index);
-                                                            setColor(option.color);
-                                                        }}
-                                                        class={
-                                                            optionIndex === index
-                                                                ? 'btn-outline-primary active btn mx-1'
-                                                                : 'btn-outline-primary btn mx-1'
-                                                        }
-                                                        style={{ marginTop: '8px' }}
-                                                    >
-                                                        {option.color}
-                                                    </button>
-                                                ))}
+                                        <div className="col-lg-12 mt-2 rounded ">
+                                            <div className=" d-flex justify-content-between align-items-center px-6 py-2">
+                                                <h6 className="text-base font-semibold">Giá</h6>
+                                                <span className="font-semibold text-[#000000]">
+                                                    {product?.price?.toLocaleString('de-DE')}đ
+                                                </span>
                                             </div>
-                                        </div>
-
-                                        {optionsArrColor?.countInStock > 0 ? (
-                                            <>
-                                                <div className=" d-flex justify-content-between align-items-center px-6 py-3">
-                                                    <h6 className="text-base font-semibold">Số lượng</h6>
-                                                    <select
-                                                        className="h-10 w-[100px] cursor-pointer rounded bg-[#f3f3f3] text-center"
-                                                        value={qty}
-                                                        onChange={(e) => setQty(e.target.value)}
-                                                    >
-                                                        {[...Array(optionsArrColor.countInStock).keys()].map((x) => (
-                                                            <option key={x + 1} value={x + 1}>
-                                                                {x + 1}
-                                                            </option>
-                                                        ))}
-                                                    </select>
+                                            <div className=" d-flex justify-content-between align-items-center px-6 py-2">
+                                                <h6 className="text-base font-semibold">Trạng thái</h6>
+                                                {optionsArrColor?.countInStock > 0 ? (
+                                                    <span className="font-semibold text-[#000000]">Còn hàng</span>
+                                                ) : (
+                                                    <span className="font-semibold text-[#000000]">Hết hàng</span>
+                                                )}
+                                            </div>
+                                            <div className=" d-flex justify-content-between align-items-center px-6 py-2">
+                                                <h6 className="text-base font-semibold">Đánh giá</h6>
+                                                <Rating
+                                                    value={product.rating}
+                                                    text={`(${product.numReviews}) đánh giá`}
+                                                />
+                                            </div>
+                                            <div className=" d-flex justify-content-between align-items-center px-6 py-2">
+                                                <h6 className="text-base font-semibold">Màu sắc</h6>
+                                                <div>
+                                                    {optionColor?.map((option, index) => (
+                                                        <button
+                                                            type="button"
+                                                            key={option._id}
+                                                            onClick={() => {
+                                                                setOptionIndex(index);
+                                                                setColor(option.color);
+                                                            }}
+                                                            className={
+                                                                optionIndex === index
+                                                                    ? 'btn-outline-primary active btn mx-1'
+                                                                    : 'btn-outline-primary btn mx-1'
+                                                            }
+                                                            style={{ marginTop: '8px' }}
+                                                        >
+                                                            {option.color}
+                                                        </button>
+                                                    ))}
                                                 </div>
-                                                <button
-                                                    onClick={AddToCartHandle}
-                                                    className="h-12 w-full rounded bg-[var(--main-color)] text-base font-bold uppercase text-white hover:opacity-80"
-                                                >
-                                                    Thêm vào giỏ
-                                                </button>
-                                            </>
-                                        ) : null}
+                                            </div>
+
+                                            {optionsArrColor?.countInStock > 0 ? (
+                                                <>
+                                                    <div className=" d-flex justify-content-between align-items-center px-6 py-2">
+                                                        <h6 className="text-base font-semibold">Số lượng</h6>
+                                                        <select
+                                                            className="h-10 w-[100px] cursor-pointer rounded bg-[#f3f3f3] text-center"
+                                                            value={qty}
+                                                            onChange={(e) => setQty(e.target.value)}
+                                                        >
+                                                            {[...Array(optionsArrColor.countInStock).keys()].map(
+                                                                (x) => (
+                                                                    <option key={x + 1} value={x + 1}>
+                                                                        {x + 1}
+                                                                    </option>
+                                                                ),
+                                                            )}
+                                                        </select>
+                                                    </div>
+                                                    <div className="mx-10">
+                                                        <button
+                                                            onClick={AddToCartHandle}
+                                                            className="w-full rounded bg-[var(--main-color)] py-2 text-base font-bold uppercase text-white hover:opacity-80"
+                                                        >
+                                                            Thêm vào giỏ
+                                                        </button>
+                                                    </div>
+                                                </>
+                                            ) : null}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="mt-2 rounded bg-white pt-5">
-                                <h2
-                                    style={{
-                                        borderBottom: '2px solid rgba(250, 154, 10, 0.8)',
-                                    }}
-                                    className="mb-5 mt-2 text-2xl font-semibold uppercase"
-                                >
-                                    Chi Tiết Sản Phẩm
-                                </h2>
-                                <div dangerouslySetInnerHTML={{ __html: product.description }}></div>
+                                <div className="mt-2 rounded bg-white pt-5">
+                                    <h2
+                                        style={{
+                                            borderBottom: '2px solid rgba(250, 154, 10, 0.8)',
+                                        }}
+                                        className="mb-5 mt-2 text-2xl font-semibold uppercase"
+                                    >
+                                        Chi Tiết Sản Phẩm
+                                    </h2>
+                                    <div dangerouslySetInnerHTML={{ __html: product.description }}></div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <div className="mx-5">
+                        <EvaluateProduct productId={productId} />
+                        <AskAndAnswer productId={productId} />
+                        <SimilarProducts products={products} />
+                    </div>
                 </div>
-                <EvaluateProduct productId={productId} />
-                <AskAndAnswer productId={productId} />
-                <SimilarProducts products={products} />
             </div>
         );
     };
 
     let content;
     if (loading) {
-        content = <Loading />;
+        content = (
+            <div className="min-h-[100vh]">
+                <LoadingLarge content={'Đang load thông tin'} />
+            </div>
+        );
     } else if (error) {
         content = <Message>{error}</Message>;
     } else {
@@ -242,8 +263,9 @@ function DetailProduct() {
     }
     return (
         <>
-            <div className="mb-12 mt-12">
-                {loadingAddCart && <Loading />}
+            <div className="mb-12 mt-0">
+                {loadingAddCart && <LoadingLarge content={' '} />}
+                {/* {loadingAddCart && <Loading />} */}
                 {content}
             </div>
         </>

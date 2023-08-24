@@ -7,11 +7,8 @@ import { addToCart, listCart, removefromcart } from '~/redux/Actions/cartActions
 
 import Loading from '~/components/LoadingError/Loading';
 import { notification, Select, Space } from 'antd';
+import ModalDaiSyUI from '~/components/Modal/ModalDaiSyUI';
 import './Cart.css';
-
-const handleChange = (value) => {
-    console.log(`selected ${value}`);
-};
 
 function Cart() {
     const [api, contextHolder] = notification.useNotification();
@@ -183,7 +180,7 @@ function Cart() {
         <>
             {loadingCreate && <Loading />}
             {contextHolder}
-            <div className="">
+            <div className="pb-5">
                 {cartItems?.length === 0 ? (
                     <div className=" alert alert-info mt-3 flex justify-center text-center">
                         <div>
@@ -216,12 +213,12 @@ function Cart() {
                         </div>
                         <div className=" alert alert-info mt-3 text-center">
                             Tổng sản phẩm trong giỏ
-                            <Link className="mx-2 text-success">({cartItems?.length ?? 0})</Link>
+                            <p className="text-lg text-green-800">({cartItems?.length ?? 0})</p>
                         </div>
                         {/* cartiterm */}
                         <div className="cart-scroll">
                             {cartItems?.map((item) => (
-                                <div key={item?._id} className="row relative my-4 bg-white p-3">
+                                <div key={item?._id} className="row relative my-4 bg-white">
                                     {findCartCountInStock(item)}
                                     <div className=" col-md-1 col-4 mt-0">
                                         <img
@@ -242,7 +239,7 @@ function Cart() {
                                     </div>
                                     <div className=" col-md-1 mb-0 flex">
                                         <button
-                                            className="m-auto cursor-pointer rounded-3xl bg-red-500 px-4 py-2 align-middle hover:bg-orange-400"
+                                            className="m-auto cursor-pointer rounded-xl bg-orange-500 px-3 py-1 align-middle text-white hover:bg-red-500"
                                             onClick={() => {
                                                 removeFromCartHandle(item?._id);
                                             }}
@@ -255,18 +252,17 @@ function Cart() {
                         </div>
 
                         {/* End of cart iterms */}
-                        <hr />
-                        <div className="mb-7 mt-3 flex items-center justify-center bg-white py-5">
+                        <div className="mt-3 flex flex-wrap items-center justify-center bg-white px-2 py-3">
                             <div className="flex px-7">
-                                <span className="mr-5 text-3xl text-[#8c8c8c] ">Tổng tiền:</span>
-                                <span className="text-3xl font-bold text-red-500">
+                                <span className="mr-5 pt-1 text-xl text-[#8c8c8c] ">Tổng tiền:</span>
+                                <span className="text-2xl font-bold text-red-500">
                                     {Number(total)?.toLocaleString('de-DE')}đ
                                 </span>
                             </div>
                             {total > 0 && (
                                 <div className="">
                                     <button
-                                        className="mr-2 w-full rounded-2xl bg-[var(--main-color)] px-20 py-3 text-sm font-semibold uppercase text-white"
+                                        className="mr-2 w-full rounded-2xl bg-[var(--main-color)] px-10 py-2 text-sm font-semibold uppercase text-white hover:opacity-[0.8]"
                                         onClick={checkOutHandler}
                                     >
                                         Tiến hành thanh toán
