@@ -134,8 +134,8 @@ function EvaluateProduct({ productId }) {
         dispatch(createProductReview(productId, rating, reviewColor, comment));
     };
     return (
-        <div className="rounded-xl shadow-custom-shadow">
-            <div className="m-5">
+        <div className="rounded-xl bg-white shadow-custom-shadow">
+            <div className="mx-5 mt-5 pt-1">
                 <h2 className="mt-3 py-2 text-center text-xl font-bold">Đánh giá & nhận xét</h2>
                 <div className="rounded-xl" style={{ border: '2px solid #ccc' }}>
                     <div className="row">
@@ -181,7 +181,7 @@ function EvaluateProduct({ productId }) {
                 </div>
                 <div className="mt-3 text-center hover:opacity-[0.9]">
                     <button
-                        className="h-9 w-[300px] cursor-pointer rounded-2xl bg-[var(--main-color)] text-white"
+                        className=" w-[300px] cursor-pointer rounded-lg bg-[var(--main-color)] py-2 text-white"
                         onClick={handleOpenModal}
                     >
                         Đánh giá ngay

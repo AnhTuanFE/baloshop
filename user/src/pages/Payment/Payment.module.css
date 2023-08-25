@@ -1,17 +1,3 @@
-/* .payment-container {
-    margin-top: 20px;
-}
-.radio-container {
-    padding: 10px 0;
-    text-align: start;
-}
-.radio-container input {
-    font-size: 17px;
-}
-.radio-container label {
-    padding: 0 20px;
-    font-size: 17px;
-} */
 .wrapper {
     display: flex;
     justify-content: center;
@@ -21,12 +7,7 @@
     padding: 44px 44px;
     border-radius: 12px;
     box-shadow: 0 1px 2px 0 rgb(60 64 67 / 10%), 0 2px 6px 2px rgb(60 64 67 / 15%);
-}
-.title {
-    font-size: 20px;
-    color: black;
-    text-align: center;
-    font-weight: bold;
+    background-color: #fff;
 }
 .btn_continue {
     background-color: var(--main-color);

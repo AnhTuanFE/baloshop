@@ -20,6 +20,7 @@ function SideBar_Profile({ userInfo }) {
             <Box
                 sx={{
                     flex: '1',
+                    marginLeft: '12px',
                 }}
             >
                 <Box

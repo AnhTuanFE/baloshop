@@ -5,10 +5,12 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { slidersRemainingSelector } from '~/redux/Selector/slidersReducer';
+import Loading from '~/components/LoadingError/Loading';
+import { Skeleton } from '@mui/material';
 
 export default function Sliders() {
     const { sliderLoad } = useSelector(slidersRemainingSelector);
-    const { slider } = sliderLoad;
+    const { slider, loading } = sliderLoad;
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(ListSlider());
@@ -24,21 +26,55 @@ export default function Sliders() {
         cssEase: 'linear',
     };
     return (
-        <div className="mx-auto my-auto ml-7 mr-7 max-w-screen-2xl">
-            <div className="m-4  rounded-xl bg-[var(--main-color)] pb-4 pt-6">
-                <Slider {...settings}>
-                    {slider?.map((value, index) => {
-                        return (
-                            <div key={index}>
-                                <img
-                                    src={value.url}
-                                    className="mx-auto my-auto h-[450px] rounded-xl"
-                                    alt="slider image"
-                                />
+        <div className="mx-auto my-auto max-w-screen-2xl bg-white">
+            <div className="">
+                <div>
+                    {/* {loading && <Loading />} */}
+                    <div className="flex ">
+                        {slider?.length > 0 ? (
+                            <div className="mr-2 w-[70%]">
+                                <Slider
+                                    style={{ maxHeight: '252px', overflow: 'hidden', objectFit: 'cover' }}
+                                    className=""
+                                    {...settings}
+                                >
+                                    {slider?.map((value, index) => {
+                                        return (
+                                            <div key={value?.id}>
+                                                <img
+                                                    src={value?.url}
+                                                    className=" max-h-[252px] w-full"
+                                                    alt="slider image"
+                                                />
+                                            </div>
+                                        );
+                                    })}
+                                </Slider>
                             </div>
-                        );
-                    })}
-                </Slider>
+                        ) : (
+                            <Skeleton className="mr-2" variant="rectangular" width={'70%'} height={'252px'} />
+                        )}
+                        {slider?.length > 0 ? (
+                            <div className="w-[30%]">
+                                <div className="mb-2">
+                                    <img className="max-h-[122px]  w-full" src={slider[0]?.url} alt="banner" />
+                                </div>
+                                <div className="">
+                                    <img className="max-h-[122px]  w-full" src={slider[1]?.url} alt="banner" />
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="w-[30%]">
+                                <div className="mb-2">
+                                    <Skeleton width={'100%'} height={'122px'} variant="rectangular" />
+                                </div>
+                                <div className="">
+                                    <Skeleton width={'100%'} height={'122px'} variant="rectangular" />
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
             </div>
         </div>
     );

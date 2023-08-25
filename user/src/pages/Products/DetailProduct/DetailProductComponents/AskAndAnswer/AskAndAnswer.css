@@ -1,5 +1,5 @@
 .rating-review {
-    max-height: 50vh;
+    max-height: 60vh;
     overflow-y: scroll;
 }
 .rating-review::-webkit-scrollbar {

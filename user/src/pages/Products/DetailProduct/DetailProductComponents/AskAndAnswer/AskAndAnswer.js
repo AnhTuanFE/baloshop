@@ -94,9 +94,9 @@ function AskAndAnswer({ productId }) {
     }
     return (
         <>
-            <div className="mt-4 rounded-xl pt-2">
+            <div className="mt-4 rounded-xl bg-white pt-2">
                 <div
-                    className="mb-4 rounded-xl px-5 py-4"
+                    className="rounded-xl px-5 py-4"
                     style={{
                         boxShadow: '0 0.5rem 1rem rgba(0, 0, 0, 0.15)',
                     }}
@@ -133,7 +133,7 @@ function AskAndAnswer({ productId }) {
                 </div>
                 {/* comment */}
                 <div
-                    className="col-md-12 mt-2 rounded-2xl bg-white"
+                    className="col-md-12 mt-2 rounded bg-white"
                     style={{
                         boxShadow: '0 0.5rem 1rem rgba(0, 0, 0, 0.15)',
                     }}
@@ -190,7 +190,7 @@ function AskAndAnswer({ productId }) {
                                 {/* comment child */}
                                 <div className="ml-8 ">
                                     {review.commentChilds?.map((child) => (
-                                        <div key={child._id} className="mb-md-2 rounded-5 mb-2 bg-[#ebeced85] p-3">
+                                        <div key={child._id} className="mb-md-2 rounded-5 mb-2 mt-2 bg-[#ebeced85] p-3">
                                             <div className="flex items-center">
                                                 <div className="flex items-end">
                                                     {findProductUser(child)}
@@ -218,7 +218,7 @@ function AskAndAnswer({ productId }) {
                                     ))}
                                 </div>
                                 {buleanReview === review._id && (
-                                    <form onSubmit={submitQuestionChild} className="flex">
+                                    <form onSubmit={submitQuestionChild} className="ml-6 mt-2 flex">
                                         <textarea
                                             // className="question-product"
                                             className="h-20 w-3/5 rounded-xl px-2 py-1 text-base shadow-sm"
@@ -229,7 +229,7 @@ function AskAndAnswer({ productId }) {
                                             }}
                                         ></textarea>
                                         {userInfo ? (
-                                            <button className="button my-auto ml-1">
+                                            <button className="button my-auto ml-1 rounded-lg bg-[var(--main-color)] px-4 py-2 text-white hover:opacity-80">
                                                 <i className="fas fa-paper-plane pr-1"></i>
                                                 Gửi
                                             </button>

@@ -9,9 +9,9 @@ function SliderImageProducts({ images }) {
     }, [images]);
     return (
         <div id="carouselExampleIndicators" className="slide carousel" data-ride="carousel">
-            <div className="carousel-inner">
-                <div className="carousel-item active">
-                    <img className="d-block w-100" src={imageOne !== undefined ? `${imageOne}` : ''} alt=""></img>
+            <div className="carousel-inner ">
+                <div className="carousel-item active ">
+                    <img className="d-block h-[400px] " src={imageOne !== undefined ? `${imageOne}` : ''} alt=""></img>
                 </div>
                 {images?.map((product) => {
                     return (

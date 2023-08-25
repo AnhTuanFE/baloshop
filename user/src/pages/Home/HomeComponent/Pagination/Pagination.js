@@ -1,6 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Pagination as PaginationAntd } from 'antd';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    faCircleLeft,
+    faCircleRight,
+    faChevronCircleLeft,
+    faChevronCircleRight,
+} from '@fortawesome/free-solid-svg-icons';
 import './Pagination.css';
 
 // PHÂN TRANG
@@ -49,52 +56,55 @@ const Pagination = (props) => {
         }
     }, [page, pages]);
 
-    const itemRender = (item, type, originalElement) => {
-        if (type === 'prev') {
-            return (
-                <span
-                    style={{
-                        fontSize: '24px',
-                    }}
-                    className=" rounded-[50%] px-2 py-1 font-bold text-[var(--main-color2)]"
-                >
-                    <i className="fas fa-angle-double-left"></i>
-                </span>
-            );
-        }
-        if (type === 'next') {
-            return (
-                <span
-                    style={{
-                        fontSize: '24px',
-                    }}
-                    className="rounded-[50%] px-2 py-1 font-bold text-[var(--main-color2)]"
-                >
-                    <i className="fas fa-angle-double-right"></i>
-                </span>
-            );
-        }
-        return (
-            <div
-                style={{
-                    fontSize: '18px',
-                }}
-                className="h-full w-full rounded-[50%] bg-[#f3f5f7] font-medium"
-            >
-                {originalElement}
-            </div>
-        );
-    };
+    // const itemRender = (item, type, originalElement) => {
+    //     if (type === 'prev') {
+    //         return (
+    //             <span
+    //                 style={{
+    //                     fontSize: '24px',
+    //                 }}
+    //                 className="   px-2 py-1 font-bold text-black "
+    //             >
+    //                 <FontAwesomeIcon className="bg-white" icon={faChevronCircleLeft} />
+    //             </span>
+    //         );
+    //     }
+    //     if (type === 'next') {
+    //         return (
+    //             <span
+    //                 style={{
+    //                     fontSize: '24px',
+    //                 }}
+    //                 className=" px-2 py-1 font-bold text-black "
+    //             >
+    //                 <FontAwesomeIcon icon={faChevronCircleRight} />
+    //             </span>
+    //         );
+    //     }
+    //     return (
+    //         <div
+    //             style={{
+    //                 fontSize: '18px',
+    //             }}
+    //             className="h-full w-full rounded-[50%] bg-[#f3f5f7] font-medium"
+    //         >
+    //             {originalElement}
+    //         </div>
+    //     );
+    // };
     return (
         pages > 1 && (
-            <div className="my-8 flex justify-center">
-                <PaginationAntd
-                    defaultCurrent={page}
-                    defaultPageSize={1}
-                    total={Number(pages)}
-                    onChange={handlerPage}
-                    itemRender={itemRender}
-                />
+            <div className="mb-8 mt-12 flex justify-center">
+                <div>
+                    <PaginationAntd
+                        // className="![&>.ant-pagination-item]:hover:bg-white"
+                        defaultCurrent={page}
+                        defaultPageSize={1}
+                        total={Number(pages)}
+                        onChange={handlerPage}
+                        // itemRender={itemRender}
+                    />
+                </div>
             </div>
         )
     );

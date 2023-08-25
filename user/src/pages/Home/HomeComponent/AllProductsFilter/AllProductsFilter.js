@@ -61,21 +61,21 @@ const AllProductsFilter = (props) => {
 
     return (
         <>
-            <div className="mx-auto my-auto mb-7 max-w-screen-2xl pt-10">
-                <h2 className="pb-10 text-center">
+            <div className="mx-auto my-auto mt-3 max-w-screen-2xl  pt-10">
+                <h2 className="text-center">
                     <Divider>
                         <Chip
                             className="font-semibold"
                             sx={{
-                                fontSize: '24px',
+                                fontSize: '18px',
                                 bgcolor: '#ffff',
                             }}
                             label="Tất Cả Sản Phẩm"
                         />
                     </Divider>
                 </h2>
-                <div className=" pt-0">
-                    <div className="mb-9 mr-9 flex justify-end">
+                <div className="pt-0">
+                    <div className="mb-4 mr-9 flex justify-end">
                         <div className="">
                             <select
                                 className="form-select"
@@ -125,28 +125,20 @@ const AllProductsFilter = (props) => {
                         </div>
                     </div>
                     <div className="row">
-                        {/* <FilterSection
-                            setRating={setRating}
-                            setMinPrice={setMinPrice}
-                            setMaxPrice={setMaxPrice}
-                            rating={rating}
-                            minPrice={minPrice}
-                            maxPrice={maxPrice}
-                        ></FilterSection> */}
                         <div className="col-lg-12 col-md-12 article">
-                            <div className="row">
-                                {loading ? (
+                            <div className="row min-h-[300px]">
+                                {loading && (
                                     <div className="mb-5">
                                         <Loading />
                                     </div>
-                                ) : error ? (
-                                    <Message variant="alert-danger">{error}</Message>
-                                ) : (
-                                    <>
-                                        {products?.length !== 0 ? (
-                                            products?.map((product) => (
-                                                <div className="shop col-lg-3 col-md-4 col-sm-12" key={product?._id}>
-                                                    <div className="border-product text-center">
+                                )}
+                                {error && <Message variant="alert-danger">{error}</Message>}
+                                <div className="flex flex-wrap justify-center">
+                                    {products?.length !== 0 ? (
+                                        <>
+                                            {products?.map((product) => (
+                                                <div className="col-lg-2 col-md-4 col-sm-12  pb-3" key={product?._id}>
+                                                    <div className="border-product mx-2 bg-white py-4 text-center">
                                                         <Link to={`/product/${product?._id}`}>
                                                             <div className="hover:-translate-y-4 hover:transform hover:transition hover:duration-200 hover:ease-linear">
                                                                 <img
@@ -155,44 +147,40 @@ const AllProductsFilter = (props) => {
                                                                     className="filter-[brightness(1)] m-auto h-[200px]"
                                                                 />
                                                             </div>
-                                                        </Link>
-                                                        <div className={clsx(styles.shoptext)}>
-                                                            <p>
-                                                                <Link to={`/products/${product?._id}`}>
-                                                                    {product?.name}
-                                                                </Link>
-                                                            </p>
+                                                            <div className={clsx(styles.shoptext)}>
+                                                                <p>{product?.name}</p>
 
-                                                            <h3>{product?.price?.toLocaleString('de-DE')}đ</h3>
-                                                            <Rating
-                                                                value={product?.rating}
-                                                                text={`(${product?.numReviews})`}
-                                                            />
-                                                        </div>
+                                                                <h3>{product?.price?.toLocaleString('de-DE')}đ</h3>
+                                                                <Rating
+                                                                    value={product?.rating}
+                                                                    text={`(${product?.numReviews})`}
+                                                                />
+                                                            </div>
+                                                        </Link>
                                                     </div>
                                                 </div>
-                                            ))
-                                        ) : (
-                                            <div className="mb-48 flex justify-center">
-                                                <div className="alert-warning rounded-2xl p-5 font-bold">
-                                                    Không tìm thấy sản phẩm
-                                                </div>
-                                            </div>
-                                        )}
-                                    </>
-                                )}
+                                            ))}
+                                        </>
+                                    ) : (
+                                        <div className="mb-48">
+                                            {/* <div className="alert-warning rounded-2xl p-5 font-bold">
+                                                Không tìm thấy sản phẩm
+                                            </div> */}
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
+                        <Pagination
+                            pages={pages}
+                            page={page}
+                            category={category ? category : ''}
+                            keyword={keyword ? keyword : ''}
+                            sortProducts={sortProducts ? sortProducts : ''}
+                            rating={rating ? rating : ''}
+                        />
                     </div>
                 </div>
-                <Pagination
-                    pages={pages}
-                    page={page}
-                    category={category ? category : ''}
-                    keyword={keyword ? keyword : ''}
-                    sortProducts={sortProducts ? sortProducts : ''}
-                    rating={rating ? rating : ''}
-                />
             </div>
         </>
     );
