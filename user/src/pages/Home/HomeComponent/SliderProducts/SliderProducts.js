@@ -76,7 +76,11 @@ export default function SliderProducts({ products, labelSlider }) {
                                         </div>
                                         <div className="flex justify-center  text-center">
                                             <div>
-                                                <p className="">{product.name}</p>
+                                                <p className="">
+                                                    {product.name.length > 20
+                                                        ? `${product.name.substring(0, 20)}...`
+                                                        : `${product.name}`}
+                                                </p>
                                                 <p className="text-base font-semibold">
                                                     {product?.price?.toLocaleString('de-DE')}đ
                                                 </p>

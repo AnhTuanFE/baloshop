@@ -231,7 +231,7 @@ function Register() {
                             Đăng ký
                         </button>
                         <p className=" mt-3 text-center">
-                            <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>
+                            <Link to={'/login'}>
                                 Đã có tài khoản{' '}
                                 <strong className="text-lg text-blue-600 hover:text-red-500">Đăng nhập</strong>
                             </Link>
