@@ -79,6 +79,7 @@ export const addCategory = (name, description) => async (dispatch, getState) => 
         });
     }
 };
+
 export const UpdateCurrentCategory = (idCategory, name, description) => async (dispatch, getState) => {
     try {
         dispatch({ type: CATEGORY_UPDATE_REQUEST });
