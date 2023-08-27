@@ -5,7 +5,7 @@ import path from 'path';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
-import User from '../Models/UserModel.js';
+import User from '../models/UserModel.js';
 import baseURL from '../baseURL/baseURL.js';
 const createUserRouter = express.Router();
 const JWT_SECRET_VERIFIED = 'baloshop';

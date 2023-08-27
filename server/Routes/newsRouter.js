@@ -1,7 +1,7 @@
 import express from 'express';
 import asyncHandler from 'express-async-handler';
-import { admin, protect } from '../Middleware/AuthMiddleware.js';
-import news from '../Models/NewsModel.js';
+import { admin, protect } from '../middleware/AuthMiddleware.js';
+import news from '../models/NewsModel.js';
 
 const newsRouter = express.Router();
 //GET ALL NEWS

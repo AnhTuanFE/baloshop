@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 // import UserInFor from '../Models/userDetails.js';
-import User from '../Models/UserModel.js';
+import User from '../models/UserModel.js';
 import baseURL from '../baseURL/baseURL.js';
 
 const forgotPassRouter = express.Router();
@@ -22,7 +22,7 @@ forgotPassRouter.post('/forgotPassword', async (req, res) => {
             expiresIn: '30m',
         });
         // const link = `${baseURL.urlUser}/api/forgotPass/reset-password/${oldUser._id}/${token1}`;
-        const link = `${baseURL.urlUser}/verify-reset-password/${oldUser._id}/${token1}`;
+        const link = `${process.env.CLIENT_URL}/verify-reset-password/${oldUser._id}/${token1}`;
 
         var transporter = nodemailer.createTransport({
             service: 'gmail',

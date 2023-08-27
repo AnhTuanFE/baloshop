@@ -1,10 +1,10 @@
 import express from 'express';
 import asyncHandler from 'express-async-handler';
 import multer from 'multer';
-import { protect, admin } from '../Middleware/AuthMiddleware.js';
+import { protect, admin } from '../middleware/AuthMiddleware.js';
 import generateToken from '../utils/generateToken.js';
 import cloudinary from 'cloudinary';
-import User from './../Models/UserModel.js';
+import User from '../models/UserModel.js';
 import jwt from 'jsonwebtoken';
 
 const userRouter = express.Router();

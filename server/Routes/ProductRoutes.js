@@ -1,10 +1,10 @@
 import express from 'express';
 import asyncHandler from 'express-async-handler';
-import Product from './../Models/ProductModel.js';
-import { admin, protect } from './../Middleware/AuthMiddleware.js';
+import Product from '../models/ProductModel.js';
+import { admin, protect } from '../middleware/AuthMiddleware.js';
 // import Category from '../Models/CategoryModel.js';
-import Order from './../Models/OrderModel.js';
-import Cart from '../Models/CartModel.js';
+import Order from '../models/OrderModel.js';
+import Cart from '../models/CartModel.js';
 import path from 'path';
 import fs from 'fs';
 //

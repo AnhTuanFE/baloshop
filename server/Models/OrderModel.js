@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { PAYMENT_METHOD } from '../config/PaymentConfig.js';
 
 const productReviewSchema = mongoose.Schema(
     {
@@ -53,7 +54,8 @@ const orderSchema = mongoose.Schema(
         paymentMethod: {
             type: String,
             required: true,
-            default: 'Thanh toán bằng tiền mặt',
+            enum: PAYMENT_METHOD,
+            default: PAYMENT_METHOD[1],
         },
         paypalOrder: {
             orderID: { type: String, required: false },
@@ -67,6 +69,11 @@ const orderSchema = mongoose.Schema(
             email_address: { type: String },
         },
         shippingPrice: {
+            type: Number,
+            required: true,
+            default: 0.0,
+        },
+        totalProductPrice: {
             type: Number,
             required: true,
             default: 0.0,
@@ -131,6 +138,10 @@ const orderSchema = mongoose.Schema(
         email: {
             type: String,
             require: true,
+        },
+        payment: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Payment',
         },
     },
     {

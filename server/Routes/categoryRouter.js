@@ -1,8 +1,8 @@
 import express from 'express';
-import Category from './../Models/CategoryModel.js';
-import { admin, protect } from './../Middleware/AuthMiddleware.js';
+import Category from '../models/CategoryModel.js';
+import { admin, protect } from '../middleware/AuthMiddleware.js';
 import asyncHandler from 'express-async-handler';
-import Product from '../Models/ProductModel.js';
+import Product from '../models/ProductModel.js';
 const CategoryRouter = express.Router();
 
 CategoryRouter.get(
