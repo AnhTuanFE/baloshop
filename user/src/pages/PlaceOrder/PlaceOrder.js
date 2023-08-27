@@ -7,8 +7,8 @@ import { createOrder } from '~/redux/Actions/OrderActions';
 import { ORDER_CREATE_RESET } from '~/redux/Constants/OrderConstants';
 
 import ModalDaiSyUI from '~/components/Modal/ModalDaiSyUI';
-import Message from '~/components/HomeComponent/LoadingError/Error';
-import Loading from '~/components/HomeComponent/LoadingError/Loading';
+import Message from '~/components/LoadingError/Error';
+import Loading from '~/components/LoadingError/Loading';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import AccountCircleSharpIcon from '@mui/icons-material/AccountCircleSharp';
 import AddLocationSharpIcon from '@mui/icons-material/AddLocationSharp';
@@ -19,10 +19,10 @@ import { calculate_fee_ship_action } from '~/redux/Actions/OrderActions';
 // import './PlaceOrder.css';
 
 function PlaceOrder() {
-    const [paymentPaypal, setPaymentPaypal] = useState('');
+    const paymentMethods_from_localStorage = localStorage.getItem('paymentMethod');
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const paymentMethods_from_localStorage = localStorage.getItem('paymentMethod');
 
     const [messageApi, contextHolder] = message.useMessage();
     const successPlaceholder = () => {
@@ -136,11 +136,11 @@ function PlaceOrder() {
                 )}
                 {findCart?.countInStock < item?.qty ? (
                     <div className="col-md-2 col-5">
-                        <img src={`${item.product?.image[0]?.urlImage}`} alt={item.name} />
+                        <img className="h-[100px]" src={`${item.product?.image[0]?.urlImage}`} alt={item.name} />
                     </div>
                 ) : (
                     <div className="col-md-2 col-6">
-                        <img src={`${item.product?.image[0]?.urlImage}`} alt={item.name} />
+                        <img className="h-[100px]" src={`${item.product?.image[0]?.urlImage}`} alt={item.name} />
                     </div>
                 )}
                 {findCart?.countInStock < item?.qty ? (
@@ -249,12 +249,6 @@ function PlaceOrder() {
         if (cartItems.length === 0) {
             dispatch(listCart());
         }
-        if (paymentMethods_from_localStorage == '"Thanh toán qua paypal"') {
-            setPaymentPaypal('Thanh toán qua paypal');
-        }
-        if (paymentMethods_from_localStorage != '"Thanh toán qua paypal"') {
-            setPaymentPaypal('Thanh toán bằng tiền mặt');
-        }
     }, []);
     useEffect(() => {
         if (cartItems.length != 0 && Object.keys(order_ghtk_state).length === 0) {
@@ -282,18 +276,18 @@ function PlaceOrder() {
             {error && <Loading />}
             {contextHolder}
             <div className="mx-auto my-auto max-w-screen-2xl">
-                <div className="mx-20 ">
+                <div className="mx-20 pb-20 ">
                     <div className="m-auto  ">
                         <ModalDaiSyUI
                             Title="Mua hàng"
                             Body="Bạn xác nhận đặt hàng?"
                             HandleSubmit={placeOrderHandler}
                         ></ModalDaiSyUI>
-                        <div className="mb-4 h-32 px-4 shadow-custom-shadow">
+                        <div className="row mb-4 rounded bg-white px-4 py-1 shadow-custom-shadow">
                             <div className="my-3 flex items-center justify-around rounded-md pt-3">
                                 <div className="flex">
-                                    <div className="mr-2 px-2">
-                                        <AccountCircleSharpIcon className="" fontSize="large" color="secondary" />
+                                    <div className="mr-2 mt-2 px-2">
+                                        <AccountCircleSharpIcon className="" fontSize="large" color="primary" />
                                     </div>
                                     <div className="">
                                         <p>
@@ -306,7 +300,7 @@ function PlaceOrder() {
                                 </div>
                                 <div className="flex">
                                     <div className="mr-2 px-2">
-                                        <AddLocationSharpIcon className="" fontSize="large" color="secondary" />
+                                        <AddLocationSharpIcon className="" fontSize="large" color="primary" />
                                     </div>
                                     <div className="">
                                         <p>
@@ -317,12 +311,12 @@ function PlaceOrder() {
                                 </div>
                                 <div className="flex">
                                     <div className="mr-2 px-2">
-                                        <MonetizationOnIcon className="" fontSize="large" color="secondary" />
+                                        <MonetizationOnIcon className="" fontSize="large" color="primary" />
                                     </div>
                                     <div className="">
                                         <p>
                                             <span className="font-semibold">Phương thức:</span>{' '}
-                                            {paymentMethods_from_localStorage}
+                                            {paymentMethods_from_localStorage.replace(/"/g, '')}
                                         </p>
                                     </div>
                                 </div>
@@ -338,7 +332,7 @@ function PlaceOrder() {
                                         {cart.cartItems
                                             .filter((item) => item.isBuy == true)
                                             .map((item, index) => (
-                                                <div className="order-product row" key={index}>
+                                                <div className="order-product row mb-2 rounded bg-white" key={index}>
                                                     {findCartCountInStock(item)}
                                                 </div>
                                             ))}
@@ -346,17 +340,16 @@ function PlaceOrder() {
                                 )}
                             </div>
                         </div>
-                        <div className="row" style={{ padding: '10px 0', backgroundColor: '#fff', marginTop: '10px' }}>
-                            {/* total */}
+                        <div className="row mt-2 bg-white">
                             <div
                                 className="col-lg-12 d-flex align-items-end flex-column subtotal-order"
                                 style={{ border: '1px solid rgb(218, 216, 216)', borderRadius: '4px' }}
                             >
-                                <table className="fix-bottom table">
+                                <table className="fix-bottom table text-base">
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <strong>Sản phẩm</strong>
+                                                <strong>Tiền Sản phẩm</strong>
                                             </td>
                                             <td>{Number(cart?.itemsPrice)?.toLocaleString('de-DE')}đ</td>
                                         </tr>
@@ -370,33 +363,28 @@ function PlaceOrder() {
                                             <td>
                                                 <strong>Tổng tiền</strong>
                                             </td>
-                                            <td>{Number(cart?.totalPrice)?.toLocaleString('de-DE')}đ</td>
+                                            <td className="text-lg font-semibold">
+                                                {Number(cart?.totalPrice)?.toLocaleString('de-DE')}đ
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        <div
-                            className="row"
-                            style={{
-                                padding: '10px 0',
-                                backgroundColor: '#fff',
-                                marginTop: '10px',
-                                marginBottom: '30px',
-                            }}
-                        >
+                        <div className="row mt-2 bg-white py-4">
                             <div className="">
-                                {paymentPaypal == 'Thanh toán qua paypal' ? (
+                                {paymentMethods_from_localStorage == '"Thanh toán qua paypal"' ? (
                                     <div className="mb-4 text-center text-xl font-bold uppercase">
                                         Tổng thanh toán: {moneyNeedPaid} USD
                                     </div>
                                 ) : (
-                                    <div className="mb-4 text-center  text-xl font-bold uppercase">
+                                    <div className="mb-3 text-center  text-xl font-bold uppercase">
                                         Tổng thanh toán: {Number(cart.totalPrice)?.toLocaleString('de-DE')} VNĐ
                                     </div>
                                 )}
 
-                                {cart.cartItems.length === 0 ? null : paymentPaypal == 'Thanh toán qua paypal' ? (
+                                {cart.cartItems.length === 0 ? null : paymentMethods_from_localStorage ==
+                                  '"Thanh toán qua paypal"' ? (
                                     <div className="m-8 text-center ">
                                         <PayPalScriptProvider
                                             options={{
@@ -418,7 +406,7 @@ function PlaceOrder() {
                                 ) : (
                                     <button
                                         type="submit"
-                                        className="m-auto flex justify-center rounded-lg bg-[var(--main-color)] px-16 py-3 text-fuchsia-50"
+                                        className="m-auto flex justify-center rounded-lg bg-[var(--main-color)] px-16 py-2 text-fuchsia-50 hover:opacity-[0.8]"
                                         onClick={() => window.my_modal_1.showModal()}
                                     >
                                         Đặt hàng

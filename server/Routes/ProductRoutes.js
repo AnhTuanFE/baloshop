@@ -19,7 +19,7 @@ const productRoute = express.Router();
 productRoute.get(
     '/',
     asyncHandler(async (req, res) => {
-        const pageSize = 8;
+        const pageSize = 12;
         const page = Number(req.query.pageNumber) || 1;
         const rating = Number(req.query.rating) || 0;
         const maxPrice = Number(req.query.maxPrice) || 0;

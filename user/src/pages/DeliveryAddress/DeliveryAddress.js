@@ -6,13 +6,11 @@ import { saveShippingAddress } from '~/redux/Actions/cartActions';
 import { getUserDetails, updateUserProfile, getListProvincesAction } from '~/redux/Actions/userActions';
 import { USER_UPDATE_PROFILE_RESET } from '~/redux/Constants/UserContants';
 
-import Message from '~/components/HomeComponent/LoadingError/Error';
-import Loading from '~/components/HomeComponent/LoadingError/Loading';
+import Message from '~/components/LoadingError/Error';
+import Loading from '~/components/LoadingError/Loading';
 import { notification } from 'antd';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-
-import './DeliveryAddress.css';
 
 function DeliveryAddress() {
     const [api, contextHolder] = notification.useNotification();
@@ -179,13 +177,13 @@ function DeliveryAddress() {
         <>
             {contextHolder}
             {updateLoading && <Loading />}
-            <div className="d-flex justify-content-center align-items-center login-center container">
-                <form className="Login col-md-8 col-lg-4 col-11" onSubmit={submitHandler}>
+            <div className="d-flex justify-content-center align-items-center login-center container mt-2 ">
+                <form className="col-md-8 col-lg-4 col-11 bg-white px-4 pb-4" onSubmit={submitHandler}>
                     {retult !== '' && <Message variant="alert-danger text-center fs-6">{retult}</Message>}
-                    <h4 className="mt-5 p-2 text-center text-xl font-semibold">Địa chỉ giao hàng</h4>
-                    <div className="wrapSelect">
+                    <h4 className="py-3 text-center text-xl font-semibold">Địa chỉ giao hàng</h4>
+                    <div className="flex flex-col">
                         <Autocomplete
-                            className="address_autocomplete"
+                            className="my-3"
                             disablePortal
                             id="combo-box-demo"
                             options={optionsAntD_city}
@@ -196,7 +194,7 @@ function DeliveryAddress() {
                             renderInput={(params) => <TextField {...params} label="Tỉnh / Thành phố" />}
                         />
                         <Autocomplete
-                            className="address_autocomplete"
+                            className="my-3"
                             disablePortal
                             id="combo-box-demo"
                             options={optionsAntD_distric}
@@ -208,7 +206,7 @@ function DeliveryAddress() {
                         />
 
                         <Autocomplete
-                            className="address_autocomplete autoWard"
+                            className="my-3"
                             disablePortal
                             id="combo-box-demo"
                             value={ward}
@@ -219,7 +217,7 @@ function DeliveryAddress() {
                             renderInput={(params) => <TextField {...params} label="Xã/Phường" />}
                         />
                         <TextField
-                            className="address_textfield"
+                            className="mt-3"
                             value={address}
                             id="outlined-basic"
                             fullWidth
@@ -230,7 +228,10 @@ function DeliveryAddress() {
                             }}
                         />
                     </div>
-                    <button className="button_continue" type="submit">
+                    <button
+                        className="mt-4 w-full cursor-pointer rounded-md bg-[var(--main-color)] py-2 uppercase text-white hover:opacity-[0.8]"
+                        type="submit"
+                    >
                         Tiếp tục
                     </button>
                 </form>

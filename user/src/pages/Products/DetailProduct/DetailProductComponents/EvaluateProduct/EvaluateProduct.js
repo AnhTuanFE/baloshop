@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 
-import Rating from '~/components/HomeComponent/Rating/Rating';
-import Message from '~/components/HomeComponent/LoadingError/Error';
+import Rating from '~/components/Rating/Rating';
+import Message from '~/components/LoadingError/Error';
 import { imageDefaul } from '~/utils/data';
 import { createProductReview, getAllReviews } from '~/redux/Actions/ProductActions';
 import { PRODUCT_CREATE_REVIEW_RESET } from '~/redux/Constants/ProductConstants';
@@ -134,34 +134,36 @@ function EvaluateProduct({ productId }) {
         dispatch(createProductReview(productId, rating, reviewColor, comment));
     };
     return (
-        <div className="mt-3 rounded-xl shadow-custom-shadow">
-            <div className="m-5">
+        <div className="rounded-xl bg-white shadow-custom-shadow">
+            <div className="mx-5 mt-5 pt-1">
                 <h2 className="mt-3 py-2 text-center text-xl font-bold">Đánh giá & nhận xét</h2>
-                <div style={{ border: '2px solid #ccc', borderRadius: '10px' }}>
+                <div className="rounded-xl" style={{ border: '2px solid #ccc' }}>
                     <div className="row">
                         <div className="col-md-4 col-sm-5 pt-4 text-center">
-                            <div className="rating-box">
-                                <h1 class="pt-4">{mediumReview}</h1>
+                            <div className="flex">
+                                <div className="mx-auto rounded-xl bg-[#fbc02d] px-6 py-8 text-white">
+                                    <h1 className="pt-4 text-2xl font-semibold">{mediumReview} / 5</h1>
+                                </div>
                             </div>
-                            <div className="mx-1 text-sm">
+                            <div className="mx-1 mt-1 text-sm">
                                 <Rating value={mediumReview} />
                             </div>
-                            <p>{reviewCart.length} đánh giá và nhận xét</p>
+                            <p className="text-xl">{reviewCart.length} đánh giá và nhận xét</p>
                         </div>
                         <div className="col-md-8 col-sm-7">
-                            <div className="rating-bar0 justify-content-center">
+                            <div className="justify-content-center">
                                 <table className="mx-auto text-left">
                                     {returnStar.map((star, index) => {
                                         return (
                                             <tr key={index}>
-                                                <td className="rating-label">
+                                                <td className="font-bold">
                                                     {star.rating}
-                                                    <span className="fa fa-star star-active mx-1"></span>
+                                                    <span className="fa fa-star mx-1 my-[10px] text-[#fbc02d] hover:cursor-pointer hover:text-[#f9a825]"></span>
                                                 </td>
-                                                <td className="rating-bar">
-                                                    <div className="bar-container">
+                                                <td className="w-[600px] rounded px-1">
+                                                    <div className="mb-1 w-full rounded-2xl bg-[#f1f1f1] text-center text-white">
                                                         <div
-                                                            className="bar-5"
+                                                            className=" h-3 rounded-2xl bg-[#fbc02d] "
                                                             style={{
                                                                 width: `${star.percentage}%`,
                                                             }}
@@ -179,7 +181,7 @@ function EvaluateProduct({ productId }) {
                 </div>
                 <div className="mt-3 text-center hover:opacity-[0.9]">
                     <button
-                        className="h-9 w-[300px] cursor-pointer rounded-2xl bg-[var(--main-color)] text-white"
+                        className=" w-[300px] cursor-pointer rounded-lg bg-[var(--main-color)] py-2 text-white"
                         onClick={handleOpenModal}
                     >
                         Đánh giá ngay
@@ -291,12 +293,14 @@ function EvaluateProduct({ productId }) {
                     </div> */}
                 </form>
             </dialog>
-
-            <div className="col-md-10 pt-5">
+            <div className=" w-3/5 pt-5">
                 <div className="rating-review">
                     {reviews?.map((review) => (
-                        <div key={review._id} className="mb-md-3 bg-light rounded-5 mb-2 rounded-xl p-3 shadow-sm">
-                            <div className="flex items-center justify-between">
+                        <div
+                            key={review._id}
+                            className="mb-md-3 bg-light rounded-5 mb-2 ml-[5%] rounded-xl p-3 shadow-sm"
+                        >
+                            <div className="flex items-center">
                                 <div className="flex items-center">
                                     <img
                                         src={`${review?.user?.image?.urlImageCloudinary}` || imageDefaul} // upload ảnh
@@ -309,26 +313,31 @@ function EvaluateProduct({ productId }) {
                                 </div>
                                 <div className="pl-3">
                                     <span>
+                                        {'('}
                                         {moment(review.createdAt).format('DD/MM/YYYY')}{' '}
                                         {moment(review.createdAt).hours()}
                                         {':'}
                                         {moment(review.createdAt).minutes() < 10
                                             ? `0${moment(review.createdAt).minutes()}`
                                             : moment(review.createdAt).minutes()}
+                                        {')'}
                                     </span>
                                 </div>
                             </div>
-                            {/* <div className="alert alert-info mt-3"> */}
                             <div className=" mt-3 rounded-lg bg-[#3abff8] px-2 py-1">
                                 <div className="flex items-center">
                                     <span className="pr-1 text-base font-semibold">Đánh giá: </span>
                                     <Rating value={review.rating} />
                                 </div>
-                                <div className="text-base">
-                                    <span className="pr-1 text-base font-semibold">Màu sắc:</span> {review.color}
+                                <div className="flex">
+                                    <span className="pr-1 text-base font-semibold">Màu sắc:</span>
+                                    <div className="ml-1 text-base font-medium">{review.color}</div>
                                 </div>
-                                <div className="text-base">
-                                    <span className="pr-1 text-base font-semibold">Nhận xét:</span> {review.comment}
+                                <div className="mt-2 flex text-base">
+                                    <span className="min-w-[80px] pr-1 text-base font-semibold">Nhận xét:</span>
+                                    <div className="min-h-16 ml-1 min-w-[300px] rounded-xl border-2 border-solid border-[#343a40] bg-white px-2 pt-2 ">
+                                        <span className="">{review.comment}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>

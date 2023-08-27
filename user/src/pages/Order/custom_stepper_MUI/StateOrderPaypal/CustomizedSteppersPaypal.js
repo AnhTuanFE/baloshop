@@ -89,7 +89,10 @@ export default function CustomizedSteppersPaypal({ order }) {
     }, []);
 
     return (
-        <Stack sx={{ width: '100%', marginBottom: '16px' }} spacing={4}>
+        <Stack
+            sx={{ width: '100%', marginBottom: '16px', bgcolor: '#ffff', padding: '12px 0px', borderRadius: '4px' }}
+            spacing={4}
+        >
             <Box sx={{ width: '100%' }}>
                 {order.cancel == 0 ? (
                     <Stepper alternativeLabel activeStep={actiStep} connector={<ColorlibConnector />}>

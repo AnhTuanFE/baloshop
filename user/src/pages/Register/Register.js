@@ -1,8 +1,8 @@
 import { useEffect, useState, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import Message from '~/components/HomeComponent/LoadingError/Error';
-import Loading from '~/components/HomeComponent/LoadingError/Loading';
+import Message from '~/components/LoadingError/Error';
+import Loading from '~/components/LoadingError/Loading';
 import { register } from '~/redux/Actions/userActions';
 import { useForm, Controller } from 'react-hook-form';
 
@@ -50,11 +50,14 @@ function Register() {
     return (
         <>
             <div>
-                <div className="mb-14 mt-8 flex items-center justify-center">
-                    <form className="Login col-md-6 col-lg-4 col-10" onSubmit={handleSubmit(submitHandler)}>
+                <div className="mt-2 flex items-center justify-center pb-14">
+                    <form
+                        className="Login col-md-6 col-lg-4 col-10 rounded-xl bg-white px-10 pb-10 pt-2 shadow-custom-shadow"
+                        onSubmit={handleSubmit(submitHandler)}
+                    >
                         {error && <Message variant="alert-danger block">{error}</Message>}
                         {loading && <Loading />}
-                        <div className="mb-3 text-center text-2xl font-semibold"> Đăng ký tài khoản</div>
+                        <div className="mb-2 text-center text-xl font-semibold"> Đăng ký tài khoản</div>
                         <div className=" ">
                             <Controller
                                 name="name"
@@ -68,7 +71,7 @@ function Register() {
                                         <input
                                             type="text"
                                             id="name"
-                                            className=" block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 py-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                                            className=" block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 py-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                                             {...field}
                                             placeholder="Tên tài khoản"
                                         />
@@ -96,7 +99,7 @@ function Register() {
                                         <input
                                             type="email"
                                             id="email"
-                                            className=" block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 py-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                                            className=" block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 py-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                                             {...field}
                                             placeholder="Email"
                                         />
@@ -124,7 +127,7 @@ function Register() {
                                         <input
                                             type="text"
                                             id="phone"
-                                            className=" block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 py-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                                            className=" block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 py-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                                             {...field}
                                             placeholder="Số điện thoại"
                                         />
@@ -154,7 +157,7 @@ function Register() {
                                         <input
                                             type="password"
                                             id="password"
-                                            className=" block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 py-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                                            className=" block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 py-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                                             {...field}
                                             placeholder="Mật khẩu"
                                         />
@@ -193,7 +196,7 @@ function Register() {
                                         <input
                                             type="password"
                                             id="cfpassword"
-                                            className=" block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 py-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                                            className=" block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 py-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                                             {...field}
                                             placeholder="Nhập lại mật khẩu"
                                         />
@@ -223,13 +226,14 @@ function Register() {
 
                         <button
                             type="submit"
-                            className="w-full rounded-lg bg-[var(--main-color)] px-5 py-3 text-center text-base font-bold uppercase text-white hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300 "
+                            className="w-full rounded-lg bg-[var(--main-color)] px-5 py-2.5 text-center text-base font-bold uppercase text-white hover:bg-[var(--main-color-hover)] focus:outline-none focus:ring-4 focus:ring-blue-300 "
                         >
                             Đăng ký
                         </button>
                         <p className=" mt-3 text-center">
-                            <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>
-                                Tôi đã có tài khoản <strong className="text-xl text-blue-600">Đăng nhập</strong>
+                            <Link to={'/login'}>
+                                Đã có tài khoản{' '}
+                                <strong className="text-lg text-blue-600 hover:text-red-500">Đăng nhập</strong>
                             </Link>
                         </p>
                     </form>

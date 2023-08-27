@@ -1,12 +1,20 @@
 :root {
     --white-color: #fff;
     --main-color: #e85d97;
-    --main-color-old: #00483d;
-    --color-infor-store: #252a2b;
-    --color-layout: #333f48;
+    --main-color-hover: #e83781;
+
     --main-color2: #007fff;
+
+    --color-button1: #ffff;
+    --color-button2: #007fff;
+
+    --color-layout: #000;
+    --color-layout2: #333f48;
+
     --content-color: #f4f4f4;
+
     --tw-ring-color: transparent;
+    --color-infor-store: #252a2b;
 }
 
 [type='text']:focus,
@@ -28,13 +36,14 @@ select:focus {
 }
 body {
     margin: 0;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Montserrat', sans-serif, 'Quicksand';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-size: 17px;
     padding: 0;
     box-sizing: border-box;
     background-color: #ffffff;
+    overflow-x: hidden;
 }
 a {
     text-decoration: none;
@@ -67,61 +76,22 @@ input,
     border: none;
     outline: none;
 }
-
-/* START CSS CHUNG*/
-.Announcement .container {
-    padding-left: 0;
-    padding-right: 0;
-}
-
-/* ========================================= start thư viện corousel===============================*/
-.corousel-div:hover {
-    transform: translateY(-4px);
-    transition: linear 0.2s;
-}
-.corousel-img {
-    height: 200px;
-    margin: auto;
-    filter: brightness(1);
-    -webkit-filter: brightness(1);
-}
-
+/* ========================================= css thư viện Corousel===============================*/
 .slick-next::before {
-    color: var(--main-color2) !important;
-    font-size: 40px !important;
+    font-size: 30px !important;
 }
 .slick-prev::before {
-    color: var(--main-color2) !important;
-    font-size: 40px !important;
+    font-size: 30px !important;
 }
 .slick-prev {
-    left: 3% !important;
+    left: 4% !important;
     z-index: 2;
 }
 .slick-next {
-    right: 3% !important;
+    right: 4% !important;
     z-index: 2;
 }
-
+/* 
 .slick-next:hover {
     font-size: 30px !important;
-}
-
-.corousel-link:active {
-    border: none;
-}
-
-/*========================================= start phân trang================================*/
-
-.page-item:first-child .page-link,
-.page-item:last-child .page-link {
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-    text-align: center;
-    border-radius: 50%;
-}
-.p-rating-icon {
-    color: yellow !important;
-}
+} */

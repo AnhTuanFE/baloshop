@@ -1,22 +1,21 @@
 import { Box, IconButton, Typography, Avatar, TextField, MenuItem, Select, Autocomplete } from '@mui/material';
-import { AutoComplete as AutoCompleteAntD, Input } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
 import { Search, LocalMall } from '@mui/icons-material';
-import clsx from 'clsx';
-import styles from './Header.module.css';
 import { useEffect, useState, memo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import NavBar from '~/components/HomeComponent/NavBar/Navbar';
+import NavBar from './NavBar/Navbar';
 import ContactInformation from '../ContactInformation/ContactInformation';
 
 import { logout, getUserDetails } from '~/redux/Actions/userActions'; //updateUserProfile,
 import { usersRemainingSelector } from '~/redux/Selector/usersSelector';
 import { cartsRemainingSelector } from '~/redux/Selector/cartsSelector';
 import { imageDefaul, logoDefaul } from '~/utils/data';
-import { Badge, Space } from 'antd';
+import { Badge, Space, Divider } from 'antd';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faFacebook, faInstagramSquare } from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export default function Header2(props) {
+function Header(props) {
     const { keysearch } = props;
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -130,7 +129,7 @@ export default function Header2(props) {
                 sx={{
                     display: 'flex',
                 }}
-                className={clsx(styles.wrap_info_user)}
+                className="relative"
             >
                 <Avatar
                     id="simple-select"
@@ -141,9 +140,9 @@ export default function Header2(props) {
                             : userInfo?.image?.urlImageCloudinary
                     }`}
                     sx={{ width: 48, height: 48 }}
-                    className={clsx(styles.avatar)}
+                    className="!absolute z-[1] ml-12 mt-2"
                 />
-                <Box className={clsx(styles.dropdown_info_user)}>
+                <Box className="z-[2] mt-3 pl-12">
                     <Select
                         disableUnderline
                         id="simple-select"
@@ -161,11 +160,11 @@ export default function Header2(props) {
                                 display: 'none',
                             }}
                         >
-                            <span className={clsx(styles.name_user)}>{notiUser()}</span>
+                            <span className="ml-[60px]">{notiUser()}</span>
                         </MenuItem>
-                        <MenuItem value={20}>
-                            <Link to="/profile">Tài khoản của tôi</Link>
-                        </MenuItem>
+                        <Link to="/profile">
+                            <MenuItem value={20}>Tài khoản của tôi</MenuItem>
+                        </Link>
                         <MenuItem value={30} onClick={logoutHandler}>
                             <Link to="#">Đăng xuất</Link>
                         </MenuItem>
@@ -175,7 +174,6 @@ export default function Header2(props) {
                 <Link to="/cart">
                     <Space size="middle" className="ml-1 mt-3">
                         <Badge count={cartItems ? cartItems?.length : 0}>
-                            {/* <AvatarAntd shape="square" size="large" /> */}
                             <LocalMall
                                 fontSize="medium"
                                 sx={{
@@ -190,62 +188,19 @@ export default function Header2(props) {
     };
 
     // =================
-    const renderTitle = (title) => (
-        <span>
-            {title}
-            <a
-                style={{
-                    float: 'right',
-                }}
-                href="https://www.google.com/search?q=antd"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                more
-            </a>
-        </span>
-    );
-    const renderItem = (title, count) => ({
-        value: title,
-        label: (
-            <div
-                style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                }}
-            >
-                {title}
-                <span>
-                    <UserOutlined /> {count}
-                </span>
-            </div>
-        ),
-    });
-
-    const options = [
-        {
-            label: renderTitle('Libraries'),
-            options: [renderItem('AntDesign', 10000), renderItem('AntDesign UI', 10600)],
-        },
-        {
-            label: renderTitle('Solutions'),
-            options: [renderItem('AntDesign UI FAQ', 60100), renderItem('AntDesign FAQ', 30010)],
-        },
-        {
-            label: renderTitle('Articles'),
-            options: [renderItem('AntDesign design language', 100000)],
-        },
-    ];
-    // ============
     return (
-        <Box className="">
+        <Box
+            sx={{
+                boxShadow: '0 0.5rem 1rem rgba(0, 0, 0, 0.15)',
+            }}
+            className="fixed left-0 right-0 top-0 z-10 bg-[var(--content-color)]"
+        >
             <ContactInformation />
             <Box
                 sx={{
                     display: 'flex',
                     justifyContent: 'space-between',
-                    bgcolor: 'var(--content-color)',
-                    paddingTop: '20px',
+                    paddingTop: '12px',
                 }}
             >
                 <Box
@@ -274,7 +229,7 @@ export default function Header2(props) {
                                 disablePortal
                                 id="combo-box-demo"
                                 options={key}
-                                className="w-[70%] rounded-md border-none outline-lime-950 focus:border-none"
+                                className="z-30 w-[70%] border-none"
                                 onChange={(e) => {
                                     setKeyword(e.target.outerText);
                                 }}
@@ -289,49 +244,21 @@ export default function Header2(props) {
                                     />
                                 )}
                             />
-                            {/* <AutoCompleteAntD
-                                popupClassName="certain-category-search-dropdown"
-                                dropdownMatchSelectWidth={500}
-                                options={key.map((item) => ({ value: item }))}
-                                onChange={(e) => {
-                                    setKeyword(e);
-                                }}
-                            >
-                                <Input
-                                    onChange={(e) => {
-                                        setKeyword(e.target.value);
-                                    }}
-                                    size="large"
-                                    placeholder="Tìm kiếm"
-                                />
-                            </AutoCompleteAntD> */}
-                            <IconButton
-                                aria-label="search"
-                                size="large"
+                            <button
                                 type="submit"
-                                className="hover:bg-[var(--main-color2)]"
-                                sx={{
-                                    bgcolor: 'var(--main-color)',
-                                    borderRadius: '4px 8px 8px 4px',
-                                    padding: '0px 10px',
-                                    height: '54px',
+                                style={{
+                                    borderRadius: '0px 4px 4px 0px',
                                 }}
+                                className="bg-[var(--main-color)] px-3 py-2 text-white hover:bg-[var(--main-color-hover)]"
                             >
-                                <Search
-                                    fontSize="large"
-                                    sx={{
-                                        color: 'var(--white-color)',
-                                    }}
-                                />
-                            </IconButton>
+                                <FontAwesomeIcon className="text-2xl" icon={faMagnifyingGlass} />
+                            </button>
                         </Box>
                     </form>
-
                     <div className="flex justify-center">
                         <NavBar />
                     </div>
                 </Box>
-
                 <Box
                     sx={{
                         flex: '1',
@@ -344,3 +271,4 @@ export default function Header2(props) {
         </Box>
     );
 }
+export default Header;

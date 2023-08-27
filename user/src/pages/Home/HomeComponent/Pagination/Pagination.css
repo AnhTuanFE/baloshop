@@ -1,0 +1,25 @@
+.ant-pagination-item {
+    border: none !important;
+}
+.ant-pagination-item a:hover {
+    border-radius: 50%;
+}
+.ant-pagination-item:hover {
+    border-radius: 50%;
+}
+.ant-pagination-item-active {
+    color: #ffff;
+}
+.ant-pagination-item-active {
+    background-color: var(--content-color) !important;
+}
+.ant-pagination-item-active a {
+    background-color: var(--main-color);
+    border-radius: 50%;
+}
+.anticon svg {
+    margin-bottom: 8px;
+}
+.ant-pagination-item-link:hover {
+    border-radius: 50% !important;
+}

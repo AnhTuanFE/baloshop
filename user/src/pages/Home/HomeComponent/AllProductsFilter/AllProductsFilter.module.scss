@@ -1,0 +1,23 @@
+.shoptext {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.shoptext p {
+    line-height: 1.2;
+    height: 22px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+.shoptext p a {
+    color: #252525;
+}
+.shoptext h3 {
+    color: #252525;
+    margin-top: 5px;
+    font-weight: bold;
+    font-size: 16px;
+}

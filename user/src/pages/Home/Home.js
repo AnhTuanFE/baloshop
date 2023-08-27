@@ -1,9 +1,10 @@
-import { useSelector } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
-import AllProductsFilter from '~/components/HomeComponent/AllProductsFilter/AllProductsFilter'; // ShopSection
-import Sliders from '~/components/HomeComponent/Sliders/Sliders';
-import LatestProduct from '~/components/HomeComponent/SliderProducts/LatestProduct/LatestProduct'; //  Corousel
-import BestSellingProduct from '~/components/HomeComponent/SliderProducts/BestSellingProduct/BestSellingProduct'; // CorouselOder
+
+import AllProductsFilter from './HomeComponent/AllProductsFilter/AllProductsFilter';
+import Sliders from './HomeComponent/Sliders/Sliders';
+import LatestProduct from './HomeComponent/SliderProducts/LatestProduct/LatestProduct';
+import BestSellingProduct from './HomeComponent/SliderProducts/BestSellingProduct/BestSellingProduct';
+
 // import NewsMain from '~/components/news/NewsMain';
 function Home() {
     const params = useParams();
@@ -15,7 +16,7 @@ function Home() {
     const sortProducts = params.sortProducts;
 
     return (
-        <div>
+        <div className=" px-20">
             {!keyword && !category ? <Sliders /> : ''}
             {!keyword && !category ? <LatestProduct /> : ''}
             {!keyword && !category ? <BestSellingProduct /> : ''}

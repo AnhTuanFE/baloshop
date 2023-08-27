@@ -3,9 +3,9 @@ import Header from '../componentsLayout/Header';
 import Footer from '../componentsLayout/Footer';
 function DefaulLayout({ children }) {
     return (
-        <div className="Wrapper">
+        <div className="Wrapper bg-[var(--content-color)]">
             <Header />
-            <div className="chilren">{children}</div>
+            <div className="pt-[170px]">{children}</div>
             <Footer />
         </div>
     );

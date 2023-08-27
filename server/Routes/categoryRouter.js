@@ -19,8 +19,8 @@ CategoryRouter.get(
 );
 CategoryRouter.delete(
     '/:id',
-    admin,
     protect,
+    admin,
     asyncHandler(async (req, res) => {
         const categories = await Category.findById(req.params.id);
         if (categories) {

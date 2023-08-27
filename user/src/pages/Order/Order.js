@@ -22,10 +22,9 @@ import {
 } from '~/redux/Constants/OrderConstants';
 import { ORDER_PAY_RESET } from '~/redux/Constants/OrderConstants';
 import { listCart } from '~/redux/Actions/cartActions';
-import Loading from '~/components/HomeComponent/LoadingError/Loading';
-import Message from '~/components/HomeComponent/LoadingError/Error';
+import Loading from '~/components/LoadingError/Loading';
+import Message from '~/components/LoadingError/Error';
 import Steppers from './custom_stepper_MUI/Steppers';
-import DisabledByDefaultSharpIcon from '@mui/icons-material/DisabledByDefaultSharp';
 import InfoPayer from './InfoPayer';
 import ViewOrderInformation from './ViewOrderInformation';
 import { Modal } from 'antd';
@@ -168,7 +167,7 @@ function Order() {
                     Body="Bạn xác nhận hủy đơn hàng này?"
                     HandleSubmit={cancelOrderHandler}
                 />
-                <div className="mx-32 mb-20">
+                <div className="mx-32 pb-10">
                     {contextHolder}
 
                     {loadingCancel && <Loading />}
@@ -180,7 +179,7 @@ function Order() {
                         <>
                             <InfoPayer order={order} />
                             <Steppers order={order} />
-                            <div className="flex justify-around">
+                            <div className="flex justify-around rounded bg-white px-4 py-3">
                                 <div className="mr-5 flex-[3]">
                                     {order.orderItems.length === 0 ? (
                                         <Message variant="alert-info mt-5">Đơn đặt hàng của bạn trống</Message>
@@ -188,7 +187,7 @@ function Order() {
                                         <>
                                             {order.orderItems.map((item, index) => (
                                                 <div
-                                                    className="flex justify-around rounded p-4 "
+                                                    className="mb-2 flex justify-around rounded px-4"
                                                     style={{
                                                         border: '1px solid #dad8d8',
                                                     }}
@@ -200,7 +199,7 @@ function Order() {
                                                         //         ? 'col-md-1 col-4'
                                                         //         : 'col-md-2 col-6'
                                                         // }
-                                                        className="h-32 w-32"
+                                                        className="h-[100px] w-[100px]"
                                                     >
                                                         <img src={item.image} alt={item.name} />
                                                     </div>
@@ -287,17 +286,27 @@ function Order() {
                                             Đơn hàng này đã bị hủy bỏ
                                         </div>
                                     )}
-                                    <div className="m-2 cursor-pointer rounded-md bg-[#fe6233] py-2 text-center text-fuchsia-50 ">
+                                    <div className="mx-2 mb-2 cursor-pointer rounded-md bg-[#fe6233] py-1 text-center text-fuchsia-50 ">
                                         <button onClick={showModal}>Xem chi tiết đơn hàng</button>
+
                                         <Modal title="Title" open={open} onOk={handleOk} onCancel={handleCancel}>
                                             <ViewOrderInformation id_Ghtk={order?.label_id_GiaoHangTK} />
                                         </Modal>
+                                    </div>
+                                    <div className="mx-2  cursor-pointer rounded-md">
+                                        {order?.paymentMethod == '"Thanh toán qua momo"' && (
+                                            <div>
+                                                <button className="w-full rounded bg-[var(--main-color)] px-2 py-3 font-bold text-white hover:bg-[var(--main-color-hover)]">
+                                                    Thanh toán ngay
+                                                </button>
+                                            </div>
+                                        )}
                                     </div>
                                     {order?.isPaid && order?.isDelivered && order?.completeUser !== true && (
                                         <div className="">
                                             <div className="">
                                                 <button
-                                                    className=" mb-2 w-full cursor-pointer rounded-lg bg-success px-1 py-3 text-lg font-semibold uppercase text-white"
+                                                    className=" mb-2 w-full cursor-pointer rounded-lg bg-success px-1 py-2 text-base font-semibold uppercase text-white"
                                                     onClick={handlerSuccessCart}
                                                 >
                                                     Hoàn tất đơn hàng
@@ -314,10 +323,10 @@ function Order() {
                                         </div>
                                     )}
                                     {!order?.waitConfirmation && (
-                                        <div className="pt-4">
+                                        <div className="pt-2">
                                             <button
                                                 onClick={() => window.my_modal_1.showModal()}
-                                                className="w-full cursor-pointer rounded-lg bg-red-600 py-3 text-lg font-semibold uppercase text-white"
+                                                className=" mx-2 w-full cursor-pointer rounded-lg bg-red-600 py-2 text-base font-semibold uppercase text-white"
                                                 disabled={order?.isPaid || order?.cancel == 1}
                                             >
                                                 HỦY ĐƠN HÀNG NÀY
@@ -393,7 +402,7 @@ function Order() {
                                         </div>
                                         <div className="my-3">
                                             <button
-                                                className="col-12 bg-orange rounded border-0 bg-[var(--main-color)] p-3 text-white"
+                                                className="col-12 bg-orange rounded border-0 bg-[var(--main-color)] px-3 py-2 text-white"
                                                 type="button"
                                                 data-bs-dismiss={successReviewOrder === true ? 'modal' : ''}
                                                 onClick={() => {
@@ -426,7 +435,6 @@ function Order() {
                                         </div>
                                     </form>
                                     <div className="modal-action">
-                                        {/* if there is a button in form, it will close the modal */}
                                         <button className="btn">Đóng</button>
                                     </div>
                                 </form>

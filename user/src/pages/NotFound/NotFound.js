@@ -4,7 +4,7 @@ import { imageNotFound } from '~/utils/data';
 const NotFound = () => {
     return (
         <>
-            <div className="container my-5">
+            <div className="my-5">
                 <div className="row justify-content-center align-items-center">
                     <h4 className="mb-sm-5 mb-2 text-center">Page Not Found</h4>
                     <img

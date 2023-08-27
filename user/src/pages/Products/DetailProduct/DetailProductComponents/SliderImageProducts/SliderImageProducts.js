@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import './SliderImageProducts.css';
 
 function SliderImageProducts({ images }) {
     const [imageOne, setImageOne] = useState();
@@ -9,28 +8,28 @@ function SliderImageProducts({ images }) {
         }
     }, [images]);
     return (
-        <div id="carouselExampleIndicators" class="slide carousel" data-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img class="d-block w-100" src={imageOne !== undefined ? `${imageOne}` : ''} alt=""></img>
+        <div id="carouselExampleIndicators" className="slide carousel" data-ride="carousel">
+            <div className="carousel-inner ">
+                <div className="carousel-item active ">
+                    <img className="d-block h-[400px] " src={imageOne !== undefined ? `${imageOne}` : ''} alt=""></img>
                 </div>
                 {images?.map((product) => {
                     return (
                         <>
                             {product.id !== images[0].id && (
-                                <div key={product?.key} class={`carousel-item`}>
-                                    <img class="d-block w-100" src={`${product?.image}`} alt=""></img>
+                                <div key={product?.key} className={`carousel-item`}>
+                                    <img className="d-block w-100" src={`${product?.image}`} alt=""></img>
                                 </div>
                             )}
                         </>
                     );
                 })}
             </div>
-            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon css-icon" aria-hidden="true"></span>
+            <a className="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span className="carousel-control-prev-icon css-icon" aria-hidden="true"></span>
             </a>
-            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                <span class="carousel-control-next-icon css-icon" aria-hidden="true"></span>
+            <a className="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span className="carousel-control-next-icon css-icon" aria-hidden="true"></span>
             </a>
         </div>
     );
