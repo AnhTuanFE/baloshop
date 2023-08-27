@@ -362,7 +362,7 @@ function Detail_infor_account({ user }) {
                         sx={{
                             width: '100%',
                             margin: 'auto',
-                            padding: '16px 0px',
+                            padding: '8px 0px',
                             borderRadius: '6px',
                             fontSize: '16px',
                             background: 'var(--main-color)',

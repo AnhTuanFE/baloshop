@@ -33,7 +33,7 @@ import ModalDaiSyUI from '~/components/Modal/ModalDaiSyUI';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
-import './Order.css';
+// import './Order.css';
 
 const labels = {
     1: 'Không hài lòng',
@@ -112,10 +112,12 @@ function Order() {
     useEffect(() => {
         if (successReviewOrder) {
             dispatch({ type: ORDER_CREATE_REVIEW_RESET });
+            return;
         }
         if (successComplete) {
             dispatch({ type: ORDER_COMPLETE_USER_RESET });
             dispatch(getOrderDetails(orderId));
+            return;
         }
     }, [successReviewOrder, successComplete]);
 
@@ -126,9 +128,6 @@ function Order() {
 
         order.itemsPrice = addDecimals(order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0));
     }
-    useEffect(() => {
-        dispatch(getOrderDetails(orderId));
-    }, [successCancel]);
     useEffect(() => {
         if (!order || successPay) {
             dispatch({ type: ORDER_PAY_RESET });

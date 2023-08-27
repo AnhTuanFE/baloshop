@@ -1,43 +1,15 @@
-import React from 'react';
-import { UserOutlined } from '@ant-design/icons';
-import { AutoComplete, Input } from 'antd';
-import './Test.css';
-
-const renderItem = (title, count) => ({
-    value: title,
-    label: (
-        <div
-            style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-            }}
-        >
-            {title}
-            <span>
-                <UserOutlined /> {count}
-            </span>
-        </div>
-    ),
-});
-const options = [
-    {
-        label: 'Libraries',
-        options: [renderItem('AntDesign', 10000), renderItem('AntDesign UI', 10600)],
-    },
-];
+import { Button, ConfigProvider } from 'antd';
 const Test = () => (
-    <div className="flex min-h-[40vh] justify-center">
+    <div className="flex min-h-[40vh] justify-center bg-gray-600">
         <div className="m-auto">
-            <AutoComplete
-                popupClassName="certain-category-search-dropdown"
-                dropdownMatchSelectWidth={500}
-                style={{
-                    width: 250,
+            <ConfigProvider
+                theme={{
+                    token: {},
+                    components: {},
                 }}
-                options={options}
             >
-                <Input.Search size="large" placeholder="input here" />
-            </AutoComplete>
+                <Button type="primary">hello</Button>
+            </ConfigProvider>
         </div>
     </div>
 );

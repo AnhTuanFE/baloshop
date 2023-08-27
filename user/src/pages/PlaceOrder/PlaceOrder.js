@@ -15,11 +15,20 @@ import AddLocationSharpIcon from '@mui/icons-material/AddLocationSharp';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import { ordersRemainingSelector } from '~/redux/Selector/ordersSelector';
 import { calculate_fee_ship_action } from '~/redux/Actions/OrderActions';
-
 // import './PlaceOrder.css';
 
 function PlaceOrder() {
     const paymentMethods_from_localStorage = localStorage.getItem('paymentMethod');
+    const handleConfigPaymentMethods = (payment) => {
+        if (payment == '"payment-with-momo"') {
+            return 'payment-with-momo';
+        }
+        if (payment == '"payment-with-paypal"') {
+            return 'payment-with-paypal';
+        } else {
+            return 'payment-with-cash';
+        }
+    };
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -43,7 +52,7 @@ function PlaceOrder() {
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
     const orderCreate = useSelector((state) => state.orderCreate);
-    const { order, success, error } = orderCreate;
+    const { order, success, error, loading } = orderCreate;
     const { order_ghtk_state } = useSelector(ordersRemainingSelector);
     const fee_VC = order_ghtk_state?.data_fee_ship?.fee.fee;
     // =====================================================
@@ -92,12 +101,15 @@ function PlaceOrder() {
             dispatch({ type: ORDER_CREATE_RESET });
         }
         if (success) {
-            successPlaceholder();
-            // setTimeout(() => {
-            // }, 3000);
-            dispatch({ type: ORDER_CREATE_RESET });
-            dispatch(clearFromCart(userInfo._id));
-            navigate(`/order/${order.ShopOrder._id}`);
+            if (order?.payment.paymentMethod == 'payment-with-momo') {
+                navigate(`${order?.payment?.payUrl}`);
+                return;
+            } else {
+                successPlaceholder();
+                dispatch({ type: ORDER_CREATE_RESET });
+                // dispatch(clearFromCart(userInfo._id));
+                navigate(`/order/${order?.newOrder?._id}`);
+            }
         }
     }, [error, success]);
     const placeOrderHandler = () => {
@@ -111,7 +123,7 @@ function PlaceOrder() {
                     address: userInfo.address,
                     postalCode: '',
                 },
-                paymentMethod: paymentMethods_from_localStorage,
+                paymentMethod: handleConfigPaymentMethods(paymentMethods_from_localStorage),
                 itemsPrice: cart.itemsPrice,
                 shippingPrice: cart.shippingPrice,
                 totalPrice: cart.totalPrice,
@@ -250,6 +262,7 @@ function PlaceOrder() {
             dispatch(listCart());
         }
     }, []);
+
     useEffect(() => {
         if (cartItems.length != 0 && Object.keys(order_ghtk_state).length === 0) {
             dispatch(
@@ -274,6 +287,7 @@ function PlaceOrder() {
     return (
         <>
             {error && <Loading />}
+            {loading && <Loading />}
             {contextHolder}
             <div className="mx-auto my-auto max-w-screen-2xl">
                 <div className="mx-20 pb-20 ">

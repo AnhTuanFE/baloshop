@@ -6,15 +6,20 @@ import reportWebVitals from './reportWebVitals';
 import store from './redux/store';
 import { Provider } from 'react-redux';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import { ConfigProvider } from 'antd';
+import theme from './utils/theme';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const queryClient = new QueryClient();
 root.render(
     <React.StrictMode>
-        <Provider store={store}>
-            <QueryClientProvider client={queryClient}>
-                <App />
-            </QueryClientProvider>
-        </Provider>
+        <ConfigProvider theme={theme}>
+            <Provider store={store}>
+                <QueryClientProvider client={queryClient}>
+                    <App />
+                </QueryClientProvider>
+            </Provider>
+        </ConfigProvider>
     </React.StrictMode>,
 );
 
