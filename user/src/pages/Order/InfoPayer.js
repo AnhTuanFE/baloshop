@@ -4,11 +4,11 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 
 function InfoPayer({ order }) {
     return (
-        <div className="mb-4 rounded bg-white px-2 py-1 shadow-custom-shadow">
-            <div className="my-3 flex items-center justify-around rounded-md pt-3">
-                <div className="flex">
-                    <div className="mr-2 mt-2 px-2">
-                        <AccountCircleSharpIcon className="" fontSize="large" color="primary" />
+        <div className="mb-4 rounded bg-white px-5 py-1 shadow-custom-shadow">
+            <div className="row col-lg-12 my-3 rounded-md pt-3">
+                <div className="col-lg-3 flex px-2">
+                    <div className="mr-2 px-2">
+                        <AccountCircleSharpIcon className="text-[var(--main-color)]" fontSize="large" />
                     </div>
                     <div className="">
                         <p>
@@ -19,9 +19,9 @@ function InfoPayer({ order }) {
                         </p>
                     </div>
                 </div>
-                <div className="flex">
+                <div className="col-lg-5 flex px-2">
                     <div className="mr-2 px-2">
-                        <AddLocationSharpIcon className="" fontSize="large" color="primary" />
+                        <AddLocationSharpIcon className="text-[var(--main-color)]" fontSize="large" />
                     </div>
                     <div className="">
                         <p>
@@ -30,13 +30,14 @@ function InfoPayer({ order }) {
                         </p>
                     </div>
                 </div>
-                <div className="flex">
+                <div className="col-lg-4 flex px-2">
                     <div className="mr-2 px-2">
-                        <MonetizationOnIcon className="" fontSize="large" color="primary" />
+                        <MonetizationOnIcon className="text-[var(--main-color)]" fontSize="large" />
                     </div>
                     <div className="">
                         <p>
-                            <span className="font-semibold">Phương thức:</span> {order.paymentMethod.replace(/"/g, '')}
+                            <span className="font-semibold">Phương thức thanh toán:</span>
+                            <div>{order.paymentMethod.replace(/"/g, '')}</div>
                         </p>
                     </div>
                 </div>

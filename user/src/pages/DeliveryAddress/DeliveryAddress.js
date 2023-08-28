@@ -50,7 +50,7 @@ function DeliveryAddress() {
     useEffect(() => {
         if (updatesuccess) {
             dispatch({ type: USER_UPDATE_PROFILE_RESET });
-            navigate('/payment');
+            navigate('/placeorder');
         }
     }, [updatesuccess]);
     useEffect(() => {

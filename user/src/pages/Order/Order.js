@@ -192,24 +192,10 @@ function Order() {
                                                     }}
                                                     key={index}
                                                 >
-                                                    <div
-                                                        // className={
-                                                        //     order?.isPaid && itemOrder[index].productReview.length === 0
-                                                        //         ? 'col-md-1 col-4'
-                                                        //         : 'col-md-2 col-6'
-                                                        // }
-                                                        className="h-[100px] w-[100px]"
-                                                    >
+                                                    <div className="h-[100px] w-[100px]">
                                                         <img src={item.image} alt={item.name} />
                                                     </div>
-                                                    <div
-                                                        // className={
-                                                        //     order?.isPaid && itemOrder[index].productReview.length === 0
-                                                        //         ? 'col-md-3 col-4 d-flex align-items-center'
-                                                        //         : 'col-md-4 col-6 d-flex align-items-center'
-                                                        // }
-                                                        className="m-auto text-center"
-                                                    >
+                                                    <div className="m-auto text-center">
                                                         <Link to={`/products/${item.product}`}>
                                                             <h6 className="text-base font-semibold">{item.name}</h6>
                                                         </Link>
@@ -285,20 +271,22 @@ function Order() {
                                             Đơn hàng này đã bị hủy bỏ
                                         </div>
                                     )}
-                                    <div className="mx-2 mb-2 cursor-pointer rounded-md bg-[#fe6233] py-1 text-center text-fuchsia-50 ">
-                                        <button onClick={showModal}>Xem chi tiết đơn hàng</button>
+                                    <div className="mx-2 mb-2 cursor-pointer rounded-md bg-[var(--main-color)] py-1 text-center text-fuchsia-50 ">
+                                        <button onClick={showModal}>Chi tiết đơn hàng</button>
 
                                         <Modal title="Title" open={open} onOk={handleOk} onCancel={handleCancel}>
                                             <ViewOrderInformation id_Ghtk={order?.label_id_GiaoHangTK} />
                                         </Modal>
                                     </div>
                                     <div className="mx-2  cursor-pointer rounded-md">
-                                        {order?.paymentMethod == '"Thanh toán qua momo"' && (
+                                        {order?.paymentMethod == 'payment-with-momo' && order?.isPaid ? (
                                             <div>
-                                                <button className="w-full rounded bg-[var(--main-color)] px-2 py-3 font-bold text-white hover:bg-[var(--main-color-hover)]">
+                                                <button className="w-full rounded bg-[var(--main-color)] px-2 py-2 font-bold text-white hover:bg-[var(--main-color-hover)]">
                                                     Thanh toán ngay
                                                 </button>
                                             </div>
+                                        ) : (
+                                            ''
                                         )}
                                     </div>
                                     {order?.isPaid && order?.isDelivered && order?.completeUser !== true && (
@@ -322,13 +310,13 @@ function Order() {
                                         </div>
                                     )}
                                     {!order?.waitConfirmation && (
-                                        <div className="pt-2">
+                                        <div className="mx-2 pt-2">
                                             <button
                                                 onClick={() => window.my_modal_1.showModal()}
-                                                className=" mx-2 w-full cursor-pointer rounded-lg bg-red-600 py-2 text-base font-semibold uppercase text-white"
+                                                className=" w-full cursor-pointer rounded-lg bg-red-600 py-1 text-sm font-semibold uppercase text-white"
                                                 disabled={order?.isPaid || order?.cancel == 1}
                                             >
-                                                HỦY ĐƠN HÀNG NÀY
+                                                HỦY ĐƠN HÀNG
                                             </button>
                                         </div>
                                     )}

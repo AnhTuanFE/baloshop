@@ -30,7 +30,7 @@ function Payment() {
     };
     return (
         <>
-            <div className={clsx(styles.wrapper)}>
+            <div className="flex justify-center">
                 <form className={clsx(styles.form)} onSubmit={submitHandler}>
                     <FormControl>
                         <FormLabel id="demo-radio-buttons-group-label" className="text-center text-black ">
