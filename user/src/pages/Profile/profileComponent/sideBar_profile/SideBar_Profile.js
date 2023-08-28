@@ -17,12 +17,7 @@ import { imageDefaul } from '~/utils/data';
 function SideBar_Profile({ userInfo }) {
     return (
         <>
-            <Box
-                sx={{
-                    flex: '1',
-                    marginLeft: '12px',
-                }}
-            >
+            <div className=" mr-3 px-2">
                 <Box
                     sx={{
                         display: 'flex',
@@ -30,7 +25,7 @@ function SideBar_Profile({ userInfo }) {
                     }}
                 >
                     <Avatar
-                        sx={{ width: 80, height: 80, margin: '0px 12px' }}
+                        sx={{ width: 60, height: 60, margin: '0px 12px' }}
                         src={
                             userInfo?.image?.urlImageCloudinary !== undefined
                                 ? userInfo?.image?.urlImageCloudinary
@@ -42,9 +37,11 @@ function SideBar_Profile({ userInfo }) {
                             alignItems: 'center',
                         }}
                     >
-                        <Typography variant="h5">Nguyễn Anh Tuấn</Typography>
+                        <Typography variant="h7" className="font-semibold">
+                            Nguyễn Anh Tuấn
+                        </Typography>
                         <Typography variant="subtitle1">
-                            Ngày tham gia: {moment(userInfo.createdAt).format('DD/MM/YYYY')}
+                            Ngày đăng ký: {moment(userInfo.createdAt).format('DD/MM/YYYY')}
                         </Typography>
                     </Box>
                 </Box>
@@ -60,7 +57,7 @@ function SideBar_Profile({ userInfo }) {
                                 <Link to={'/profile'} className="w-full">
                                     <ListItemButton>
                                         <ListItemIcon>
-                                            <ManageAccounts fontSize="large" color="secondary" />
+                                            <ManageAccounts fontSize="medium" color="primary" />
                                         </ListItemIcon>
                                         <ListItemText primary="Hồ sơ cá nhân" />
                                     </ListItemButton>
@@ -70,7 +67,7 @@ function SideBar_Profile({ userInfo }) {
                                 <Link to="/purchasehistory" className="w-full">
                                     <ListItemButton>
                                         <ListItemIcon>
-                                            <FactCheckRounded fontSize="large" color="secondary" />
+                                            <FactCheckRounded fontSize="medium" color="primary" />
                                         </ListItemIcon>
                                         <ListItemText primary="Danh sách mua hàng" />
                                     </ListItemButton>
@@ -79,7 +76,7 @@ function SideBar_Profile({ userInfo }) {
                         </List>
                     </nav>
                 </Box>
-            </Box>
+            </div>
         </>
     );
 }

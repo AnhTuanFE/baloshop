@@ -15,6 +15,7 @@ import AddLocationSharpIcon from '@mui/icons-material/AddLocationSharp';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import { ordersRemainingSelector } from '~/redux/Selector/ordersSelector';
 import { calculate_fee_ship_action } from '~/redux/Actions/OrderActions';
+import LoadingLarge from '~/components/LoadingError/LoadingLarge';
 
 function PlaceOrder() {
     const [paymentMethodState, setPaymentMethodState] = useState('payment-with-momo');
@@ -89,13 +90,18 @@ function PlaceOrder() {
             dispatch({ type: ORDER_CREATE_RESET });
         }
         if (success) {
+            console.log('order = ', order);
             if (order?.newOrder.paymentMethod == 'payment-with-momo') {
                 window.location.href = `${order.newOrder.payment.payUrl}`;
+                return;
+            }
+            if (order?.newOrder.paymentMethod == 'payment-with-paypal') {
+                navigate(`/placeorder/paymentpaypal/${order?.newOrder?._id}`);
                 return;
             } else {
                 successPlaceholder();
                 dispatch({ type: ORDER_CREATE_RESET });
-                // navigate(`/order/${order?.newOrder?._id}`);
+                navigate(`/order/${order?.newOrder?._id}`);
             }
         }
     }, [error, success]);
@@ -172,69 +178,6 @@ function PlaceOrder() {
         return usd;
     };
     let moneyNeedPaid = handleExchangeCurrency(cart.totalPrice);
-    const createOrderPaypal = (data, actions) => {
-        // console.log('data create order = ', data);
-        // paymentSource: 'paypal
-        return actions.order.create({
-            purchase_units: [
-                {
-                    amount: {
-                        currency_code: 'USD',
-                        value: `${moneyNeedPaid}`,
-                    },
-                },
-            ],
-        });
-    };
-
-    // Định nghĩa hàm xử lý khi thanh toán được xử lý thành công
-    const onApprove = (data, actions) => {
-        const { orderID, payerID } = data;
-        if (orderID && payerID) {
-            dispatch(
-                createOrder({
-                    orderItems: currenCartItems,
-                    shippingAddress: {
-                        city: userInfo.city,
-                        distric: userInfo.distric,
-                        ward: userInfo.ward,
-                        address: userInfo.address,
-                        postalCode: '',
-                    },
-                    paymentMethod: paymentMethodState,
-                    paypalOrder: {
-                        orderID: orderID,
-                        payerID: payerID,
-                        cost: Number(moneyNeedPaid),
-                    },
-                    itemsPrice: cart.itemsPrice,
-                    shippingPrice: cart.shippingPrice,
-                    totalPrice: cart.totalPrice,
-                    phone: userInfo.phone,
-                    name: userInfo.name,
-                    email: userInfo.email,
-                    address_shop: userInfo.address_shop,
-                }),
-            );
-        }
-
-        return actions.order.capture().then(function (details) {
-            successPlaceholder();
-            // alert('Transaction completed by ' + details.payer.name.given_name);
-        });
-    };
-    // Định nghĩa hàm xử lý khi có lỗi xảy ra trong quá trình thanh toán
-    const onError = (err) => {
-        errorPlaceholder('Có lỗi xảy ra khi thanh toán, vui lòng thử lại sau');
-        // console.log('data err = ', err);
-    };
-    // Định nghĩa hàm xử lý khi người dùng hủy thanh toán
-    const onCancel = (data) => {
-        errorPlaceholder('Bạn đã hủy thanh toán, vui lòng hoàn tất thanh toán trong 24h');
-    };
-    const ID_CLENT = 'Af5R_f2_MvnxLxpFeDO56MRvo6PGOIfXR3c0P9z8wyRGek_Th6JPBU7ktH5kgPpHW0Bb5pw0aasuA2NR';
-
-    // ===================================================
     useLayoutEffect(() => {
         if (cartItems.length === 0) {
             dispatch(listCart());
@@ -268,7 +211,8 @@ function PlaceOrder() {
     return (
         <>
             {error && <Loading />}
-            {loading && <Loading />}
+            {/* {loading && <Loading />} */}
+            {loading && <LoadingLarge content={'Đang tạo đơn hàng'} />}
             {contextHolder}
             <div className="mx-auto my-auto max-w-screen-2xl">
                 <div className="mx-10 pb-20 ">
@@ -396,35 +340,6 @@ function PlaceOrder() {
                                 >
                                     Đặt hàng
                                 </button>
-
-                                {/* {cart.cartItems.length === 0 ? null : paymentMethodState == 'payment-with-paypal' ? (
-                                    <div className="m-8 text-center ">
-                                        <PayPalScriptProvider
-                                            options={{
-                                                'client-id': `${ID_CLENT}`,
-                                            }}
-                                            className=""
-                                        >
-                                            <PayPalButtons
-                                                createOrder={createOrderPaypal}
-                                                onApprove={onApprove}
-                                                onError={onError}
-                                                onCancel={onCancel}
-                                                // layout: 'horizontal',
-                                                style={{ label: 'pay' }}
-                                                className="mx-[22%]"
-                                            />
-                                        </PayPalScriptProvider>
-                                    </div>
-                                ) : (
-                                    <button
-                                        type="submit"
-                                        className="m-auto flex justify-center rounded-lg bg-[var(--main-color)] px-16 py-2 text-fuchsia-50 hover:opacity-[0.8]"
-                                        onClick={() => window.my_modal_1.showModal()}
-                                    >
-                                        Đặt hàng
-                                    </button>
-                                )} */}
                             </div>
                         </div>
                     </div>

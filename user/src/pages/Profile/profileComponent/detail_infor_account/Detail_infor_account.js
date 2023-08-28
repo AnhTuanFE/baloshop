@@ -1,7 +1,5 @@
 import { Box, Typography, TextField, Autocomplete, Button, Stack } from '@mui/material';
-import clsx from 'clsx';
 import { useEffect } from 'react';
-import styles from './Detail_infor_account.module.css';
 import PropTypes from 'prop-types';
 import { getListProvincesAction } from '~/redux/Actions/userActions';
 import { updateUserProfile } from '~/redux/Actions/userActions';
@@ -146,8 +144,8 @@ function Detail_infor_account({ user }) {
         <>
             <form onSubmit={handleSubmit(submitUpdateProfile)}>
                 <Stack>
-                    <Box className={clsx(styles.wrap_info_item)}>
-                        <Typography className={clsx(styles.info_item_label)}>Họ tên</Typography>
+                    <Box className="mb-1 flex">
+                        <Typography className="w-1/5">Họ tên</Typography>
                         <Controller
                             name="name"
                             control={control}
@@ -157,7 +155,7 @@ function Detail_infor_account({ user }) {
                             render={({ field }) => (
                                 <TextField
                                     type="text"
-                                    className={clsx(styles.info_item)}
+                                    className="w-4/5 bg-white"
                                     hiddenLabel
                                     id="outlined-basic"
                                     variant="outlined"
@@ -167,13 +165,13 @@ function Detail_infor_account({ user }) {
                             )}
                         />
                     </Box>
-                    <Box className={clsx(styles.wrap_info_item_warning)}>
+                    <Box className="min-h-[28px]">
                         {errors.name && errors.name.type === 'required' ? (
-                            <p className={clsx(styles.info_item_warning)}>{errors.name.message}</p>
+                            <p className="mb-2 text-red-600">{errors.name.message}</p>
                         ) : null}
                     </Box>
-                    <Box className={clsx(styles.wrap_info_item)}>
-                        <Typography className={clsx(styles.info_item_label)}>Ngày sinh</Typography>
+                    <Box className="mb-1 flex">
+                        <Typography className="w-1/5">Ngày sinh</Typography>
                         <Controller
                             name="dateOfBirth"
                             control={control}
@@ -183,7 +181,7 @@ function Detail_infor_account({ user }) {
                             render={({ field }) => (
                                 <TextField
                                     type="date"
-                                    className={clsx(styles.info_item)}
+                                    className="w-4/5 bg-white"
                                     hiddenLabel
                                     id="outlined-basic"
                                     variant="outlined"
@@ -193,15 +191,15 @@ function Detail_infor_account({ user }) {
                             )}
                         />
                     </Box>
-                    <Box className={clsx(styles.wrap_info_item_warning)}>
+                    <Box className="min-h-[28px]">
                         {errors.name && errors.name.type === 'required' ? (
-                            <p className={clsx(styles.info_item_warning)}>{errors.name.message}</p>
+                            <p className="mb-2 text-red-600">{errors.name.message}</p>
                         ) : null}
                     </Box>
-                    <Box className={clsx(styles.wrap_info_item)}>
-                        <Typography className={clsx(styles.info_item_label)}>Email</Typography>
+                    <Box className="mb-1 flex">
+                        <Typography className="w-1/5">Email</Typography>
                         <TextField
-                            className={clsx(styles.info_item)}
+                            className="w-4/5 bg-white"
                             hiddenLabel
                             id="outlined-basic"
                             variant="outlined"
@@ -209,9 +207,9 @@ function Detail_infor_account({ user }) {
                             disabled
                         />
                     </Box>
-                    <Box className={clsx(styles.wrap_info_item_warning)}></Box>
-                    <Box className={clsx(styles.wrap_info_item)}>
-                        <Typography className={clsx(styles.info_item_label)}>Số điện thoại</Typography>
+                    <Box className="min-h-[28px]"></Box>
+                    <Box className="mb-1 flex">
+                        <Typography className="w-1/5">Số điện thoại</Typography>
                         <Controller
                             name="phone"
                             control={control}
@@ -221,7 +219,7 @@ function Detail_infor_account({ user }) {
                             render={({ field }) => (
                                 <TextField
                                     type="text"
-                                    className={clsx(styles.info_item)}
+                                    className="w-4/5 bg-white"
                                     hiddenLabel
                                     id="outlined-basic"
                                     variant="outlined"
@@ -231,13 +229,13 @@ function Detail_infor_account({ user }) {
                             )}
                         />
                     </Box>
-                    <Box className={clsx(styles.wrap_info_item_warning)}>
+                    <Box className="min-h-[28px]">
                         {errors.phone && errors.phone.type === 'required' ? (
-                            <p className={clsx(styles.info_item_warning)}>{errors.phone.message}</p>
+                            <p className="mb-2 text-red-600">{errors.phone.message}</p>
                         ) : null}
                     </Box>
-                    <Box className={clsx(styles.wrap_info_item)}>
-                        <Typography className={clsx(styles.info_item_label)}>Tỉnh/Thành phố</Typography>
+                    <Box className="mb-1 flex">
+                        <Typography className="w-1/5">Tỉnh/Thành phố</Typography>
                         <Controller
                             name="city"
                             control={control}
@@ -248,7 +246,7 @@ function Detail_infor_account({ user }) {
                                 <Autocomplete
                                     noOptionsText="Không tìm thấy kết quả"
                                     loadingText="Đang tải"
-                                    className={clsx(styles.info_item)}
+                                    className="w-4/5 bg-white"
                                     disablePortal
                                     // id="combo-box-demo"
                                     {...field}
@@ -262,13 +260,13 @@ function Detail_infor_account({ user }) {
                             )}
                         />
                     </Box>
-                    <Box className={clsx(styles.wrap_info_item_warning)}>
+                    <Box className="min-h-[28px]">
                         {errors.name && errors.name.type === 'required' ? (
-                            <p className={clsx(styles.info_item_warning)}>{errors.name.message}</p>
+                            <p className="mb-2 text-red-600">{errors.name.message}</p>
                         ) : null}
                     </Box>
-                    <Box className={clsx(styles.wrap_info_item)}>
-                        <Typography className={clsx(styles.info_item_label)}>Quận/Huyện</Typography>
+                    <Box className="mb-1 flex">
+                        <Typography className="w-1/5">Quận/Huyện</Typography>
                         <Controller
                             name="distric"
                             control={control}
@@ -279,7 +277,7 @@ function Detail_infor_account({ user }) {
                                 <Autocomplete
                                     noOptionsText="Không tìm thấy kết quả"
                                     loadingText="Đang tải"
-                                    className={clsx(styles.info_item)}
+                                    className="w-4/5 bg-white"
                                     disablePortal
                                     id="combo-box-demo"
                                     {...field}
@@ -293,14 +291,14 @@ function Detail_infor_account({ user }) {
                             )}
                         />
                     </Box>
-                    <Box className={clsx(styles.wrap_info_item_warning)}>
+                    <Box className="min-h-[28px]">
                         {errors.name && errors.name.type === 'required' ? (
-                            <p className={clsx(styles.info_item_warning)}>{errors.name.message}</p>
+                            <p className="mb-2 text-red-600">{errors.name.message}</p>
                         ) : null}
                     </Box>
 
-                    <Box className={clsx(styles.wrap_info_item)}>
-                        <Typography className={clsx(styles.info_item_label)}>Xã/Phường</Typography>
+                    <Box className="mb-1 flex">
+                        <Typography className="w-1/5">Xã/Phường</Typography>
                         <Controller
                             name="ward"
                             control={control}
@@ -311,7 +309,7 @@ function Detail_infor_account({ user }) {
                                 <Autocomplete
                                     noOptionsText="Không tìm thấy kết quả"
                                     loadingText="Đang tải"
-                                    className={clsx(styles.info_item)}
+                                    className="w-4/5 bg-white"
                                     disablePortal
                                     id="combo-box-demo"
                                     placeholder="Quận/huyện"
@@ -325,13 +323,13 @@ function Detail_infor_account({ user }) {
                             )}
                         />
                     </Box>
-                    <Box className={clsx(styles.wrap_info_item_warning)}>
+                    <Box className="min-h-[28px]">
                         {errors.name && errors.name.type === 'required' ? (
-                            <p className={clsx(styles.info_item_warning)}>{errors.name.message}</p>
+                            <p className="mb-2 text-red-600">{errors.name.message}</p>
                         ) : null}
                     </Box>
-                    <Box className={clsx(styles.wrap_info_item)}>
-                        <Typography className={clsx(styles.info_item_label)}>Đường Hẻm/Thôn</Typography>
+                    <Box className="mb-1 flex">
+                        <Typography className="w-1/5">Đường Hẻm/Thôn</Typography>
                         <Controller
                             name="address"
                             control={control}
@@ -341,7 +339,7 @@ function Detail_infor_account({ user }) {
                             render={({ field }) => (
                                 <TextField
                                     type="text"
-                                    className={clsx(styles.info_item)}
+                                    className="w-4/5 bg-white"
                                     hiddenLabel
                                     id="outlined-basic"
                                     variant="outlined"
@@ -351,9 +349,9 @@ function Detail_infor_account({ user }) {
                             )}
                         />
                     </Box>
-                    <Box className={clsx(styles.wrap_info_item_warning)}>
+                    <Box className="min-h-[28px]">
                         {errors.address && errors.address.type === 'required' ? (
-                            <p className={clsx(styles.info_item_warning)}>{errors.address.message}</p>
+                            <p className="mb-2 text-red-600">{errors.address.message}</p>
                         ) : null}
                     </Box>
                     <Button

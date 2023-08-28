@@ -144,6 +144,26 @@ const createOrder = async (req, res, next) => {
                 console.log(newOrder);
                 res.status(201).json({ newOrder });
                 await session.commitTransaction();
+                return;
+            } else {
+                await newPaymentInformation.save({ session });
+                orderInfo.payment = newPaymentInformation._id;
+                await Cart.findOneAndUpdate(
+                    { user: req.user._id },
+                    { $pull: { cartItems: { product: { $in: orderItemIds } } } },
+                )
+                    .session(session)
+                    .lean();
+                const newOrder = await (await orderInfo.save({ session })).populate({ path: 'payment' });
+                if (!newOrder) {
+                    await session.abortTransaction();
+                    res.status(500);
+                    throw new Error('Xảy ra lỗi trong quá trình tạo đơn hàng, vui lòng thử lại.');
+                }
+                console.log(newOrder);
+                res.status(201).json({ newOrder });
+                await session.commitTransaction();
+                return;
             }
         }, transactionOptions);
     } catch (error) {

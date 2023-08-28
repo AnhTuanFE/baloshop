@@ -129,11 +129,12 @@ function Order() {
         order.itemsPrice = addDecimals(order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0));
     }
     useEffect(() => {
-        if (!order || successPay) {
-            dispatch({ type: ORDER_PAY_RESET });
-            dispatch(getOrderDetails(orderId));
-        }
-    }, [dispatch, orderId, order]);
+        // if (!order || successPay) {
+        //     dispatch({ type: ORDER_PAY_RESET });
+        //     dispatch(getOrderDetails(orderId));
+        // }
+        dispatch(getOrderDetails(orderId));
+    }, [orderId]);
 
     const handlerSuccessCart = () => {
         const arrItemOrder = order?.orderItems;

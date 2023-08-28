@@ -3,7 +3,7 @@
     box-shadow: 0 1px 2px 0 rgb(60 64 67 / 10%), 0 2px 6px 2px rgb(60 64 67 / 15%);
 }
 .head_swipe_view {
-    background-color: yellow;
+    /* background-color: yellow; */
 }
 .head_swipe_view_label {
     display: flex;

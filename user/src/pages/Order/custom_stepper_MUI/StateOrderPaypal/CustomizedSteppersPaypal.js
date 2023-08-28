@@ -7,6 +7,7 @@ import LocalShippingSharpIcon from '@mui/icons-material/LocalShippingSharp';
 import LocalAtmSharpIcon from '@mui/icons-material/LocalAtmSharp';
 import LibraryAddCheckSharpIcon from '@mui/icons-material/LibraryAddCheckSharp';
 import CancelSharpIcon from '@mui/icons-material/CancelSharp';
+import { Link } from 'react-router-dom';
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
     [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -89,129 +90,155 @@ export default function CustomizedSteppersPaypal({ order }) {
     }, []);
 
     return (
-        <Stack
-            sx={{ width: '100%', marginBottom: '16px', bgcolor: '#ffff', padding: '12px 0px', borderRadius: '4px' }}
-            spacing={4}
-        >
-            <Box sx={{ width: '100%' }}>
-                {order.cancel == 0 ? (
-                    <Stepper alternativeLabel activeStep={actiStep} connector={<ColorlibConnector />}>
-                        {order.waitConfirmation ? (
-                            <Step key={1}>
-                                <div className="">
+        <div className="bg-white">
+            {order?.isPaid ? (
+                ' '
+            ) : (
+                <div className="mr-10 flex justify-end py-2">
+                    <p className="mr-10 text-xl font-semibold text-red-600">Đơn hàng chưa thanh toán</p>
+                    <div>
+                        <Link to={`/placeorder/paymentpaypal/${order._id}`}>
+                            <button className="w-full rounded bg-[var(--main-color)] px-2 py-1 font-medium text-white hover:bg-[var(--main-color-hover)]">
+                                Thanh toán ngay
+                            </button>
+                        </Link>
+                    </div>
+                </div>
+            )}
+            <Stack
+                sx={{ width: '100%', marginBottom: '16px', bgcolor: '#ffff', padding: '12px 0px', borderRadius: '4px' }}
+                spacing={4}
+            >
+                <Box sx={{ width: '100%' }}>
+                    {order.cancel == 0 ? (
+                        <Stepper alternativeLabel activeStep={actiStep} connector={<ColorlibConnector />}>
+                            {order.waitConfirmation ? (
+                                <Step key={1}>
+                                    <div className="">
+                                        <StepLabel
+                                            StepIconComponent={(props) => (
+                                                <ColorlibStepIcon {...props} iconNumber={1} />
+                                            )}
+                                        >
+                                            Đã xác nhận
+                                        </StepLabel>
+                                        <span className=" mt-2 flex justify-center text-sm font-semibold text-[red]">
+                                            {moment(order?.waitConfirmationAt).hours()}
+                                            {':'}
+                                            {moment(order?.waitConfirmationAt).minutes() < 10
+                                                ? `0${moment(order?.waitConfirmationAt).minutes()}`
+                                                : moment(order?.waitConfirmationAt).minutes()}{' '}
+                                            {moment(order?.waitConfirmationAt).format('DD/MM/YYYY')}{' '}
+                                        </span>
+                                    </div>
+                                </Step>
+                            ) : (
+                                <Step key={1}>
                                     <StepLabel
                                         StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={1} />}
                                     >
-                                        Đã xác nhận
+                                        Chờ xác nhận
                                     </StepLabel>
-                                    <span className=" mt-2 flex justify-center text-sm font-semibold text-[red]">
-                                        {moment(order?.waitConfirmationAt).hours()}
-                                        {':'}
-                                        {moment(order?.waitConfirmationAt).minutes() < 10
-                                            ? `0${moment(order?.waitConfirmationAt).minutes()}`
-                                            : moment(order?.waitConfirmationAt).minutes()}{' '}
-                                        {moment(order?.waitConfirmationAt).format('DD/MM/YYYY')}{' '}
-                                    </span>
-                                </div>
-                            </Step>
-                        ) : (
-                            <Step key={1}>
-                                <StepLabel
-                                    StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={1} />}
-                                >
-                                    Chờ xác nhận
-                                </StepLabel>
-                            </Step>
-                        )}
-                        {order.isPaid ? (
-                            <Step key={2}>
-                                <div>
-                                    <StepLabel
-                                        StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={3} />}
-                                    >
-                                        Đã thanh toán
-                                    </StepLabel>
-                                    <span className=" mt-2 flex justify-center text-sm font-semibold text-[red]">
-                                        {moment(order?.paidAt).hours()}
-                                        {':'}
-                                        {moment(order?.paidAt).minutes() < 10
-                                            ? `0${moment(order?.paidAt).minutes()}`
-                                            : moment(order?.paidAt).minutes()}{' '}
-                                        {moment(order?.paidAt).format('DD/MM/YYYY')}{' '}
-                                    </span>
-                                </div>
-                            </Step>
-                        ) : (
-                            <Step key={2}>
-                                <StepLabel icon={<LocalAtmSharpIcon fontSize="large" />}>Chờ thanh toán</StepLabel>
-                            </Step>
-                        )}
-                        {order.isDelivered ? (
-                            <Step key={3}>
-                                <div>
+                                </Step>
+                            )}
+                            {order.isPaid ? (
+                                <Step key={2}>
+                                    <div>
+                                        <StepLabel
+                                            StepIconComponent={(props) => (
+                                                <ColorlibStepIcon {...props} iconNumber={3} />
+                                            )}
+                                        >
+                                            Đã thanh toán
+                                        </StepLabel>
+                                        <span className=" mt-2 flex justify-center text-sm font-semibold text-[red]">
+                                            {moment(order?.paidAt).hours()}
+                                            {':'}
+                                            {moment(order?.paidAt).minutes() < 10
+                                                ? `0${moment(order?.paidAt).minutes()}`
+                                                : moment(order?.paidAt).minutes()}{' '}
+                                            {moment(order?.paidAt).format('DD/MM/YYYY')}{' '}
+                                        </span>
+                                    </div>
+                                </Step>
+                            ) : (
+                                <Step key={2}>
+                                    <StepLabel icon={<LocalAtmSharpIcon fontSize="large" />}>Chờ thanh toán</StepLabel>
+                                </Step>
+                            )}
+                            {order.isDelivered ? (
+                                <Step key={3}>
+                                    <div>
+                                        <StepLabel
+                                            StepIconComponent={(props) => (
+                                                <ColorlibStepIcon {...props} iconNumber={2} />
+                                            )}
+                                        >
+                                            Đã giao
+                                        </StepLabel>
+                                        <span className=" mt-2 flex justify-center text-sm font-semibold text-[red]">
+                                            {moment(order?.deliveredAt).hours()}
+                                            {':'}
+                                            {moment(order?.deliveredAt).minutes() < 10
+                                                ? `0${moment(order?.deliveredAt).minutes()}`
+                                                : moment(order?.deliveredAt).minutes()}{' '}
+                                            {moment(order?.deliveredAt).format('DD/MM/YYYY')}{' '}
+                                        </span>
+                                    </div>
+                                </Step>
+                            ) : (
+                                <Step key={3}>
+                                    {/* icon={<LocalShippingSharpIcon fontSize="large" />} */}
                                     <StepLabel
                                         StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={2} />}
                                     >
-                                        Đã giao
+                                        Đang giao
                                     </StepLabel>
-                                    <span className=" mt-2 flex justify-center text-sm font-semibold text-[red]">
-                                        {moment(order?.deliveredAt).hours()}
-                                        {':'}
-                                        {moment(order?.deliveredAt).minutes() < 10
-                                            ? `0${moment(order?.deliveredAt).minutes()}`
-                                            : moment(order?.deliveredAt).minutes()}{' '}
-                                        {moment(order?.deliveredAt).format('DD/MM/YYYY')}{' '}
-                                    </span>
-                                </div>
-                            </Step>
-                        ) : (
-                            <Step key={3}>
-                                {/* icon={<LocalShippingSharpIcon fontSize="large" />} */}
-                                <StepLabel
-                                    StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={2} />}
-                                >
-                                    Đang giao
-                                </StepLabel>
-                            </Step>
-                        )}
-                        {order.completeAdmin || order.completeUser ? (
-                            <Step key={4}>
-                                <div>
+                                </Step>
+                            )}
+                            {order.completeAdmin || order.completeUser ? (
+                                <Step key={4}>
+                                    <div>
+                                        <StepLabel
+                                            StepIconComponent={(props) => (
+                                                <ColorlibStepIcon {...props} iconNumber={4} />
+                                            )}
+                                        >
+                                            Đã Hoàn tất
+                                        </StepLabel>
+                                        <span className=" mt-2 flex justify-center text-sm font-semibold text-[red]">
+                                            {moment(order?.completeAdminAt).hours()}
+                                            {':'}
+                                            {moment(order?.completeAdminAt).minutes() < 10
+                                                ? `0${moment(order?.completeAdminAt).minutes()}`
+                                                : moment(order?.completeAdminAt).minutes()}{' '}
+                                            {moment(order?.completeAdminAt).format('DD/MM/YYYY')}{' '}
+                                        </span>
+                                    </div>
+                                </Step>
+                            ) : (
+                                <Step key={4}>
                                     <StepLabel
                                         StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={4} />}
                                     >
-                                        Đã Hoàn tất
+                                        Khách hàng xác nhận hoàn tất
                                     </StepLabel>
-                                    <span className=" mt-2 flex justify-center text-sm font-semibold text-[red]">
-                                        {moment(order?.completeAdminAt).hours()}
-                                        {':'}
-                                        {moment(order?.completeAdminAt).minutes() < 10
-                                            ? `0${moment(order?.completeAdminAt).minutes()}`
-                                            : moment(order?.completeAdminAt).minutes()}{' '}
-                                        {moment(order?.completeAdminAt).format('DD/MM/YYYY')}{' '}
-                                    </span>
-                                </div>
-                            </Step>
-                        ) : (
-                            <Step key={4}>
+                                </Step>
+                            )}
+                        </Stepper>
+                    ) : (
+                        <Stepper alternativeLabel activeStep={1} connector={<ColorlibConnector />}>
+                            <Step key={1}>
                                 <StepLabel
-                                    StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={4} />}
+                                    StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={5} />}
                                 >
-                                    Khách hàng xác nhận hoàn tất
+                                    Đơn hàng đã bị hủy
                                 </StepLabel>
                             </Step>
-                        )}
-                    </Stepper>
-                ) : (
-                    <Stepper alternativeLabel activeStep={1} connector={<ColorlibConnector />}>
-                        <Step key={1}>
-                            <StepLabel StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={5} />}>
-                                Đơn hàng đã bị hủy
-                            </StepLabel>
-                        </Step>
-                    </Stepper>
-                )}
-            </Box>
-        </Stack>
+                        </Stepper>
+                    )}
+                </Box>
+            </Stack>
+        </div>
     );
 }

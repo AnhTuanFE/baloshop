@@ -74,7 +74,7 @@ function Crop_image_avatar({ user }) {
                 className="col-lg-12 col-md-12 col-sm-12 display_none "
                 style={checkFile === true ? {} : { display: 'none' }}
             >
-                <div className="ml-28">
+                <div className="">
                     <img
                         src={
                             image === undefined || typeof image === 'object'
