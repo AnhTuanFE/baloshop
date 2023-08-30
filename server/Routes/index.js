@@ -22,7 +22,7 @@ const routes = (app) => {
     app.use('/api/orders', orderRouter);
     app.use('/api/ghtk', GHTK_Router);
     app.use('/api/category', categoryRoute);
-    app.use('/api/payment', paymentRouter);
+    app.use('/api/payments', paymentRouter);
     app.get('/api/config/paypal', (req, res) => {
         res.send(process.env.PAYPAL_CLIENT_ID);
     });

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { PAYMENT_METHOD, PAYMENT_WITH_CASH } from '../config/PaymentConfig.js';
+import { CREATED, PAYMENT_METHODS, PAYMENT_STATUS, PAY_WITH_CASH } from '../config/paymentMethodConfig.js';
 
 const paymentSchema = mongoose.Schema(
     {
@@ -16,14 +16,14 @@ const paymentSchema = mongoose.Schema(
         paymentMethod: {
             type: String,
             required: true,
-            enum: PAYMENT_METHOD,
-            default: PAYMENT_WITH_CASH,
+            enum: PAYMENT_METHODS,
+            default: PAY_WITH_CASH,
         },
         payUrl: {
             type: String,
             default: null,
         },
-        paymentAmount: {
+        amount: {
             type: Number,
             required: true,
             default: 0,
@@ -39,11 +39,65 @@ const paymentSchema = mongoose.Schema(
         paidAt: {
             type: Date,
         },
-        paymentTransaction: {
-            type: Object,
-            default: {},
+        status: {
+            type: String,
+            required: true,
+            enum: PAYMENT_STATUS,
+            default: CREATED,
         },
-        refundTrans: [{ type: String }],
+        momoPaymentTransaction: {
+            partnerCode: {
+                type: String,
+            },
+            orderId: {
+                type: String,
+            },
+            orderInfo: {
+                type: String,
+            },
+            amount: {
+                type: Number,
+            },
+            payType: {
+                type: String,
+            },
+            orderType: {
+                type: String,
+            },
+            message: {
+                type: String,
+            },
+            resultCode: {
+                type: Number,
+            },
+            extraData: {
+                type: String,
+            },
+            transId: {
+                type: String,
+            },
+            refundTrans: [],
+        },
+        paypalPaymentTransaction: {
+            id: {
+                type: String,
+            },
+            intent: {
+                type: String,
+            },
+            status: {
+                type: String,
+            },
+            payment_source: {
+                type: String,
+            },
+            purchase_units: [],
+            payer: {
+                type: Object,
+            },
+            amount: { type: Object },
+            refundTrans: [{ type: String }],
+        },
     },
     {
         timestamps: true,

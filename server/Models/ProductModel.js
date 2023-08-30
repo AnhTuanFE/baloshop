@@ -70,10 +70,11 @@ const productSchema = mongoose.Schema(
             type: String,
             required: true,
         },
-        id_product: {
-            type: Number,
-            // required: true,
-        },
+
+        // sku: {
+        //     type: Number,
+        //     // required: true,
+        // },
         image: {
             type: Array,
             required: true,
@@ -109,10 +110,20 @@ const productSchema = mongoose.Schema(
             default: 0,
         },
         optionColor: [optionColorSchema],
-        // numberOfOrder: {
-        //     type: Number,
-        //     default: 0,
-        // },
+        totalSales: {
+            type: Number,
+            default: 0,
+        },
+        deleted: {
+            type: Boolean,
+            required: true,
+            default: false,
+        },
+        disabled: {
+            type: Boolean,
+            required: true,
+            default: false,
+        },
     },
     {
         timestamps: true,
