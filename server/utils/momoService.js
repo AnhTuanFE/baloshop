@@ -1,13 +1,17 @@
 import crypto from 'crypto';
 
-const PARTNER_NAME = 'Balo shop';
-const STORE_ID = 'Balo shop';
-var requestType = 'payWithMethod';
-var autoCapture = true;
-var extraData = '';
-var orderGroupId = '';
-
-export const buildPaymentRequest = (orderId, requestId, orderInfo, amount, redirectUrl, ipnUrl, lang) => {
+const buildPaymentRequest = (
+    orderId,
+    requestId,
+    orderInfo,
+    amount,
+    redirectUrl,
+    ipnUrl,
+    lang,
+    extraData = '',
+    orderGroupId = '',
+    requestType,
+) => {
     var rawSignature =
         'accessKey=' +
         process.env.MOMO_ACCESS_KEY +
@@ -36,8 +40,8 @@ export const buildPaymentRequest = (orderId, requestId, orderInfo, amount, redir
     //json object send to MoMo endpoint
     const requestBody = JSON.stringify({
         partnerCode: process.env.MOMO_PARTNER_CODE,
-        partnerName: PARTNER_NAME,
-        storeId: STORE_ID,
+        partnerName: process.env.MOMO_PARTNER_NAME,
+        storeId: process.env.MOMO_STORE_ID,
         requestId: requestId,
         amount: amount,
         orderId: orderId,
@@ -46,7 +50,7 @@ export const buildPaymentRequest = (orderId, requestId, orderInfo, amount, redir
         ipnUrl: ipnUrl,
         lang: lang,
         requestType: requestType,
-        autoCapture: autoCapture,
+        autoCapture: process.env.MOMO_AUTO_CAPTURE,
         extraData: extraData,
         orderGroupId: orderGroupId,
         signature: signature,
@@ -54,7 +58,7 @@ export const buildPaymentRequest = (orderId, requestId, orderInfo, amount, redir
     return requestBody;
 };
 
-export const buildRefundRequest = (orderId, amount, description, requestId, transId, lang) => {
+const buildRefundRequest = (orderId, amount, description, requestId, transId, lang) => {
     var rawSignature =
         'accessKey=' +
         process.env.MOMO_ACCESS_KEY +
@@ -87,3 +91,7 @@ export const buildRefundRequest = (orderId, amount, description, requestId, tran
     });
     return requestBody;
 };
+
+const momoService = { buildPaymentRequest, buildRefundRequest };
+
+export default momoService;

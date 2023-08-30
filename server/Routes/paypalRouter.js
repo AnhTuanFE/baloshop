@@ -4,7 +4,7 @@ import axios from 'axios';
 // For a fully working example, please see:
 // https://github.com/paypal-examples/docs-examples/tree/main/standard-integration
 
-const { CLIENT_ID, APP_SECRET } = process.env;
+const { PAYPAL_CLIENT_ID, PAYPAL_APP_SECRET } = process.env;
 
 const paypalRouter = express.Router();
 
@@ -15,7 +15,7 @@ const baseURL = {
 
 // generate an access token using client id and app secret
 async function generateAccessToken() {
-    const auth = Buffer.from(CLIENT_ID + ':' + APP_SECRET).toString('base64');
+    const auth = Buffer.from(PAYPAL_CLIENT_ID + ':' + PAYPAL_APP_SECRET).toString('base64');
     const response = await fetch(`${baseURL.sandbox}/v1/oauth2/token`, {
         method: 'POST',
         body: 'grant_type=client_credentials',

@@ -1,6 +1,6 @@
 import cloudinary from 'cloudinary';
 
-const connectCloudinary = async () => {
+const cloudinaryConfig = async () => {
     try {
         const connect = await cloudinary.config({
             cloud_name: process.env.CLOUDINARY_HOST, //ENTER YOUR CLOUDINARY NAME
@@ -12,4 +12,4 @@ const connectCloudinary = async () => {
         console.error(`Error: ${error.message}`);
     }
 };
-export default connectCloudinary;
+export default cloudinaryConfig;

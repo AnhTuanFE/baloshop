@@ -1,17 +1,19 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import { errorHandler, notFound } from './middleware/Errors.js';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
-import connectDatabase from './config/MongoDb.js';
-import connectCloudinary from './config/CloudinaryConfig.js';
-import { errorHandler, notFound } from './middleware/Errors.js';
+import connectDatabase from './config/mongoDb.js';
+import cloudinaryConfig from './config/cloudinaryConfig.js';
+import paypalConfig from './config/paypalConfig.js';
 import cors from 'cors';
 import routes from './routes/index.js';
 dotenv.config();
-// import { Server } from 'http'; //deploy thì comment
 
 connectDatabase();
-connectCloudinary();
+cloudinaryConfig();
+paypalConfig();
+
 const app = express();
 app.use(express.json()); // gửi data dưới dạng javascrip thì nó sẽ xử lý
 app.use(morgan('dev'));

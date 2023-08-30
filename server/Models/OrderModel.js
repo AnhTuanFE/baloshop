@@ -1,16 +1,74 @@
 import mongoose from 'mongoose';
-import { PAYMENT_METHOD } from '../config/PaymentConfig.js';
+import { PAYMENT_METHODS } from '../config/paymentMethodConfig.js';
+import { PLACED, ORDER_STATUS } from '../config/orderStatusConfig.js';
 
-const productReviewSchema = mongoose.Schema(
+// const productReviewSchema = mongoose.Schema(
+//     {
+//         userName: { type: String, required: true },
+//         rating: { type: Number, required: true },
+//         comment: { type: String, required: true },
+//     },
+//     {
+//         timestamps: true,
+//     },
+// );
+const orderStatus = mongoose.Schema(
     {
-        userName: { type: String, required: true },
-        rating: { type: Number, required: true },
-        comment: { type: String, required: true },
+        status: {
+            type: String,
+            required: true,
+            enum: ORDER_STATUS,
+            default: PLACED,
+        },
+        description: {
+            type: String,
+            default: '',
+        },
+        updateBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            // required: true,
+            ref: 'User',
+        },
     },
     {
         timestamps: true,
     },
 );
+const orderItem = mongoose.Schema({
+    product: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Product',
+    },
+    sku: { type: Number },
+    name: {
+        type: String,
+        required: true,
+    },
+    color: { type: String, required: true },
+    image: {
+        type: String,
+        required: true,
+    },
+    quantity: {
+        type: Number,
+        required: true,
+    },
+    weight: {
+        type: Number,
+        required: true,
+        default: 0,
+    },
+    price: {
+        type: Number,
+        required: true,
+    },
+    isAbleToReview: {
+        type: Boolean,
+        required: true,
+        default: false,
+    },
+});
 
 const orderSchema = mongoose.Schema(
     {
@@ -19,34 +77,14 @@ const orderSchema = mongoose.Schema(
             required: true,
             ref: 'User',
         },
-        // id_predefined: { type: String, required: false },
-        orderItems: [
-            {
-                name: { type: String, required: true },
-                color: { type: String, required: true },
-                qty: { type: Number, required: true },
-                weight: { type: Number, required: true, default: 0 },
-                image: { type: String, required: true },
-                price: { type: Number, required: true },
-                id_product: {
-                    type: Number,
-                    // required: true,
-                },
-                productReview: [productReviewSchema],
-                product: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    required: true,
-                    ref: 'Product',
-                },
-            },
-        ],
+        orderItems: [orderItem],
         label_id_GiaoHangTK: {
             type: String,
             required: false,
         },
         shippingAddress: {
             city: { type: String, required: true },
-            distric: { type: String, required: true },
+            district: { type: String, required: true },
             ward: { type: String, required: true },
             address: { type: String, required: true },
             postalCode: { type: String, required: false },
@@ -54,20 +92,20 @@ const orderSchema = mongoose.Schema(
         paymentMethod: {
             type: String,
             required: true,
-            enum: PAYMENT_METHOD,
-            default: PAYMENT_METHOD[1],
+            enum: PAYMENT_METHODS,
+            default: PAYMENT_METHODS[1],
         },
-        paypalOrder: {
-            orderID: { type: String, required: false },
-            payerID: { type: String, required: false },
-            cost: { type: Number, required: false },
-        },
-        paymentResult: {
-            id: { type: String },
-            status: { type: String },
-            update_time: { type: String },
-            email_address: { type: String },
-        },
+        // paypalOrder: {
+        //     orderID: { type: String, required: false },
+        //     payerID: { type: String, required: false },
+        //     cost: { type: Number, required: false },
+        // },
+        // paymentResult: {
+        //     id: { type: String },
+        //     status: { type: String },
+        //     update_time: { type: String },
+        //     email_address: { type: String },
+        // },
         shippingPrice: {
             type: Number,
             required: true,
@@ -83,50 +121,50 @@ const orderSchema = mongoose.Schema(
             required: true,
             default: 0.0,
         },
-        waitConfirmation: {
-            type: Boolean,
-            required: true,
-            default: false,
-        },
-        waitConfirmationAt: {
-            type: Date,
-        },
-        isPaid: {
-            type: Boolean,
-            required: true,
-            default: false,
-        },
-        paidAt: {
-            type: Date,
-        },
-        completeUser: {
-            type: Boolean,
-            required: true,
-            default: false,
-        },
-        completeUserAt: {
-            type: Date,
-        },
-        completeAdmin: {
-            type: Boolean,
-            required: true,
-            default: false,
-        },
-        completeAdminAt: {
-            type: Date,
-        },
-        cancel: {
-            type: Number,
-            default: 0,
-        },
-        isDelivered: {
-            type: Boolean,
-            required: true,
-            default: false,
-        },
-        deliveredAt: {
-            type: Date,
-        },
+        // waitConfirmation: {
+        //     type: Boolean,
+        //     required: true,
+        //     default: false,
+        // },
+        // waitConfirmationAt: {
+        //     type: Date,
+        // },
+        // isPaid: {
+        //     type: Boolean,
+        //     required: true,
+        //     default: false,
+        // },
+        // paidAt: {
+        //     type: Date,
+        // },
+        // completeUser: {
+        //     type: Boolean,
+        //     required: true,
+        //     default: false,
+        // },
+        // completeUserAt: {
+        //     type: Date,
+        // },
+        // completeAdmin: {
+        //     type: Boolean,
+        //     required: true,
+        //     default: false,
+        // },
+        // completeAdminAt: {
+        //     type: Date,
+        // },
+        // cancel: {
+        //     type: Number,
+        //     default: 0,
+        // },
+        // isDelivered: {
+        //     type: Boolean,
+        //     required: true,
+        //     default: false,
+        // },
+        // deliveredAt: {
+        //     type: Date,
+        // },
         phone: {
             type: String,
             require: true,
@@ -143,6 +181,13 @@ const orderSchema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Payment',
         },
+        status: {
+            type: String,
+            required: true,
+            enum: ORDER_STATUS,
+            default: PLACED,
+        },
+        statusHistory: [orderStatus],
     },
     {
         timestamps: true,
