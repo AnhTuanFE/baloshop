@@ -47,7 +47,7 @@ export default function SliderProducts({ products, labelSlider }) {
         ],
     };
     return (
-        <div className="mx-auto my-auto mt-3 max-w-screen-2xl pt-3">
+        <div className="mx-auto my-auto max-w-screen-2xl pt-3 max-md:mt-1 md:mt-3">
             <h2 className="pb-3 text-center">
                 <Divider>
                     <Chip
@@ -77,8 +77,8 @@ export default function SliderProducts({ products, labelSlider }) {
                                         <div className="flex justify-center  text-center">
                                             <div>
                                                 <p className="">
-                                                    {product.name.length > 20
-                                                        ? `${product.name.substring(0, 20)}...`
+                                                    {product.name.length > 16
+                                                        ? `${product.name.substring(0, 16)}...`
                                                         : `${product.name}`}
                                                 </p>
                                                 <p className="text-base font-semibold">

@@ -13,6 +13,20 @@ module.exports = {
             flex: {
                 'custom-flex-1/3': '33.33333333%',
             },
+            screens: {
+                mobile: '375px',
+                tablet: '768px',
+                // max
+                destop: '1200px',
+                //min
+
+                use400: '400px',
+                use600: '600px',
+                use700: '700px',
+                use800: '800px',
+                use900: '900px',
+                use1000: '1000px',
+            },
         },
     },
     plugins: [require('flowbite/plugin'), require('daisyui')],

@@ -2,9 +2,10 @@ import CustomizedSteppersMoney from './StateOrderMoney/CustomizedSteppersMoney';
 import CustomizedSteppersPaypal from './StateOrderPaypal/CustomizedSteppersPaypal';
 import CustomizedSteppersMomo from './StateOrderMomo/CustomizedSteppersMomo';
 export default function Steppers({ order }) {
-    if (order?.paymentMethod == '"Thanh toán qua momo"') {
+    console.log('order = ', order);
+    if (order?.paymentMethod == 'payment-with-momo') {
         return <CustomizedSteppersMomo order={order} />;
-    } else if (order?.paymentMethod == '"Thanh toán qua paypal"') {
+    } else if (order?.paymentMethod == 'payment-with-paypal') {
         return <CustomizedSteppersPaypal order={order} />;
     } else {
         return (

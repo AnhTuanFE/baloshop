@@ -94,7 +94,7 @@ const Pagination = (props) => {
     // };
     return (
         pages > 1 && (
-            <div className="mb-8 mt-12 flex justify-center">
+            <div className="flex justify-center max-md:mb-5 max-md:mt-2 md:mb-8 md:mt-10">
                 <div>
                     <PaginationAntd
                         // className="![&>.ant-pagination-item]:hover:bg-white"

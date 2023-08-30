@@ -30,7 +30,7 @@ function Payment() {
     };
     return (
         <>
-            <div className={clsx(styles.wrapper)}>
+            <div className="flex justify-center">
                 <form className={clsx(styles.form)} onSubmit={submitHandler}>
                     <FormControl>
                         <FormLabel id="demo-radio-buttons-group-label" className="text-center text-black ">
@@ -50,7 +50,7 @@ function Payment() {
                                 }}
                             />
                             <FormControlLabel
-                                value="Thanh toán qua paypal"
+                                value="payment-with-paypal"
                                 control={<Radio />}
                                 label="Thanh toán qua paypal"
                                 onChange={(e) => {
@@ -58,7 +58,7 @@ function Payment() {
                                 }}
                             />
                             <FormControlLabel
-                                value="Thanh toán qua momo"
+                                value="payment-with-momo"
                                 control={<Radio />}
                                 label="Thanh toán qua momo"
                                 onChange={(e) => {

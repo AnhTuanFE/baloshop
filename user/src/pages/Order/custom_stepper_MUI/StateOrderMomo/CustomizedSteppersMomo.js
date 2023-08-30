@@ -98,6 +98,9 @@ export default function CustomizedSteppersMomo({ order }) {
                 // if (order.completeAdmin || order.completeUser) {
                 //     setActiStep(3);
                 // }
+                else {
+                    setActiStep(1);
+                }
             }
         } else {
             return <div>không có đơn hàng nào</div>;
@@ -106,14 +109,18 @@ export default function CustomizedSteppersMomo({ order }) {
 
     return (
         <div className="bg-white">
-            <div className="mr-10 flex justify-end py-2">
-                <p className="mr-10 text-xl font-semibold text-red-600">Đơn hàng chưa thanh toán</p>
-                <div>
-                    <button className="w-full rounded bg-[var(--main-color)] px-2 py-1 font-medium text-white hover:bg-[var(--main-color-hover)]">
-                        Thanh toán ngay
-                    </button>
+            {order?.isPaid == false ? (
+                ' '
+            ) : (
+                <div className="mr-10 flex justify-end py-2">
+                    <p className="mr-10 text-xl font-semibold text-red-600">Đơn hàng chưa thanh toán</p>
+                    <div>
+                        <button className="w-full rounded bg-[var(--main-color)] px-2 py-1 font-medium text-white hover:bg-[var(--main-color-hover)]">
+                            Thanh toán ngay
+                        </button>
+                    </div>
                 </div>
-            </div>
+            )}
             <Stack
                 sx={{ width: '100%', marginBottom: '16px', bgcolor: '#ffff', padding: '12px 0px', borderRadius: '4px' }}
                 spacing={4}
@@ -121,37 +128,8 @@ export default function CustomizedSteppersMomo({ order }) {
                 <Box sx={{ width: '100%' }}>
                     {order.cancel == 0 ? (
                         <Stepper alternativeLabel activeStep={actiStep} connector={<ColorlibConnector />}>
-                            {order.waitConfirmation ? (
+                            {!order.isPaid ? (
                                 <Step key={1}>
-                                    <div className="">
-                                        <StepLabel
-                                            StepIconComponent={(props) => (
-                                                <ColorlibStepIcon {...props} iconNumber={1} />
-                                            )}
-                                        >
-                                            Đã xác nhận thanh toán
-                                        </StepLabel>
-                                        <span className=" mt-2 flex justify-center text-sm font-semibold text-[red]">
-                                            {moment(order?.waitConfirmationAt).hours()}
-                                            {':'}
-                                            {moment(order?.waitConfirmationAt).minutes() < 10
-                                                ? `0${moment(order?.waitConfirmationAt).minutes()}`
-                                                : moment(order?.waitConfirmationAt).minutes()}{' '}
-                                            {moment(order?.waitConfirmationAt).format('DD/MM/YYYY')}{' '}
-                                        </span>
-                                    </div>
-                                </Step>
-                            ) : (
-                                <Step key={1}>
-                                    <StepLabel
-                                        StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={1} />}
-                                    >
-                                        <p className="text-red-600">Chưa thanh toán</p>
-                                    </StepLabel>
-                                </Step>
-                            )}
-                            {order.isPaid ? (
-                                <Step key={2}>
                                     <div>
                                         <StepLabel
                                             StepIconComponent={(props) => (
@@ -171,10 +149,41 @@ export default function CustomizedSteppersMomo({ order }) {
                                     </div>
                                 </Step>
                             ) : (
-                                <Step key={2}>
+                                <Step key={1}>
                                     <StepLabel icon={<LocalAtmSharpIcon fontSize="large" />}>thanh toán</StepLabel>
                                 </Step>
                             )}
+
+                            {order.waitConfirmation ? (
+                                <Step key={2}>
+                                    <div className="">
+                                        <StepLabel
+                                            StepIconComponent={(props) => (
+                                                <ColorlibStepIcon {...props} iconNumber={1} />
+                                            )}
+                                        >
+                                            Đã xác nhận
+                                        </StepLabel>
+                                        <span className=" mt-2 flex justify-center text-sm font-semibold text-[red]">
+                                            {moment(order?.waitConfirmationAt).hours()}
+                                            {':'}
+                                            {moment(order?.waitConfirmationAt).minutes() < 10
+                                                ? `0${moment(order?.waitConfirmationAt).minutes()}`
+                                                : moment(order?.waitConfirmationAt).minutes()}{' '}
+                                            {moment(order?.waitConfirmationAt).format('DD/MM/YYYY')}{' '}
+                                        </span>
+                                    </div>
+                                </Step>
+                            ) : (
+                                <Step key={2}>
+                                    <StepLabel
+                                        StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={1} />}
+                                    >
+                                        <p className="text-red-600">Chờ xác nhận</p>
+                                    </StepLabel>
+                                </Step>
+                            )}
+
                             {order.isDelivered ? (
                                 <Step key={3}>
                                     <div>

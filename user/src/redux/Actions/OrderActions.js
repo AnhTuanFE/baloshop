@@ -43,7 +43,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
 
         const { data } = await axios.post(`/api/orders`, order, config);
         dispatch({ type: types.ORDER_CREATE_SUCCESS, payload: data });
-        dispatch({ type: CART_CLEAR_ITEMS, payload: data });
+        // dispatch({ type: CART_CLEAR_ITEMS, payload: data });
 
         localStorage.removeItem('cartItems');
     } catch (error) {
@@ -369,7 +369,6 @@ export const paypalConfirmPaidOrderAction = (orderID) => async (dispatch, getSta
         });
     }
 };
-
 // ===============
 
 export const getLabelOrderGHTKAction = (id_Ghtk) => async (dispatch, getState) => {

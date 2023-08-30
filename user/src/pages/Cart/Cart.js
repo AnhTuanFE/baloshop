@@ -79,8 +79,9 @@ function Cart() {
             <>
                 {findCart?.countInStock !== 0 ? (
                     findCart?.countInStock >= item?.qty ? (
-                        <div className="col-md-1 col-2 flex items-center justify-center">
+                        <div className="col-lg-1 flex">
                             <Checkbox
+                                className=" m-auto [&_.p-highlight]:!border-[var(--blue-color)] [&_.p-highlight]:!bg-[var(--blue-color)]"
                                 checked={item?.isBuy}
                                 onChange={() => {
                                     dispatch(
@@ -99,7 +100,7 @@ function Cart() {
                             />
                         </div>
                     ) : (
-                        <div className="col-md-1 col-2 flex items-center justify-center">
+                        <div className="col-lg-1 flex items-center justify-center">
                             <span className="text-sm font-semibold text-red-600">
                                 Số lượng Sản phẩm không đủ đáp ứng
                             </span>
@@ -147,17 +148,17 @@ function Cart() {
         handleConfigQuantity(item);
         return (
             <>
-                <div className="cart-qty col-md-2 col-sm-5 mt-md-0 d-flex flex-column justify-content-center quantity-css mt-3">
+                <div className="col-lg-3 mt-3 flex flex-col justify-center">
                     <h6 className="mb-2 text-sm font-semibold uppercase text-[#2c2c2c]">Phân loại hàng</h6>
                     <h5>{item?.color}</h5>
                 </div>
-                <div className="col-md-2 col-sm-5 mt-md-0 d-flex flex-column justify-content-center quantity-css mt-3">
-                    <h6>Số lượng</h6>
+                <div className="col-lg-2 mt-3 flex flex-col justify-center">
+                    <h6 className="mb-2 text-sm font-semibold uppercase text-[#2c2c2c]">Số lượng</h6>
                     <Select
                         defaultValue={item?.qty}
                         disabled={findCart?.countInStock <= 0}
                         style={{
-                            width: 120,
+                            width: 80,
                         }}
                         onChange={(value) => {
                             dispatch(
@@ -205,64 +206,65 @@ function Cart() {
                         <div className="pt-3">
                             <Link
                                 to="/"
-                                className="col-md-6 rounded-xl bg-[var(--main-color)] px-3 py-2 font-bold text-white"
+                                className="rounded bg-[var(--main-color)] px-3 py-2 font-normal text-white hover:bg-[var(--main-color-hover)]"
                             >
                                 <i className="fas fa-undo pr-2"></i>
                                 Về trang chủ
                             </Link>
                         </div>
-                        <div className=" alert alert-info mt-3 text-center">
-                            Tổng sản phẩm trong giỏ
-                            <p className="text-lg text-green-800">({cartItems?.length ?? 0})</p>
+                        <div className=" row col-lg-12 mt-3 rounded bg-[var(--blue-color)] py-3 text-center">
+                            <div className="">
+                                Tổng sản phẩm trong giỏ{' '}
+                                <span className="text-lg font-semibold text-gray-200">({cartItems?.length ?? 0})</span>
+                            </div>
                         </div>
                         {/* cartiterm */}
-                        <div className="cart-scroll">
-                            {cartItems?.map((item) => (
-                                <div key={item?._id} className="row relative my-4 bg-white">
-                                    {findCartCountInStock(item)}
-                                    <div className=" col-md-1 col-4 mt-0">
-                                        <img
-                                            className="h-[100px] w-full object-contain"
-                                            src={`${item.product?.image[0]?.urlImage}`}
-                                            alt={item.product?.name}
-                                        />
-                                    </div>
-                                    <div className="cart-text col-md-3 col-6 d-flex align-items-center">
-                                        <Link to={`/product/${item.product?._id}`}>
-                                            <h4 className="font-bold">{item.product?.name}</h4>
-                                        </Link>
-                                    </div>
-                                    {findCartColor(item)}
-                                    <div className="mt-md-0 col-md-2 align-items-sm-end align-items-start d-flex flex-column justify-content-center col-sm-7 quantity-css mb-2  mt-3 text-sm font-semibold uppercase text-[#2c2c2c]">
-                                        <h6 className="h-8 text-center font-bold leading-8 ">Giá</h6>
-                                        <h4>{item.product?.price?.toLocaleString('de-DE')}đ</h4>
-                                    </div>
-                                    <div className=" col-md-1 mb-0 flex">
-                                        <button
-                                            className="m-auto cursor-pointer rounded-xl bg-orange-500 px-3 py-1 align-middle text-white hover:bg-red-500"
-                                            onClick={() => {
-                                                removeFromCartHandle(item?._id);
-                                            }}
-                                        >
-                                            Xóa
-                                        </button>
-                                    </div>
+                        {/* cart-scroll */}
+                        {cartItems?.map((item) => (
+                            <div key={item?._id} className="row col-lg-12 my-4 bg-white">
+                                {findCartCountInStock(item)}
+                                <div className=" col-lg-1 col-4 mt-0">
+                                    <img
+                                        className="h-[100px] object-contain"
+                                        src={`${item.product?.image[0]?.urlImage}`}
+                                        alt={item.product?.name}
+                                    />
                                 </div>
-                            ))}
-                        </div>
+                                <div className="col-lg-2 flex items-center">
+                                    <Link to={`/product/${item.product?._id}`}>
+                                        <h4 className="font-bold">{item.product?.name}</h4>
+                                    </Link>
+                                </div>
+                                {findCartColor(item)}
+                                <div className="col-lg-2 mb-2 mt-3 flex flex-col items-start justify-center text-sm text-[#2c2c2c]">
+                                    <h6 className="h-8 text-center font-bold uppercase leading-8 ">Giá</h6>
+                                    <h4>{item.product?.price?.toLocaleString('de-DE')}đ</h4>
+                                </div>
+                                <div className="col-lg-1 mb-2 flex">
+                                    <button
+                                        className="m-auto cursor-pointer rounded-xl bg-[var(--main-color)] px-4 py-1 align-middle text-white hover:bg-[var(--main-color-hover)]"
+                                        onClick={() => {
+                                            removeFromCartHandle(item?._id);
+                                        }}
+                                    >
+                                        Xóa
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
 
                         {/* End of cart iterms */}
-                        <div className="mt-3 flex flex-wrap items-center justify-center bg-white px-2 py-3">
-                            <div className="flex px-7">
+                        <div className="row col-lg-12 mt-3 flex flex-wrap items-center justify-center bg-white py-3">
+                            <div className="col-lg-5 flex justify-center">
                                 <span className="mr-5 pt-1 text-xl text-[#8c8c8c] ">Tổng tiền:</span>
                                 <span className="text-2xl font-bold text-red-500">
                                     {Number(total)?.toLocaleString('de-DE')}đ
                                 </span>
                             </div>
                             {total > 0 && (
-                                <div className="">
+                                <div className="col-lg-7 flex justify-center">
                                     <button
-                                        className="mr-2 w-full rounded-2xl bg-[var(--main-color)] px-10 py-2 text-sm font-semibold uppercase text-white hover:opacity-[0.8]"
+                                        className=" rounded bg-[var(--main-color)] px-10 py-[10px] text-sm font-semibold uppercase text-white hover:bg-[var(--main-color-hover)]"
                                         onClick={checkOutHandler}
                                     >
                                         Tiến hành thanh toán

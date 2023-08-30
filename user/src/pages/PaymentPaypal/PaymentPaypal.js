@@ -1,10 +1,9 @@
 import { useEffect, useState, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate, redirect, Navigate } from 'react-router-dom';
+import { Link, useNavigate, useParams, Navigate } from 'react-router-dom';
 import { message, Select } from 'antd';
 import { listCart } from '~/redux/Actions/cartActions';
-import { createOrder } from '~/redux/Actions/OrderActions';
-import { ORDER_CREATE_RESET } from '~/redux/Constants/OrderConstants';
+import { ORDER_CREATE_RESET, ORDER_PAY_RESET } from '~/redux/Constants/OrderConstants';
 
 import ModalDaiSyUI from '~/components/Modal/ModalDaiSyUI';
 import Message from '~/components/LoadingError/Error';
@@ -12,11 +11,20 @@ import Loading from '~/components/LoadingError/Loading';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import { ordersRemainingSelector } from '~/redux/Selector/ordersSelector';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPhone, faMailBulk } from '@fortawesome/free-solid-svg-icons';
+import { faPhone, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import {
+    cancelOrder,
+    getOrderDetails,
+    createOrderReview,
+    completeOrder,
+    returnAmountProduct,
+} from '~/redux/Actions/OrderActions';
 
-function Test() {
+function PaymentPaypal() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const params = useParams();
+    const orderId = params.id;
 
     const [messageApi, contextHolder] = message.useMessage();
     const successPlaceholder = () => {
@@ -31,27 +39,26 @@ function Test() {
             content: content,
         });
     };
-    const cart = useSelector((state) => state.cart);
-    const { cartItems } = cart;
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
-    const orderCreate = useSelector((state) => state.orderCreate);
-    const { order, success, error, loading } = orderCreate;
-    // console.log('order.newOrder    = ', order?.newOrder?.payment?.payUrl);
-    //========================= handle thanh toán paypal =========================
+    const orderDetails = useSelector((state) => state.orderDetails);
+    const { order, loading, error } = orderDetails;
+
     // chuyển tiền việt thành tiền dollar
     const handleExchangeCurrency = (vnd) => {
         const usd = (vnd / 23000).toFixed(1);
         return usd;
     };
+    let moneyNeedPaid = Number(handleExchangeCurrency(order?.totalPrice));
+    // let moneyNeedPaid = Number(handleExchangeCurrency(156000));
     const createOrderPaypal = (data, actions) => {
         return actions.order.create({
             purchase_units: [
                 {
                     amount: {
                         currency_code: 'USD',
-                        // value: `${moneyNeedPaid}`,
-                        value: 100,
+                        value: `${moneyNeedPaid}`,
+                        // value: 100,
                     },
                 },
             ],
@@ -101,20 +108,19 @@ function Test() {
         errorPlaceholder('Bạn đã hủy thanh toán, vui lòng hoàn tất thanh toán trong 24h');
     };
     const ID_CLENT = 'Af5R_f2_MvnxLxpFeDO56MRvo6PGOIfXR3c0P9z8wyRGek_Th6JPBU7ktH5kgPpHW0Bb5pw0aasuA2NR';
-
-    useLayoutEffect(() => {
-        if (cartItems.length === 0) {
-            dispatch(listCart());
+    useEffect(() => {
+        if (!order) {
+            dispatch(getOrderDetails(orderId));
+            return;
         }
-    }, []);
-
+    }, [orderId, order]);
     return (
         <>
             {contextHolder}
-            <div className=" bg-[var(--content-color)]">
+            <div className=" min-h-[100vh] bg-[var(--content-color)]">
                 <div className="bg-white px-20 py-2 shadow-custom-shadow">
                     <div className="flex">
-                        <img className="h-[50px]" src="./images/Paypal_icon_large.png" />
+                        <img className="h-[50px]" src="/images/Paypal_icon_large.png" />
                         <p className="pt-2.5 text-base">Cổng thanh toán Paypal</p>
                     </div>
                 </div>
@@ -130,10 +136,7 @@ function Test() {
                                                 <td>
                                                     <p className=" text-gray-400">Nhà cung cấp</p>
                                                     <strong className="flex pt-2">
-                                                        <img
-                                                            className="h-[30px]"
-                                                            src="./images/Paypal_icon_small.png"
-                                                        />
+                                                        <img className="h-[30px]" src="/images/Paypal_icon_small.png" />
                                                         <p>Paypal Payment</p>
                                                     </strong>
                                                 </td>
@@ -142,7 +145,7 @@ function Test() {
                                                 <td>
                                                     <p className=" text-gray-400">Mã đơn hàng</p>
                                                     <strong className="flex pt-2">
-                                                        <p>64ec2e1c3775d938b27d0571</p>
+                                                        <p>{order?._id}</p>
                                                     </strong>
                                                 </td>
                                             </tr>
@@ -158,7 +161,7 @@ function Test() {
                                                 <td>
                                                     <p className=" text-gray-400">Số tiền</p>
                                                     <strong className="flex pt-2">
-                                                        <p>510.000đ</p>
+                                                        <p>{moneyNeedPaid} USD</p>
                                                     </strong>
                                                 </td>
                                             </tr>
@@ -179,7 +182,7 @@ function Test() {
                                     </p>
                                 </div>
                                 <div className="py-2 text-center">
-                                    <Link to={'/placeorder'}>
+                                    <Link to={'/'}>
                                         <p className=" cursor-pointer text-xl font-semibold text-[var(--main-color)] hover:text-[var(--main-color-hover)]">
                                             Quay về
                                         </p>
@@ -223,11 +226,11 @@ function Test() {
                             <FontAwesomeIcon className="pr-2 text-white" icon={faPhone} />
                             <span className="text-white">
                                 <span>19001111</span>
-                                <p className="pl-2">(1000đ/phút)</p>
+                                <span className="pl-2">(1000đ/phút)</span>
                             </span>
                         </div>
                         <div className="pt-1">
-                            <FontAwesomeIcon className="pr-2 text-white" icon={faMailBulk} />
+                            <FontAwesomeIcon className="pr-2 text-white" icon={faEnvelope} />
                             <span className="text-white">hotro@paypal.vn</span>
                         </div>
                     </div>
@@ -237,4 +240,4 @@ function Test() {
     );
 }
 
-export default Test;
+export default PaymentPaypal;

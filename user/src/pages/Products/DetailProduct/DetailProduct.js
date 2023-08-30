@@ -181,12 +181,7 @@ function DetailProduct() {
                                                                 setOptionIndex(index);
                                                                 setColor(option.color);
                                                             }}
-                                                            className={
-                                                                optionIndex === index
-                                                                    ? 'btn-outline-primary active btn mx-1'
-                                                                    : 'btn-outline-primary btn mx-1'
-                                                            }
-                                                            style={{ marginTop: '8px' }}
+                                                            className="mt-2 rounded bg-[var(--blue-color)] px-3 py-1 text-white"
                                                         >
                                                             {option.color}
                                                         </button>
@@ -199,7 +194,7 @@ function DetailProduct() {
                                                     <div className=" d-flex justify-content-between align-items-center px-6 py-2">
                                                         <h6 className="text-base font-semibold">Số lượng</h6>
                                                         <select
-                                                            className="h-10 w-[100px] cursor-pointer rounded bg-[#f3f3f3] text-center"
+                                                            className="h-10 w-[100px] cursor-pointer rounded bg-white text-center"
                                                             value={qty}
                                                             onChange={(e) => setQty(e.target.value)}
                                                         >

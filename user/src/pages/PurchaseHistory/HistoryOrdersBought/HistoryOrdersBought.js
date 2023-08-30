@@ -5,7 +5,6 @@ import Loading from '~/components/LoadingError/Loading';
 
 const HistoryOrdersBought = (props) => {
     const { loading, error, orders } = props;
-
     const checkPay = (order) => {
         const itemProducts = order.orderItems;
         let productReview = itemProducts?.some((item) => item.productReview.length === 0);
@@ -14,7 +13,7 @@ const HistoryOrdersBought = (props) => {
 
     return (
         <div>
-            <div className=" d-flex flex-column">
+            <div className="flex flex-col">
                 {loading ? (
                     <Loading />
                 ) : error ? (
@@ -40,23 +39,28 @@ const HistoryOrdersBought = (props) => {
                                 <table className="table">
                                     <thead>
                                         <tr>
+                                            <th className="fw-normal fs-6">STT</th>
                                             <th className="fw-normal fs-6">ID</th>
                                             <th className="fw-normal fs-6">Trạng thái</th>
                                             <th className="fw-normal fs-6">Thời gian mua</th>
                                             <th className="fw-normal fs-6">Tổng tiền</th>
+                                            <th className="fw-normal fs-6">Thanh toán</th>
                                             <th className="fw-normal fs-6">Đánh giá</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {orders.map((order) => (
+                                        {orders.map((order, index) => (
                                             <tr
                                                 className={`${order.isPaid ? 'alert-success' : 'alert-color-white'}`}
                                                 key={order._id}
                                             >
                                                 <td>
-                                                    <a href={`/order/${order._id}`} className="link">
+                                                    <p>{index + 1}</p>
+                                                </td>
+                                                <td>
+                                                    <Link to={`/order/${order._id}`} className="text-[#1976d2]">
                                                         {order._id}
-                                                    </a>
+                                                    </Link>
                                                 </td>
                                                 <td>
                                                     {order?.cancel !== 1 ? (
@@ -65,50 +69,35 @@ const HistoryOrdersBought = (props) => {
                                                         order?.isPaid &&
                                                         order?.completeUser &&
                                                         order?.completeAdmin ? (
-                                                            <span
-                                                                className="fs-6 text-success"
-                                                                style={{ fontWeight: '600' }}
-                                                            >
+                                                            <span className="fs-6 font-semibold text-success">
                                                                 Hoàn tất
                                                             </span>
                                                         ) : order?.waitConfirmation &&
                                                           order?.isDelivered &&
                                                           order?.isPaid ? (
-                                                            <span
-                                                                className="fs-6 text-success"
-                                                                style={{ fontWeight: '600' }}
-                                                            >
+                                                            <span className="fs-6 font-semibold text-success">
                                                                 Đã thanh toán
                                                             </span>
                                                         ) : order?.waitConfirmation && order?.isDelivered ? (
-                                                            <span
-                                                                className="fs-6 text-warning"
-                                                                style={{ fontWeight: '600' }}
-                                                            >
+                                                            <span className="fs-6 font-semibold text-warning">
                                                                 Đang giao
                                                             </span>
                                                         ) : order?.waitConfirmation ? (
-                                                            <span
-                                                                className="fs-6 text-warning"
-                                                                style={{ fontWeight: '600' }}
-                                                            >
+                                                            <span className="fs-6 font-semibold text-warning">
                                                                 Đã xác nhận
                                                             </span>
                                                         ) : (
-                                                            <span
-                                                                className="fs-6 text-warning"
-                                                                style={{ fontWeight: '600' }}
-                                                            >
+                                                            <span className="fs-6 font-semibold text-warning">
                                                                 Chờ xác nhận
                                                             </span>
                                                         )
                                                     ) : (
-                                                        <span className="fs-6" style={{ fontWeight: '600' }}>
+                                                        <span className="fs-6 font-semibold text-red-600">
                                                             Đơn này đã bị hủy
                                                         </span>
                                                     )}
                                                 </td>
-                                                <td className="fs-6" style={{ fontWeight: '600' }}>
+                                                <td className="fs-6 ">
                                                     {moment(order.createdAt).hours()}
                                                     {':'}
                                                     {moment(order.createdAt).minutes() < 10
@@ -116,10 +105,11 @@ const HistoryOrdersBought = (props) => {
                                                         : moment(order.createdAt).minutes()}{' '}
                                                     {moment(order.createdAt).format('MM/DD/YYYY')}
                                                 </td>
-                                                <td>{order.totalPrice}đ</td>
-                                                <td className="fs-6" style={{ fontWeight: '600' }}>
-                                                    {checkPay(order)}
+                                                <td className="font-semibold">
+                                                    {order.totalPrice.toLocaleString('de-DE')}đ
                                                 </td>
+                                                <td className="">{order.paymentMethod}</td>
+                                                <td className="fs-6 font-semibold">{checkPay(order)}</td>
                                             </tr>
                                         ))}
                                     </tbody>
