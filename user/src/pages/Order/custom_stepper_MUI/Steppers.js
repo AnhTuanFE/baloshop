@@ -3,9 +3,9 @@ import CustomizedSteppersPaypal from './StateOrderPaypal/CustomizedSteppersPaypa
 import CustomizedSteppersMomo from './StateOrderMomo/CustomizedSteppersMomo';
 export default function Steppers({ order }) {
     console.log('order = ', order);
-    if (order?.paymentMethod == 'payment-with-momo') {
+    if (order?.paymentMethod == 'pay-with-momo') {
         return <CustomizedSteppersMomo order={order} />;
-    } else if (order?.paymentMethod == 'payment-with-paypal') {
+    } else if (order?.paymentMethod == 'pay-with-paypal') {
         return <CustomizedSteppersPaypal order={order} />;
     } else {
         return (

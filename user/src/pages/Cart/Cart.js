@@ -79,9 +79,9 @@ function Cart() {
             <>
                 {findCart?.countInStock !== 0 ? (
                     findCart?.countInStock >= item?.qty ? (
-                        <div className="col-lg-1 flex">
+                        <div className="flex h-full justify-center align-middle">
                             <Checkbox
-                                className=" m-auto [&_.p-highlight]:!border-[var(--blue-color)] [&_.p-highlight]:!bg-[var(--blue-color)]"
+                                className="m-auto [&_.p-highlight]:!border-[var(--blue-color)] [&_.p-highlight]:!bg-[var(--blue-color)]"
                                 checked={item?.isBuy}
                                 onChange={() => {
                                     dispatch(
@@ -100,14 +100,14 @@ function Cart() {
                             />
                         </div>
                     ) : (
-                        <div className="col-lg-1 flex items-center justify-center">
+                        <div className="flex h-full justify-center align-middle">
                             <span className="text-sm font-semibold text-red-600">
                                 Số lượng Sản phẩm không đủ đáp ứng
                             </span>
                         </div>
                     )
                 ) : (
-                    <div className="col-md-1 col-2 flex items-center justify-center">
+                    <div className="flex h-full justify-center align-middle">
                         <span className="text-sm font-semibold text-red-600">Hết hàng</span>
                     </div>
                 )}
@@ -218,12 +218,10 @@ function Cart() {
                                 <span className="text-lg font-semibold text-gray-200">({cartItems?.length ?? 0})</span>
                             </div>
                         </div>
-                        {/* cartiterm */}
-                        {/* cart-scroll */}
                         {cartItems?.map((item) => (
-                            <div key={item?._id} className="row col-lg-12 my-4 bg-white">
-                                {findCartCountInStock(item)}
-                                <div className=" col-lg-1 col-4 mt-0">
+                            <div key={item?._id} className="row col-lg-12 col-md-12 my-4 bg-white">
+                                <div className="col-lg-1">{findCartCountInStock(item)}</div>
+                                <div className=" col-lg-1 mt-0">
                                     <img
                                         className="h-[100px] object-contain"
                                         src={`${item.product?.image[0]?.urlImage}`}
@@ -236,13 +234,13 @@ function Cart() {
                                     </Link>
                                 </div>
                                 {findCartColor(item)}
-                                <div className="col-lg-2 mb-2 mt-3 flex flex-col items-start justify-center text-sm text-[#2c2c2c]">
-                                    <h6 className="h-8 text-center font-bold uppercase leading-8 ">Giá</h6>
-                                    <h4>{item.product?.price?.toLocaleString('de-DE')}đ</h4>
+                                <div className="col-lg-2 flex flex-col items-start justify-center text-sm text-[#2c2c2c]">
+                                    <h6 className="text-center font-bold uppercase">Giá</h6>
+                                    <h4 className="mt-1">{item.product?.price?.toLocaleString('de-DE')}đ</h4>
                                 </div>
-                                <div className="col-lg-1 mb-2 flex">
+                                <div className="col-lg-1  flex flex-col justify-center">
                                     <button
-                                        className="m-auto cursor-pointer rounded-xl bg-[var(--main-color)] px-4 py-1 align-middle text-white hover:bg-[var(--main-color-hover)]"
+                                        className=" cursor-pointer rounded-xl bg-[var(--main-color)] px-4 py-1 text-white hover:bg-[var(--main-color-hover)]"
                                         onClick={() => {
                                             removeFromCartHandle(item?._id);
                                         }}

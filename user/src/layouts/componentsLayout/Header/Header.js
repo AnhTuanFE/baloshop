@@ -136,6 +136,7 @@ function Header(props) {
         }
         console.log('e = ', e);
     };
+    console.log('userInfo?.image = ', userInfo?.image);
     const UILogined = () => {
         return (
             <Box
@@ -148,17 +149,13 @@ function Header(props) {
                     <Avatar
                         id="simple-select"
                         alt="Remy Sharp"
-                        src={`${
-                            userInfo?.image?.urlImageCloudinary === undefined
-                                ? imageDefaul
-                                : userInfo?.image?.urlImageCloudinary
-                        }`}
+                        src={`${userInfo?.image === undefined ? imageDefaul : userInfo?.image}`}
                         className=" mr-1 h-[48px] w-[48px] md:mt-2"
                     />
                 </Link>
                 <Box className="z-[2] mt-3">
                     <Select
-                        className="hidden w-[120px] sm:block"
+                        className="hidden w-[120px] sm:block [&_.anticon-down]:pt-2"
                         value={notiUser()}
                         onChange={handleChangeAntd}
                         options={[

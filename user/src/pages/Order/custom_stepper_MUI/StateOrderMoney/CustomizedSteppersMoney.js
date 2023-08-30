@@ -31,6 +31,21 @@ const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
     },
 }));
 
+/*
+'placed';
+'confirm';
+'delivering';
+ 'delivered';
+'cancelled';
+'completed';
+
+'pay-with-cash';
+'pay-with-momo';
+'pay-with-atm';
+'pay-with-credit-card';
+'pay-with-paypal';
+*/
+
 const ColorlibStepIconRoot = styled('div')(({ theme, ownerState }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#ccc',
     zIndex: 1,

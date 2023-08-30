@@ -29,11 +29,9 @@ import InfoPayer from './InfoPayer';
 import ViewOrderInformation from './ViewOrderInformation';
 import { Modal } from 'antd';
 import ModalDaiSyUI from '~/components/Modal/ModalDaiSyUI';
-// ==== rating
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
-// import './Order.css';
 
 const labels = {
     1: 'Không hài lòng',
@@ -126,7 +124,7 @@ function Order() {
             return (Math.round(num * 100) / 100).toFixed(0);
         };
 
-        order.itemsPrice = addDecimals(order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0));
+        order.itemsPrice = addDecimals(order.orderItems.reduce((acc, item) => acc + item.price * item.quantity, 0));
     }
     useEffect(() => {
         // if (!order || successPay) {
@@ -167,7 +165,7 @@ function Order() {
                     Body="Bạn xác nhận hủy đơn hàng này?"
                     HandleSubmit={cancelOrderHandler}
                 />
-                <div className="mx-32 pb-10">
+                <div className="mx-10 pb-10">
                     {contextHolder}
 
                     {loadingCancel && <Loading />}
@@ -207,11 +205,13 @@ function Order() {
                                                     </div>
                                                     <div className="m-auto text-center">
                                                         <h4 className="text-base font-semibold">Số lượng</h4>
-                                                        <h6>{item.qty}</h6>
+                                                        <h6>{item.quantity}</h6>
                                                     </div>
                                                     <div className="m-auto text-center">
                                                         <h4 className="text-base font-semibold">Tổng tiền</h4>
-                                                        <h6>{(item.qty * item.price)?.toLocaleString('de-DE')}đ</h6>
+                                                        <h6>
+                                                            {(item.quantity * item.price)?.toLocaleString('de-DE')}đ
+                                                        </h6>
                                                     </div>
                                                     {order?.isPaid &&
                                                         order.orderItems[index].productReview.length === 0 && (
@@ -280,7 +280,7 @@ function Order() {
                                         </Modal>
                                     </div>
                                     <div className="mx-2  cursor-pointer rounded-md">
-                                        {order?.paymentMethod == 'payment-with-momo' && order?.isPaid ? (
+                                        {order?.paymentMethod == 'pay-with-momo' && order?.isPaid ? (
                                             <div>
                                                 <button className="w-full rounded bg-[var(--main-color)] px-2 py-2 font-bold text-white hover:bg-[var(--main-color-hover)]">
                                                     Thanh toán ngay

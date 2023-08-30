@@ -18,7 +18,7 @@ import { calculate_fee_ship_action } from '~/redux/Actions/OrderActions';
 import LoadingLarge from '~/components/LoadingError/LoadingLarge';
 
 function PlaceOrder() {
-    const [paymentMethodState, setPaymentMethodState] = useState('payment-with-momo');
+    const [paymentMethodState, setPaymentMethodState] = useState('pay-with-momo');
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -56,7 +56,7 @@ function PlaceOrder() {
             arr.push({
                 name: pro.product.name,
                 color: pro.color,
-                qty: pro.qty,
+                quantity: pro.qty,
                 image: pro.product.image[0].urlImage,
                 price: pro.product.price,
                 id_product: pro.id_product,
@@ -83,7 +83,7 @@ function PlaceOrder() {
     );
     cart.shippingPrice = addDecimals(cart.itemsPrice > 0 ? fee_VC : 30000);
     cart.totalPrice = (Number(cart.itemsPrice) + Number(cart.shippingPrice)).toFixed(0);
-
+    console.log('paymentMethodState = ', paymentMethodState);
     useEffect(() => {
         if (error) {
             errorPlaceholder('Đặt hàng thất bại, vui lòng thử lại sau');
@@ -91,17 +91,17 @@ function PlaceOrder() {
         }
         if (success) {
             console.log('order = ', order);
-            if (order?.newOrder.paymentMethod == 'payment-with-momo') {
+            if (order?.newOrder.paymentMethod == 'pay-with-momo') {
                 window.location.href = `${order.newOrder.payment.payUrl}`;
                 return;
             }
-            if (order?.newOrder.paymentMethod == 'payment-with-paypal') {
+            if (order?.newOrder.paymentMethod == 'pay-with-paypal') {
                 navigate(`/placeorder/paymentpaypal/${order?.newOrder?._id}`);
                 return;
             } else {
                 successPlaceholder();
                 dispatch({ type: ORDER_CREATE_RESET });
-                navigate(`/order/${order?.newOrder?._id}`);
+                // navigate(`/order/${order?.newOrder?._id}`);
             }
         }
     }, [error, success]);
@@ -111,12 +111,13 @@ function PlaceOrder() {
                 orderItems: currenCartItems,
                 shippingAddress: {
                     city: userInfo.city,
-                    distric: userInfo.distric,
+                    district: userInfo.district,
                     ward: userInfo.ward,
                     address: userInfo.address,
                     postalCode: '',
                 },
                 paymentMethod: paymentMethodState,
+                // paymentMethod: 'pay-with-credit-card',
                 itemsPrice: cart.itemsPrice,
                 shippingPrice: cart.shippingPrice,
                 totalPrice: cart.totalPrice,
@@ -127,6 +128,14 @@ function PlaceOrder() {
             }),
         );
     };
+    /*
+    
+    export const PAY_WITH_CASH = 'pay-with-cash';
+export const PAY_WITH_MOMO = 'pay-with-momo';
+export const PAY_WITH_ATM = 'pay-with-atm';
+export const PAY_WITH_CREDIT_CARD = 'pay-with-credit-card';
+export const PAY_WITH_PAYPAL = 'pay-with-paypal';
+    */
 
     function findCartCountInStock(item) {
         const findCart = item?.product?.optionColor?.find((option) => option.color === item.color);
@@ -189,11 +198,11 @@ function PlaceOrder() {
             dispatch(
                 calculate_fee_ship_action({
                     pick_province: userInfo.address_shop.city,
-                    pick_district: userInfo.address_shop.distric,
+                    pick_district: userInfo.address_shop.district,
                     pick_ward: userInfo.address_shop.ward,
                     pick_address: userInfo.address_shop.address,
                     province: userInfo.city,
-                    district: userInfo.distric,
+                    district: userInfo.district,
                     ward: userInfo.ward,
                     address: userInfo.address,
                     weight: 1000, // đơn vị gam
@@ -245,7 +254,7 @@ function PlaceOrder() {
                                     <div className="">
                                         <p>
                                             <span className="font-semibold">Địa chỉ:</span>{' '}
-                                            {`${userInfo?.city}, ${userInfo?.distric}, ${userInfo?.ward}, ${userInfo?.address}`}
+                                            {`${userInfo?.city}, ${userInfo?.district}, ${userInfo?.ward}, ${userInfo?.address}`}
                                         </p>
                                     </div>
                                 </div>
@@ -257,21 +266,33 @@ function PlaceOrder() {
                                         <p>
                                             <span className="font-semibold">Phương thức thanh toán:</span>
                                             <Select
-                                                className="w-[212px] [&_.ant-select-selection-item]:font-semibold"
+                                                className="w-[212px] [&_.ant-select-selection-item]:font-semibold [&_.anticon-down]:pt-2"
                                                 onChange={handleChangePayment}
                                                 defaultValue={paymentMethodState}
                                                 options={[
                                                     {
-                                                        value: 'payment-with-momo',
+                                                        value: 'pay-with-momo',
                                                         label: 'Thanh toán qua momo',
                                                     },
                                                     {
-                                                        value: 'payment-with-cash',
-                                                        label: 'Thanh toán bằng tiền mặt',
+                                                        value: 'pay-with-cash',
+                                                        label: 'Thanh toán bằng thẻ',
                                                     },
                                                     {
-                                                        value: 'payment-with-paypal',
+                                                        value: 'pay-with-atm',
+                                                        label: 'Thanh toán bằng ATM',
+                                                    },
+                                                    {
+                                                        value: 'pay-with-paypal',
                                                         label: 'Thanh toán qua paypal',
+                                                    },
+                                                    {
+                                                        value: 'pay-with-credit-card',
+                                                        label: 'Thanh toán qua thẻ Visa',
+                                                    },
+                                                    {
+                                                        value: 'pay-with-money',
+                                                        label: 'Thanh toán bằng tiền mặt',
                                                     },
                                                 ]}
                                             />
@@ -322,20 +343,20 @@ function PlaceOrder() {
                                 </table>
                             </div>
                         </div>
-                        <div className="row mt-2 bg-white py-4">
-                            <div className="">
-                                {paymentMethodState == 'payment-with-paypal' ? (
-                                    <div className="mb-4 text-center text-xl font-bold uppercase">
+                        <div className="row mt-2 bg-white py-8">
+                            <div className="row col-lg-12">
+                                {paymentMethodState == 'pay-with-paypal' ? (
+                                    <div className="col-lg-6 pt-3 text-center text-xl font-bold uppercase">
                                         Tổng thanh toán: {moneyNeedPaid} USD
                                     </div>
                                 ) : (
-                                    <div className="mb-3 text-center  text-xl font-bold uppercase">
+                                    <div className="col-lg-6 pt-3 text-center  text-xl font-bold uppercase">
                                         Tổng thanh toán: {Number(cart.totalPrice)?.toLocaleString('de-DE')} VNĐ
                                     </div>
                                 )}
                                 <button
                                     type="submit"
-                                    className="m-auto flex justify-center rounded-lg bg-[var(--main-color)] px-16 py-2 text-fuchsia-50 hover:opacity-[0.8]"
+                                    className="col-lg-6 rounded-lg bg-[var(--main-color)] px-1 py-3 uppercase text-fuchsia-50 hover:bg-[var(--main-color-hover)]"
                                     onClick={() => window.my_modal_1.showModal()}
                                 >
                                     Đặt hàng

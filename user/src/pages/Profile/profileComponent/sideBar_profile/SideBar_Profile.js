@@ -10,11 +10,13 @@ import {
     ListItemText,
 } from '@mui/material';
 import { ManageAccounts, FactCheckRounded } from '@mui/icons-material';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import moment from 'moment';
 import { imageDefaul } from '~/utils/data';
 
 function SideBar_Profile({ userInfo }) {
+    const location = useLocation();
+    console.log('location = ', location.pathname);
     return (
         <>
             <div className=" mr-3 px-2">
@@ -26,11 +28,7 @@ function SideBar_Profile({ userInfo }) {
                 >
                     <Avatar
                         sx={{ width: 60, height: 60, margin: '0px 12px' }}
-                        src={
-                            userInfo?.image?.urlImageCloudinary !== undefined
-                                ? userInfo?.image?.urlImageCloudinary
-                                : imageDefaul
-                        }
+                        src={userInfo?.image !== undefined ? userInfo?.image : imageDefaul}
                     />
                     <Box
                         sx={{
@@ -47,27 +45,45 @@ function SideBar_Profile({ userInfo }) {
                 </Box>
                 <Divider
                     sx={{
-                        margin: '0px 24px',
+                        margin: '0px 12px',
                     }}
                 />
                 <Box>
                     <nav aria-label="main mailbox folders">
                         <List>
-                            <ListItem disablePadding>
-                                <Link to={'/profile'} className="w-full">
+                            <ListItem
+                                className={
+                                    location.pathname == '/profile' &&
+                                    'bg-[#f4f4f4] [&_.MuiTypography-root]:!text-blue-600'
+                                }
+                                disablePadding
+                            >
+                                <Link to={'/profile'} className=" w-full">
                                     <ListItemButton>
                                         <ListItemIcon>
-                                            <ManageAccounts fontSize="medium" color="primary" />
+                                            <ManageAccounts
+                                                fontSize="medium"
+                                                className="text-[var(--main-color-hover)]"
+                                            />
                                         </ListItemIcon>
                                         <ListItemText primary="Hồ sơ cá nhân" />
                                     </ListItemButton>
                                 </Link>
                             </ListItem>
-                            <ListItem disablePadding>
+                            <ListItem
+                                className={
+                                    location.pathname == '/purchasehistory' &&
+                                    'bg-[#f4f4f4] [&_.MuiTypography-root]:!text-blue-600'
+                                }
+                                disablePadding
+                            >
                                 <Link to="/purchasehistory" className="w-full">
                                     <ListItemButton>
                                         <ListItemIcon>
-                                            <FactCheckRounded fontSize="medium" color="primary" />
+                                            <FactCheckRounded
+                                                fontSize="medium"
+                                                className="text-[var(--main-color-hover)]"
+                                            />
                                         </ListItemIcon>
                                         <ListItemText primary="Danh sách mua hàng" />
                                     </ListItemButton>

@@ -39,14 +39,14 @@ function Detail_infor_account({ user }) {
         handleSubmit,
         formState: { errors },
         setValue,
-    } = useForm({ defaultValues: { city: '', distric: '', ward: '', dateOfBirth: '' } });
+    } = useForm({ defaultValues: { city: '', district: '', ward: '', dateOfBirth: '' } });
 
     useEffect(() => {
         setValue('name', user.name);
         setValue('dateOfBirth', moment(user?.dateOfBirth).format('YYYY-MM-DD'));
         setValue('phone', user.phone);
         setValue('city', user.city);
-        setValue('distric', user.distric);
+        setValue('district', user.district);
         setValue('ward', user.ward);
         setValue('address', user.address);
     }, [setValue, user]);
@@ -60,7 +60,7 @@ function Detail_infor_account({ user }) {
     const DataProvinces = listProvince.province;
 
     const submitUpdateProfile = (data) => {
-        const { name, dateOfBirth, phone, address, city, distric, ward } = data;
+        const { name, dateOfBirth, phone, address, city, district, ward } = data;
         const dateOfBirthTemp = moment(dateOfBirth).format('YYYY-MM-DD');
         let userInforNeedUpdate = new FormData();
         userInforNeedUpdate.append('id', user._id);
@@ -68,7 +68,7 @@ function Detail_infor_account({ user }) {
         userInforNeedUpdate.append('dateOfBirth', dateOfBirthTemp);
         userInforNeedUpdate.append('phone', phone);
         userInforNeedUpdate.append('city', city);
-        userInforNeedUpdate.append('distric', distric);
+        userInforNeedUpdate.append('district', district);
         userInforNeedUpdate.append('ward', ward);
         userInforNeedUpdate.append('address', address);
 
@@ -76,7 +76,7 @@ function Detail_infor_account({ user }) {
     };
     // =========================================================================
     const optionsMUI_city = [];
-    const optionsMUI_distric = [];
+    const optionsMUI_district = [];
     const optionsMUI_ward = [];
 
     function findInfoCityByName(arr, name) {
@@ -113,13 +113,13 @@ function Detail_infor_account({ user }) {
 
     const onChange_city = (value) => {
         setValue('city', value);
-        setValue('distric', '');
+        setValue('district', '');
         setValue('ward', '');
-        handleFindInformation(value, optionsMUI_distric);
+        handleFindInformation(value, optionsMUI_district);
     };
 
-    const onChange_distric = (value) => {
-        setValue('distric', value);
+    const onChange_district = (value) => {
+        setValue('district', value);
         setValue('ward', '');
         handleFindInformation(value, optionsMUI_ward, true);
     };
@@ -136,8 +136,8 @@ function Detail_infor_account({ user }) {
                 label: DataProvinces[i].name,
             });
         }
-        handleFindInformation(watch('city'), optionsMUI_distric);
-        handleFindInformation(watch('distric'), optionsMUI_ward, true);
+        handleFindInformation(watch('city'), optionsMUI_district);
+        handleFindInformation(watch('district'), optionsMUI_ward, true);
     }
 
     return (
@@ -145,7 +145,7 @@ function Detail_infor_account({ user }) {
             <form onSubmit={handleSubmit(submitUpdateProfile)}>
                 <Stack>
                     <Box className="mb-1 flex">
-                        <Typography className="w-1/5">Họ tên</Typography>
+                        <Typography className="w-40 pr-2">Họ tên</Typography>
                         <Controller
                             name="name"
                             control={control}
@@ -155,10 +155,9 @@ function Detail_infor_account({ user }) {
                             render={({ field }) => (
                                 <TextField
                                     type="text"
-                                    className="w-4/5 bg-white"
+                                    size="small"
+                                    className="w-full"
                                     hiddenLabel
-                                    id="outlined-basic"
-                                    variant="outlined"
                                     {...field}
                                     placeholder="Họ tên"
                                 />
@@ -171,7 +170,7 @@ function Detail_infor_account({ user }) {
                         ) : null}
                     </Box>
                     <Box className="mb-1 flex">
-                        <Typography className="w-1/5">Ngày sinh</Typography>
+                        <Typography className="w-40 pr-2">Ngày sinh</Typography>
                         <Controller
                             name="dateOfBirth"
                             control={control}
@@ -181,10 +180,9 @@ function Detail_infor_account({ user }) {
                             render={({ field }) => (
                                 <TextField
                                     type="date"
-                                    className="w-4/5 bg-white"
+                                    className="w-full "
+                                    size="small"
                                     hiddenLabel
-                                    id="outlined-basic"
-                                    variant="outlined"
                                     {...field}
                                     placeholder="Ngày sinh"
                                 />
@@ -197,19 +195,12 @@ function Detail_infor_account({ user }) {
                         ) : null}
                     </Box>
                     <Box className="mb-1 flex">
-                        <Typography className="w-1/5">Email</Typography>
-                        <TextField
-                            className="w-4/5 bg-white"
-                            hiddenLabel
-                            id="outlined-basic"
-                            variant="outlined"
-                            value={user.email}
-                            disabled
-                        />
+                        <Typography className="w-40 pr-2">Email</Typography>
+                        <TextField size="small" className="w-full " hiddenLabel value={user.email} disabled />
                     </Box>
                     <Box className="min-h-[28px]"></Box>
                     <Box className="mb-1 flex">
-                        <Typography className="w-1/5">Số điện thoại</Typography>
+                        <Typography className="w-40 pr-2">Số điện thoại</Typography>
                         <Controller
                             name="phone"
                             control={control}
@@ -219,10 +210,9 @@ function Detail_infor_account({ user }) {
                             render={({ field }) => (
                                 <TextField
                                     type="text"
-                                    className="w-4/5 bg-white"
+                                    size="small"
+                                    className="w-full"
                                     hiddenLabel
-                                    id="outlined-basic"
-                                    variant="outlined"
                                     {...field}
                                     placeholder="Số điện thoại"
                                 />
@@ -235,7 +225,7 @@ function Detail_infor_account({ user }) {
                         ) : null}
                     </Box>
                     <Box className="mb-1 flex">
-                        <Typography className="w-1/5">Tỉnh/Thành phố</Typography>
+                        <Typography className="w-40 pr-2">Tỉnh/Thành phố</Typography>
                         <Controller
                             name="city"
                             control={control}
@@ -246,7 +236,8 @@ function Detail_infor_account({ user }) {
                                 <Autocomplete
                                     noOptionsText="Không tìm thấy kết quả"
                                     loadingText="Đang tải"
-                                    className="w-4/5 bg-white"
+                                    className="w-full "
+                                    size="small"
                                     disablePortal
                                     // id="combo-box-demo"
                                     {...field}
@@ -266,9 +257,9 @@ function Detail_infor_account({ user }) {
                         ) : null}
                     </Box>
                     <Box className="mb-1 flex">
-                        <Typography className="w-1/5">Quận/Huyện</Typography>
+                        <Typography className="w-40 pr-2">Quận/Huyện</Typography>
                         <Controller
-                            name="distric"
+                            name="district"
                             control={control}
                             rules={{
                                 required: 'Bạn chưa nhập tên quận, huyện',
@@ -277,15 +268,16 @@ function Detail_infor_account({ user }) {
                                 <Autocomplete
                                     noOptionsText="Không tìm thấy kết quả"
                                     loadingText="Đang tải"
-                                    className="w-4/5 bg-white"
+                                    className="w-full "
                                     disablePortal
+                                    size="small"
                                     id="combo-box-demo"
                                     {...field}
                                     placeholder="Quận/huyện"
                                     onChange={(e) => {
-                                        onChange_distric(e.target.outerText);
+                                        onChange_district(e.target.outerText);
                                     }}
-                                    options={optionsMUI_distric}
+                                    options={optionsMUI_district}
                                     renderInput={(params) => <TextField {...params} />}
                                 />
                             )}
@@ -298,7 +290,7 @@ function Detail_infor_account({ user }) {
                     </Box>
 
                     <Box className="mb-1 flex">
-                        <Typography className="w-1/5">Xã/Phường</Typography>
+                        <Typography className="w-40 pr-2">Xã/Phường</Typography>
                         <Controller
                             name="ward"
                             control={control}
@@ -309,8 +301,9 @@ function Detail_infor_account({ user }) {
                                 <Autocomplete
                                     noOptionsText="Không tìm thấy kết quả"
                                     loadingText="Đang tải"
-                                    className="w-4/5 bg-white"
+                                    className="w-full "
                                     disablePortal
+                                    size="small"
                                     id="combo-box-demo"
                                     placeholder="Quận/huyện"
                                     {...field}
@@ -329,7 +322,7 @@ function Detail_infor_account({ user }) {
                         ) : null}
                     </Box>
                     <Box className="mb-1 flex">
-                        <Typography className="w-1/5">Đường Hẻm/Thôn</Typography>
+                        <Typography className="w-40 pr-2">Đường Hẻm/Thôn</Typography>
                         <Controller
                             name="address"
                             control={control}
@@ -339,10 +332,9 @@ function Detail_infor_account({ user }) {
                             render={({ field }) => (
                                 <TextField
                                     type="text"
-                                    className="w-4/5 bg-white"
+                                    size="small"
+                                    className="w-full py-1 "
                                     hiddenLabel
-                                    id="outlined-basic"
-                                    variant="outlined"
                                     {...field}
                                     placeholder="Đường/hẻm/thôn"
                                 />

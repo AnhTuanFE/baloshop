@@ -73,7 +73,7 @@ function PaymentPaypal() {
         //             orderItems: currenCartItems,
         //             shippingAddress: {
         //                 city: userInfo.city,
-        //                 distric: userInfo.distric,
+        //                 district: userInfo.district,
         //                 ward: userInfo.ward,
         //                 address: userInfo.address,
         //                 postalCode: '',

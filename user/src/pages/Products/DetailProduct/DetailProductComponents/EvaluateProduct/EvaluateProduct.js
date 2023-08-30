@@ -51,7 +51,6 @@ function EvaluateProduct({ productId }) {
     const [comment, setComment] = useState('');
     const [reviewColor, setReviewColor] = useState('');
 
-    const [rating1, setRating1] = useState(0);
     const [hover, setHover] = useState(-1);
 
     const listAllReviews = useSelector((state) => state.getAllReviewsProduct);
@@ -135,14 +134,14 @@ function EvaluateProduct({ productId }) {
     };
     return (
         <div className="rounded-xl bg-white shadow-custom-shadow">
-            <div className="mx-5 mt-5 pt-1">
+            <div className=" mt-5 max-md:mx-2 md:mx-5">
                 <h2 className="mt-3 py-2 text-center text-xl font-bold">Đánh giá & nhận xét</h2>
                 <div className="rounded-xl" style={{ border: '2px solid #ccc' }}>
                     <div className="row">
                         <div className="col-md-4 col-sm-5 pt-4 text-center">
                             <div className="flex">
                                 <div className="mx-auto rounded-xl bg-[#fbc02d] px-6 py-8 text-white">
-                                    <h1 className="pt-4 text-2xl font-semibold">{mediumReview} / 5</h1>
+                                    <h1 className="text-2xl">{mediumReview} / 5</h1>
                                 </div>
                             </div>
                             <div className="mx-1 mt-1 text-sm">
@@ -151,16 +150,18 @@ function EvaluateProduct({ productId }) {
                             <p className="text-xl">{reviewCart.length} đánh giá và nhận xét</p>
                         </div>
                         <div className="col-md-8 col-sm-7">
-                            <div className="justify-content-center">
-                                <table className="mx-auto text-left">
+                            <div className=" px-4 py-1 max-md:mt-2">
+                                <table className="text-left">
                                     {returnStar.map((star, index) => {
                                         return (
                                             <tr key={index}>
-                                                <td className="font-bold">
-                                                    {star.rating}
-                                                    <span className="fa fa-star mx-1 my-[10px] text-[#fbc02d] hover:cursor-pointer hover:text-[#f9a825]"></span>
+                                                <td className="text-center font-bold">
+                                                    <p className="min-w-[52px] pr-2">
+                                                        {star.rating}
+                                                        <span className="fa fa-star mx-1 my-[10px] text-[#fbc02d] hover:cursor-pointer hover:text-[#f9a825]"></span>
+                                                    </p>
                                                 </td>
-                                                <td className="w-[600px] rounded px-1">
+                                                <td className="w-full rounded">
                                                     <div className="mb-1 w-full rounded-2xl bg-[#f1f1f1] text-center text-white">
                                                         <div
                                                             className=" h-3 rounded-2xl bg-[#fbc02d] "
@@ -170,7 +171,9 @@ function EvaluateProduct({ productId }) {
                                                         ></div>
                                                     </div>
                                                 </td>
-                                                <td className="text-right">{star.numReview} đánh giá</td>
+                                                <td className="text-center">
+                                                    <p className="min-w-[100px] pl-2">{star.numReview} đánh giá</p>
+                                                </td>
                                             </tr>
                                         );
                                     })}
@@ -179,9 +182,9 @@ function EvaluateProduct({ productId }) {
                         </div>
                     </div>
                 </div>
-                <div className="mt-3 text-center hover:opacity-[0.9]">
+                <div className="mt-3 text-center">
                     <button
-                        className=" w-[300px] cursor-pointer rounded-lg bg-[var(--main-color)] py-2 text-white"
+                        className=" w-[300px] cursor-pointer rounded-lg bg-[var(--main-color)] py-2 text-white hover:bg-[var(--main-color-hover)]"
                         onClick={handleOpenModal}
                     >
                         Đánh giá ngay
@@ -189,12 +192,17 @@ function EvaluateProduct({ productId }) {
                 </div>
             </div>
             {/* ============================================== bên dưới là modal ============================================= */}
-            <dialog ref={modalRef} className="w-1/3 rounded-lg" onClose={handleCloseModal} onClick={handleOverlayClick}>
+            <dialog
+                ref={modalRef}
+                className="w-[400px] rounded-lg"
+                onClose={handleCloseModal}
+                onClick={handleOverlayClick}
+            >
                 <h3 className="mb-2 text-center text-lg font-bold">Đánh giá sản phẩm!</h3>
                 <form method="dialog">
                     <button
                         onClick={handleCloseModal}
-                        className="btn-sm btn-circle btn absolute right-2 top-2 bg-[var(--main-color2)] font-extrabold text-white"
+                        className="btn-sm btn-circle btn absolute right-2 top-2 bg-[var(--blue-color)] font-extrabold text-white"
                     >
                         ✕
                     </button>
@@ -266,7 +274,7 @@ function EvaluateProduct({ productId }) {
                                     <div className="">
                                         <button
                                             disabled={loadingCreateReview}
-                                            className="col-12 rounded-md border-0 bg-[var(--main-color)] p-3 font-semibold text-white"
+                                            className="col-12 rounded-md border-0 bg-[var(--main-color)] px-3 py-2 font-semibold text-white"
                                             type="submit"
                                         >
                                             Gửi đánh giá
@@ -293,17 +301,15 @@ function EvaluateProduct({ productId }) {
                     </div> */}
                 </form>
             </dialog>
-            <div className=" w-3/5 pt-5">
+            <div className=" mt-3 w-full py-1">
                 <div className="rating-review">
+                    <hr className="my-4"></hr>
                     {reviews?.map((review) => (
-                        <div
-                            key={review._id}
-                            className="mb-md-3 bg-light rounded-5 mb-2 ml-[5%] rounded-xl p-3 shadow-sm"
-                        >
+                        <div key={review._id} className="rounded-5 rounded-xl bg-white px-3 py-3 shadow-custom-shadow">
                             <div className="flex items-center">
                                 <div className="flex items-center">
                                     <img
-                                        src={`${review?.user?.image?.urlImageCloudinary}` || imageDefaul} // upload ảnh
+                                        src={`${review?.user?.image}` || imageDefaul} // upload ảnh
                                         alt=""
                                         className="fix-none mr-1 h-10 w-10 rounded-[50%] object-cover"
                                     />
@@ -324,7 +330,7 @@ function EvaluateProduct({ productId }) {
                                     </span>
                                 </div>
                             </div>
-                            <div className=" mt-3 rounded-lg bg-[#3abff8] px-2 py-1">
+                            <div className=" mt-3 rounded-lg bg-[var(--blue-color)] px-3 py-2">
                                 <div className="flex items-center">
                                     <span className="pr-1 text-base font-semibold">Đánh giá: </span>
                                     <Rating value={review.rating} />
@@ -333,9 +339,9 @@ function EvaluateProduct({ productId }) {
                                     <span className="pr-1 text-base font-semibold">Màu sắc:</span>
                                     <div className="ml-1 text-base font-medium">{review.color}</div>
                                 </div>
-                                <div className="mt-2 flex text-base">
+                                <div className="flex text-base">
                                     <span className="min-w-[80px] pr-1 text-base font-semibold">Nhận xét:</span>
-                                    <div className="min-h-16 ml-1 min-w-[300px] rounded-xl border-2 border-solid border-[#343a40] bg-white px-2 pt-2 ">
+                                    <div className="border-1 min-h-16 ml-1 w-[400px] rounded-xl border-solid border-[#343a40] bg-white px-2 pt-2 ">
                                         <span className="">{review.comment}</span>
                                     </div>
                                 </div>

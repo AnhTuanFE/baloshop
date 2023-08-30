@@ -26,7 +26,7 @@ function InfoPayer({ order }) {
                     <div className="">
                         <p>
                             <span className="font-semibold">Địa chỉ:</span>{' '}
-                            {`${order.shippingAddress.city}, ${order.shippingAddress.distric}, ${order.shippingAddress.ward}, ${order.shippingAddress.address}`}
+                            {`${order.shippingAddress.city}, ${order.shippingAddress.district}, ${order.shippingAddress.ward}, ${order.shippingAddress.address}`}
                         </p>
                     </div>
                 </div>
