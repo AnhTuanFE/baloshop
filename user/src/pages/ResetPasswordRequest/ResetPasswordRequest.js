@@ -42,7 +42,7 @@ export default function ResetPasswordRequest() {
     return (
         <div className="flex h-[80vh] justify-center ">
             {contextHolder}
-            <div className=" mt-10 h-[50vh] rounded-2xl px-4 py-4 shadow-custom-shadow">
+            <div className=" mt-10 h-[50vh] rounded-2xl bg-white px-4 py-4 shadow-custom-shadow">
                 <div className="rounded-xl bg-[var(--white-color)]">
                     <div className="mx-4">
                         <div>
@@ -64,7 +64,7 @@ export default function ResetPasswordRequest() {
                         <form>
                             <div className="flex justify-center">
                                 <input
-                                    className="my-4 w-4/5 rounded-md border border-solid border-[#ddd] p-3 text-center leading-[100%]"
+                                    className="my-4 w-4/5 rounded-md border  border-solid border-[#ddd] px-3 py-2.5 text-center leading-[100%]"
                                     id="email-for-pass"
                                     type="email"
                                     placeholder="Email@gmail.com"
@@ -77,13 +77,13 @@ export default function ResetPasswordRequest() {
                             </div>
                             <div className="float-right">
                                 <Button
-                                    className="mr-4 bg-[var(--main-color)] px-8 text-sm font-bold text-white hover:bg-[var(--color-button2)]"
+                                    className="mr-4 border-none bg-[var(--main-color)] px-8 text-sm font-bold text-white hover:bg-[var(--main-color-hover)]"
                                     onClick={handleSubmit}
                                     disabled={disabled}
                                 >
                                     Gửi
                                 </Button>
-                                <Button className=" bg-[var(--main-color)] text-sm font-bold hover:bg-[var(--color-button2)]">
+                                <Button className=" border-none bg-[var(--main-color)] text-sm font-bold outline-none hover:bg-[var(--main-color-hover)]">
                                     <Link className="text-white" to={'/'}>
                                         Trở lại trang chủ
                                     </Link>

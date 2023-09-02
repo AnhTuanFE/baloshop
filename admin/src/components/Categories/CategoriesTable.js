@@ -52,7 +52,7 @@ const CategoriesTable = ({ handleEditInfo, handleCurrentCategory }) => {
         <div className="col-md-8 col-lg-8">
             {loadingUpdate && <Loading />}
             <Toast />
-            <table className="table slider-data">
+            <table className="slider-data table">
                 <thead>
                     <tr>
                         <th>
@@ -60,7 +60,7 @@ const CategoriesTable = ({ handleEditInfo, handleCurrentCategory }) => {
                 <input className="form-check-input" type="checkbox" value="" />
               </div> */}
                         </th>
-                        <th>ID</th>
+                        <th>Stt</th>
                         <th>Tên</th>
                         <th>Miêu tả</th>
                         <th className="text-end">Chỉnh sửa</th>

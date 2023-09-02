@@ -33,8 +33,8 @@ function Payment() {
             <div className={clsx(styles.wrapper)}>
                 <form className={clsx(styles.form)} onSubmit={submitHandler}>
                     <FormControl>
-                        <FormLabel id="demo-radio-buttons-group-label" className={clsx(styles.title)}>
-                            Phương thức thanh toán
+                        <FormLabel id="demo-radio-buttons-group-label" className="text-center text-black ">
+                            <p className=" text-xl font-bold">Phương thức thanh toán</p>
                         </FormLabel>
                         <RadioGroup
                             aria-labelledby="demo-radio-buttons-group-label"
@@ -47,7 +47,6 @@ function Payment() {
                                 label="Thanh toán bằng tiền mặt"
                                 onChange={(e) => {
                                     setPaymentMethod(e.target.value);
-                                    console.log('e.target.value = ', e.target.value);
                                 }}
                             />
                             <FormControlLabel
@@ -56,7 +55,6 @@ function Payment() {
                                 label="Thanh toán qua paypal"
                                 onChange={(e) => {
                                     setPaymentMethod(e.target.value);
-                                    console.log('e.target.value = ', e.target.value);
                                 }}
                             />
                             <FormControlLabel
@@ -65,7 +63,6 @@ function Payment() {
                                 label="Thanh toán qua momo"
                                 onChange={(e) => {
                                     setPaymentMethod(e.target.value);
-                                    console.log('e.target.value = ', e.target.value);
                                 }}
                             />
                         </RadioGroup>

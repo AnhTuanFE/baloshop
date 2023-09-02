@@ -4,11 +4,11 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 
 function InfoPayer({ order }) {
     return (
-        <div className="mb-4 h-32 shadow-custom-shadow">
+        <div className="mb-4 rounded bg-white px-2 py-1 shadow-custom-shadow">
             <div className="my-3 flex items-center justify-around rounded-md pt-3">
                 <div className="flex">
-                    <div className="mr-2 px-2">
-                        <AccountCircleSharpIcon className="" fontSize="large" color="secondary" />
+                    <div className="mr-2 mt-2 px-2">
+                        <AccountCircleSharpIcon className="" fontSize="large" color="primary" />
                     </div>
                     <div className="">
                         <p>
@@ -21,7 +21,7 @@ function InfoPayer({ order }) {
                 </div>
                 <div className="flex">
                     <div className="mr-2 px-2">
-                        <AddLocationSharpIcon className="" fontSize="large" color="secondary" />
+                        <AddLocationSharpIcon className="" fontSize="large" color="primary" />
                     </div>
                     <div className="">
                         <p>
@@ -32,11 +32,11 @@ function InfoPayer({ order }) {
                 </div>
                 <div className="flex">
                     <div className="mr-2 px-2">
-                        <MonetizationOnIcon className="" fontSize="large" color="secondary" />
+                        <MonetizationOnIcon className="" fontSize="large" color="primary" />
                     </div>
                     <div className="">
                         <p>
-                            <span className="font-semibold">Phương thức:</span> {order.paymentMethod}
+                            <span className="font-semibold">Phương thức:</span> {order.paymentMethod.replace(/"/g, '')}
                         </p>
                     </div>
                 </div>

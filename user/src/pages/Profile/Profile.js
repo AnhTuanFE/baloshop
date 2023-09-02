@@ -49,13 +49,15 @@ export default function Profile() {
             ) : error ? (
                 <Message variant="alert-danger">{error}</Message>
             ) : (
-                <div>
+                <div className="bg-white pb-10 pt-10">
                     <Box
-                        sx={{
-                            '& > :not(style)': {
-                                m: 5,
-                            },
-                        }}
+                        sx={
+                            {
+                                // '& > :not(style)': {
+                                //     m: 5,
+                                // },
+                            }
+                        }
                     >
                         <Box
                             sx={{
@@ -69,7 +71,7 @@ export default function Profile() {
                                     alignItems: 'center',
                                 }}
                             >
-                                <div className="ml-12 mr-12">
+                                <div className="mx-12">
                                     <Tabs defaultActiveKey="1" items={items} className={clsx(styles.head_swipe)}>
                                         {items.map((item) => (
                                             <TabPane

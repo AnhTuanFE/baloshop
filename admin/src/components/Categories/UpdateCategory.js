@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { UpdateCurrentCategory } from '~/Redux/Actions/categoryActions';
 import { toast } from 'react-toastify';
 import { CATEGORY_UPDATE_RESET } from '~/Redux/Constants/CategoryConstants';
+import { Link } from 'react-router-dom';
 
 const ToastObjects = {
     pauseOnFocusLoss: false,
@@ -49,7 +50,7 @@ const UpdateCategory = ({ currentCategory }) => {
                     {/* {} <Loading />} */}
                     <div className="mb-4">
                         <label htmlFor="product_name" className="form-label">
-                            Name
+                            Tên
                         </label>
                         <input
                             type="text"
@@ -64,7 +65,7 @@ const UpdateCategory = ({ currentCategory }) => {
                     </div>
 
                     <div className="mb-4">
-                        <label className="form-label">Description</label>
+                        <label className="form-label">Mô tả</label>
                         <textarea
                             placeholder="Type here"
                             className="form-control"

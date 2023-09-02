@@ -57,7 +57,7 @@ function ResetPassword() {
         console.log('data = ', data);
     };
     return (
-        <div className="h-[80vh] bg-[#e9ebee] pt-3">
+        <div className="h-[80vh] bg-white pt-3">
             {contextHolder}
             <div className="flex justify-center">
                 <div className="w-1/4">

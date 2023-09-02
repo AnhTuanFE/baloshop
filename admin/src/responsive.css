@@ -11,6 +11,7 @@
     width: 20%;
     padding: 0 4px;
   }
+  
 }
 @media (max-width: 1200px) {
   /* tablet devices */
@@ -21,6 +22,9 @@
   .navbar-aside {
     max-width: 220px;
   }
+    .flex1 {
+      background-color: red;
+    }
 }
 @media (max-width: 992px) {
   /* small tablet devices */
