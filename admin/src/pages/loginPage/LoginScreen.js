@@ -41,8 +41,7 @@ const Login = () => {
         if (userInfo) {
             navigate('/');
         }
-        console.log('userInfo = ', userInfo);
-    }, [userLogin]);
+    });
 
     const handleLogin = async (data) => {
         const { email, password } = data;

@@ -12,9 +12,5 @@ export default function BestSellingProduct() {
         dispatch(listAllOrderAction());
     }, []);
 
-    return (
-        <>
-            <SliderProducts products={products} labelSlider={'Sản Phẩm Bán chạy'} />
-        </>
-    );
+    return <>{products.length == 0 ? ' ' : <SliderProducts products={products} labelSlider={'Sản Phẩm Bán chạy'} />}</>;
 }

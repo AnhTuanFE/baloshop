@@ -86,7 +86,7 @@ function AskAndAnswer({ productId }) {
 
         return (
             <img
-                src={`${findUser?.image.urlImageCloudinary}` || imageDefaul} // upload ảnh
+                src={`${findUser?.image}` || imageDefaul} // upload ảnh
                 alt=""
                 className="mr-2 h-10 w-10 rounded-[50%] object-cover"
             />
@@ -95,17 +95,12 @@ function AskAndAnswer({ productId }) {
     return (
         <>
             <div className="mt-4 rounded-xl bg-white pt-2">
-                <div
-                    className="rounded-xl px-5 py-4"
-                    style={{
-                        boxShadow: '0 0.5rem 1rem rgba(0, 0, 0, 0.15)',
-                    }}
-                >
-                    <h2 className="pb-1 text-2xl font-semibold">Hỏi và đáp</h2>
+                <div className="rounded-xl py-4 shadow-custom-shadow max-md:px-1 md:px-5">
+                    <h2 className="ml-5 pb-1 text-2xl font-semibold">Hỏi và đáp</h2>
                     <form onSubmit={submitComment} className="ml-5 flex">
                         <textarea
                             value={question}
-                            className="h-20 w-3/5 rounded-xl px-2 py-1 text-base shadow-sm"
+                            className="h-20 w-full rounded-xl border px-2 py-1 text-base shadow-sm"
                             placeholder="Xin mời để lại câu hỏi, BaloStore sẽ trả lời lại trong 1h, các câu hỏi sau 22h - 8h sẽ được trả lời vào sáng hôm sau"
                             onChange={(e) => {
                                 setQuestion(e.target.value);
@@ -114,16 +109,15 @@ function AskAndAnswer({ productId }) {
                             }}
                         ></textarea>
                         {userInfo ? (
-                            <div className="ml-2 mt-3">
-                                <button className="rounded-lg bg-[var(--main-color)] px-6 py-2 text-white hover:opacity-80">
-                                    <i className="fas fa-paper-plane pr-1"></i>
+                            <div className="ml-2 mr-5 mt-3 min-w-[90px]">
+                                <button className="w-full rounded-lg bg-[var(--main-color)] py-1.5 text-white hover:bg-[var(--main-color-hover)]">
                                     Gửi
                                 </button>
                             </div>
                         ) : (
                             <div className="mt-2">
                                 <Link to="/login">
-                                    <button className="mx-3 rounded-lg bg-[var(--main-color)] px-2 py-3 text-sm font-semibold text-white">
+                                    <button className="mx-3 min-w-[100px] rounded-lg bg-[var(--main-color)] px-2 py-2.5 text-sm font-semibold text-white">
                                         Đăng nhập
                                     </button>
                                 </Link>
@@ -132,12 +126,7 @@ function AskAndAnswer({ productId }) {
                     </form>
                 </div>
                 {/* comment */}
-                <div
-                    className="col-md-12 mt-2 rounded bg-white"
-                    style={{
-                        boxShadow: '0 0.5rem 1rem rgba(0, 0, 0, 0.15)',
-                    }}
-                >
+                <div className="col-md-12 mt-2 rounded bg-white shadow-custom-shadow">
                     <div className="rating-review">
                         {loadingCreateComment && <Loading />}
                         {errorCreateCommentChild && <Message variant="alert-danger">{errorCreateCommentChild}</Message>}
@@ -147,7 +136,7 @@ function AskAndAnswer({ productId }) {
                                     <div className="flex items-center justify-start">
                                         <div className="flex items-end">
                                             <img
-                                                src={`${review?.user?.image?.urlImageCloudinary}` || imageDefaul}
+                                                src={`${review?.user?.image}` || imageDefaul}
                                                 alt=""
                                                 className="mr-4 h-10 w-10 rounded-[50%] object-cover"
                                             />
@@ -188,17 +177,17 @@ function AskAndAnswer({ productId }) {
                                 </div>
 
                                 {/* comment child */}
-                                <div className="ml-8 ">
+                                <div className=" max-md:ml-3 md:ml-8">
                                     {review.commentChilds?.map((child) => (
                                         <div key={child._id} className="mb-md-2 rounded-5 mb-2 mt-2 bg-[#ebeced85] p-3">
                                             <div className="flex items-center">
                                                 <div className="flex items-end">
-                                                    {findProductUser(child)}
-                                                    <div className="">
+                                                    <div className="min-w-[40px]">{findProductUser(child)}</div>
+                                                    <div className="min-w-[100px]">
                                                         <strong>{child.name}</strong>
                                                     </div>
                                                 </div>
-                                                <div className="ml-2 pl-2 pt-3">
+                                                <div className="ml-2 min-w-[170px] pt-3">
                                                     <span>
                                                         {'('}
                                                         {moment(child.createdAt).format('DD/MM/YYYY')}{' '}
@@ -211,7 +200,7 @@ function AskAndAnswer({ productId }) {
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div className="mt-3 w-2/5 rounded-xl border-2 border-solid border-[#343a40] bg-white p-2">
+                                            <div className="mt-3 w-[300px] rounded-xl border-2 border-solid border-[#343a40] bg-white p-2">
                                                 <span>{child.questionChild}</span>
                                             </div>
                                         </div>
@@ -221,7 +210,7 @@ function AskAndAnswer({ productId }) {
                                     <form onSubmit={submitQuestionChild} className="ml-6 mt-2 flex">
                                         <textarea
                                             // className="question-product"
-                                            className="h-20 w-3/5 rounded-xl px-2 py-1 text-base shadow-sm"
+                                            className="h-20 w-[300px] rounded-xl px-2 py-1 text-base shadow-sm"
                                             placeholder="Bình luận"
                                             value={questionChild}
                                             onChange={(e) => {

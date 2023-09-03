@@ -65,15 +65,15 @@ export const orderPayReducer = (state = {}, action) => {
 export const orderListMyReducer = (state = { orders: [] }, action) => {
     switch (action.type) {
         case types.ORDER_LIST_MY_REQUEST:
-            return { loading: true };
+            return { ...state, loading: true };
         case types.ORDER_LIST_MY_SUCCESS:
             return { loading: false, orders: action.payload };
         case types.ORDER_LIST_MY_FAIL:
-            return { loading: false, error: action.payload };
+            return { ...state, loading: false, error: action.payload };
         case types.ORDER_LIST_MY_RESET:
             return { orders: [] };
         default:
-            return state;
+            return { ...state };
     }
 };
 
@@ -96,13 +96,14 @@ export const orderAddressMyReducer = (state = { orderAddress: {} }, action) => {
 export const productbestseller = (state = { products: [] }, action) => {
     switch (action.type) {
         case types.ORDER_LIST_ALL_REQUEST:
-            return { loading: true, products: [...state.products] };
+            return { loading: true, products: [] };
         case types.ORDER_LIST_ALL_SUCCESS:
             return {
+                loading: false,
                 products: action.payload,
             };
         case types.ORDER_LIST_ALL_FAIL:
-            return { loading: false, error: action.payload };
+            return { loading: false, products: [], error: action.payload };
         default:
             return state;
     }

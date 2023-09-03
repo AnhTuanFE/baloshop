@@ -32,7 +32,7 @@ export default function Sliders() {
                     {/* {loading && <Loading />} */}
                     <div className="flex ">
                         {slider?.length > 0 ? (
-                            <div className="mr-2 w-[70%]">
+                            <div className="mr-2 max-sm:w-full md:w-[70%]">
                                 <Slider
                                     style={{ maxHeight: '252px', overflow: 'hidden', objectFit: 'cover' }}
                                     className=""
@@ -55,7 +55,7 @@ export default function Sliders() {
                             <Skeleton className="mr-2" variant="rectangular" width={'70%'} height={'252px'} />
                         )}
                         {slider?.length > 0 ? (
-                            <div className="w-[30%]">
+                            <div className="max-md:w-[0%] md:w-[30%] ">
                                 <div className="mb-2">
                                     <img className="max-h-[122px]  w-full" src={slider[0]?.url} alt="banner" />
                                 </div>
@@ -64,7 +64,7 @@ export default function Sliders() {
                                 </div>
                             </div>
                         ) : (
-                            <div className="w-[30%]">
+                            <div className="max-md:w-[0%] md:w-[30%] ">
                                 <div className="mb-2">
                                     <Skeleton width={'100%'} height={'122px'} variant="rectangular" />
                                 </div>

@@ -65,10 +65,10 @@ const CreateCategory = () => {
     return (
         <>
             <Toast />
-            <div style={{ width: '100%' }}>
-                <form className="form-control ">
+            <div className="col-md-4 col-lg-4">
+                <form>
                     {loading && <Loading />}
-                    <div>
+                    <div className="mb-4">
                         <label htmlFor="product_name" className="form-label">
                             Tên
                         </label>
@@ -76,7 +76,7 @@ const CreateCategory = () => {
                             required
                             type="text"
                             placeholder=""
-                            className={`form-control  ${validate.borderRed1}`}
+                            className={`form-control py-3 ${validate.borderRed1}`}
                             id="product_name"
                             value={name}
                             onClick={() => {
@@ -94,15 +94,13 @@ const CreateCategory = () => {
                         <p className="product_validate">{validate.name}</p>
                     </div>
 
-                    <div>
-                        <label className="form-label">Mô tả</label>
+                    <div className="mb-4">
+                        <label className="form-label">Miêu tả</label>
                         <textarea
-                            style={{ resize: 'none' }}
                             required
                             placeholder=""
                             className={`form-control ${validate.borderRed3}`}
-                            rows="2"
-                            resize="none"
+                            rows="4"
                             value={description}
                             onClick={() => {
                                 setValidate((values) => {
@@ -119,8 +117,8 @@ const CreateCategory = () => {
                         <p className="product_validate">{validate.description}</p>
                     </div>
 
-                    <div>
-                        <button className="btn btn-primary mt-1" onClick={handleCreateCategory}>
+                    <div className="d-grid">
+                        <button className="btn btn-primary py-3 color-orange" onClick={handleCreateCategory}>
                             Thêm loại hàng
                         </button>
                     </div>

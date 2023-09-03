@@ -1,7 +1,7 @@
 import express from 'express';
 import asyncHandler from 'express-async-handler';
-import User from './Models/UserModel.js';
-import users from './data/users.js';
+import User from '../models/UserModel.js';
+import users from '../data/users.js';
 // import Product from './Models/ProductModel.js';
 // import products from './data/Products.js';
 // import Slider from './Models/SliderModel.js';

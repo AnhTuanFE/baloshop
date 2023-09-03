@@ -295,44 +295,21 @@ const AddProduct = () => {
                                                 {disabledProduct && (
                                                     <>
                                                         <button className="btn btn-primary  " onClick={submitHandler}>
-                                                            Thêm
+                                                            Lưu
                                                         </button>
                                                         <Link to="/products" className="btn btn-danger ml-2 text-white">
-                                                            Hủy
+                                                            Trở về
                                                         </Link>
                                                     </>
                                                 )}
                                             </div>
                                         </from>
                                     </div>
-                                    <div className="card-body mt-2 border shadow-sm">
+                                    <div
+                                        className="card-body shadow-sm"
+                                        style={{ marginTop: '10px', border: '1px solid #ccc' }}
+                                    >
                                         <div className="row">
-                                            <div className="col-md-8 col-lg-8">
-                                                <table className="slider-data table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Stt</th>
-                                                            <th>Màu sắc</th>
-                                                            <th>Số lượng</th>
-                                                        </tr>
-                                                    </thead>
-                                                    {/* Table Data */}
-                                                    <tbody>
-                                                        {productOption?.optionColor &&
-                                                            productOption?.optionColor?.map((option, index) => (
-                                                                <tr key={index}>
-                                                                    <td>{index + 1}</td>
-                                                                    <td>
-                                                                        <b>{option.color}</b>
-                                                                    </td>
-                                                                    <td>
-                                                                        <span>{option.countInStock}</span>
-                                                                    </td>
-                                                                </tr>
-                                                            ))}
-                                                    </tbody>
-                                                </table>
-                                            </div>
                                             <div className="col-md-4 col-lg-4">
                                                 {errorOption && (
                                                     <Message variant="alert-danger">
@@ -399,6 +376,32 @@ const AddProduct = () => {
                                                         )}
                                                     </div>
                                                 </form>
+                                            </div>
+                                            <div className="col-md-8 col-lg-8">
+                                                <table className="slider-data table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Stt</th>
+                                                            <th>Màu sắc</th>
+                                                            <th>Số lượng</th>
+                                                        </tr>
+                                                    </thead>
+                                                    {/* Table Data */}
+                                                    <tbody>
+                                                        {productOption?.optionColor &&
+                                                            productOption?.optionColor?.map((option, index) => (
+                                                                <tr key={index}>
+                                                                    <td>{index + 1}</td>
+                                                                    <td>
+                                                                        <b>{option.color}</b>
+                                                                    </td>
+                                                                    <td>
+                                                                        <span>{option.countInStock}</span>
+                                                                    </td>
+                                                                </tr>
+                                                            ))}
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>

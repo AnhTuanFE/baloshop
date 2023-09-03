@@ -1,10 +1,10 @@
 import express from 'express';
 import asyncHandler from 'express-async-handler';
-import Product from './../Models/ProductModel.js';
-import { admin, protect } from './../Middleware/AuthMiddleware.js';
+import Product from '../models/ProductModel.js';
+import { admin, protect } from '../middleware/AuthMiddleware.js';
 // import Category from '../Models/CategoryModel.js';
-import Order from './../Models/OrderModel.js';
-import Cart from '../Models/CartModel.js';
+import Order from '../models/OrderModel.js';
+import Cart from '../models/CartModel.js';
 import path from 'path';
 import fs from 'fs';
 //
@@ -19,7 +19,7 @@ const productRoute = express.Router();
 productRoute.get(
     '/',
     asyncHandler(async (req, res) => {
-        const pageSize = 8;
+        const pageSize = 12;
         const page = Number(req.query.pageNumber) || 1;
         const rating = Number(req.query.rating) || 0;
         const maxPrice = Number(req.query.maxPrice) || 0;
@@ -408,8 +408,6 @@ productRoute.put(
     asyncHandler(async (req, res) => {
         const { id, name, price, description, category, nameImage } = req?.body;
         const imagePath = req?.file?.path;
-        // console.log('data = ', req.body);
-        // console.log('imagePath = ', imagePath);
 
         const product = await Product.findById(id);
 

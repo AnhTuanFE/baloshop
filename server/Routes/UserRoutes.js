@@ -1,10 +1,10 @@
 import express from 'express';
 import asyncHandler from 'express-async-handler';
 import multer from 'multer';
-import { protect, admin } from '../Middleware/AuthMiddleware.js';
+import { protect, admin } from '../middleware/AuthMiddleware.js';
 import generateToken from '../utils/generateToken.js';
 import cloudinary from 'cloudinary';
-import User from './../Models/UserModel.js';
+import User from '../models/UserModel.js';
 import jwt from 'jsonwebtoken';
 
 const userRouter = express.Router();
@@ -23,7 +23,7 @@ userRouter.post(
         if (user && (await user.matchPassword(password)) && information_admin) {
             const data = {
                 city: information_admin.city,
-                distric: information_admin.distric,
+                district: information_admin.district,
                 ward: information_admin.ward,
                 address: information_admin.address,
                 phone: information_admin.phone,
@@ -36,9 +36,10 @@ userRouter.post(
                 isAdmin: user.isAdmin,
                 token: generateToken(user._id),
                 createdAt: user.createdAt,
-                address: user.address,
                 city: user.city,
-                country: user.country,
+                district: user.district,
+                ward: user.ward,
+                address: user.address,
                 image: user.image,
                 disabled: user.disabled,
                 address_shop: data,
@@ -106,7 +107,7 @@ userRouter.get(
         if (user && information_admin) {
             const data = {
                 city: information_admin.city,
-                distric: information_admin.distric,
+                district: information_admin.district,
                 ward: information_admin.ward,
                 address: information_admin.address,
                 phone: information_admin.phone,
@@ -120,7 +121,7 @@ userRouter.get(
                 isAdmin: user.isAdmin,
                 createdAt: user.createdAt,
                 city: user.city,
-                distric: user.distric,
+                district: user.district,
                 ward: user.ward,
                 address: user.address,
                 image: user.image,
@@ -155,7 +156,7 @@ userRouter.put(
     asyncHandler(async (req, res) => {
         try {
             const imagePath = req?.file?.path;
-            const { id, name, dateOfBirth, phone, city, distric, ward, address, nameImage } = req?.body;
+            const { id, name, dateOfBirth, phone, city, district, ward, address, nameImage } = req?.body;
             // console.log('req.body = ', req.body);
             // console.log('imagePath = ', req.file?.path);
 
@@ -166,7 +167,7 @@ userRouter.put(
             if (user && information_admin) {
                 const data = {
                     city: information_admin.city,
-                    distric: information_admin.distric,
+                    district: information_admin.district,
                     ward: information_admin.ward,
                     address: information_admin.address,
                     phone: information_admin.phone,
@@ -200,7 +201,7 @@ userRouter.put(
                                     dateOfBirth: dateOfBirth || user.dateOfBirth,
                                     phone: phone || user.phone,
                                     city: city || user.city,
-                                    distric: distric || user.distric,
+                                    district: district || user.district,
                                     ward: ward || user.ward,
                                     address: address || user.address,
                                     image: {
@@ -220,7 +221,7 @@ userRouter.put(
                                 token: generateToken(user.id),
                                 email: user.email,
                                 city: city || user.city,
-                                distric: distric || user.distric,
+                                district: district || user.district,
                                 ward: ward || user.ward,
                                 address: address || user.address,
                                 image: {
@@ -246,7 +247,7 @@ userRouter.put(
                             createdAt: user.createdAt,
                             token: generateToken(user._id),
                             city: user.city,
-                            distric: user.distric,
+                            district: user.district,
                             ward: user.ward,
                             address: user.address,
                             image: user.image,
@@ -262,7 +263,7 @@ userRouter.put(
                     user.dateOfBirth = dateOfBirth || user.dateOfBirth;
                     user.phone = phone || user.phone;
                     user.city = city || user.city;
-                    user.distric = distric || user.distric;
+                    user.district = district || user.district;
                     user.ward = ward || user.ward;
                     user.address = address || user.address;
 
@@ -273,7 +274,7 @@ userRouter.put(
                         dateOfBirth: updatedUser.dateOfBirth,
                         phone: updatedUser.phone,
                         city: updatedUser.city,
-                        distric: updatedUser.distric,
+                        district: updatedUser.district,
                         ward: updatedUser.ward,
                         address: updatedUser.address,
                         email: user.email,

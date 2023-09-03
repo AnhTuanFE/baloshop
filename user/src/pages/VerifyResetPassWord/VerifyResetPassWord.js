@@ -16,12 +16,11 @@ function VerifyResetPassWord() {
     const { verifyState } = useSelector(usersRemainingSelector);
     const { loading, error, state } = verifyState;
     // console.log('verifyState = ', verifyState);
-
-    useEffect(() => {
-        if (state?.status === 'Verified Account') {
-            navigate('/resetpassword');
-        }
-    }, [dataNeedVerify, params]);
+    if (state?.status === 'Verified Account') {
+        navigate('/resetpassword');
+    }
+    useEffect(() => {}, [dataNeedVerify, params]);
+    console.log('state?.status = ', state?.status);
     const handleVerify = () => {
         dispatch(VerifyResetPassWordAction(dataNeedVerify));
     };
