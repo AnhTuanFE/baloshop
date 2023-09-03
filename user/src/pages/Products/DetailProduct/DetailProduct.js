@@ -229,7 +229,6 @@ function DetailProduct() {
                                     >
                                         Chi Tiết Sản Phẩm
                                     </h2>
-                                    {console.log('product.description = ', product.description)}
                                     <div
                                         className="product-description"
                                         dangerouslySetInnerHTML={{ __html: product.description }}

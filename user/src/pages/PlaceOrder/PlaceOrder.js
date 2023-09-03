@@ -3,19 +3,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, redirect, Navigate } from 'react-router-dom';
 import { message, Select } from 'antd';
 import { listCart } from '~/redux/Actions/cartActions';
-import { createOrder } from '~/redux/Actions/OrderActions';
+import { createOrder, calculate_fee_ship_action } from '~/redux/Actions/OrderActions';
+import { getUserDetails } from '~/redux/Actions/userActions';
 import { ORDER_CREATE_RESET } from '~/redux/Constants/OrderConstants';
 
 import ModalDaiSyUI from '~/components/Modal/ModalDaiSyUI';
 import Message from '~/components/LoadingError/Error';
 import Loading from '~/components/LoadingError/Loading';
-import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import AccountCircleSharpIcon from '@mui/icons-material/AccountCircleSharp';
 import AddLocationSharpIcon from '@mui/icons-material/AddLocationSharp';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import { ordersRemainingSelector } from '~/redux/Selector/ordersSelector';
-import { calculate_fee_ship_action } from '~/redux/Actions/OrderActions';
 import LoadingLarge from '~/components/LoadingError/LoadingLarge';
+import { usersRemainingSelector } from '~/redux/Selector/usersSelector';
 
 function PlaceOrder() {
     const [paymentMethodState, setPaymentMethodState] = useState('pay-with-momo');
@@ -35,15 +35,16 @@ function PlaceOrder() {
             content: content,
         });
     };
-
     const cart = useSelector((state) => state.cart);
     const { cartItems } = cart;
-    const userLogin = useSelector((state) => state.userLogin);
+    const { userDetails, userLogin } = useSelector(usersRemainingSelector);
+    const { user } = userDetails;
     const { userInfo } = userLogin;
+
     const orderCreate = useSelector((state) => state.orderCreate);
     const { order, success, error, loading } = orderCreate;
     const { order_ghtk_state } = useSelector(ordersRemainingSelector);
-    const fee_VC = order_ghtk_state?.data_fee_ship?.fee.fee;
+    const fee_VC = order_ghtk_state?.data_fee_ship?.fee?.fee;
     // =====================================================
     const currenCartItems = cartItems
         .filter((item) => {
@@ -83,7 +84,6 @@ function PlaceOrder() {
     );
     cart.shippingPrice = addDecimals(cart.itemsPrice > 0 ? fee_VC : 30000);
     cart.totalPrice = (Number(cart.itemsPrice) + Number(cart.shippingPrice)).toFixed(0);
-    console.log('paymentMethodState = ', paymentMethodState);
     useEffect(() => {
         if (error) {
             errorPlaceholder('Đặt hàng thất bại, vui lòng thử lại sau');
@@ -91,29 +91,26 @@ function PlaceOrder() {
         }
         if (success) {
             console.log('order = ', order);
-            if (order?.newOrder.paymentMethod == 'pay-with-momo') {
+            if (order?.newOrder?.payment?.payUrl) {
                 window.location.href = `${order.newOrder.payment.payUrl}`;
-                return;
-            }
-            if (order?.newOrder.paymentMethod == 'pay-with-paypal') {
-                navigate(`/placeorder/paymentpaypal/${order?.newOrder?._id}`);
                 return;
             } else {
                 successPlaceholder();
                 dispatch({ type: ORDER_CREATE_RESET });
-                // navigate(`/order/${order?.newOrder?._id}`);
+                navigate(`/order/${order?.newOrder?._id}`);
             }
         }
     }, [error, success]);
+
     const placeOrderHandler = () => {
         dispatch(
             createOrder({
                 orderItems: currenCartItems,
                 shippingAddress: {
-                    city: userInfo.city,
-                    district: userInfo.district,
-                    ward: userInfo.ward,
-                    address: userInfo.address,
+                    city: user?.city,
+                    district: user?.district,
+                    ward: user?.ward,
+                    address: user?.address,
                     postalCode: '',
                 },
                 paymentMethod: paymentMethodState,
@@ -121,21 +118,13 @@ function PlaceOrder() {
                 itemsPrice: cart.itemsPrice,
                 shippingPrice: cart.shippingPrice,
                 totalPrice: cart.totalPrice,
-                phone: userInfo.phone,
-                name: userInfo.name,
-                email: userInfo.email,
-                address_shop: userInfo.address_shop,
+                phone: user?.phone,
+                name: user?.name,
+                email: user?.email,
+                address_shop: user?.address_shop,
             }),
         );
     };
-    /*
-    
-    export const PAY_WITH_CASH = 'pay-with-cash';
-export const PAY_WITH_MOMO = 'pay-with-momo';
-export const PAY_WITH_ATM = 'pay-with-atm';
-export const PAY_WITH_CREDIT_CARD = 'pay-with-credit-card';
-export const PAY_WITH_PAYPAL = 'pay-with-paypal';
-    */
 
     function findCartCountInStock(item) {
         const findCart = item?.product?.optionColor?.find((option) => option.color === item.color);
@@ -187,40 +176,41 @@ export const PAY_WITH_PAYPAL = 'pay-with-paypal';
         return usd;
     };
     let moneyNeedPaid = handleExchangeCurrency(cart.totalPrice);
-    useLayoutEffect(() => {
-        if (cartItems.length === 0) {
+    useEffect(() => {
+        if (cartItems?.length === 0) {
             dispatch(listCart());
         }
     }, []);
 
     useEffect(() => {
-        if (cartItems.length != 0 && Object.keys(order_ghtk_state).length === 0) {
+        if (cartItems?.length != 0 && Object.keys(order_ghtk_state).length === 0) {
             dispatch(
                 calculate_fee_ship_action({
-                    pick_province: userInfo.address_shop.city,
-                    pick_district: userInfo.address_shop.district,
-                    pick_ward: userInfo.address_shop.ward,
-                    pick_address: userInfo.address_shop.address,
-                    province: userInfo.city,
-                    district: userInfo.district,
-                    ward: userInfo.ward,
-                    address: userInfo.address,
+                    pick_province: userInfo?.address_shop.city,
+                    pick_district: userInfo?.address_shop.district,
+                    pick_ward: userInfo?.address_shop.ward,
+                    pick_address: userInfo?.address_shop.address,
+                    province: userInfo?.city,
+                    district: userInfo?.district,
+                    ward: userInfo?.ward,
+                    address: userInfo?.address,
                     weight: 1000, // đơn vị gam
-                    value: cart.totalPrice, // giá trị đơn hàng để tính bảo hiểm
+                    value: cart?.totalPrice, // giá trị đơn hàng để tính bảo hiểm
                     transport: 'road',
                     deliver_option: 'none',
                     // tags: [1, 7],
                 }),
             );
         }
-    }, [cart]);
+    }, [user]);
     const handleChangePayment = (value) => {
         setPaymentMethodState(value);
     };
+
     return (
         <>
             {error && <Loading />}
-            {/* {loading && <Loading />} */}
+            {order_ghtk_state?.loading && <LoadingLarge content={'Đang tải thông tin đơn hàng'} />}
             {loading && <LoadingLarge content={'Đang tạo đơn hàng'} />}
             {contextHolder}
             <div className="mx-auto my-auto max-w-screen-2xl">
@@ -240,10 +230,10 @@ export const PAY_WITH_PAYPAL = 'pay-with-paypal';
                                     </div>
                                     <div className="">
                                         <p>
-                                            <span className="font-semibold">Họ tên:</span> {userInfo.name}
+                                            <span className="font-semibold">Họ tên:</span> {user?.name}
                                         </p>
                                         <p>
-                                            <span className="font-semibold">Số điện thoại:</span> {userInfo.phone}
+                                            <span className="font-semibold">Số điện thoại:</span> {user?.phone}
                                         </p>
                                     </div>
                                 </div>
@@ -254,7 +244,7 @@ export const PAY_WITH_PAYPAL = 'pay-with-paypal';
                                     <div className="">
                                         <p>
                                             <span className="font-semibold">Địa chỉ:</span>{' '}
-                                            {`${userInfo?.city}, ${userInfo?.district}, ${userInfo?.ward}, ${userInfo?.address}`}
+                                            {`${user?.city}, ${user?.district}, ${user?.ward}, ${user?.address}`}
                                         </p>
                                     </div>
                                 </div>
@@ -275,10 +265,6 @@ export const PAY_WITH_PAYPAL = 'pay-with-paypal';
                                                         label: 'Thanh toán qua momo',
                                                     },
                                                     {
-                                                        value: 'pay-with-cash',
-                                                        label: 'Thanh toán bằng thẻ',
-                                                    },
-                                                    {
                                                         value: 'pay-with-atm',
                                                         label: 'Thanh toán bằng ATM',
                                                     },
@@ -291,7 +277,7 @@ export const PAY_WITH_PAYPAL = 'pay-with-paypal';
                                                         label: 'Thanh toán qua thẻ Visa',
                                                     },
                                                     {
-                                                        value: 'pay-with-money',
+                                                        value: 'pay-with-cash',
                                                         label: 'Thanh toán bằng tiền mặt',
                                                     },
                                                 ]}

@@ -28,8 +28,6 @@ function Cart() {
 
     const cart = useSelector((state) => state.cart);
     const { cartItems } = cart;
-    console.log('cart = ', cart);
-    console.log('cartItems = ', cartItems);
 
     const cartDel = useSelector((state) => state.cartDelete);
     const { loading: loa, success: suc, mesage: mes } = cartDel;

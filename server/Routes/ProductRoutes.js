@@ -408,8 +408,6 @@ productRoute.put(
     asyncHandler(async (req, res) => {
         const { id, name, price, description, category, nameImage } = req?.body;
         const imagePath = req?.file?.path;
-        // console.log('data = ', req.body);
-        // console.log('imagePath = ', imagePath);
 
         const product = await Product.findById(id);
 

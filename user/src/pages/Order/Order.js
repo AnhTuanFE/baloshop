@@ -1,11 +1,10 @@
 import { React, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-// import { Rating } from 'primereact/rating';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
-import { Button, notification } from 'antd';
+import { Button, notification, Modal } from 'antd';
 import {
     cancelOrder,
     getOrderDetails,
@@ -19,15 +18,14 @@ import {
     ORDER_CREATE_REVIEW_RESET,
     ORDER_COMPLETE_USER_RESET,
     ORDER_CANCEL_RESET,
+    ORDER_PAY_RESET,
 } from '~/redux/Constants/OrderConstants';
-import { ORDER_PAY_RESET } from '~/redux/Constants/OrderConstants';
 import { listCart } from '~/redux/Actions/cartActions';
 import Loading from '~/components/LoadingError/Loading';
 import Message from '~/components/LoadingError/Error';
 import Steppers from './custom_stepper_MUI/Steppers';
 import InfoPayer from './InfoPayer';
 import ViewOrderInformation from './ViewOrderInformation';
-import { Modal } from 'antd';
 import ModalDaiSyUI from '~/components/Modal/ModalDaiSyUI';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
@@ -235,8 +233,6 @@ function Order() {
                                         </>
                                     )}
                                 </div>
-                                {/* =================================================================================================== */}
-                                {/* <div className="col-lg-3 d-flex align-items-end flex-column subtotal-order"> */}
                                 <div className=" flex-[1] items-center">
                                     <table className="table-bordered table">
                                         <tbody>

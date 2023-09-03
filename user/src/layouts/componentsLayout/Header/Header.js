@@ -136,7 +136,6 @@ function Header(props) {
         }
         console.log('e = ', e);
     };
-    console.log('userInfo?.image = ', userInfo?.image);
     const UILogined = () => {
         return (
             <Box

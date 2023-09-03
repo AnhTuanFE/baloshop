@@ -131,16 +131,6 @@ export const clearFromCart = () => async (dispatch, getState) => {
 
     localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems));
 };
-// SAVE SHIPPING ADDRESS
-export const saveShippingAddress = (data) => (dispatch) => {
-    dispatch({
-        type: types.CART_SAVE_SHIPPING_ADDRESS,
-        payload: data,
-    });
-
-    localStorage.setItem('shippingAddress', JSON.stringify(data));
-};
-
 // SAVE PAYMENT METHOD
 export const savePaymentMethod = (data) => (dispatch) => {
     dispatch({

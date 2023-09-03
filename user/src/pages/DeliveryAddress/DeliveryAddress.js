@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { saveShippingAddress } from '~/redux/Actions/cartActions';
 import { getUserDetails, updateUserProfile, getListProvincesAction } from '~/redux/Actions/userActions';
 import { USER_UPDATE_PROFILE_RESET } from '~/redux/Constants/UserContants';
 
@@ -36,14 +35,12 @@ function DeliveryAddress() {
 
     // user lấy từ store
     const { loading, error, user } = userDetails;
-
     const [city, setCity] = useState(''); //tp
     const [districtOptions, setDistrictOptions] = useState([]);
     const [ward, setWard] = useState(''); // xá phường
     const [wardOptions, setWardOptions] = useState([]);
     const [address, setAddress] = useState(''); // địa chỉ chi tiết
     const [district, setDistrict] = useState([]);
-    // const [distric, setDistric] = useState(''); //quận huyện
 
     const [retult, setRetult] = useState('');
 
@@ -82,7 +79,6 @@ function DeliveryAddress() {
     const submitHandler = async (e) => {
         e.preventDefault();
         if (!valitor({ city, district, ward, address })) return;
-        dispatch(saveShippingAddress({ city, district, ward, address }));
         dispatch(updateUserProfile({ id: user._id, city, district, ward, address }));
         setRetult('');
     };
