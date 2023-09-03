@@ -1,16 +1,19 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '~/Redux/Actions/userActions';
 import { imageDefaul } from '~/data/data';
+import { useEffect, useState, Fragment, memo } from 'react';
 
 const Header = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const user = useSelector((state) => state.userLogin);
     const { userInfo } = user;
     const logoutHandler = () => {
         dispatch(logout());
+        navigate('/login');
     };
-
     return (
         <header className="main-header navbar justify-content-end border-none bg-blue-100">
             <div className="col-nav">

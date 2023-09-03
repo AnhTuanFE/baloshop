@@ -17,11 +17,17 @@ import CommentScreen from '~/pages/comment/CommentScreen';
 import AddNewsScreen from '~/pages/news/AddNewsScreen';
 import EditNewsScreen from '~/pages/news/EditNewsScreen';
 import NewsScreen from '~/pages/news/NewsScreen';
-
 import NotFound from '~/pages/notFound/NotFound';
+
+const publicRoutes = [
+    { path: '/login', component: Login, layout: null },
+
+    { path: '*', component: NotFound, layout: null },
+];
 
 const privateRoutes = [
     { path: '/', component: HomeScreen },
+    { path: '/home', component: HomeScreen },
 
     { path: '/products', component: ProductScreen },
     { path: '/products/page/:pageNumber', component: ProductScreen },
@@ -52,10 +58,6 @@ const privateRoutes = [
     { path: '/news', component: NewsScreen },
     { path: '/addnews', component: AddNewsScreen },
     { path: '/editnews/:id/edit', component: EditNewsScreen },
-
-    { path: '*', component: NotFound },
 ];
-
-const publicRoutes = [{ path: '/login', component: Login, layout: null }];
 
 export { publicRoutes, privateRoutes };
