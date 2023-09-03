@@ -9,6 +9,6 @@ function RouteConfirmation() {
     // } else {
     //     return <Navigate to="./login" />;
     // }
-    return userInfo && userInfo.isAdmin ? <Outlet /> : <Navigate to="/login" />;
+    return userInfo?.isAdmin ? <Outlet /> : <Navigate to="/login" />;
 }
 export default RouteConfirmation;

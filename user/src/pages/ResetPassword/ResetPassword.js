@@ -24,9 +24,9 @@ function ResetPassword() {
 
     const { verifyState, resetPasswordState } = useSelector(usersRemainingSelector);
     const { loading, error, state } = verifyState;
-    // const { email, id, token } = verifyState?.state;
-    // const { status } = resetPasswordState?.state;
-    let email;
+    const { email, id, token } = verifyState?.state;
+    const { status } = resetPasswordState?.state;
+
     // console.log('verifyState page resetpassword = ', verifyState);
     // console.log('resetPasswordState = ', resetPasswordState);
 
@@ -53,10 +53,8 @@ function ResetPassword() {
 
     const handleUpdatePassword = (data) => {
         const { newPassword } = data;
-        // dispatch(ResetPassWordAction({ newPassword, id, token }));
-        dispatch(ResetPassWordAction(email));
-
-        // console.log('data = ', data);
+        dispatch(ResetPassWordAction({ newPassword, id, token }));
+        console.log('data = ', data);
     };
     return (
         <div className="h-[80vh] bg-white pt-3">

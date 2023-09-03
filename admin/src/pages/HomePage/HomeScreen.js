@@ -13,7 +13,6 @@ const HomeScreen = () => {
     const dispatch = useDispatch();
 
     const orderListComplete = useSelector((state) => state.orderListComplete);
-    // const { orders: AllOrders } = orderListComplete;
     const { orders } = orderListComplete;
 
     const productList = useSelector((state) => state.productList);
@@ -27,13 +26,13 @@ const HomeScreen = () => {
         dispatch(listOrders());
         dispatch(listUser());
         dispatch(getOrderCompleteAll());
-    }, [dispatch]);
+    }, []);
 
     return (
         <>
             <section className="content-main">
-                <div className="content-header">
-                    <h2 className="content-title"> Trang chủ </h2>
+                <div className="content-header mb-1">
+                    <h3 className="content-title fw-bold "> Trang chủ </h3>
                 </div>
                 <TopTotal orders={orders} countProducts={countProducts} countUsers={users ? users.length : 0} />
 

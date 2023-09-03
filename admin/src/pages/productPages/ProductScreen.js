@@ -56,20 +56,15 @@ const ProductScreen = () => {
     }, [dispatch, successDelete, category, keyword, pageNumber]);
 
     return (
-        <section className="content-main">
+        <section className="content-main bg-slate-300 pb-0">
             <div className="content-header">
-                <h2 className="content-title">Sản phẩm</h2>
-                <div>
-                    <Link to="/addproduct" className="btn btn-primary color-orange">
-                        Tạo mới
-                    </Link>
-                </div>
+                <h3 className="content-title fw-bold">Sản phẩm</h3>
             </div>
 
             <div className="card mb-4 shadow-sm">
-                <header className="card-header bg-white ">
-                    <div className="row gx-3 py-3">
-                        <div className="col-lg-4 col-md-6 me-auto ">
+                <header className="card-header border-none bg-white">
+                    <div className="row gx-3 py-0">
+                        <div className="col-lg-4 col-md-4 me-auto ">
                             <form onSubmit={(e) => handleSearch(e)}>
                                 <div className="input-group" style={{ alignItems: 'center' }}>
                                     <input
@@ -94,34 +89,38 @@ const ProductScreen = () => {
                                     handleCategory(e);
                                 }}
                             >
-                                <option value={''}> Danh mục</option>
+                                <option value={''}>Tất cả</option>
                                 {categories?.map((category) => (
                                     <option value={category._id}>{category.name}</option>
                                 ))}
                             </select>
                         </div>
+                        <div className="col-lg-2 col-6 col-md-3">
+                            <Link to="/addproduct">
+                                <div className="btn fw-bold bg-blue-700 text-white">Thêm sản phẩm</div>
+                            </Link>
+                        </div>
                     </div>
                 </header>
 
-                <div className="card-body">
+                <div className="card-body overflow-auto">
                     {errorDelete && <Message variant="alert-danger">{errorDelete}</Message>}
                     {loading ? (
                         <Loading />
                     ) : error ? (
                         <Message variant="alert-danger">{error}</Message>
                     ) : (
-                        <div className="row">
+                        <div className="row" style={{ height: '55vh' }}>
                             <div className="col-md-12 col-sm-12 col-lg-12">
-                                <table className="table slider-data">
+                                <table className="slider-data table">
                                     <thead>
-                                        <tr>
-                                            <th style={{ width: '10%' }}>Stt</th>
-                                            <th style={{ width: '20%' }}>Sản phẩm</th>
-                                            <th style={{ width: '40%' }}>Tên sản phẩm</th>
-                                            <th style={{ width: '20%' }}>Giá</th>
-                                            <th className="text-end" style={{ width: '10%' }}>
-                                                Action
-                                            </th>
+                                        <tr className="text-center">
+                                            <th style={{ width: '5%', color: 'black' }}>Stt</th>
+                                            <th style={{ width: '25%', color: 'black' }}>ID sản phẩm</th>
+                                            <th style={{ width: '10%', color: 'black' }}>Ảnh</th>
+                                            <th style={{ width: '30%', color: 'black' }}>Tên</th>
+                                            <th style={{ width: '20%', color: 'black' }}>Giá</th>
+                                            <th style={{ width: '10%', color: 'black' }}>Thao tác</th>
                                         </tr>
                                     </thead>
                                     <tbody>
