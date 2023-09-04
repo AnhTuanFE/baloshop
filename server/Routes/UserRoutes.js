@@ -5,7 +5,6 @@ import { protect, admin } from '../middleware/AuthMiddleware.js';
 import generateToken from '../utils/generateToken.js';
 import cloudinary from 'cloudinary';
 import User from '../models/UserModel.js';
-import jwt from 'jsonwebtoken';
 
 const userRouter = express.Router();
 
