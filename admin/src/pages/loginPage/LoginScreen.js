@@ -35,12 +35,9 @@ const Login = () => {
 
     const userLogin = useSelector((state) => state.userLogin);
     const { error, loading, userInfo } = userLogin;
-    console.log('userInfo bên ngoài = ', userInfo);
-
     useEffect(() => {
         if (userInfo?.token) {
-            console.log('userInfo bên trong = ', userInfo);
-            navigate('/home');
+            navigate('/');
         }
     }, [userInfo]);
 

@@ -27,7 +27,6 @@ const publicRoutes = [
 
 const privateRoutes = [
     { path: '/', component: HomeScreen },
-    { path: '/home', component: HomeScreen },
 
     { path: '/products', component: ProductScreen },
     { path: '/products/page/:pageNumber', component: ProductScreen },
