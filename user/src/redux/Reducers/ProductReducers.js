@@ -4,14 +4,14 @@ import * as types from '../Constants/ProductConstants';
 export const productListAllReducer = (state = { products: [] }, action) => {
     switch (action.type) {
         case types.PRODUCT_LIST_ALL_REQUEST:
-            return { loading: true, products: [...state.products] };
+            return { loading: true, products: [] };
         case types.PRODUCT_LIST_ALL_SUCCESS:
             return {
                 loading: false,
                 products: action.payload,
             };
         case types.PRODUCT_LIST_ALL_FAIL:
-            return { loading: false, error: action.payload };
+            return { ...state, loading: false, error: action.payload };
         default:
             return state;
     }

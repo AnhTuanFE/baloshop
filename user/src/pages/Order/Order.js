@@ -1,11 +1,10 @@
 import { React, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-// import { Rating } from 'primereact/rating';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
-import { Button, notification } from 'antd';
+import { Button, notification, Modal } from 'antd';
 import {
     cancelOrder,
     getOrderDetails,
@@ -19,21 +18,18 @@ import {
     ORDER_CREATE_REVIEW_RESET,
     ORDER_COMPLETE_USER_RESET,
     ORDER_CANCEL_RESET,
+    ORDER_PAY_RESET,
 } from '~/redux/Constants/OrderConstants';
-import { ORDER_PAY_RESET } from '~/redux/Constants/OrderConstants';
 import { listCart } from '~/redux/Actions/cartActions';
 import Loading from '~/components/LoadingError/Loading';
 import Message from '~/components/LoadingError/Error';
 import Steppers from './custom_stepper_MUI/Steppers';
 import InfoPayer from './InfoPayer';
 import ViewOrderInformation from './ViewOrderInformation';
-import { Modal } from 'antd';
 import ModalDaiSyUI from '~/components/Modal/ModalDaiSyUI';
-// ==== rating
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
-import './Order.css';
 
 const labels = {
     1: 'Không hài lòng',
@@ -112,10 +108,12 @@ function Order() {
     useEffect(() => {
         if (successReviewOrder) {
             dispatch({ type: ORDER_CREATE_REVIEW_RESET });
+            return;
         }
         if (successComplete) {
             dispatch({ type: ORDER_COMPLETE_USER_RESET });
             dispatch(getOrderDetails(orderId));
+            return;
         }
     }, [successReviewOrder, successComplete]);
 
@@ -124,17 +122,15 @@ function Order() {
             return (Math.round(num * 100) / 100).toFixed(0);
         };
 
-        order.itemsPrice = addDecimals(order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0));
+        order.itemsPrice = addDecimals(order.orderItems.reduce((acc, item) => acc + item.price * item.quantity, 0));
     }
     useEffect(() => {
+        // if (!order || successPay) {
+        //     dispatch({ type: ORDER_PAY_RESET });
+        //     dispatch(getOrderDetails(orderId));
+        // }
         dispatch(getOrderDetails(orderId));
-    }, [successCancel]);
-    useEffect(() => {
-        if (!order || successPay) {
-            dispatch({ type: ORDER_PAY_RESET });
-            dispatch(getOrderDetails(orderId));
-        }
-    }, [dispatch, orderId, order]);
+    }, [orderId]);
 
     const handlerSuccessCart = () => {
         const arrItemOrder = order?.orderItems;
@@ -167,7 +163,7 @@ function Order() {
                     Body="Bạn xác nhận hủy đơn hàng này?"
                     HandleSubmit={cancelOrderHandler}
                 />
-                <div className="mx-32 pb-10">
+                <div className="mx-10 pb-10">
                     {contextHolder}
 
                     {loadingCancel && <Loading />}
@@ -193,24 +189,10 @@ function Order() {
                                                     }}
                                                     key={index}
                                                 >
-                                                    <div
-                                                        // className={
-                                                        //     order?.isPaid && itemOrder[index].productReview.length === 0
-                                                        //         ? 'col-md-1 col-4'
-                                                        //         : 'col-md-2 col-6'
-                                                        // }
-                                                        className="h-[100px] w-[100px]"
-                                                    >
+                                                    <div className="h-[100px] w-[100px]">
                                                         <img src={item.image} alt={item.name} />
                                                     </div>
-                                                    <div
-                                                        // className={
-                                                        //     order?.isPaid && itemOrder[index].productReview.length === 0
-                                                        //         ? 'col-md-3 col-4 d-flex align-items-center'
-                                                        //         : 'col-md-4 col-6 d-flex align-items-center'
-                                                        // }
-                                                        className="m-auto text-center"
-                                                    >
+                                                    <div className="m-auto text-center">
                                                         <Link to={`/products/${item.product}`}>
                                                             <h6 className="text-base font-semibold">{item.name}</h6>
                                                         </Link>
@@ -221,11 +203,13 @@ function Order() {
                                                     </div>
                                                     <div className="m-auto text-center">
                                                         <h4 className="text-base font-semibold">Số lượng</h4>
-                                                        <h6>{item.qty}</h6>
+                                                        <h6>{item.quantity}</h6>
                                                     </div>
                                                     <div className="m-auto text-center">
                                                         <h4 className="text-base font-semibold">Tổng tiền</h4>
-                                                        <h6>{(item.qty * item.price)?.toLocaleString('de-DE')}đ</h6>
+                                                        <h6>
+                                                            {(item.quantity * item.price)?.toLocaleString('de-DE')}đ
+                                                        </h6>
                                                     </div>
                                                     {order?.isPaid &&
                                                         order.orderItems[index].productReview.length === 0 && (
@@ -249,8 +233,6 @@ function Order() {
                                         </>
                                     )}
                                 </div>
-                                {/* =================================================================================================== */}
-                                {/* <div className="col-lg-3 d-flex align-items-end flex-column subtotal-order"> */}
                                 <div className=" flex-[1] items-center">
                                     <table className="table-bordered table">
                                         <tbody>
@@ -286,20 +268,22 @@ function Order() {
                                             Đơn hàng này đã bị hủy bỏ
                                         </div>
                                     )}
-                                    <div className="mx-2 mb-2 cursor-pointer rounded-md bg-[#fe6233] py-1 text-center text-fuchsia-50 ">
-                                        <button onClick={showModal}>Xem chi tiết đơn hàng</button>
+                                    <div className="mx-2 mb-2 cursor-pointer rounded-md bg-[var(--main-color)] py-1 text-center text-fuchsia-50 ">
+                                        <button onClick={showModal}>Chi tiết đơn hàng</button>
 
                                         <Modal title="Title" open={open} onOk={handleOk} onCancel={handleCancel}>
                                             <ViewOrderInformation id_Ghtk={order?.label_id_GiaoHangTK} />
                                         </Modal>
                                     </div>
                                     <div className="mx-2  cursor-pointer rounded-md">
-                                        {order?.paymentMethod == '"Thanh toán qua momo"' && (
+                                        {order?.paymentMethod == 'pay-with-momo' && order?.isPaid ? (
                                             <div>
-                                                <button className="w-full rounded bg-[var(--main-color)] px-2 py-3 font-bold text-white hover:bg-[var(--main-color-hover)]">
+                                                <button className="w-full rounded bg-[var(--main-color)] px-2 py-2 font-bold text-white hover:bg-[var(--main-color-hover)]">
                                                     Thanh toán ngay
                                                 </button>
                                             </div>
+                                        ) : (
+                                            ''
                                         )}
                                     </div>
                                     {order?.isPaid && order?.isDelivered && order?.completeUser !== true && (
@@ -323,13 +307,13 @@ function Order() {
                                         </div>
                                     )}
                                     {!order?.waitConfirmation && (
-                                        <div className="pt-2">
+                                        <div className="mx-2 pt-2">
                                             <button
                                                 onClick={() => window.my_modal_1.showModal()}
-                                                className=" mx-2 w-full cursor-pointer rounded-lg bg-red-600 py-2 text-base font-semibold uppercase text-white"
+                                                className=" w-full cursor-pointer rounded-lg bg-red-600 py-1 text-sm font-semibold uppercase text-white"
                                                 disabled={order?.isPaid || order?.cancel == 1}
                                             >
-                                                HỦY ĐƠN HÀNG NÀY
+                                                HỦY ĐƠN HÀNG
                                             </button>
                                         </div>
                                     )}

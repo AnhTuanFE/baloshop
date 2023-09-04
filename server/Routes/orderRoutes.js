@@ -1,12 +1,15 @@
 import express from 'express';
 import asyncHandler from 'express-async-handler';
-import { admin, protect } from '../Middleware/AuthMiddleware.js';
-import Product from '../Models/ProductModel.js';
-import Order from './../Models/OrderModel.js';
+import { admin, protect } from '../middleware/AuthMiddleware.js';
+import Product from '../models/ProductModel.js';
+import Order from '../models/OrderModel.js';
+import orderController from '../controllers/orderController.js';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
 const orderRouter = express.Router();
+
+orderRouter.post('/', protect, asyncHandler(orderController.createOrder));
 
 // API giao hàng tiết kiệm
 // const apiBase = 'https://services.giaohangtietkiem.vn';
@@ -28,118 +31,118 @@ const handleConfigProducts = (orderItems) => {
     return products;
 };
 
-orderRouter.post(
-    '/',
-    protect,
-    asyncHandler(async (req, res) => {
-        // let id_predefined = uuidv4().slice(0, 24);
-        try {
-            const {
-                orderItems,
-                shippingAddress,
-                paymentMethod,
-                itemsPrice,
-                shippingPrice,
-                totalPrice,
-                phone,
-                name,
-                email,
-                paypalOrder,
-                address_shop,
-            } = req.body;
-            if (orderItems.length != 0) {
-                for (let i = 0; i < orderItems.length; i++) {
-                    const product = await Product.findById(orderItems[i].product);
-                    const findCart = product.optionColor?.find((option) => option.color === orderItems[i].color);
-                    if (findCart.countInStock < orderItems[i].qty) {
-                        res.status(400);
-                        throw new Error('Số lượng không đủ đáp ứng');
-                    }
-                }
-            } else {
-                res.status(400);
-                throw new Error('Đặt hàng không thành công');
-            }
-            if (req?.user?.disabled) {
-                res.status(400);
-                throw new Error('Tài khoản của bạn đã bị khóa');
-            }
-            if (orderItems && orderItems.length === 0) {
-                res.status(400);
-                throw new Error('No order items');
-            }
-            if (paypalOrder?.payerID) {
-                const order = new Order({
-                    orderItems,
-                    user: req.user._id,
-                    shippingAddress,
-                    paymentMethod,
-                    itemsPrice,
-                    shippingPrice,
-                    totalPrice,
-                    phone,
-                    name,
-                    email,
-                    // id_predefined: id_predefined,
-                    paypalOrder,
-                    waitConfirmation: true,
-                    isPaid: true,
-                });
-                for (const orderItem of orderItems) {
-                    const findProduct = await Product.findById(orderItem.product);
-                    const optionColor = findProduct?.optionColor;
-                    const findColor = optionColor.find((option) => option.color == orderItem.color);
-                    const filterOptionColor = optionColor.filter((option) => option.color != orderItem.color);
-                    if (findColor) {
-                        findColor.color = findColor.color;
-                        findColor.countInStock = findColor.countInStock - orderItem.qty;
-                    }
-                    let arrOption = [...filterOptionColor, findColor];
-                    await Product.findOneAndUpdate({ _id: orderItem.product }, { optionColor: arrOption });
-                }
-                const createOrder = await order.save();
-                // const productConfiged = await handleConfigProducts(orderItems);
-                // const dataOrderGHTK = await handleCreateOrderGHTK(productConfiged);
-                // console.log('dataOrderGHTK paypal = ', dataOrderGHTK);
-                // , GHTK_Order: dataOrderGHTK
-                res.status(201).json({ ShopOrder: createOrder });
-            } else {
-                const order = new Order({
-                    orderItems,
-                    user: req.user._id,
-                    shippingAddress,
-                    paymentMethod,
-                    itemsPrice,
-                    shippingPrice,
-                    totalPrice,
-                    phone,
-                    name,
-                    email,
-                    // id_predefined: id_predefined,
-                });
-                for (const orderItem of orderItems) {
-                    const findProduct = await Product.findById(orderItem.product);
-                    const optionColor = findProduct?.optionColor;
-                    const findColor = optionColor.find((option) => option.color == orderItem.color);
-                    const filterOptionColor = optionColor.filter((option) => option.color != orderItem.color);
-                    if (findColor) {
-                        findColor.color = findColor.color;
-                        findColor.countInStock = findColor.countInStock - orderItem.qty;
-                    }
-                    let arrOption = [...filterOptionColor, findColor];
-                    await Product.findOneAndUpdate({ _id: orderItem.product }, { optionColor: arrOption });
-                }
-                const createOrder = await order.save();
-                // const productConfiged = await handleConfigProducts(orderItems);
-                // const dataOrderGHTK = await handleCreateOrderGHTK(productConfiged);
-                // , GHTK_Order: dataOrderGHTK
-                res.status(201).json({ ShopOrder: createOrder });
-            }
-        } catch (err) {
-            res.status(500).json(err);
-        }
-    }),
-);
+// orderRouter.post(
+//     '/',
+//     protect,
+//     asyncHandler(async (req, res) => {
+//         // let id_predefined = uuidv4().slice(0, 24);
+//         try {
+//             const {
+//                 orderItems,
+//                 shippingAddress,
+//                 paymentMethod,
+//                 itemsPrice,
+//                 shippingPrice,
+//                 totalPrice,
+//                 phone,
+//                 name,
+//                 email,
+//                 paypalOrder,
+//                 address_shop,
+//             } = req.body;
+//             if (orderItems.length != 0) {
+//                 for (let i = 0; i < orderItems.length; i++) {
+//                     const product = await Product.findById(orderItems[i].product);
+//                     const findCart = product.optionColor?.find((option) => option.color === orderItems[i].color);
+//                     if (findCart.countInStock < orderItems[i].qty) {
+//                         res.status(400);
+//                         throw new Error('Số lượng không đủ đáp ứng');
+//                     }
+//                 }
+//             } else {
+//                 res.status(400);
+//                 throw new Error('Đặt hàng không thành công');
+//             }
+//             if (req?.user?.disabled) {
+//                 res.status(400);
+//                 throw new Error('Tài khoản của bạn đã bị khóa');
+//             }
+//             if (orderItems && orderItems.length === 0) {
+//                 res.status(400);
+//                 throw new Error('No order items');
+//             }
+//             if (paypalOrder?.payerID) {
+//                 const order = new Order({
+//                     orderItems,
+//                     user: req.user._id,
+//                     shippingAddress,
+//                     paymentMethod,
+//                     itemsPrice,
+//                     shippingPrice,
+//                     totalPrice,
+//                     phone,
+//                     name,
+//                     email,
+//                     // id_predefined: id_predefined,
+//                     paypalOrder,
+//                     waitConfirmation: true,
+//                     isPaid: true,
+//                 });
+//                 for (const orderItem of orderItems) {
+//                     const findProduct = await Product.findById(orderItem.product);
+//                     const optionColor = findProduct?.optionColor;
+//                     const findColor = optionColor.find((option) => option.color == orderItem.color);
+//                     const filterOptionColor = optionColor.filter((option) => option.color != orderItem.color);
+//                     if (findColor) {
+//                         findColor.color = findColor.color;
+//                         findColor.countInStock = findColor.countInStock - orderItem.qty;
+//                     }
+//                     let arrOption = [...filterOptionColor, findColor];
+//                     await Product.findOneAndUpdate({ _id: orderItem.product }, { optionColor: arrOption });
+//                 }
+//                 const createOrder = await order.save();
+//                 // const productConfiged = await handleConfigProducts(orderItems);
+//                 // const dataOrderGHTK = await handleCreateOrderGHTK(productConfiged);
+//                 // console.log('dataOrderGHTK paypal = ', dataOrderGHTK);
+//                 // , GHTK_Order: dataOrderGHTK
+//                 res.status(201).json({ ShopOrder: createOrder });
+//             } else {
+//                 const order = new Order({
+//                     orderItems,
+//                     user: req.user._id,
+//                     shippingAddress,
+//                     paymentMethod,
+//                     itemsPrice,
+//                     shippingPrice,
+//                     totalPrice,
+//                     phone,
+//                     name,
+//                     email,
+//                     // id_predefined: id_predefined,
+//                 });
+//                 for (const orderItem of orderItems) {
+//                     const findProduct = await Product.findById(orderItem.product);
+//                     const optionColor = findProduct?.optionColor;
+//                     const findColor = optionColor.find((option) => option.color == orderItem.color);
+//                     const filterOptionColor = optionColor.filter((option) => option.color != orderItem.color);
+//                     if (findColor) {
+//                         findColor.color = findColor.color;
+//                         findColor.countInStock = findColor.countInStock - orderItem.qty;
+//                     }
+//                     let arrOption = [...filterOptionColor, findColor];
+//                     await Product.findOneAndUpdate({ _id: orderItem.product }, { optionColor: arrOption });
+//                 }
+//                 const createOrder = await order.save();
+//                 // const productConfiged = await handleConfigProducts(orderItems);
+//                 // const dataOrderGHTK = await handleCreateOrderGHTK(productConfiged);
+//                 // , GHTK_Order: dataOrderGHTK
+//                 res.status(201).json({ ShopOrder: createOrder });
+//             }
+//         } catch (err) {
+//             res.status(500).json(err);
+//         }
+//     }),
+// );
 //UPDATE AMOUNT PRODUCT
 orderRouter.put(
     '/returnAmountProduct',

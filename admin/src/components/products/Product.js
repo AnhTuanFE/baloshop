@@ -16,16 +16,19 @@ const Product = (props) => {
     return (
         <>
             {product && (
-                <tr>
-                    <td style={{ width: '10%' }}>{index + 1}</td>
-                    <td style={{ width: '20%' }}>
+                <tr className="text-center">
+                    <td style={{ width: '5%' }}>{index + 1}</td>
+                    <td style={{ width: '25%' }}>
+                        <span> {product._id}</span>
+                    </td>
+                    <td style={{ width: '10%' }}>
                         <img
                             src={`${product?.image[0].urlImage}`}
                             alt="Product"
                             style={{ height: '40px', width: '40px' }}
                         />
                     </td>
-                    <td style={{ width: '40%' }}>
+                    <td style={{ width: '30%' }}>
                         <span> {product.name}</span>
                     </td>
                     <td style={{ width: '20%' }}>
@@ -35,23 +38,18 @@ const Product = (props) => {
                         <span> {product.countInStock}</span>
                     </td> */}
                     <td className="text-end" style={{ width: '10%' }}>
-                        <div className="dropdown">
-                            <Link to="#" data-bs-toggle="dropdown" className="btn btn-light">
-                                <i className="fas fa-ellipsis-h"></i>
+                        <div className="d-flex">
+                            <Link to={`/product/${product._id}/edit`} className="dropdown-item">
+                                Sửa
                             </Link>
-                            <div className="dropdown-menu">
-                                <Link to={`/product/${product._id}/edit`} className="dropdown-item">
-                                    Sửa
-                                </Link>
-                                <button
-                                    className="dropdown-item"
-                                    onClick={() => {
-                                        deletehandler(product._id);
-                                    }}
-                                >
-                                    Xóa
-                                </button>
-                            </div>
+                            <button
+                                className="dropdown-item"
+                                onClick={() => {
+                                    deletehandler(product._id);
+                                }}
+                            >
+                                Xóa
+                            </button>
                         </div>
                     </td>
                 </tr>

@@ -146,21 +146,13 @@ const AddProduct = () => {
             <section className="content-main" style={{ maxWidth: '1200px' }}>
                 <form>
                     <div className="content-header">
-                        <Link to="/products" className="btn btn-danger text-white">
-                            Trở về Trang sản phẩm
-                        </Link>
                         <h2 className="content-title">Thêm sản phẩm</h2>
-                        <div>
-                            {/* <button type="submit" className="btn btn-primary color-orange">
-                                Add Product
-                            </button> */}
-                        </div>
                     </div>
 
-                    <div className="row mb-0">
-                        <div className="col-xl-12 col-lg-12">
-                            <div className="card mb-0">
-                                <div className="card-body shadow-sm">
+                    <div className="row mb-0 ">
+                        <div className="col-xl-12 col-lg-12 overflow-y-auto " style={{ height: '74vh' }}>
+                            <div className="card mb-1  border-none ">
+                                <div className="card-body p-0">
                                     <div className="card-body shadow-sm" style={{ border: '1px solid #ccc' }}>
                                         {error && <Message variant="alert-danger">{error}</Message>}
                                         {loading && <Loading />}
@@ -219,10 +211,8 @@ const AddProduct = () => {
                                                 <select
                                                     type="text"
                                                     id="product_category"
-                                                    //className="form-select"
                                                     className={`form-select ${validate.borderRed1}`}
                                                     aria-label=".form-select-lg example"
-                                                    //required
                                                     value={category}
                                                     onClick={() => {
                                                         setValidate((values) => {
@@ -301,16 +291,16 @@ const AddProduct = () => {
                                                 </div>
                                                 <p className="product_validate">{validate.description}</p>
                                             </div>
-                                            <div
-                                                style={{ marginTop: '10px', display: 'flex', justifyContent: 'right' }}
-                                            >
+                                            <div className="d-flex justify-content-end mt-3">
                                                 {disabledProduct && (
-                                                    <button
-                                                        className="btn btn-primary color-orange"
-                                                        onClick={submitHandler}
-                                                    >
-                                                        Lưu
-                                                    </button>
+                                                    <>
+                                                        <button className="btn btn-primary  " onClick={submitHandler}>
+                                                            Lưu
+                                                        </button>
+                                                        <Link to="/products" className="btn btn-danger ml-2 text-white">
+                                                            Trở về
+                                                        </Link>
+                                                    </>
                                                 )}
                                             </div>
                                         </from>

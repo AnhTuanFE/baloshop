@@ -5,7 +5,7 @@ function DefaulLayout({ children }) {
     return (
         <div className="Wrapper bg-[var(--content-color)]">
             <Header />
-            <div className="pt-[170px]">{children}</div>
+            <div className=" max-md:pt-[120px] md:pt-[140px]">{children}</div>
             <Footer />
         </div>
     );

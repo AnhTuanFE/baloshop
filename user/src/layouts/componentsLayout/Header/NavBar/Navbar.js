@@ -11,15 +11,20 @@ export default function NavBar() {
     const { CategoryList } = useSelector(productsRemainingSelector);
     const { categories } = CategoryList;
     useEffect(() => {
-        dispatch(ListCategory());
+        if (Object.keys(categories).length == 0) {
+            dispatch(ListCategory());
+        }
     }, []);
     return (
         <>
-            <div className="w-1/2">
-                <Menu mode="horizontal" className="bg-[#f4f4f4]">
-                    {categories.map((category, index) => (
-                        <MenuItem key={index}>
-                            <Link className="text-sm font-medium uppercase" to={`/category/${category._id}`}>
+            <div className="w-[200px] max-use400:w-[150px] sm:w-[200px] md:w-[400px]">
+                <Menu
+                    mode="horizontal"
+                    className="bg-[#f4f4f4] [&_.ant-menu-overflow-item]:leading-7 max-use400:[&_.ant-menu-overflow-item]:leading-5 "
+                >
+                    {categories?.map((category, index) => (
+                        <MenuItem className="" key={index}>
+                            <Link className="text-xs font-medium uppercase" to={`/category/${category._id}`}>
                                 {category.name}
                             </Link>
                         </MenuItem>

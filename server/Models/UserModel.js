@@ -32,7 +32,7 @@ const userSchema = mongoose.Schema(
         city: {
             type: String,
         },
-        distric: {
+        district: {
             type: String,
         },
         ward: {
@@ -42,8 +42,7 @@ const userSchema = mongoose.Schema(
             type: String,
         },
         image: {
-            urlImageCloudinary: { type: String },
-            idImageCloudinary: { type: String },
+            type: String,
         },
         disabled: {
             type: Boolean,

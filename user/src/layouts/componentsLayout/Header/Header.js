@@ -1,18 +1,16 @@
-import { Box, IconButton, Typography, Avatar, TextField, MenuItem, Select, Autocomplete } from '@mui/material';
+import { Box, Typography, Avatar, TextField, MenuItem, Autocomplete } from '@mui/material';
 import { Search, LocalMall } from '@mui/icons-material';
 import { useEffect, useState, memo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import NavBar from './NavBar/Navbar';
 import ContactInformation from '../ContactInformation/ContactInformation';
-
 import { logout, getUserDetails } from '~/redux/Actions/userActions'; //updateUserProfile,
 import { usersRemainingSelector } from '~/redux/Selector/usersSelector';
 import { cartsRemainingSelector } from '~/redux/Selector/cartsSelector';
 import { imageDefaul, logoDefaul } from '~/utils/data';
-import { Badge, Space, Divider } from 'antd';
+import { Badge, Space, Divider, Select } from 'antd';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { faFacebook, faInstagramSquare } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function Header(props) {
@@ -98,12 +96,12 @@ function Header(props) {
                 <Typography
                     align="center"
                     sx={{
-                        fontSize: '18px',
+                        fontSize: '16px',
                         verticalAlign: 'center',
                         fontWeight: 'bold',
-                        padding: '4px 0px',
                         margin: 'auto',
                     }}
+                    className="hidden py-1 pr-2 md:block"
                 >
                     <Link to="/login">Đăng nhập</Link>
                 </Typography>
@@ -111,17 +109,32 @@ function Header(props) {
                     align="center"
                     sx={{
                         margin: '0px 8px',
-                        fontSize: '18px',
+                        fontSize: '16px',
                         verticalAlign: 'center',
                         fontWeight: 'bold',
-                        padding: '4px 0px',
                         margin: 'auto',
                     }}
+                    className="hidden py-1 pl-2 md:block"
                 >
                     <Link to="/register">Đăng ký</Link>
                 </Typography>
+                <div className=" m-auto items-center md:hidden">
+                    <Link to="/login">
+                        <p className="text-sm font-bold">Đăng nhập</p>
+                    </Link>
+                </div>
             </Box>
         );
+    };
+    const handleChangeAntd = (e) => {
+        if (e == 'account') {
+            navigate('/profile');
+        }
+        if (e == 'logout') {
+            logoutHandler();
+            navigate('/');
+        }
+        console.log('e = ', e);
     };
     const UILogined = () => {
         return (
@@ -129,50 +142,35 @@ function Header(props) {
                 sx={{
                     display: 'flex',
                 }}
-                className="relative"
+                className=""
             >
-                <Avatar
-                    id="simple-select"
-                    alt="Remy Sharp"
-                    src={`${
-                        userInfo?.image?.urlImageCloudinary === undefined
-                            ? imageDefaul
-                            : userInfo?.image?.urlImageCloudinary
-                    }`}
-                    sx={{ width: 48, height: 48 }}
-                    className="!absolute z-[1] ml-12 mt-2"
-                />
-                <Box className="z-[2] mt-3 pl-12">
-                    <Select
-                        disableUnderline
+                <Link className="cursor-pointer pl-2" to={'/profile'}>
+                    <Avatar
                         id="simple-select"
-                        sx={{
-                            width: '200px',
-                            padding: '8px 0px',
-                            paddingTop: '4px',
-                        }}
-                        value={10}
-                        variant="standard"
-                    >
-                        <MenuItem
-                            value={10}
-                            sx={{
-                                display: 'none',
-                            }}
-                        >
-                            <span className="ml-[60px]">{notiUser()}</span>
-                        </MenuItem>
-                        <Link to="/profile">
-                            <MenuItem value={20}>Tài khoản của tôi</MenuItem>
-                        </Link>
-                        <MenuItem value={30} onClick={logoutHandler}>
-                            <Link to="#">Đăng xuất</Link>
-                        </MenuItem>
-                    </Select>
+                        alt="Remy Sharp"
+                        src={`${userInfo?.image === undefined ? imageDefaul : userInfo?.image}`}
+                        className=" mr-1 h-[48px] w-[48px] md:mt-2"
+                    />
+                </Link>
+                <Box className="z-[2] mt-3">
+                    <Select
+                        className="hidden w-[120px] sm:block [&_.anticon-down]:pt-2"
+                        value={notiUser()}
+                        onChange={handleChangeAntd}
+                        options={[
+                            {
+                                value: 'account',
+                                label: 'Tài khoản',
+                            },
+                            {
+                                value: 'logout',
+                                label: 'Đăng xuất',
+                            },
+                        ]}
+                    />
                 </Box>
-
                 <Link to="/cart">
-                    <Space size="middle" className="ml-1 mt-3">
+                    <Space size="middle" className="ml-1 max-sm:mt-2 sm:mt-5">
                         <Badge count={cartItems ? cartItems?.length : 0}>
                             <LocalMall
                                 fontSize="medium"
@@ -196,40 +194,25 @@ function Header(props) {
             className="fixed left-0 right-0 top-0 z-10 bg-[var(--content-color)]"
         >
             <ContactInformation />
-            <Box
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    paddingTop: '12px',
-                }}
-            >
-                <Box
-                    sx={{
-                        flex: '1',
-                        marginLeft: '128px',
-                    }}
-                >
+            <div className="flex justify-between pt-2 max-md:px-5 md:px-20 ">
+                <div className="">
                     <Link to={'/'}>
-                        <img alt="Logo" src={logoDefaul} style={{ width: '160px' }} />
+                        <img
+                            alt="Logo"
+                            src={logoDefaul}
+                            className="hidden md:block  md:h-[40px] md:w-[70px] lg:h-[60px] lg:w-[160px]"
+                        />
                     </Link>
-                </Box>
-                <Box
-                    sx={{
-                        flex: '3',
-                    }}
-                >
+                </div>
+                <div>
                     <form onSubmit={submitHandler}>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'center',
-                            }}
-                        >
+                        <div className="flex justify-center">
                             <Autocomplete
                                 disablePortal
                                 id="combo-box-demo"
                                 options={key}
-                                className="z-30 w-[70%] border-none"
+                                size="small"
+                                className="w-[200px]  max-use400:w-[150px] sm:w-[200px] md:w-[300px] lg:w-[400px]"
                                 onChange={(e) => {
                                     setKeyword(e.target.outerText);
                                 }}
@@ -249,25 +232,18 @@ function Header(props) {
                                 style={{
                                     borderRadius: '0px 4px 4px 0px',
                                 }}
-                                className="bg-[var(--main-color)] px-3 py-2 text-white hover:bg-[var(--main-color-hover)]"
+                                className="bg-[var(--main-color)] px-3.5 text-white hover:bg-[var(--main-color-hover)]"
                             >
-                                <FontAwesomeIcon className="text-2xl" icon={faMagnifyingGlass} />
+                                <FontAwesomeIcon className="text-xl" icon={faMagnifyingGlass} />
                             </button>
-                        </Box>
+                        </div>
                     </form>
                     <div className="flex justify-center">
                         <NavBar />
                     </div>
-                </Box>
-                <Box
-                    sx={{
-                        flex: '1',
-                        marginRight: '40px',
-                    }}
-                >
-                    {userInfo ? <UILogined /> : <UINotLogin />}
-                </Box>
-            </Box>
+                </div>
+                <Box>{userInfo ? <UILogined /> : <UINotLogin />}</Box>
+            </div>
         </Box>
     );
 }

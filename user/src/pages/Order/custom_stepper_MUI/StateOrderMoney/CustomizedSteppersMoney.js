@@ -9,6 +9,20 @@ import LocalAtmSharpIcon from '@mui/icons-material/LocalAtmSharp';
 import LibraryAddCheckSharpIcon from '@mui/icons-material/LibraryAddCheckSharp';
 import CancelSharpIcon from '@mui/icons-material/CancelSharp';
 
+/*
+'placed';
+'confirm';
+'delivering';
+ 'delivered';
+'cancelled';
+'completed';
+
+'pay-with-cash';
+'pay-with-momo';
+'pay-with-atm';
+'pay-with-credit-card';
+'pay-with-paypal';
+*/
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
     [`&.${stepConnectorClasses.alternativeLabel}`]: {
         top: 22,

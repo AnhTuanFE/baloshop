@@ -16,7 +16,7 @@ function Home() {
     const sortProducts = params.sortProducts;
 
     return (
-        <div className=" px-20">
+        <div className=" max-md:px-2 md:px-20">
             {!keyword && !category ? <Sliders /> : ''}
             {!keyword && !category ? <LatestProduct /> : ''}
             {!keyword && !category ? <BestSellingProduct /> : ''}

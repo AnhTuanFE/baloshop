@@ -28,7 +28,7 @@ function Crop_image_avatar({ user }) {
 
     useEffect(() => {
         if (user) {
-            setImage(user.image?.urlImageCloudinary);
+            setImage(user.image);
             setNameImage(user.image?.idImageCloudinary);
         }
     }, [dispatch, user]);
@@ -69,12 +69,12 @@ function Crop_image_avatar({ user }) {
     }, [handleUpdateImage]);
 
     return (
-        <Box>
+        <div className="">
             <div
                 className="col-lg-12 col-md-12 col-sm-12 display_none "
                 style={checkFile === true ? {} : { display: 'none' }}
             >
-                <div className="ml-28">
+                <div className="">
                     <img
                         src={
                             image === undefined || typeof image === 'object'
@@ -100,48 +100,61 @@ function Crop_image_avatar({ user }) {
                         ></input>
                         <label
                             for="id_file"
-                            className="mt-2 cursor-pointer rounded-md bg-[#eb7914] pb-1 pl-8 pr-8 pt-1 text-fuchsia-50"
+                            className="mt-2 cursor-pointer rounded-md bg-[var(--main-color)] pb-1 pl-8 pr-8 pt-1 text-fuchsia-50 hover:bg-[--main-color-hover]"
                         >
-                            Chọn ảnh
+                            Đổi avatar
                         </label>
                     </div>
                 </div>
             </div>
 
-            <div
-                className="col-lg-12 col-md-12 col-sm-12 display_none text-center"
-                style={
-                    checkImage === true
-                        ? { position: 'absolute', height: '230px', width: '230px', background: '#cccccc42' }
-                        : {
-                              display: 'none',
-                              position: 'absolute',
-                              height: '230px',
-                              width: '230px',
-                              background: '#cccccc42',
-                          }
-                }
-            >
-                <div>
-                    <Cropper
-                        image={imgAvatar}
-                        crop={crop}
-                        rotation={rotation}
-                        zoom={zoom}
-                        aspect={4 / 3}
-                        onCropChange={setCrop}
-                        onRotationChange={setRotation}
-                        onCropComplete={onCropComplete}
-                        onZoomChange={setZoom}
-                    />
-                </div>
-                <div>
-                    <Button onClick={showCroppedImage} variant="contained" color="primary" className="save-image">
-                        Lưu ảnh
-                    </Button>
+            <div className="flex justify-center">
+                <div
+                    className="text-center"
+                    style={
+                        checkImage === true
+                            ? {
+                                  position: 'absolute',
+                                  height: '200px',
+                                  width: '200px',
+                                  background: '#cccccc42',
+                                  //   marginRight: '100px',
+                              }
+                            : {
+                                  display: 'none',
+                                  //   position: 'absolute',
+                                  //   height: '200px',
+                                  //   width: '200px',
+                                  //   background: '#cccccc42',
+                              }
+                    }
+                >
+                    <div>
+                        <Cropper
+                            image={imgAvatar}
+                            crop={crop}
+                            rotation={rotation}
+                            zoom={zoom}
+                            aspect={4 / 3}
+                            onCropChange={setCrop}
+                            onRotationChange={setRotation}
+                            onCropComplete={onCropComplete}
+                            onZoomChange={setZoom}
+                        />
+                    </div>
+                    <div>
+                        <Button
+                            onClick={showCroppedImage}
+                            variant="contained"
+                            // save-image
+                            className=" !bg-[var(--main-color)] px-2 py-1 hover:!bg-[var(--main-color-hover)]"
+                        >
+                            Lưu ảnh
+                        </Button>
+                    </div>
                 </div>
             </div>
-        </Box>
+        </div>
     );
 }
 
