@@ -418,9 +418,9 @@ productRoute.put(
         if (product) {
             cloudinary.uploader.destroy(nameImage, function (error, result) {
                 try {
-                    console.log('result = ', result, 'error = ', error);
+                    // console.log('result = ', result, 'error = ', error);
                 } catch (err) {
-                    console.log('lỗi = '.err);
+                    // console.log('lỗi = '.err);
                 }
             });
             // ===================

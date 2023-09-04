@@ -154,12 +154,12 @@ paypalRouter.post(
     asyncHandler(async (req, res) => {
         try {
             const { orderID } = req.body;
-            console.log('orderID = ', orderID);
+            // console.log('orderID = ', orderID);
             const captureData = await capturePayment(orderID.toString());
             // TODO: store payment information such as the transaction ID
             res.json(captureData);
         } catch (error) {
-            console.log('lỗi là = '.error);
+            // console.log('lỗi là = '.error);
             res.json(error);
         }
     }),

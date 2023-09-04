@@ -1,4 +1,3 @@
-import dotenv from 'dotenv';
 import ImportData from './DataImport.js';
 import productRoute from './ProductRoutes.js';
 import userRouter from './UserRoutes.js';

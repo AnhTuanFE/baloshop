@@ -41,13 +41,13 @@ forgotPassRouter.post('/forgotPassword', async (req, res) => {
 
         transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
-                console.log(error);
+                // console.log(error);
             } else {
-                console.log('Email sent: ' + info.response);
+                // console.log('Email sent: ' + info.response);
             }
         });
         res.json({ status: 'Link đặt lại mật khẩu đã được gửi qua email, vui lòng kiểm tra hòm thư của bạn' });
-        console.log(link);
+        // console.log(link);
     } catch (error) {}
 });
 
@@ -88,7 +88,7 @@ forgotPassRouter.post('/verify-reset-password', async (req, res) => {
 // thay đổi mật khẩu
 forgotPassRouter.post('/reset-password', async (req, res) => {
     // const { id, token } = req.params;
-    console.log('req?.body = ', req?.body);
+    // console.log('req?.body = ', req?.body);
     const { newPassword, id, token } = req?.body;
 
     try {

@@ -44,9 +44,9 @@ createUserRouter.post(
 
             transporter.sendMail(mailOptions, function (error, info) {
                 if (error) {
-                    console.log(error);
+                    // console.log(error);
                 } else {
-                    console.log('Email sent: ' + info.response);
+                    // console.log('Email sent: ' + info.response);
                 }
             });
             res.json({ status: 'Link xác minh đã gửi qua email, vui lòng kiểm tra hòm thư của bạn' });

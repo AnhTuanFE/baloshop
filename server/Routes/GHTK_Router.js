@@ -36,7 +36,6 @@ GHTK_Router.post(
     '/get_fee_ship',
     asyncHandler(async (req, res) => {
         try {
-            // console.log('req = ', req?.body);
             const {
                 pick_province,
                 pick_district,
@@ -111,7 +110,6 @@ GHTK_Router.post(
                 customer_district: district,
                 // customer_address: address,
             };
-            console.log('data1 = ', data1);
 
             const { data } = await axios.get(url, data1, config);
             if (data) {
@@ -223,7 +221,6 @@ GHTK_Router.get(
 
             const data1 = '5f91ade1-b788-4d07-b016-';
             const url = `${apiBase}/services/shipment/cancel/partner_id:${data1}`;
-            console.log('url = ', url);
             const config = {
                 headers: {
                     'Content-Type': 'application/json',
@@ -231,10 +228,8 @@ GHTK_Router.get(
                 },
             };
             const { data } = await axios.post(url, config);
-            console.log('data = ', data);
 
             if (data) {
-                console.log('data if = ', data);
                 res.status(200).json(data);
             }
         } catch (error) {
@@ -256,7 +251,6 @@ GHTK_Router.post(
             fetch(url, { headers })
                 .then((response) => response.blob())
                 .then((blob) => {
-                    console.log('blob = ', blob);
                     const filename = 'file.pdf';
                     const contentType = 'application/pdf';
                     res.setHeader('Content-Type', contentType);
