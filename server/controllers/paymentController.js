@@ -261,7 +261,7 @@ const refundTrans = async (req, res) => {
     const { orderId, amount, description, requestId, transId, lang } = req.body;
     const requestBody = momoService.buildRefundRequest(orderId, amount, description, requestId, transId, lang);
 
-    console.log(requestBody);
+    // console.log(requestBody);
     const momo = axios.create({
         baseURL: process.env.MOMO_API_URL,
         headers: {
@@ -272,11 +272,11 @@ const refundTrans = async (req, res) => {
     const result = await momo
         .post('/v2/gateway/api/refund', requestBody)
         .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             res.status(200).json(response.data);
         })
         .catch(async (error) => {
-            console.log(error);
+            // console.log(error);
             res.status(400);
             throw new Error(error.response?.message || error.message);
         });
@@ -309,11 +309,11 @@ const getOrderPaypal = async (req, res) => {
 
     paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
         if (error) {
-            console.log(error.response);
+            // console.log(error.response);
             throw error;
         } else {
-            console.log('Get Payment Response');
-            console.log(JSON.stringify(payment));
+            // console.log('Get Payment Response');
+            // console.log(JSON.stringify(payment));
             res.json(payment);
         }
     });
