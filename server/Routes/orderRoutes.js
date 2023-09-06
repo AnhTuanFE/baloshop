@@ -3,6 +3,7 @@ import asyncHandler from 'express-async-handler';
 import { admin, protect } from '../middleware/AuthMiddleware.js';
 import Product from '../models/ProductModel.js';
 import Order from '../models/OrderModel.js';
+import Payment from '../models/PaymentModel.js';
 import orderController from '../controllers/orderController.js';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
@@ -328,6 +329,9 @@ orderRouter.get(
     protect,
     asyncHandler(async (req, res) => {
         const order = await Order.findById(req.params.id).populate('user', 'name email');
+        // console.log('order = ', order?.payment);
+        // const payment = await Payment.findById(order?.payment);
+        // console.log('payment = ', payment);
 
         if (order) {
             res.json(order);

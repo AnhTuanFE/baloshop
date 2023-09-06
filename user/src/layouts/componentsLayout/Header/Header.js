@@ -9,14 +9,25 @@ import { logout, getUserDetails } from '~/redux/Actions/userActions'; //updateUs
 import { usersRemainingSelector } from '~/redux/Selector/usersSelector';
 import { cartsRemainingSelector } from '~/redux/Selector/cartsSelector';
 import { imageDefaul, logoDefaul } from '~/utils/data';
-import { Badge, Space, Divider, Select } from 'antd';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { Badge, Space, Divider, Select, Drawer, theme } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass, faBars, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 function Header(props) {
     const { keysearch } = props;
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    // responsive
+    const { token } = theme.useToken();
+    const [open, setOpen] = useState(false);
+    const showDrawer = () => {
+        setOpen(true);
+    };
+    const onClose = () => {
+        setOpen(false);
+    };
+    // responsive
 
     const [keyword, setKeyword] = useState('');
     const [key, setKey] = useState([]);
@@ -138,23 +149,18 @@ function Header(props) {
     };
     const UILogined = () => {
         return (
-            <Box
-                sx={{
-                    display: 'flex',
-                }}
-                className=""
-            >
+            <div className="flex pb-2">
                 <Link className="cursor-pointer pl-2" to={'/profile'}>
                     <Avatar
                         id="simple-select"
                         alt="Remy Sharp"
                         src={`${userInfo?.image === undefined ? imageDefaul : userInfo?.image}`}
-                        className=" mr-1 h-[48px] w-[48px] md:mt-2"
+                        className=" mr-1 mt-2 h-[48px] w-[48px]"
                     />
                 </Link>
-                <Box className="z-[2] mt-3">
+                <div className="z-[2] mt-3">
                     <Select
-                        className="hidden w-[120px] sm:block [&_.anticon-down]:pt-2"
+                        className="w-[120px] [&_.anticon-down]:pt-2"
                         value={notiUser()}
                         onChange={handleChangeAntd}
                         options={[
@@ -168,9 +174,9 @@ function Header(props) {
                             },
                         ]}
                     />
-                </Box>
+                </div>
                 <Link to="/cart">
-                    <Space size="middle" className="ml-1 max-sm:mt-2 sm:mt-5">
+                    <Space size="middle" className="ml-1 max-sm:mt-4 sm:mt-5">
                         <Badge count={cartItems ? cartItems?.length : 0}>
                             <LocalMall
                                 fontSize="medium"
@@ -181,7 +187,7 @@ function Header(props) {
                         </Badge>
                     </Space>
                 </Link>
-            </Box>
+            </div>
         );
     };
 
@@ -194,17 +200,78 @@ function Header(props) {
             className="fixed left-0 right-0 top-0 z-10 bg-[var(--content-color)]"
         >
             <ContactInformation />
-            <div className="flex justify-between pt-2 max-md:px-5 md:px-20 ">
+            {/* overflow-hidden */}
+            <div className="relative flex justify-between pt-2 max-md:px-5 md:px-20 ">
+                <div className="hidden max-sm:block">
+                    <FontAwesomeIcon
+                        className="absolute left-3 cursor-pointer pt-2 text-2xl "
+                        onClick={showDrawer}
+                        icon={faChevronRight}
+                    />
+                </div>
                 <div className="">
                     <Link to={'/'}>
                         <img
                             alt="Logo"
                             src={logoDefaul}
-                            className="hidden md:block  md:h-[40px] md:w-[70px] lg:h-[60px] lg:w-[160px]"
+                            className="max-sm:ml-5 max-sm:h-[40px] max-sm:w-[80px] sm:h-[50px] sm:w-[140px]"
                         />
                     </Link>
+                    <div className="">
+                        <Drawer
+                            className="[&_.ant-drawer-body]:py-2"
+                            placement="left"
+                            closable={false}
+                            onClose={onClose}
+                            open={open}
+                            getContainer={false}
+                        >
+                            <div className="flex justify-between">
+                                <form onSubmit={submitHandler}>
+                                    <div className="flex justify-center">
+                                        <Autocomplete
+                                            disablePortal
+                                            id="combo-box-demo"
+                                            options={key}
+                                            size="small"
+                                            className="w-[200px]  max-use400:w-[150px] sm:w-[200px] md:w-[300px] lg:w-[400px]"
+                                            onChange={(e) => {
+                                                setKeyword(e.target.outerText);
+                                            }}
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    onChange={(e) => {
+                                                        setKeyword(e.target.value);
+                                                    }}
+                                                    className="bg-[var(--white-color)]"
+                                                    {...params}
+                                                    label="Tìm kiếm"
+                                                />
+                                            )}
+                                        />
+                                        <button
+                                            type="submit"
+                                            style={{
+                                                borderRadius: '0px 4px 4px 0px',
+                                            }}
+                                            className="bg-[var(--main-color)] px-3.5 text-white hover:bg-[var(--main-color-hover)]"
+                                        >
+                                            <FontAwesomeIcon className="text-xl" icon={faMagnifyingGlass} />
+                                        </button>
+                                    </div>
+                                </form>
+                                <div className="absolute right-0 pt-2.5">
+                                    <FontAwesomeIcon
+                                        className="cursor-pointer text-2xl"
+                                        onClick={onClose}
+                                        icon={faChevronLeft}
+                                    />
+                                </div>
+                            </div>
+                        </Drawer>
+                    </div>
                 </div>
-                <div>
+                <div className="max-sm:hidden">
                     <form onSubmit={submitHandler}>
                         <div className="flex justify-center">
                             <Autocomplete
@@ -242,6 +309,7 @@ function Header(props) {
                         <NavBar />
                     </div>
                 </div>
+
                 <Box>{userInfo ? <UILogined /> : <UINotLogin />}</Box>
             </div>
         </Box>

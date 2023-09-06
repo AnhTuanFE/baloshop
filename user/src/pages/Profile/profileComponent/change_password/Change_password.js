@@ -34,7 +34,7 @@ function Change_password({ user }) {
 
     const submitUpdatePassword = (data) => {
         const { password, oldPassword } = data;
-        dispatch(updateUserPassword({ id: user._id, password, oldPassword }));
+        dispatch(updateUserPassword({ password, oldPassword }));
     };
     useEffect(() => {
         if (updatesuccessPass === true) {

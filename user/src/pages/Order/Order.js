@@ -125,11 +125,12 @@ function Order() {
         order.itemsPrice = addDecimals(order.orderItems.reduce((acc, item) => acc + item.price * item.quantity, 0));
     }
     useEffect(() => {
-        // if (!order || successPay) {
-        //     dispatch({ type: ORDER_PAY_RESET });
-        //     dispatch(getOrderDetails(orderId));
-        // }
-        dispatch(getOrderDetails(orderId));
+        if (!order || successPay) {
+            dispatch({ type: ORDER_PAY_RESET });
+            dispatch(getOrderDetails(orderId));
+        }
+        // dispatch({ type: ORDER_PAY_RESET });
+        // dispatch(getOrderDetails(orderId));
     }, [orderId]);
 
     const handlerSuccessCart = () => {

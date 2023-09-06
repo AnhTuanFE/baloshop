@@ -181,18 +181,18 @@ function Cart() {
             {contextHolder}
             <div className="pb-5">
                 {cartItems?.length === 0 ? (
-                    <div className=" alert alert-info mt-3 flex justify-center text-center">
-                        <div>
+                    <div className=" row col-lg-12  mt-3 flex justify-center  text-center">
+                        <div className=" col-lg-6 rounded-xl bg-[var(--blue-color)] py-3">
                             <div className="mb-4">
                                 <img
                                     className="m-auto h-[100px] w-[100px]"
                                     src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/cart/9bdd8040b334d31946f49e36beaf32db.png"
                                     alt="Giỏ hàng trống"
                                 />
-                                GIỎ HÀNG CỦA BẠN ĐANG TRỐNG
+                                <div className="mt-2 font-medium">GIỎ HÀNG CỦA BẠN ĐANG TRỐNG</div>
                             </div>
                             <Link
-                                className="btn-success btn mx-5 px-5 text-base font-semibold hover:bg-[#157347]"
+                                className="btn mx-5 bg-[var(--main-color)] px-5 text-base font-semibold text-white hover:bg-[var(--main-color-hover)]"
                                 to="/"
                             >
                                 BẮT ĐẦU MUA SẮM

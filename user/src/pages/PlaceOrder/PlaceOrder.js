@@ -91,14 +91,14 @@ function PlaceOrder() {
         }
         if (success) {
             console.log('order = ', order);
-            if (order?.newOrder?.payment?.payUrl) {
-                window.location.href = `${order.newOrder.payment.payUrl}`;
-                return;
-            } else {
-                successPlaceholder();
-                dispatch({ type: ORDER_CREATE_RESET });
-                navigate(`/order/${order?.newOrder?._id}`);
-            }
+            // if (order?.newOrder?.payment?.payUrl) {
+            //     window.location.href = `${order.newOrder.payment.payUrl}`;
+            //     return;
+            // } else {
+            //     successPlaceholder();
+            //     dispatch({ type: ORDER_CREATE_RESET });
+            //     navigate(`/order/${order?.newOrder?._id}`);
+            // }
         }
     }, [error, success]);
 
@@ -114,7 +114,6 @@ function PlaceOrder() {
                     postalCode: '',
                 },
                 paymentMethod: paymentMethodState,
-                // paymentMethod: 'pay-with-credit-card',
                 itemsPrice: cart.itemsPrice,
                 shippingPrice: cart.shippingPrice,
                 totalPrice: cart.totalPrice,
