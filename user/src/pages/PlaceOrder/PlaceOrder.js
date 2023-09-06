@@ -114,7 +114,6 @@ function PlaceOrder() {
                     postalCode: '',
                 },
                 paymentMethod: paymentMethodState,
-                // paymentMethod: 'pay-with-credit-card',
                 itemsPrice: cart.itemsPrice,
                 shippingPrice: cart.shippingPrice,
                 totalPrice: cart.totalPrice,

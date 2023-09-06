@@ -1,5 +1,6 @@
 import Sidebar from '../layoutComponents/SiderBar';
 import Header from '../layoutComponents/Header';
+import { memo } from 'react';
 
 function DefaulLayout({ children }) {
     return (
@@ -12,4 +13,4 @@ function DefaulLayout({ children }) {
         </div>
     );
 }
-export default DefaulLayout;
+export default memo(DefaulLayout);
