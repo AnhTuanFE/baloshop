@@ -6,7 +6,7 @@ export default function PaginatorOrder(props) {
     return (
         pages > 1 && (
             <nav
-                className="col-lg-12 col-md-12 "
+                className="col-lg-12 col-md-12"
                 aria-label="Page navigation"
                 style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
             >

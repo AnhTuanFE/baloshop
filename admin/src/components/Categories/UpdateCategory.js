@@ -44,17 +44,17 @@ const UpdateCategory = ({ currentCategory }) => {
     return (
         <>
             <Toast />
-            <div className="col-md-12 col-lg-4">
-                <form>
+            <div>
+                <form className="form-control d-flex justify-content-between align-items-center">
                     {/* {} <Loading />} */}
-                    <div className="mb-4">
+                    <div className="mb-4" style={{ width: '25%' }}>
                         <label htmlFor="product_name" className="form-label">
-                            Name
+                            Tên
                         </label>
                         <input
                             type="text"
-                            placeholder="Type here"
-                            className="form-control py-3"
+                            placeholder=""
+                            style={{ width: '100%', height: '2.5em' }}
                             id="product_name"
                             value={name}
                             onChange={(e) => {
@@ -63,12 +63,12 @@ const UpdateCategory = ({ currentCategory }) => {
                         />
                     </div>
 
-                    <div className="mb-4">
-                        <label className="form-label">Description</label>
+                    <div className="mb-4" style={{ width: '50%' }}>
+                        <label className="form-label">Mô tả</label>
                         <textarea
                             placeholder="Type here"
-                            className="form-control"
-                            rows="4"
+                            rows="3"
+                            style={{ width: '100%', resize: 'none' }}
                             value={description}
                             onChange={(e) => {
                                 setDescription(e.target.value);
@@ -76,8 +76,8 @@ const UpdateCategory = ({ currentCategory }) => {
                         ></textarea>
                     </div>
 
-                    <div className="d-grid">
-                        <button className="btn btn-primary py-3" onClick={handleCreateCategory}>
+                    <div>
+                        <button className="btn btn-primary" onClick={handleCreateCategory}>
                             Cập nhật
                         </button>
                     </div>

@@ -19,9 +19,9 @@ const CategoriesScreen = () => {
                     <h2 className="content-title">Thêm danh mục</h2>
                 </div>
 
-                <div className="card shadow-sm">
-                    <div className="card-body">
-                        <div className="row">
+                <div className="card  shadow-sm" style={{ height: '74vh' }}>
+                    <div className="card-body overflow-auto">
+                        <div className="row ">
                             {editInfo ? <UpdateCategory currentCategory={currentCategory} /> : <CreateCategory />}
                             <CategoriesTable
                                 handleCurrentCategory={handleCurrentCategory}

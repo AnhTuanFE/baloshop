@@ -65,10 +65,10 @@ const CreateCategory = () => {
     return (
         <>
             <Toast />
-            <div className="col-md-4 col-lg-4">
-                <form>
-                    {loading && <Loading />}
-                    <div className="mb-4">
+            <div>
+                {loading && <Loading />}
+                <form className="form-control d-flex justify-content-between align-items-center">
+                    <div className="mb-4" style={{ width: '25%' }}>
                         <label htmlFor="product_name" className="form-label">
                             Tên
                         </label>
@@ -76,7 +76,8 @@ const CreateCategory = () => {
                             required
                             type="text"
                             placeholder=""
-                            className={`form-control py-3 ${validate.borderRed1}`}
+                            className={`${validate.borderRed1}`}
+                            style={{ width: '100%', height: '2.5em' }}
                             id="product_name"
                             value={name}
                             onClick={() => {
@@ -94,13 +95,14 @@ const CreateCategory = () => {
                         <p className="product_validate">{validate.name}</p>
                     </div>
 
-                    <div className="mb-4">
-                        <label className="form-label">Miêu tả</label>
+                    <div className="mb-4" style={{ width: '50%' }}>
+                        <label className="form-label">Mô tả</label>
                         <textarea
                             required
                             placeholder=""
-                            className={`form-control ${validate.borderRed3}`}
-                            rows="4"
+                            className={`${validate.borderRed3}`}
+                            rows="3"
+                            style={{ width: '100%', resize: 'none' }}
                             value={description}
                             onClick={() => {
                                 setValidate((values) => {
@@ -117,8 +119,8 @@ const CreateCategory = () => {
                         <p className="product_validate">{validate.description}</p>
                     </div>
 
-                    <div className="d-grid">
-                        <button className="btn btn-primary py-3 color-orange" onClick={handleCreateCategory}>
+                    <div>
+                        <button className="btn btn-primary" onClick={handleCreateCategory}>
                             Thêm loại hàng
                         </button>
                     </div>
