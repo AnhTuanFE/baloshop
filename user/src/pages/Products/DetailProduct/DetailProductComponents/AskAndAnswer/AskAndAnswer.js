@@ -97,7 +97,7 @@ function AskAndAnswer({ productId }) {
             <div className="mt-4 rounded-xl bg-white pt-2">
                 <div className="rounded-xl py-4 shadow-custom-shadow max-md:px-1 md:px-5">
                     <h2 className="ml-5 pb-1 text-2xl font-semibold">Hỏi và đáp</h2>
-                    <form onSubmit={submitComment} className="ml-5 flex">
+                    <form onSubmit={submitComment} className="flex max-sm:ml-1 sm:ml-5">
                         <textarea
                             value={question}
                             className="h-20 w-full rounded-xl border px-2 py-1 text-base shadow-sm"
@@ -117,7 +117,7 @@ function AskAndAnswer({ productId }) {
                         ) : (
                             <div className="mt-2">
                                 <Link to="/login">
-                                    <button className="mx-3 min-w-[100px] rounded-lg bg-[var(--main-color)] px-2 py-2.5 text-sm font-semibold text-white">
+                                    <button className=" rounded-lg bg-[var(--main-color)] py-2.5 text-sm font-semibold text-white max-sm:mx-1 max-sm:px-1 sm:mx-3 sm:min-w-[100px] sm:px-2">
                                         Đăng nhập
                                     </button>
                                 </Link>

@@ -357,7 +357,7 @@ function Detail_infor_account({ user }) {
                             fontSize: '16px',
                             background: 'var(--main-color)',
                             '&:hover': {
-                                background: 'var(--color-button2)',
+                                background: 'var(--main-color-hover)',
                             },
                         }}
                     >

@@ -154,7 +154,7 @@ function Change_password({ user }) {
                     </Box>
                     <button
                         type="submit"
-                        className="m-auto w-full rounded-md bg-[var(--main-color)] px-4 py-2.5 text-base font-semibold text-white hover:bg-[var(--main-color-hover)]"
+                        className="m-auto w-full rounded-md bg-[var(--main-color)] px-4 py-2.5 text-base font-semibold uppercase text-white hover:bg-[var(--main-color-hover)]"
                     >
                         Cập nhật mật khẩu
                     </button>

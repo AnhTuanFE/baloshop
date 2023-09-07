@@ -14,7 +14,7 @@ function PurchaseHistory() {
     }, [dispatch]);
     return (
         <>
-            <div className="mt-lg-3 mt-3 bg-white pt-3">
+            <div className="mt-lg-3 bg-white max-sm:pt-4 sm:pt-10">
                 <div className="row col-lg-12">
                     <div className="col-lg-3">
                         <SideBar_Profile userInfo={userInfo} />

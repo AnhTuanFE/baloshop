@@ -31,11 +31,15 @@ function Footer() {
         <div className="">
             <div className="bg-white">
                 <hr />
-                <div className="flex flex-wrap justify-around max-md:mx-2">
+                {/* flex  flex-wrap justify-around */}
+                <div className=" row col-lg-12 col-md-12 mx-3">
                     {arrayInfo.map((item, index) => {
                         return (
-                            <div key={index} className="flex items-center max-md:w-full max-md:py-4 md:py-5">
-                                <div className="flex w-[30%] justify-center">
+                            <div
+                                key={index}
+                                className="col-lg-3 col-md-6 flex items-center max-md:w-full max-md:py-4 md:py-5"
+                            >
+                                <div className=" flex w-[30%] justify-center">
                                     <img className=" max-md:h-[50px] md:h-[80px]" src={item.image} />
                                 </div>
                                 <div className="mt-3 max-md:ml-0 md:ml-2">
@@ -48,8 +52,8 @@ function Footer() {
                 </div>
                 <hr />
             </div>
-            <div className="row col-lg-12 bg-[#f5f5f5]  px-4  max-md:py-10 md:py-14">
-                <div className=" col-lg-4 px-6 pr-4 text-left font-sans max-md:hidden md:block ">
+            <div className="row col-lg-12 col-md-12 bg-[#f5f5f5] max-md:py-10 md:py-14">
+                <div className=" col-lg-3 col-md-6 px-6 pr-4 text-left font-sans max-md:hidden md:block ">
                     <h3 className="pb-3 text-lg font-medium">Lịch sử phát triển BALOSHOP</h3>
                     <p className="pb-3 pl-2 text-sm">
                         Thành lập từ 2022, sau đó mở rộng thêm 3 chi nhánh tại TP HCM vào 2023.
@@ -59,7 +63,7 @@ function Footer() {
                         thương hiệu bán VALI được yêu thích nhất tại thành phố Hồ Chí Minh.
                     </p>
                 </div>
-                <div className="col-lg-2 px-2 pr-4 text-left font-sans max-md:hidden md:block ">
+                <div className="col-lg-3 col-md-6 px-2 text-left font-sans max-md:hidden md:block ">
                     <h3 className="pb-3 text-lg font-medium">Chính sách bán hàng</h3>
                     <div className="">
                         <p className="cursor-pointer pb-2 text-sm">Chính sách bảo hành</p>
@@ -69,7 +73,7 @@ function Footer() {
                         <p className="cursor-pointer pb-2 text-sm">Chính sách vận chuyển</p>
                     </div>
                 </div>
-                <div className="col-lg-2 pr-4 text-left font-sans max-md:px-6 md:px-2">
+                <div className="col-lg-3 col-md-6 mt-0 text-left font-sans max-md:px-6 md:mt-5 md:px-6 lg:px-2">
                     <h3 className="pb-3 text-lg font-medium">Thông tin liên hệ</h3>
                     <div className="flex pb-2">
                         <img className="h-[22px]" src="https://cdn-icons-png.flaticon.com/128/3687/3687004.png" />
@@ -91,7 +95,7 @@ function Footer() {
                         </p>
                     </div>
                 </div>
-                <div className="col-lg-4 px-6 pr-4 text-left font-sans max-md:mt-2 max-md:pb-10">
+                <div className="col-lg-3 col-md-6 lg: mt-0 text-left font-sans max-md:mt-2 max-md:px-6 max-md:pb-10 md:mt-5">
                     <h3 className="pb-3 text-lg font-medium">Đăng ký nhận tin</h3>
                     <p className="pb-3 text-sm">
                         Để cập nhật những sản phẩm mới, nhận thông tin ưu đãi đặc biệt và thông tin giảm giá khác.

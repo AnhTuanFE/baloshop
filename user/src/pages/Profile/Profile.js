@@ -46,18 +46,18 @@ export default function Profile() {
             ) : error ? (
                 <Message variant="alert-danger">{error}</Message>
             ) : (
-                <div className="bg-white pb-10 pt-10">
+                <div className="bg-white pb-10 max-sm:pt-4 sm:pt-10">
                     <div>
                         <div className="row col-lg-12">
                             <div className="col-lg-3">
                                 <SideBar_Profile userInfo={userInfo} />
                             </div>
-                            <div className="col-lg-7 items-center">
+                            <div className="col-lg-7 items-center pb-2">
                                 <div className="">
                                     <Tabs
                                         defaultActiveKey="1"
                                         items={items}
-                                        className="px-5 pb-5 pt-2 shadow-custom-shadow"
+                                        className=" pb-5 pt-2 shadow-custom-shadow max-sm:px-2 sm:px-10"
                                     >
                                         {items.map((item) => (
                                             <TabPane tab={item.label} key={item.key} className="">

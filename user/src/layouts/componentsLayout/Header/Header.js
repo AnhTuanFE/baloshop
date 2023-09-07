@@ -61,6 +61,7 @@ function Header(props) {
     };
     const submitHandler = (e) => {
         e.preventDefault();
+        onClose();
         if (keyword !== undefined) {
             if (keyword.trim() && keyword) {
                 localStorage.setItem('keySearch', JSON.stringify([...key, keyword]));
@@ -98,12 +99,7 @@ function Header(props) {
     }
     const UINotLogin = () => {
         return (
-            <Box
-                sx={{
-                    display: 'flex',
-                    paddingTop: '12px',
-                }}
-            >
+            <div className="flex pb-2 pt-3">
                 <Typography
                     align="center"
                     sx={{
@@ -129,12 +125,12 @@ function Header(props) {
                 >
                     <Link to="/register">Đăng ký</Link>
                 </Typography>
-                <div className=" m-auto items-center md:hidden">
+                <div className=" m-auto items-center  md:hidden">
                     <Link to="/login">
-                        <p className="text-sm font-bold">Đăng nhập</p>
+                        <p className="pb-2 text-sm font-bold">Đăng nhập</p>
                     </Link>
                 </div>
-            </Box>
+            </div>
         );
     };
     const handleChangeAntd = (e) => {
@@ -200,13 +196,12 @@ function Header(props) {
             className="fixed left-0 right-0 top-0 z-10 bg-[var(--content-color)]"
         >
             <ContactInformation />
-            {/* overflow-hidden */}
             <div className="relative flex justify-between pt-2 max-md:px-5 md:px-20 ">
                 <div className="hidden max-sm:block">
                     <FontAwesomeIcon
-                        className="absolute left-3 cursor-pointer pt-2 text-2xl "
+                        className="absolute left-3 cursor-pointer pl-2 pt-2 text-2xl "
                         onClick={showDrawer}
-                        icon={faChevronRight}
+                        icon={faBars}
                     />
                 </div>
                 <div className="">
@@ -219,22 +214,22 @@ function Header(props) {
                     </Link>
                     <div className="">
                         <Drawer
-                            className="[&_.ant-drawer-body]:py-2"
+                            className="[&_.ant-drawer-body]:px-2 [&_.ant-drawer-body]:py-3"
                             placement="left"
                             closable={false}
                             onClose={onClose}
                             open={open}
                             getContainer={false}
                         >
-                            <div className="flex justify-between">
-                                <form onSubmit={submitHandler}>
+                            <div className="flex">
+                                <form className="ml-8 mr-4" onSubmit={submitHandler}>
                                     <div className="flex justify-center">
                                         <Autocomplete
                                             disablePortal
                                             id="combo-box-demo"
                                             options={key}
                                             size="small"
-                                            className="w-[200px]  max-use400:w-[150px] sm:w-[200px] md:w-[300px] lg:w-[400px]"
+                                            className="w-[240px]"
                                             onChange={(e) => {
                                                 setKeyword(e.target.outerText);
                                             }}
@@ -260,9 +255,9 @@ function Header(props) {
                                         </button>
                                     </div>
                                 </form>
-                                <div className="absolute right-0 pt-2.5">
+                                <div className="absolute right-[-10px] pt-2.5">
                                     <FontAwesomeIcon
-                                        className="cursor-pointer text-2xl"
+                                        className="cursor-pointer rounded-[50%] bg-white px-1.5 py-1 text-gray-600 shadow-custom-shadow"
                                         onClick={onClose}
                                         icon={faChevronLeft}
                                     />

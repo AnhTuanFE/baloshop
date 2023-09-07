@@ -48,9 +48,10 @@ const Login = () => {
 
     return (
         <>
-            <div className="flex items-center justify-center text-center ">
+            {/* flex items-center justify-center text-center  */}
+            <div className="row col-lg-12 col-md-12 col-sm-12 flex justify-center max-sm:mx-4">
                 <form
-                    className=" mt-4 w-[400px] rounded-xl bg-white px-10 py-10 shadow-custom-shadow"
+                    className=" col-lg-4 col-md-6 col-sm-6 mt-4 rounded-xl bg-white py-10 shadow-custom-shadow max-sm:px-5 sm:px-10"
                     onSubmit={handleSubmit(submitHandler)}
                 >
                     {error && <Message variant="alert-danger">{error}</Message>}

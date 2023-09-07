@@ -31,6 +31,7 @@ const App = () => {
                     onClose={onClose}
                     open={open}
                     getContainer={false}
+                    width={100}
                 >
                     <div className="flex justify-between">
                         <form className="">
