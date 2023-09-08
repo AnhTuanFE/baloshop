@@ -13,12 +13,12 @@ import EvaluateProduct from './DetailProductComponents/EvaluateProduct/EvaluateP
 // redux
 import { listProductDetails, listProduct } from '~/redux/Actions/ProductActions';
 import { CART_CREATE_RESET } from '~/redux/Constants/CartConstants';
-import { addToCart } from '~/redux/Actions/cartActions';
+import { addToCart, listCart } from '~/redux/Actions/cartActions';
 
 import SimilarProducts from './DetailProductComponents/SimilarProducts/SimilarProducts';
 import { notification } from 'antd';
 import LoadingLarge from '~/components/LoadingError/LoadingLarge';
-import { listCart } from '~/redux/Actions/cartActions';
+import './DetailProduct.css';
 
 function DetailProduct() {
     const [api, contextHolder] = notification.useNotification();
@@ -126,24 +126,24 @@ function DetailProduct() {
     const handleRender = () => {
         return (
             <div className="mx-auto my-auto max-w-screen-2xl">
-                <div className="mx-[5%]">
+                <div className=" max-md:mx-1 md:mx-10">
                     {contextHolder}
-                    <div className="row mx-5">
+                    <div className="row mx-2">
                         <div className="col-md-12 rounded bg-white py-2">
                             <div className="row">
                                 <div className="col-md-5">
-                                    <div className="flex h-[400px] justify-center bg-white">
+                                    <div className="flex justify-center bg-white max-md:h-[200px] md:h-[400px]">
                                         <SliderImageProducts images={product.image} />
                                     </div>
                                 </div>
                                 <div className="col-md-7">
                                     <div className="">
-                                        <div className="w-full">
+                                        <div className="w-full text-center">
                                             <div className="mb-2 text-xl font-semibold">{product.name}</div>
                                         </div>
                                         <div className="product-baner">
                                             <img
-                                                className="h-[200px] w-full"
+                                                className=" w-full max-md:h-[100px] md:h-[200px]"
                                                 src="https://res.cloudinary.com/tlsbaloshop/image/upload/v1685002777/baloshopSlider/ant_index_bottom_banner_big_2_isoowv.jpg"
                                                 alt=""
                                             />
@@ -160,7 +160,7 @@ function DetailProduct() {
                                                 {optionsArrColor?.countInStock > 0 ? (
                                                     <span className="font-semibold text-[#000000]">Còn hàng</span>
                                                 ) : (
-                                                    <span className="font-semibold text-[#000000]">Hết hàng</span>
+                                                    <span className="font-semibold text-red-600">Hết hàng</span>
                                                 )}
                                             </div>
                                             <div className=" d-flex justify-content-between align-items-center px-6 py-2">
@@ -225,16 +225,19 @@ function DetailProduct() {
                                         style={{
                                             borderBottom: '2px solid rgba(250, 154, 10, 0.8)',
                                         }}
-                                        className="mb-5 mt-2 text-2xl font-semibold uppercase"
+                                        className="mb-3 mt-2 text-2xl font-semibold uppercase"
                                     >
                                         Chi Tiết Sản Phẩm
                                     </h2>
-                                    <div dangerouslySetInnerHTML={{ __html: product.description }}></div>
+                                    <div
+                                        className="product-description"
+                                        dangerouslySetInnerHTML={{ __html: product.description }}
+                                    ></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="mx-5">
+                    <div className="mx-2">
                         <EvaluateProduct productId={productId} />
                         <AskAndAnswer productId={productId} />
                         <SimilarProducts products={products} />

@@ -8,10 +8,14 @@ function SliderImageProducts({ images }) {
         }
     }, [images]);
     return (
-        <div id="carouselExampleIndicators" className="slide carousel" data-ride="carousel">
-            <div className="carousel-inner ">
+        <div id="carouselExampleIndicators" className="carousel" data-ride="carousel">
+            <div className="">
                 <div className="carousel-item active ">
-                    <img className="d-block h-[400px] " src={imageOne !== undefined ? `${imageOne}` : ''} alt=""></img>
+                    <img
+                        className="d-block max-md:h-[200px] md:h-[400px] "
+                        src={imageOne !== undefined ? `${imageOne}` : ''}
+                        alt=""
+                    ></img>
                 </div>
                 {images?.map((product) => {
                     return (

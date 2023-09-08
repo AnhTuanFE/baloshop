@@ -40,9 +40,9 @@ export default function ResetPasswordRequest() {
         setLinkEmail(!linkEmail);
     };
     return (
-        <div className="flex h-[80vh] justify-center ">
+        <div className="row col-lg-12 col-md-12 flex justify-center max-sm:mx-4 ">
             {contextHolder}
-            <div className=" mt-10 h-[50vh] rounded-2xl bg-white px-4 py-4 shadow-custom-shadow">
+            <div className=" col-lg-5 col-md-7 mt-10 rounded-2xl bg-white px-4 pb-5 pt-3 shadow-custom-shadow">
                 <div className="rounded-xl bg-[var(--white-color)]">
                     <div className="mx-4">
                         <div>
@@ -64,10 +64,10 @@ export default function ResetPasswordRequest() {
                         <form>
                             <div className="flex justify-center">
                                 <input
-                                    className="my-4 w-4/5 rounded-md border  border-solid border-[#ddd] px-3 py-2.5 text-center leading-[100%]"
+                                    className="my-4 w-full rounded-md border  border-solid border-[#ddd] px-3 py-2.5 text-center leading-[100%]"
                                     id="email-for-pass"
                                     type="email"
-                                    placeholder="Email@gmail.com"
+                                    placeholder="email@gmail.com"
                                     onChange={(e) => {
                                         setEmail(e.target.value);
                                         setDisable(false);
@@ -89,7 +89,7 @@ export default function ResetPasswordRequest() {
                                     </Link>
                                 </Button>
                                 {linkEmail && (
-                                    <Button type="primary" className="mr-4 bg-[var(--main-color)]">
+                                    <Button className="ml-4 bg-[var(--main-color)] text-white hover:bg-[var(--main-color-hover)]">
                                         <a href="https://accounts.google.com/">
                                             <i className="fa fa-chevron-circle-right pl-3 pr-5" aria-hidden="true"></i>
                                             Đi đến email của bạn

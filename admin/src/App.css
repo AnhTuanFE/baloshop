@@ -1,5 +1,7 @@
 @charset "UTF-8";
-
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 /* .quill > .ql-toolbar:first-child {
     display: none !important;
 } */
@@ -28,10 +30,10 @@ tbody tr:hover {
 a.disabled {
     pointer-events: none;
 }
-.btn-primary {
+/* .btn-primary {
     background-color: #1cb803 !important;
     border: 1px solid #00483d !important;
-}
+} */
 .Header-white {
     background-color: #fff;
 }
@@ -170,7 +172,7 @@ body.offcanvas-active {
 }
 
 .content-main {
-    padding: 30px 3%;
+    padding: 25px 2%;
     margin-left: auto;
     margin-right: auto;
     background-color: #fff;
@@ -246,7 +248,7 @@ body.offcanvas-active {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 .content-header .content-title {
     margin-bottom: 0;
@@ -326,7 +328,7 @@ body.aside-mini .menu-aside .menu-item.has-submenu .menu-link:after {
     font-size: 18px;
 }
 .menu-aside .active .icon {
-    color: #ee2624;
+    color: #a4b4ff;
 }
 .menu-aside .active {
     background-color: #ebf0fd;

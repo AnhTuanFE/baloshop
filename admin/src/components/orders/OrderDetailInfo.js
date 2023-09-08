@@ -3,7 +3,7 @@ import React from 'react';
 const OrderDetailInfo = (props) => {
     const { order } = props;
     return (
-        <div className="row mb-5 order-info-wrap">
+        <div className="row order-info-wrap mb-5">
             <div className="col-md-6 col-lg-4">
                 <article className="icontext align-items-start">
                     <span className="icon icon-sm rounded-circle alert-success">
@@ -24,7 +24,7 @@ const OrderDetailInfo = (props) => {
                     </span>
                     <div className="text">
                         <p className="mb-1">
-                            Địa chỉ: {order.shippingAddress.city}, {order.shippingAddress.distric},{' '}
+                            Địa chỉ: {order.shippingAddress.city}, {order.shippingAddress.district},{' '}
                             {order.shippingAddress.ward}
                             <br />
                             {order.shippingAddress.address}

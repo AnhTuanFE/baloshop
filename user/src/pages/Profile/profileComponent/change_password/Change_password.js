@@ -1,6 +1,4 @@
 import { Box, Typography, TextField, Button, Stack } from '@mui/material';
-import clsx from 'clsx';
-import styles from './Change_password.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
 import { updateUserPassword } from '~/redux/Actions/userActions';
@@ -36,7 +34,7 @@ function Change_password({ user }) {
 
     const submitUpdatePassword = (data) => {
         const { password, oldPassword } = data;
-        dispatch(updateUserPassword({ id: user._id, password, oldPassword }));
+        dispatch(updateUserPassword({ password, oldPassword }));
     };
     useEffect(() => {
         if (updatesuccessPass === true) {
@@ -50,8 +48,8 @@ function Change_password({ user }) {
             {contextHolder}
             <form onSubmit={handleSubmit(submitUpdatePassword)}>
                 <Stack>
-                    <Box className={clsx(styles.wrap_info_item)}>
-                        <Typography className={clsx(styles.info_item_label)}>Mật khẩu cũ</Typography>
+                    <Box className="mb-1 flex">
+                        <Typography className="w-40 pr-2">Mật khẩu cũ</Typography>
                         <Controller
                             name="oldPassword"
                             control={control}
@@ -62,8 +60,9 @@ function Change_password({ user }) {
                             }}
                             render={({ field }) => (
                                 <TextField
+                                    size="small"
                                     type="password"
-                                    className={clsx(styles.info_item)}
+                                    className="w-full"
                                     hiddenLabel
                                     id="outlined-basic"
                                     variant="outlined"
@@ -73,19 +72,17 @@ function Change_password({ user }) {
                             )}
                         />
                     </Box>
-                    <Box className={clsx(styles.wrap_info_item_warning)}>
+                    <Box className="min-h-[28px] text-center">
                         {errors.oldPassword && errors.oldPassword.type === 'required' ? (
-                            <p className={clsx(styles.info_item_warning)}>{errors.oldPassword.message}</p>
+                            <p className="mb-2 text-red-600">{errors.oldPassword.message}</p>
                         ) : null}
 
                         {errors.oldPassword && errors.oldPassword.type === 'minLength' ? (
-                            <p className={clsx(styles.info_item_warning)}>
-                                Mật khẩu phải từ 6 - 255 ký tự và không có khoảng trắng
-                            </p>
+                            <p className="mb-2 text-red-600">Mật khẩu phải từ 6 - 255 ký tự và không có khoảng trắng</p>
                         ) : null}
                     </Box>
-                    <Box className={clsx(styles.wrap_info_item)}>
-                        <Typography className={clsx(styles.info_item_label)}>Mật khẩu mới</Typography>
+                    <Box className="mb-1 flex">
+                        <Typography className="w-40 pr-2">Mật khẩu mới</Typography>
                         <Controller
                             name="password"
                             control={control}
@@ -96,8 +93,9 @@ function Change_password({ user }) {
                             }}
                             render={({ field }) => (
                                 <TextField
+                                    size="small"
                                     type="password"
-                                    className={clsx(styles.info_item)}
+                                    className="w-full"
                                     hiddenLabel
                                     id="outlined-basic"
                                     variant="outlined"
@@ -107,19 +105,17 @@ function Change_password({ user }) {
                             )}
                         />
                     </Box>
-                    <Box className={clsx(styles.wrap_info_item_warning)}>
+                    <Box className="min-h-[28px] text-center">
                         {errors.password && errors.password.type === 'required' ? (
-                            <p className={clsx(styles.info_item_warning)}>{errors.password.message}</p>
+                            <p className="mb-2 text-red-600">{errors.password.message}</p>
                         ) : null}
 
                         {errors.password && errors.password.type === 'minLength' ? (
-                            <p className={clsx(styles.info_item_warning)}>
-                                Mật khẩu phải từ 6 - 255 ký tự và không có khoảng trắng
-                            </p>
+                            <p className="mb-2 text-red-600">Mật khẩu phải từ 6 - 255 ký tự và không có khoảng trắng</p>
                         ) : null}
                     </Box>
-                    <Box className={clsx(styles.wrap_info_item)}>
-                        <Typography className={clsx(styles.info_item_label)}>Xác nhận mật khẩu</Typography>
+                    <Box className="mb-1 flex">
+                        <Typography className="w-40 pr-2">Xác nhận mật khẩu</Typography>
                         <Controller
                             name="newConfirmPassword"
                             control={control}
@@ -131,8 +127,9 @@ function Change_password({ user }) {
                             }}
                             render={({ field }) => (
                                 <TextField
+                                    size="small"
                                     type="password"
-                                    className={clsx(styles.info_item)}
+                                    className="w-full"
                                     hiddenLabel
                                     id="outlined-basic"
                                     variant="outlined"
@@ -142,38 +139,25 @@ function Change_password({ user }) {
                             )}
                         />
                     </Box>
-                    <Box className={clsx(styles.wrap_info_item_warning)}>
+                    <Box className="min-h-[28px] text-center">
                         {errors.newConfirmPassword && errors.newConfirmPassword.type === 'minLength' ? (
-                            <p className={clsx(styles.info_item_warning)}>
-                                Mật khẩu phải từ 6 - 255 ký tự và không có khoảng trắng
-                            </p>
+                            <p className="mb-2 text-red-600">Mật khẩu phải từ 6 - 255 ký tự và không có khoảng trắng</p>
                         ) : null}
 
                         {errors.newConfirmPassword && errors.newConfirmPassword.type === 'validate' ? (
-                            <p className={clsx(styles.info_item_warning)}>Mật khẩu không khớp</p>
+                            <p className="mb-2 text-red-600">Mật khẩu không khớp</p>
                         ) : null}
 
                         {errors.newConfirmPassword && errors.newConfirmPassword.type === 'required' ? (
-                            <p className={clsx(styles.info_item_warning)}>Bạn chưa xác nhận mật khẩu mới</p>
+                            <p className="mb-2 text-red-600">Bạn chưa xác nhận mật khẩu mới</p>
                         ) : null}
                     </Box>
-                    <Button
-                        variant="contained"
+                    <button
                         type="submit"
-                        sx={{
-                            width: '100%',
-                            margin: 'auto',
-                            padding: '16px 0px',
-                            borderRadius: '6px',
-                            fontSize: '16px',
-                            background: 'var(--main-color)',
-                            '&:hover': {
-                                background: 'var(--color-button2)',
-                            },
-                        }}
+                        className="m-auto w-full rounded-md bg-[var(--main-color)] px-4 py-2.5 text-base font-semibold uppercase text-white hover:bg-[var(--main-color-hover)]"
                     >
                         Cập nhật mật khẩu
-                    </Button>
+                    </button>
                 </Stack>
             </form>
         </>

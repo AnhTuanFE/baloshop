@@ -3,6 +3,7 @@ import asyncHandler from 'express-async-handler';
 import { admin, protect } from '../middleware/AuthMiddleware.js';
 import Product from '../models/ProductModel.js';
 import Order from '../models/OrderModel.js';
+import Payment from '../models/PaymentModel.js';
 import orderController from '../controllers/orderController.js';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';

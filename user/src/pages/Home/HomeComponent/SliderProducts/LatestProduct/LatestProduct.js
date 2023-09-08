@@ -13,9 +13,5 @@ export default function LatestProduct() {
     useEffect(() => {
         dispatch(ListProductAll());
     }, []);
-    return (
-        <>
-            <SliderProducts products={products} labelSlider={'Sản Phẩm Mới Nhất'} />
-        </>
-    );
+    return <>{products.length == 0 ? ' ' : <SliderProducts products={products} labelSlider={'Sản Phẩm Mới Nhất'} />}</>;
 }

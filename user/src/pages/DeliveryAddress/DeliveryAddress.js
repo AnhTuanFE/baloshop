@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { saveShippingAddress } from '~/redux/Actions/cartActions';
 import { getUserDetails, updateUserProfile, getListProvincesAction } from '~/redux/Actions/userActions';
 import { USER_UPDATE_PROFILE_RESET } from '~/redux/Constants/UserContants';
 
@@ -36,14 +35,12 @@ function DeliveryAddress() {
 
     // user lấy từ store
     const { loading, error, user } = userDetails;
-
     const [city, setCity] = useState(''); //tp
     const [districtOptions, setDistrictOptions] = useState([]);
     const [ward, setWard] = useState(''); // xá phường
     const [wardOptions, setWardOptions] = useState([]);
     const [address, setAddress] = useState(''); // địa chỉ chi tiết
-    const [distric, setDistric] = useState([]);
-    // const [distric, setDistric] = useState(''); //quận huyện
+    const [district, setDistrict] = useState([]);
 
     const [retult, setRetult] = useState('');
 
@@ -67,7 +64,7 @@ function DeliveryAddress() {
     useEffect(() => {
         if (user.address != undefined) {
             setCity(user.city);
-            setDistric(user.distric);
+            setDistrict(user.district);
             setWard(user.ward);
             setAddress(user.address);
         }
@@ -81,15 +78,14 @@ function DeliveryAddress() {
     };
     const submitHandler = async (e) => {
         e.preventDefault();
-        if (!valitor({ city, distric, ward, address })) return;
-        dispatch(saveShippingAddress({ city, distric, ward, address }));
-        dispatch(updateUserProfile({ id: user._id, city, distric, ward, address }));
+        if (!valitor({ city, district, ward, address })) return;
+        dispatch(updateUserProfile({ id: user._id, city, district, ward, address }));
         setRetult('');
     };
 
     // ===========================================
     const optionsAntD_city = [];
-    const optionsAntD_distric = [];
+    const optionsAntD_district = [];
     const optionsAntD_ward = [];
 
     const onChange_city = (value) => {
@@ -97,7 +93,7 @@ function DeliveryAddress() {
         const infoCity = DataProvinces.find((arr) => {
             return arr.name == value.toString();
         });
-        setDistric('');
+        setDistrict('');
         setWard('');
         setDistrictOptions(infoCity.districts);
     };
@@ -116,10 +112,10 @@ function DeliveryAddress() {
         return null;
     }
 
-    const onChange_distric = (value) => {
+    const onChange_district = (value) => {
         const infoDistric = findInfoCityByName(DataProvinces, value);
         setWardOptions(infoDistric.wards);
-        setDistric(value);
+        setDistrict(value);
         setWard('');
     };
 
@@ -139,7 +135,7 @@ function DeliveryAddress() {
 
     if (districtOptions.length > 1) {
         for (let i = 0; i < districtOptions?.length; i++) {
-            optionsAntD_distric.push({
+            optionsAntD_district.push({
                 value: districtOptions[i]?.name,
                 label: districtOptions[i]?.name,
             });
@@ -147,15 +143,15 @@ function DeliveryAddress() {
     }
 
     if (city) {
-        const infoDistric = findInfoCityByName(DataProvinces, city);
-        const arrDistrictsTemp = infoDistric?.districts;
+        const infoDistrict = findInfoCityByName(DataProvinces, city);
+        const arrDistrictsTemp = infoDistrict?.districts;
         for (let i = 0; i < arrDistrictsTemp?.length; i++) {
-            optionsAntD_distric.push({
+            optionsAntD_district.push({
                 value: arrDistrictsTemp[i]?.name,
                 label: arrDistrictsTemp[i]?.name,
             });
         }
-        const infoWards = findInfoCityByName(DataProvinces, distric);
+        const infoWards = findInfoCityByName(DataProvinces, district);
         const arrWardsTemp = infoWards?.wards;
         for (let i = 0; i < arrWardsTemp?.length; i++) {
             optionsAntD_ward.push({
@@ -197,10 +193,10 @@ function DeliveryAddress() {
                             className="my-3"
                             disablePortal
                             id="combo-box-demo"
-                            options={optionsAntD_distric}
-                            value={distric}
+                            options={optionsAntD_district}
+                            value={district}
                             onChange={(e) => {
-                                onChange_distric(e.target.outerText);
+                                onChange_district(e.target.outerText);
                             }}
                             renderInput={(params) => <TextField {...params} label="Quận/Huyện" />}
                         />

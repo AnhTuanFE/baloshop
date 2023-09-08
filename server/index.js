@@ -1,22 +1,22 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import { errorHandler, notFound } from './middleware/Errors.js';
-import morgan from 'morgan';
+// import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import connectDatabase from './config/mongoDb.js';
 import cloudinaryConfig from './config/cloudinaryConfig.js';
-import paypalConfig from './config/paypalConfig.js';
+// import paypalConfig from './config/paypalConfig.js';
 import cors from 'cors';
 import routes from './routes/index.js';
 dotenv.config();
 
 connectDatabase();
 cloudinaryConfig();
-paypalConfig();
+// paypalConfig();
 
 const app = express();
 app.use(express.json()); // gửi data dưới dạng javascrip thì nó sẽ xử lý
-app.use(morgan('dev'));
+// app.use(morgan('dev'));
 
 // API
 // cấu hình định danh file ejs bên express
