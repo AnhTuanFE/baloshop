@@ -3,16 +3,16 @@ import Order from '../models/OrderModel.js';
 import Cart from '../models/CartModel.js';
 import cloudinary from 'cloudinary';
 import { v4 as uuidv4 } from 'uuid';
-
+import { validateConstants, productQueryParams, priceRangeFilter } from '../utils/searchConstants.js';
 const getProducts = async (req, res) => {
-    const pageSize = 12;
-    const page = Number(req.query.pageNumber) || 1;
-    const rating = Number(req.query.rating) || 0;
-    const maxPrice = Number(req.query.maxPrice) || 0;
-    const minPrice = Number(req.query.minPrice == 0 ? 1 : req.query.minPrice) || 0;
-    const sortProducts = Number(req.query.sortProducts) || 1;
-    let search = {},
-        sort = {};
+    const limit = parseInt(req.query.limit) > 0 ? parseInt(req.query.limit) : 12;
+    const rating = parseInt(req.query.rating) >= 0 && parseInt(req.query.rating) <= 5 ? parseInt(req.query.rating) : 0;
+    const maxPrice = parseInt(req.query.maxPrice) > 0 ? parseInt(req.query.maxPrice) : null;
+    const minPrice = parseInt(req.query.minPrice) >= 0 ? parseInt(req.query.minPrice) : null;
+    const page = parseInt(req.query.page) >= 1 ? parseInt(req.query.page) : 1;
+    const sortBy = validateConstants(productQueryParams, 'sort', req.query.sortBy || 'default');
+    let statusFilter = validateConstants(productQueryParams, 'status', 'default');
+    let search = {};
     if (req.query.keyword) {
         search.name = {
             $regex: req.query.keyword,
@@ -25,34 +25,31 @@ const getProducts = async (req, res) => {
     if (rating) {
         search.rating = { $gte: rating };
     }
-    if (maxPrice && minPrice) {
-        search.price = {
-            $gte: minPrice,
-            $lte: maxPrice,
-        };
+
+    const productFilter = {
+        ...search,
+        ...statusFilter,
+        ...priceRangeFilter(minPrice, maxPrice),
+    };
+    const count = await Product.countDocuments({ ...productFilter });
+    if (count == 0) {
+        res.json({ products: [], page: 0, pages: 0, total: 0 });
     }
-    if (sortProducts == 1) sort.createdAt = -1;
-    // if (sortProducts == 2) sort.numberOfOrder =-1;
-    if (sortProducts == 3) sort.price = 1;
-    if (sortProducts == 4) sort.price = -1;
+    let products = await Product.find({ ...productFilter })
+        .limit(limit)
+        .skip(limit * (page - 1))
+        .sort(sortBy)
+        .populate('category');
 
-    const count = await Product.countDocuments({ ...search });
-    let products = await Product.find({ ...search })
-        .limit(pageSize)
-        .skip(pageSize * (page - 1))
-        .sort(sort);
-
-    res.json({ products, page, pages: Math.ceil(count / pageSize) });
+    res.status(200).json({ products, page, pages: Math.ceil(count / limit), total: count });
 };
 
-const getAllProduct = async (req, res) => {
-    const products = await Product.find({}).sort({ _id: -1 });
-    const productSlice = products.slice(0, 10);
-    res.json(productSlice);
-};
 const getAllProductComment = async (req, res) => {
     let commentArr = [];
-    const products = await Product.find({}).sort({ _id: -1 }).populate('comments.user', 'name image');
+    const products = await Product.find({})
+        .sort({ _id: -1 })
+        .populate('comments.user', 'name image')
+        .populate('comments.commentChilds.user', 'name image');
     const filterProduct = products.filter((product) => product.comments != '');
     for (let i = 0; i < filterProduct.length; i++) {
         commentArr.push(...filterProduct[i].comments);
@@ -60,30 +57,15 @@ const getAllProductComment = async (req, res) => {
     const commentSort = commentArr.sort(({ createdAt: b }, { createdAt: a }) => (a > b ? 1 : a < b ? -1 : 0));
     res.json(commentSort);
 };
-const getProductComment = async (req, res) => {
-    const product = await Product.findById(req.params.id).populate('comments.user', 'name image');
-    const allComments = product?.comments?.sort(({ createdAt: b }, { createdAt: a }) => (a > b ? 1 : a < b ? -1 : 0));
-    if (allComments == undefined) {
-        res.status(400);
-        throw new Error('Sản phẩm không tồn tại');
-    } else {
-        res.json(allComments);
-    }
-};
 
-const getAllReview = async (req, res) => {
-    const product = await Product.findById(req.params.id).populate('reviews.user', 'name image');
-    const allReview = product?.reviews?.sort(({ createdAt: b }, { createdAt: a }) => (a > b ? 1 : a < b ? -1 : 0));
-    if (allReview == undefined) {
-        res.status(400);
-        throw new Error('Sản phẩm không tồn tại');
-    } else {
-        res.json(allReview);
-    }
-};
 const getProductsByAdmin = async (req, res) => {
-    const pageSize = 15;
-    const page = Number(req.query.pageNumber) || 1;
+    const limit = parseInt(req.query.limit) > 0 ? parseInt(req.query.limit) : 12;
+    const rating = parseInt(req.query.rating) >= 0 && parseInt(req.query.rating) <= 5 ? parseInt(req.query.rating) : 0;
+    const maxPrice = parseInt(req.query.maxPrice) > 0 ? parseInt(req.query.maxPrice) : null;
+    const minPrice = parseInt(req.query.minPrice) >= 0 ? parseInt(req.query.minPrice) : null;
+    const page = parseInt(req.query.page) >= 1 ? parseInt(req.query.page) : 1;
+    const sortBy = validateConstants(productQueryParams, 'sort', req.query.sortBy || 'default');
+    let statusFilter = validateConstants(productQueryParams, 'status', req.query.status || 'default');
     let search = {};
     if (req.query.keyword) {
         search.name = {
@@ -94,17 +76,33 @@ const getProductsByAdmin = async (req, res) => {
     if (req.query.category) {
         search.category = req.query.category;
     }
-    const count = await Product.countDocuments({ ...search });
-    const products = await Product.find({ ...search })
-        .populate(`category`)
-        .limit(pageSize)
-        .skip(pageSize * (page - 1))
-        .sort({ createdAt: -1 });
-    res.json({ products, page, pages: Math.ceil(count / pageSize), countProducts: count });
+    if (rating) {
+        search.rating = { $gte: rating };
+    }
+
+    const productFilter = {
+        ...search,
+        ...statusFilter,
+        ...priceRangeFilter(minPrice, maxPrice),
+    };
+    const count = await Product.countDocuments({ ...productFilter });
+    if (count == 0) {
+        res.json({ products: [], page: 0, pages: 0, total: 0 });
+    }
+    let products = await Product.find({ ...productFilter })
+        .limit(limit)
+        .skip(limit * (page - 1))
+        .sort(sortBy)
+        .populate('category');
+
+    res.status(200).json({ products, page, pages: Math.ceil(count / limit), total: count });
 };
 
 const getProductById = async (req, res) => {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.params.id)
+        .populate('reviews.user', 'name image')
+        .populate('comments.user', 'name image')
+        .populate('comments.commentChilds.user', 'name image');
     if (product) {
         res.json(product);
     } else {
@@ -114,50 +112,46 @@ const getProductById = async (req, res) => {
 };
 
 const reviewProduct = async (req, res) => {
-    const { rating, color, comment, name } = req.body;
+    const { rating, comment } = req.body;
+    let color = '';
     const product = await Product.findById(req.params.id);
-    const order = await Order.find({ user: req.user._id });
-    let listOrder = [];
-    if (rating == '' || color == '' || comment == '') {
-        res.status(400);
-        throw new Error(` Vui lòng nhập đầy đủ thông tin`);
-    }
-    if (order) {
-        for (let i = 0; i < order.length; i++) {
-            if (order[i].isPaid == true) {
-                listOrder = [...listOrder, ...order[i].orderItems];
-            }
-        }
-        if (listOrder.filter((i) => i.product == req.params.id).length == 0) {
-            res.status(400);
-            throw new Error(`Không thể đánh giá`);
-        }
-    }
-    if (product) {
-        const numOrderUser = listOrder.filter((i) => i.product == req.params.id).length;
-        const alreadyReviewed = product.reviews.filter((r) => r.user.toString() === req.user._id.toString()).length;
-        if (alreadyReviewed >= numOrderUser) {
-            res.status(400);
-            throw new Error('Sản phẩm đã được đánh giá');
-        }
-        const review = {
-            name: name,
-            rating: Number(rating),
-            color,
-            comment,
-            user: req.user._id,
-        };
 
-        product.reviews.push(review);
-        product.numReviews = product.reviews.length;
-        product.rating = product.reviews.reduce((acc, item) => item.rating + acc, 0) / product.reviews.length;
-
-        await product.save();
-        res.status(201).json({ message: 'Reviewed Added' });
-    } else {
+    if (!product) {
         res.status(404);
-        throw new Error('Product not Found');
+        throw new Error('Sản phẩm không tồn tại');
     }
+    const order = await Order.findOne({
+        user: req.user._id,
+        status: 'completed',
+        'orderItems.product': product._id,
+        'orderItems.isAbleToReview': true,
+    });
+    if (!order) {
+        res.status(400);
+        throw new Error('Bạn cần mua sản phẩm này để có thể đánh giá nó');
+    }
+    order.orderItems.map((orderItem, index) => {
+        if (orderItem.product.toString() == product._id.toString()) {
+            order.orderItems[index].isAbleToReview = false;
+            color = order.orderItems[index].color;
+        }
+    });
+
+    const review = {
+        name: req.user.name,
+        rating: Number(rating),
+        color,
+        comment,
+        user: req.user._id,
+    };
+    product.reviews.push(review);
+    product.rating =
+        product.reviews.reduce((previousValue, currentReview) => previousValue + currentReview.rating, 0) /
+        product.reviews.length;
+
+    await Promise.all([product.save(), order.save()]);
+
+    res.status(201).json({ message: 'Đánh giá thành công' });
 };
 
 const commentProduct = async (req, res) => {
@@ -301,8 +295,6 @@ const addProductOption = async (req, res) => {
 const updateProduct = async (req, res) => {
     const { id, name, price, description, category, nameImage } = req?.body;
     const imagePath = req?.file?.path;
-    // console.log('data = ', req.body);
-    // console.log('imagePath = ', imagePath);
 
     const product = await Product.findById(id);
 
@@ -406,10 +398,7 @@ const deleteReplyComment = async (req, res) => {
 };
 const productController = {
     getProducts,
-    getAllProduct,
     getAllProductComment,
-    getProductComment,
-    getAllReview,
     getProductsByAdmin,
     getProductById,
     reviewProduct,

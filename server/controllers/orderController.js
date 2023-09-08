@@ -160,7 +160,6 @@ const createOrder = async (req, res, next) => {
                     orderGroupId,
                     requestType,
                 );
-                console.log(requestBody);
                 const momo = axios.create({
                     baseURL: process.env.MOMO_API_URL,
                     headers: {
@@ -175,7 +174,7 @@ const createOrder = async (req, res, next) => {
                     })
                     .catch(async (error) => {
                         await session.abortTransaction();
-                        console.log(error);
+                        console.log(JSON.stringify(error));
                         res.status(400);
                         throw new Error(error.response?.message || error.message);
                     });
@@ -194,58 +193,14 @@ const createOrder = async (req, res, next) => {
                 res.status(500);
                 throw new Error('Xảy ra lỗi trong quá trình tạo đơn hàng, vui lòng thử lại.');
             }
-            console.log(newOrder);
             res.status(201).json({ newOrder });
             await session.commitTransaction();
         }, transactionOptions);
     } catch (error) {
-        console.log(error);
+        console.log(JSON.stringify(error));
         next(error);
     } finally {
         session.endSession();
-    }
-};
-// const updateProductQuantity = async (req, res) => {
-//     const { orderItems } = req.body;
-//     if (orderItems) {
-//         for (let i = 0; i < orderItems.length; i++) {
-//             const findProduct = await Product.findById(orderItems[i].product);
-//             const optionColor = findProduct?.optionColor;
-//             const findColor = optionColor.find((option) => option.color == orderItems[i].color);
-//             const filterOptionColor = optionColor.filter((option) => option.color != orderItems[i].color);
-//             if (findColor) {
-//                 findColor.color = findColor.color;
-//                 findColor.countInStock = findColor.countInStock + orderItems[i].qty;
-//             }
-//             let arrOption = [...filterOptionColor, findColor];
-//             await Product.findOneAndUpdate({ _id: orderItems[i].product }, { optionColor: arrOption });
-//         }
-//         res.status(201).json('success');
-//     }
-// };
-
-const productReview = async (req, res) => {
-    const { orderItemId, rating, comment, name } = req.body;
-    const orders = await Order.find({ user: req.user._id });
-    const order = orders.find((order) => order.id == req.params.id);
-    const findItemProduct = order?.orderItems.find((item) => item._id == orderItemId);
-    if (findItemProduct?.productReview.length > 0) {
-        res.status(400);
-        throw new Error('Bạn đã đánh giá rồi');
-    }
-    if (rating == '' || comment == '') {
-        res.status(400);
-        throw new Error('Nhập đầy đủ thông tin');
-    }
-    if (findItemProduct) {
-        const newReview = {
-            userName: name,
-            rating,
-            comment,
-        };
-        findItemProduct.productReview.push(newReview);
-        await order.save();
-        res.status(201).json(findItemProduct);
     }
 };
 
@@ -273,17 +228,17 @@ const getOrderAll = async (req, res) => {
 
     res.json({ orders, page, pages: Math.ceil(count / limit), total: count });
 };
-const completed = async (req, res) => {
-    // const orders = await Order.find({ completeAdmin: true }).sort({ _id: -1 });
-    const orders = await Order.find({ 'payment.paid': true })
-        .sort({ _id: -1 })
-        .populate('user', 'id name email')
-        .populate('payment');
+// const completed = async (req, res) => {
+//     // const orders = await Order.find({ completeAdmin: true }).sort({ _id: -1 });
+//     const orders = await Order.find({ 'payment.paid': true })
+//         .sort({ _id: -1 })
+//         .populate('user', 'id name email')
+//         .populate('payment');
 
-    if (orders) {
-        res.json(orders);
-    }
-};
+//     if (orders) {
+//         res.json(orders);
+//     }
+// };
 
 const getOrderByUser = async (req, res) => {
     // const limit = Number(req.query.limit) || 20; //EDIT HERE
@@ -312,31 +267,6 @@ const getOrderById = async (req, res) => {
     res.status(200).json({ order });
 };
 
-// const payment = async (req, res) => {
-//     const order = await Order.findById(req.params.id);
-
-//     if (order) {
-//         order.isPaid = true;
-//         order.paidAt = Date.now();
-//         order.paymentResult = {
-//             id: req.body.id,
-//             status: req.body.status,
-//             update_time: req.body.update_time,
-//             email_address: req.body.email_address,
-//         };
-//         // order.orderItems.map((orderItem)=>{
-//         // const product = await Product.findById(orderItem.product);
-//         // if(product){
-//         //     product.numberOfOrder += orderItem.qty;
-//         //     const updatedProduct = await Product.save();}
-//         // })
-//         const updatedOrder = await order.save();
-//         res.json(updatedOrder);
-//     } else {
-//         res.status(404);
-//         throw new Error('Order Not Found');
-//     }
-// };
 // Update: CONFIRM ORDER
 const confirmOrder = async (req, res) => {
     const orderId = req.params.id || '';
@@ -711,17 +641,14 @@ const cancelOrder = async (req, res, next) => {
 
 const orderController = {
     createOrder,
-    productReview,
-    // productBestSeller,
     getOrderAll,
-    completed,
+    // completed,
     getOrderByUser,
     getOrderById,
     confirmOrder,
     confirmDelivery,
     confirmDelivered,
     cancelOrder,
-    // getAddress,
     confirmReceived,
 };
 export default orderController;
