@@ -42,7 +42,6 @@ function Register() {
     }, [userInfo, navigate, redirect]);
 
     const submitHandler = (data) => {
-        console.log('data = ', data);
         const { name, email, phone, password } = data;
         dispatch(register(name, email, phone, password));
         reset();

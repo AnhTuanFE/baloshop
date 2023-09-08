@@ -20,7 +20,7 @@ function VerifyResetPassWord() {
         navigate('/resetpassword');
     }
     useEffect(() => {}, [dataNeedVerify, params]);
-    console.log('state?.status = ', state?.status);
+    // console.log('state?.status = ', state?.status);
     const handleVerify = () => {
         dispatch(VerifyResetPassWordAction(dataNeedVerify));
     };

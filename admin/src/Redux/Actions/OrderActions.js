@@ -28,7 +28,7 @@ import { logout } from './userActions';
 import axios from 'axios';
 
 export const listOrders =
-    (keyword = '', status = '', pageNumber = '') =>
+    (keyword = '', status = '', pageNumber = '', limit = '') =>
     async (dispatch, getState) => {
         try {
             dispatch({ type: ORDER_LIST_REQUEST });
@@ -44,7 +44,7 @@ export const listOrders =
             };
 
             const { data } = await axios.get(
-                `/api/orders/all?keyword=${keyword}&status=${status}&pageNumber=${pageNumber}`,
+                `/api/orders/all?keyword=${keyword}&status=${status}&pageNumber=${pageNumber}&limit=${limit}`,
                 config,
             );
 
@@ -248,6 +248,36 @@ export const completeAdminOrder = (id) => async (dispatch, getState) => {
         };
 
         const { data } = await axios.put(`/api/orders/${id}/completeAdmin`, {}, config);
+        dispatch({ type: ORDER_COMPLETE_ADMIN_SUCCESS, payload: data });
+    } catch (error) {
+        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+        if (message === 'Not authorized, token failed') {
+            dispatch(logout());
+        }
+        dispatch({
+            type: ORDER_COMPLETE_ADMIN_FAIL,
+            payload: message,
+        });
+    }
+};
+
+//
+export const updateStatusOrderAction = (data) => async (dispatch, getState) => {
+    const { id, status } = data;
+    try {
+        dispatch({ type: ORDER_COMPLETE_ADMIN_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        const { data } = await axios.put(`/api/orders/${id}/${status}`, {}, config);
         dispatch({ type: ORDER_COMPLETE_ADMIN_SUCCESS, payload: data });
     } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;

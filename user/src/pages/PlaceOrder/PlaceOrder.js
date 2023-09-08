@@ -91,14 +91,14 @@ function PlaceOrder() {
         }
         if (success) {
             console.log('order = ', order);
-            // if (order?.newOrder?.payment?.payUrl) {
-            //     window.location.href = `${order.newOrder.payment.payUrl}`;
-            //     return;
-            // } else {
-            //     successPlaceholder();
-            //     dispatch({ type: ORDER_CREATE_RESET });
-            //     navigate(`/order/${order?.newOrder?._id}`);
-            // }
+            if (order?.newOrder?.payment?.payUrl) {
+                window.location.href = `${order.newOrder.payment.payUrl}`;
+                return;
+            } else {
+                successPlaceholder();
+                dispatch({ type: ORDER_CREATE_RESET });
+                navigate(`/order/${order?.newOrder?._id}`);
+            }
         }
     }, [error, success]);
 
@@ -300,54 +300,60 @@ function PlaceOrder() {
                                     ))}
                             </>
                         )}
-                        <div className="row mt-2 bg-white">
-                            <div className="col-lg-12">
-                                <table className=" table text-base">
-                                    <tbody className="">
-                                        <tr>
-                                            <td>
-                                                <strong>Tiền Sản phẩm</strong>
-                                            </td>
-                                            <td>{Number(cart?.itemsPrice)?.toLocaleString('de-DE')}đ</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <strong>Phí vận chuyển</strong>
-                                            </td>
-                                            <td>{Number(cart?.shippingPrice)?.toLocaleString('de-DE')}đ</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <strong>Tổng tiền</strong>
-                                            </td>
-                                            <td className="text-lg font-semibold">
-                                                {Number(cart?.totalPrice)?.toLocaleString('de-DE')}đ
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div className="row mt-2 bg-white py-8">
-                            <div className="row col-lg-12">
-                                {paymentMethodState == 'pay-with-paypal' ? (
-                                    <div className="col-lg-6 pt-3 text-center text-xl font-bold uppercase">
-                                        Tổng thanh toán: {moneyNeedPaid} USD
+                        {cart.cartItems.length === 0 ? (
+                            ' '
+                        ) : (
+                            <>
+                                <div className="row mt-2 bg-white">
+                                    <div className="col-lg-12">
+                                        <table className=" table text-base">
+                                            <tbody className="">
+                                                <tr>
+                                                    <td>
+                                                        <strong>Tiền Sản phẩm</strong>
+                                                    </td>
+                                                    <td>{Number(cart?.itemsPrice)?.toLocaleString('de-DE')}đ</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <strong>Phí vận chuyển</strong>
+                                                    </td>
+                                                    <td>{Number(cart?.shippingPrice)?.toLocaleString('de-DE')}đ</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <strong>Tổng tiền</strong>
+                                                    </td>
+                                                    <td className="text-lg font-semibold">
+                                                        {Number(cart?.totalPrice)?.toLocaleString('de-DE')}đ
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
-                                ) : (
-                                    <div className="col-lg-6 pt-3 text-center  text-xl font-bold uppercase">
-                                        Tổng thanh toán: {Number(cart.totalPrice)?.toLocaleString('de-DE')} VNĐ
+                                </div>
+                                <div className="row mt-2 bg-white py-8">
+                                    <div className="row col-lg-12">
+                                        {paymentMethodState == 'pay-with-paypal' ? (
+                                            <div className="col-lg-6 pt-3 text-center text-xl font-bold uppercase">
+                                                Tổng thanh toán: {moneyNeedPaid} USD
+                                            </div>
+                                        ) : (
+                                            <div className="col-lg-6 pt-3 text-center  text-xl font-bold uppercase">
+                                                Tổng thanh toán: {Number(cart.totalPrice)?.toLocaleString('de-DE')} VNĐ
+                                            </div>
+                                        )}
+                                        <button
+                                            type="submit"
+                                            className="col-lg-6 rounded-lg bg-[var(--main-color)] px-1 py-3 uppercase text-fuchsia-50 hover:bg-[var(--main-color-hover)]"
+                                            onClick={() => window.my_modal_1.showModal()}
+                                        >
+                                            Đặt hàng
+                                        </button>
                                     </div>
-                                )}
-                                <button
-                                    type="submit"
-                                    className="col-lg-6 rounded-lg bg-[var(--main-color)] px-1 py-3 uppercase text-fuchsia-50 hover:bg-[var(--main-color-hover)]"
-                                    onClick={() => window.my_modal_1.showModal()}
-                                >
-                                    Đặt hàng
-                                </button>
-                            </div>
-                        </div>
+                                </div>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

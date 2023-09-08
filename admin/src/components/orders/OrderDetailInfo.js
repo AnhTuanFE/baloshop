@@ -1,5 +1,3 @@
-import React from 'react';
-
 const OrderDetailInfo = (props) => {
     const { order } = props;
     return (
@@ -11,8 +9,8 @@ const OrderDetailInfo = (props) => {
                     </span>
                     <div className="text">
                         <p className="mb-1">
-                            Họ tên: {order.name} <br />
-                            <p>Số điện thoại: {order.phone}</p>
+                            Họ tên: {order?.order.name} <br />
+                            <p>Số điện thoại: {order?.order.phone}</p>
                         </p>
                     </div>
                 </article>
@@ -24,12 +22,11 @@ const OrderDetailInfo = (props) => {
                     </span>
                     <div className="text">
                         <p className="mb-1">
-                            Địa chỉ: {order.shippingAddress.city}, {order.shippingAddress.district},{' '}
-                            {order.shippingAddress.ward}
+                            Địa chỉ: {order?.order.shippingAddress?.city}, {order?.order.shippingAddress?.district},{' '}
+                            {order?.order.shippingAddress?.ward}
                             <br />
-                            {order.shippingAddress.address}
+                            {order?.order.shippingAddress?.address}
                             <br />
-                            {/* {order.shippingAddress.postalCode} */}
                         </p>
                     </div>
                 </article>
@@ -40,7 +37,7 @@ const OrderDetailInfo = (props) => {
                         <i className="text-success fab fa-paypal"></i>
                     </span>
                     <div className="text">
-                        <p className="mb-1">Phương thức: {order.paymentMethod}</p>
+                        <p className="mb-1">Phương thức thanh toán: {order?.order.paymentMethod}</p>
                     </div>
                 </article>
             </div>

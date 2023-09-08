@@ -221,7 +221,7 @@ function Cart() {
                         {cartItems?.map((item) => (
                             <div key={item?._id} className="row my-4 bg-white py-1 lg:w-full">
                                 <div className="col-lg-12 col-md-12 flex justify-center">
-                                    <div className="col-lg-2 col-md-2 flex">
+                                    <div className="col-lg-2 col-md-2 flex justify-around">
                                         <div className="">{findCartCountInStock(item)}</div>
                                         <div className=" flex flex-col justify-center">
                                             <img

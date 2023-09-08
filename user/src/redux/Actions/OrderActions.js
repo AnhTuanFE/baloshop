@@ -167,7 +167,7 @@ export const listMyOrders = () => async (dispatch, getState) => {
         };
 
         const { data } = await axios.get(`/api/orders/`, config);
-        dispatch({ type: types.ORDER_LIST_MY_SUCCESS, payload: data });
+        dispatch({ type: types.ORDER_LIST_MY_SUCCESS, payload: data?.orders });
     } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;
         if (message === 'Not authorized, token failed') {
@@ -237,7 +237,11 @@ export const cancelOrder = (order) => async (dispatch, getState) => {
             },
         };
 
-        const { data } = await axios.delete(`/api/orders/${order._id}/ucancel`, config);
+        const { data } = await axios.put(
+            `/api/orders/${order?.order._id}/cancel`,
+            { descripetion: 'Muốn mua sp khác' },
+            config,
+        );
         dispatch({ type: types.ORDER_CANCEL_SUCCESS, payload: data });
     } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;
@@ -281,35 +285,6 @@ export const completeOrder = (id) => async (dispatch, getState) => {
     }
 };
 
-// RETURN AMOUNT PRODUCT
-export const returnAmountProduct = (orderItems) => async (dispatch, getState) => {
-    try {
-        dispatch({ type: types.ORDER_RETURN_AMOUNT_PRODUCT_REQUEST });
-
-        const {
-            userLogin: { userInfo },
-        } = getState();
-
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${userInfo.token}`,
-            },
-        };
-
-        const { data } = await axios.put(`/api/orders/returnAmountProduct`, { orderItems }, config);
-        dispatch({ type: types.ORDER_RETURN_AMOUNT_PRODUCT_SUCCESS, payload: data });
-    } catch (error) {
-        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
-        if (message === 'Not authorized, token failed') {
-            dispatch(logout());
-        }
-        dispatch({
-            type: types.ORDER_RETURN_AMOUNT_PRODUCT_FAIL,
-            payload: message,
-        });
-    }
-};
 // =========================================================
 
 export const paypalCreateOrderAction = () => async (dispatch, getState) => {
@@ -373,7 +348,7 @@ export const paypalConfirmPaidOrderAction = (orderID) => async (dispatch, getSta
 
 export const getLabelOrderGHTKAction = (id_Ghtk) => async (dispatch, getState) => {
     const apiBase = 'https://services-staging.ghtklab.com';
-    console.log('id_Ghtk = ', id_Ghtk);
+    // console.log('id_Ghtk = ', id_Ghtk);
     try {
         dispatch({ type: types.GET_LABEL_ORDER_GHTK_REQUEST });
 
