@@ -58,7 +58,7 @@ const Login = () => {
                                 alt="Sample image"
                             ></img>
                         </div>
-                        <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1  rounded bg-cyan-100 shadow">
+                        <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1 wrap_form_login bg-cyan-100 shadow">
                             <h1 className="card-title text-bold fw-bold mb-4 mt-4 text-center uppercase">
                                 Đăng nhập admin
                             </h1>
@@ -80,7 +80,7 @@ const Login = () => {
                                                     <input
                                                         type="email"
                                                         id="email"
-                                                        className=" block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 py-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                                                        className=" rounded-4 block w-full border border-gray-300 bg-gray-50 px-3 py-3 text-sm"
                                                         placeholder="Email"
                                                         {...field}
                                                     />
@@ -110,7 +110,7 @@ const Login = () => {
                                                         type="password"
                                                         id="password"
                                                         placeholder="Mật khẩu"
-                                                        className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 py-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                                                        className="block w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-3 text-sm"
                                                         {...field}
                                                     />
                                                     {renderError([

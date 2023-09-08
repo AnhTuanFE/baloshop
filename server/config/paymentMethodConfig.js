@@ -7,9 +7,9 @@ export const PAY_WITH_PAYPAL = 'pay-with-paypal';
 export const PAYMENT_METHODS = [PAY_WITH_CASH, PAY_WITH_MOMO, PAY_WITH_ATM, PAY_WITH_CREDIT_CARD, PAY_WITH_PAYPAL];
 
 export const CREATED = 'created';
-export const PAID = 'paid';
+export const PAYMENT_SUCCESS = 'payment-success';
 export const PAYMENT_FAILED = 'payment-failed';
 export const REFUND = 'refund';
 export const CANCELLED = 'cancelled';
 
-export const PAYMENT_STATUS = [CREATED, PAID, PAYMENT_FAILED, REFUND, CANCELLED];
+export const PAYMENT_STATUS = [CREATED, PAYMENT_SUCCESS, PAYMENT_FAILED, REFUND, CANCELLED];

@@ -42,7 +42,6 @@ function Register() {
     }, [userInfo, navigate, redirect]);
 
     const submitHandler = (data) => {
-        console.log('data = ', data);
         const { name, email, phone, password } = data;
         dispatch(register(name, email, phone, password));
         reset();
@@ -50,9 +49,9 @@ function Register() {
     return (
         <>
             <div>
-                <div className="mt-2 flex items-center justify-center pb-14">
+                <div className="row col-lg-12 mt-2 flex items-center justify-center pb-14 max-sm:mx-4">
                     <form
-                        className="Login col-md-6 col-lg-4 col-10 rounded-xl bg-white px-10 pb-10 pt-2 shadow-custom-shadow"
+                        className="col-md-6 col-lg-4 rounded-xl bg-white pb-10 pt-2 shadow-custom-shadow max-sm:px-5 sm:px-10"
                         onSubmit={handleSubmit(submitHandler)}
                     >
                         {error && <Message variant="alert-danger block">{error}</Message>}

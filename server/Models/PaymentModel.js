@@ -76,7 +76,9 @@ const paymentSchema = mongoose.Schema(
             transId: {
                 type: String,
             },
-            refundTrans: [],
+            refundTrans: {
+                type: Array,
+            },
         },
         paypalPaymentTransaction: {
             id: {

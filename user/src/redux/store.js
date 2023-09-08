@@ -36,7 +36,6 @@ import {
     productbestseller,
     orderCreateReviewReducer,
     orderCompleteReducer,
-    returnAmountProductReducer,
     PaypalReducer,
     GHTK_Reducer,
 } from './Reducers/OrderReducres';
@@ -71,7 +70,6 @@ const reducer = combineReducers({
     orderGetComplete: orderCompleteReducer,
     order_ghtk_state: GHTK_Reducer,
     paypalstate: PaypalReducer,
-    returnAmount: returnAmountProductReducer,
     sliderLoad: Sliderload,
     CategoryList: categoryListReducer,
     avatarLoad: Avatarload,

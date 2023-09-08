@@ -2,7 +2,7 @@
     "name": "admin-dashboard",
     "version": "0.1.0",
     "private": true,
-    "proxy": "http://localhost:5000/",
+    "proxy": "https://e787-116-102-172-212.ngrok-free.app/",
     "dependencies": {
         "@emotion/react": "^11.11.0",
         "@emotion/styled": "^11.11.0",

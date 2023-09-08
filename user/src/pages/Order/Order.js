@@ -5,13 +5,7 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import { Button, notification, Modal } from 'antd';
-import {
-    cancelOrder,
-    getOrderDetails,
-    createOrderReview,
-    completeOrder,
-    returnAmountProduct,
-} from '~/redux/Actions/OrderActions';
+import { cancelOrder, getOrderDetails, createOrderReview, completeOrder } from '~/redux/Actions/OrderActions';
 import { createProductReview } from '~/redux/Actions/ProductActions';
 import { PRODUCT_CREATE_REVIEW_RESET } from '~/redux/Constants/ProductConstants';
 import {
@@ -67,6 +61,7 @@ function Order() {
 
     const orderDetails = useSelector((state) => state.orderDetails);
     const { order, loading, error } = orderDetails;
+    const dataOrder = order?.order;
     const orderPay = useSelector((state) => state.orderPay);
     const { loading: loadingPay, success: successPay } = orderPay;
 
@@ -86,7 +81,6 @@ function Order() {
     }, [bulean]);
     const cancelOrderHandler = () => {
         dispatch(cancelOrder(order));
-        dispatch(returnAmountProduct(order.orderItems));
     };
 
     useEffect(() => {
@@ -122,28 +116,29 @@ function Order() {
             return (Math.round(num * 100) / 100).toFixed(0);
         };
 
-        order.itemsPrice = addDecimals(order.orderItems.reduce((acc, item) => acc + item.price * item.quantity, 0));
+        // order.itemsPrice = addDecimals(order?.orderItems?.reduce((acc, item) => acc + item.price * item.quantity, 0));
     }
     useEffect(() => {
         // if (!order || successPay) {
         //     dispatch({ type: ORDER_PAY_RESET });
         //     dispatch(getOrderDetails(orderId));
         // }
+        dispatch({ type: ORDER_PAY_RESET });
         dispatch(getOrderDetails(orderId));
     }, [orderId]);
 
-    const handlerSuccessCart = () => {
-        const arrItemOrder = order?.orderItems;
-        const filterCart = arrItemOrder.filter((item) => item.productReview.length === 0);
-        if (filterCart.length === 0) {
-            if (window.confirm('Cảm ơn bạn đã mua hàng chúc bạn một ngày tốt lành!')) {
-                dispatch(completeOrder(orderId));
-            }
-        } else {
-            if (window.confirm('Bạn cần đánh giá hết sản phẩm để hoàn tất đơn hàng')) {
-            }
-        }
-    };
+    // const handlerSuccessCart = () => {
+    //     const arrItemOrder = order?.orderItems;
+    //     const filterCart = arrItemOrder.filter((item) => item.productReview?.length === 0);
+    //     if (filterCart.length === 0) {
+    //         if (window.confirm('Cảm ơn bạn đã mua hàng chúc bạn một ngày tốt lành!')) {
+    //             dispatch(completeOrder(orderId));
+    //         }
+    //     } else {
+    //         if (window.confirm('Bạn cần đánh giá hết sản phẩm để hoàn tất đơn hàng')) {
+    //         }
+    //     }
+    // };
     // ==========================================
     const [open, setOpen] = useState(false);
     const showModal = () => {
@@ -173,15 +168,15 @@ function Order() {
                         <Message variant="alert-danger">{error}</Message>
                     ) : (
                         <>
-                            <InfoPayer order={order} />
-                            <Steppers order={order} />
-                            <div className="flex justify-around rounded bg-white px-4 py-3">
+                            <InfoPayer order={order?.order} />
+                            <Steppers order={order?.order} />
+                            <div className="flex justify-around rounded bg-white px-4 pb-10 pt-3">
                                 <div className="mr-5 flex-[3]">
-                                    {order.orderItems.length === 0 ? (
+                                    {order?.order.orderItems?.length === 0 ? (
                                         <Message variant="alert-info mt-5">Đơn đặt hàng của bạn trống</Message>
                                     ) : (
                                         <>
-                                            {order.orderItems.map((item, index) => (
+                                            {order?.order.orderItems?.map((item, index) => (
                                                 <div
                                                     className="mb-2 flex justify-around rounded px-4"
                                                     style={{
@@ -212,7 +207,7 @@ function Order() {
                                                         </h6>
                                                     </div>
                                                     {order?.isPaid &&
-                                                        order.orderItems[index].productReview.length === 0 && (
+                                                        order?.orderItems[index]?.productReview?.length === 0 && (
                                                             <div className="m-auto text-center">
                                                                 <Button
                                                                     type="default"
@@ -241,7 +236,7 @@ function Order() {
                                                     <strong className="text-base">Sản phẩm:</strong>
                                                 </td>
                                                 <td className="text-base">
-                                                    {Number(order?.itemsPrice)?.toLocaleString('de-DE')}đ
+                                                    {Number(order?.order.totalProductPrice)?.toLocaleString('de-DE')}đ
                                                 </td>
                                             </tr>
                                             <tr>
@@ -249,7 +244,7 @@ function Order() {
                                                     <strong className="text-base">Phí vận chuyển:</strong>
                                                 </td>
                                                 <td className="text-base">
-                                                    {Number(order?.shippingPrice)?.toLocaleString('de-DE')}đ
+                                                    {Number(order?.order.shippingPrice)?.toLocaleString('de-DE')}đ
                                                 </td>
                                             </tr>
                                             <tr>
@@ -257,7 +252,7 @@ function Order() {
                                                     <strong className="text-base">Tổng tiền:</strong>
                                                 </td>
                                                 <td className="text-base">
-                                                    {Number(order?.totalPrice)?.toLocaleString('de-DE')}đ
+                                                    {Number(order?.order.totalPrice)?.toLocaleString('de-DE')}đ
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -268,13 +263,13 @@ function Order() {
                                             Đơn hàng này đã bị hủy bỏ
                                         </div>
                                     )}
-                                    <div className="mx-2 mb-2 cursor-pointer rounded-md bg-[var(--main-color)] py-1 text-center text-fuchsia-50 ">
+                                    {/* <div className="mx-2 mb-2 cursor-pointer rounded-md bg-[var(--main-color)] py-1 text-center text-fuchsia-50 ">
                                         <button onClick={showModal}>Chi tiết đơn hàng</button>
 
                                         <Modal title="Title" open={open} onOk={handleOk} onCancel={handleCancel}>
                                             <ViewOrderInformation id_Ghtk={order?.label_id_GiaoHangTK} />
                                         </Modal>
-                                    </div>
+                                    </div> */}
                                     <div className="mx-2  cursor-pointer rounded-md">
                                         {order?.paymentMethod == 'pay-with-momo' && order?.isPaid ? (
                                             <div>
@@ -291,7 +286,7 @@ function Order() {
                                             <div className="">
                                                 <button
                                                     className=" mb-2 w-full cursor-pointer rounded-lg bg-success px-1 py-2 text-base font-semibold uppercase text-white"
-                                                    onClick={handlerSuccessCart}
+                                                    // onClick={handlerSuccessCart}
                                                 >
                                                     Hoàn tất đơn hàng
                                                 </button>

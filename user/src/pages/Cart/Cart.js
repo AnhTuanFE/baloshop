@@ -146,12 +146,14 @@ function Cart() {
         handleConfigQuantity(item);
         return (
             <>
-                <div className="col-lg-3 mt-3 flex flex-col justify-center">
-                    <h6 className="mb-2 text-sm font-semibold uppercase text-[#2c2c2c]">Phân loại hàng</h6>
-                    <h5>{item?.color}</h5>
+                <div className=" mt-3 max-sm:flex sm:flex sm:flex-col sm:justify-center">
+                    <h6 className="mb-2 text-sm font-bold uppercase text-[#2c2c2c]">Màu</h6>
+                    <h5 className="max-sm:ml-3">{item?.color}</h5>
                 </div>
-                <div className="col-lg-2 mt-3 flex flex-col justify-center">
-                    <h6 className="mb-2 text-sm font-semibold uppercase text-[#2c2c2c]">Số lượng</h6>
+                <div className="mt-3 max-sm:flex max-sm:justify-center sm:flex sm:flex-col sm:justify-center">
+                    <h6 className=" mb-2 text-sm font-semibold uppercase text-[#2c2c2c] max-sm:hidden sm:block">
+                        Số lượng
+                    </h6>
                     <Select
                         defaultValue={item?.qty}
                         disabled={findCart?.countInStock <= 0}
@@ -181,21 +183,21 @@ function Cart() {
             {contextHolder}
             <div className="pb-5">
                 {cartItems?.length === 0 ? (
-                    <div className=" alert alert-info mt-3 flex justify-center text-center">
-                        <div>
+                    <div className=" row col-lg-12 mt-3 flex justify-center text-center  max-sm:mx-4">
+                        <div className=" col-lg-6 rounded-xl bg-[var(--blue-color)] py-4">
                             <div className="mb-4">
                                 <img
                                     className="m-auto h-[100px] w-[100px]"
                                     src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/cart/9bdd8040b334d31946f49e36beaf32db.png"
                                     alt="Giỏ hàng trống"
                                 />
-                                GIỎ HÀNG CỦA BẠN ĐANG TRỐNG
+                                <div className="mt-2 font-medium">GIỎ HÀNG CỦA BẠN ĐANG TRỐNG</div>
                             </div>
                             <Link
-                                className="btn-success btn mx-5 px-5 text-base font-semibold hover:bg-[#157347]"
+                                className=" mx-5 rounded-lg bg-[var(--main-color)] px-5 py-2.5 text-base font-semibold text-white hover:bg-[var(--main-color-hover)]"
                                 to="/"
                             >
-                                BẮT ĐẦU MUA SẮM
+                                <button>BẮT ĐẦU MUA SẮM</button>
                             </Link>
                         </div>
                     </div>
@@ -217,34 +219,45 @@ function Cart() {
                             </div>
                         </div>
                         {cartItems?.map((item) => (
-                            <div key={item?._id} className="row col-lg-12 col-md-12 my-4 bg-white">
-                                <div className="col-lg-1">{findCartCountInStock(item)}</div>
-                                <div className=" col-lg-1 mt-0">
-                                    <img
-                                        className="h-[100px] object-contain"
-                                        src={`${item.product?.image[0]?.urlImage}`}
-                                        alt={item.product?.name}
-                                    />
-                                </div>
-                                <div className="col-lg-2 flex items-center">
-                                    <Link to={`/product/${item.product?._id}`}>
-                                        <h4 className="font-bold">{item.product?.name}</h4>
-                                    </Link>
-                                </div>
-                                {findCartColor(item)}
-                                <div className="col-lg-2 flex flex-col items-start justify-center text-sm text-[#2c2c2c]">
-                                    <h6 className="text-center font-bold uppercase">Giá</h6>
-                                    <h4 className="mt-1">{item.product?.price?.toLocaleString('de-DE')}đ</h4>
-                                </div>
-                                <div className="col-lg-1  flex flex-col justify-center">
-                                    <button
-                                        className=" cursor-pointer rounded-xl bg-[var(--main-color)] px-4 py-1 text-white hover:bg-[var(--main-color-hover)]"
-                                        onClick={() => {
-                                            removeFromCartHandle(item?._id);
-                                        }}
-                                    >
-                                        Xóa
-                                    </button>
+                            <div key={item?._id} className="row my-4 bg-white py-1 lg:w-full">
+                                <div className="col-lg-12 col-md-12 flex justify-center">
+                                    <div className="col-lg-2 col-md-2 flex justify-around">
+                                        <div className="">{findCartCountInStock(item)}</div>
+                                        <div className=" flex flex-col justify-center">
+                                            <img
+                                                className=" h-[100px] object-contain"
+                                                src={`${item.product?.image[0]?.urlImage}`}
+                                                alt={item.product?.name}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col-lg-8 col-md-8 max-md:ml-2 max-md:block md:flex md:justify-around">
+                                        <div className="flex items-center">
+                                            <Link to={`/product/${item.product?._id}`}>
+                                                <h4 className="font-bold">{item.product?.name}</h4>
+                                            </Link>
+                                        </div>
+                                        {findCartColor(item)}
+                                        <div className="flex flex-col justify-center text-sm text-[#2c2c2c] max-sm:hidden">
+                                            <h6 className=" text-center font-bold uppercase ">Giá</h6>
+                                            <h4 className="mt-1">{item.product?.price?.toLocaleString('de-DE')}đ</h4>
+                                        </div>
+                                    </div>
+                                    <div className="mx-1 flex-col justify-center max-sm:flex sm:hidden">
+                                        <h4 className="mt-1 font-bold">
+                                            {item.product?.price?.toLocaleString('de-DE')}đ
+                                        </h4>
+                                    </div>
+                                    <div className="col-lg-1 col-md-2 flex flex-col justify-center max-sm:ml-2">
+                                        <button
+                                            className=" m-auto w-14 cursor-pointer rounded-xl bg-[var(--main-color)] py-1 text-white hover:bg-[var(--main-color-hover)]"
+                                            onClick={() => {
+                                                removeFromCartHandle(item?._id);
+                                            }}
+                                        >
+                                            Xóa
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         ))}

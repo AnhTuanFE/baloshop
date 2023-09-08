@@ -22,14 +22,12 @@ function Crop_image_avatar({ user }) {
     const [handleUpdateImage, setHandleUpdateImage] = useState(false);
 
     const [image, setImage] = useState();
-    const [nameImage, setNameImage] = useState();
 
     const dispatch = useDispatch();
 
     useEffect(() => {
         if (user) {
-            setImage(user.image);
-            setNameImage(user.image?.idImageCloudinary);
+            setImage(user?.image);
         }
     }, [dispatch, user]);
 
@@ -54,9 +52,8 @@ function Crop_image_avatar({ user }) {
 
     const submitUpdateProfile = () => {
         let userInforNeedUpdate = new FormData();
-        userInforNeedUpdate.append('id', user._id);
+        // userInforNeedUpdate.append('id', user._id);
         userInforNeedUpdate.append('image', image);
-        userInforNeedUpdate.append('nameImage', nameImage);
 
         dispatch(updateUserProfile(userInforNeedUpdate));
     };

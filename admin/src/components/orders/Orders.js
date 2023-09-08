@@ -18,7 +18,8 @@ const Orders = (props) => {
     const [kewywordSearch, setKewywordSearch] = useState('');
     // const [keyword, setKeyword] = useState('');
     useEffect(() => {
-        dispatch(listOrders(keyword, status, pageNumber));
+        const limit = 10;
+        dispatch(listOrders(keyword, status, pageNumber, limit));
     }, [dispatch, status, keyword, pageNumber]);
 
     const handleStatus = (value) => {
@@ -64,13 +65,15 @@ const Orders = (props) => {
                         </div>
                         <div className="col-lg-2 col-3 col-md-3 me-2">
                             <select className="form-select" value={status} onChange={handleStatus}>
-                                <option value={'0'}>Trạng thái...</option>
-                                <option value={'1'}>Chờ xác nhận</option>
-                                <option value={'2'}>Đã xác nhận</option>
-                                <option value={'3'}>Giao hàng</option>
-                                <option value={'4'}>Thanh toán</option>
-                                <option value={'5'}>Hoàn tất</option>
-                                <option value={'6'}>Hủy đơn</option>
+                                <option value={''}>Trạng thái...</option>
+                                <option value={'placed'}>Chờ xác nhận</option>
+                                <option value={'confirm'}>Đã xác nhận</option>
+                                <option value={'delivering'}>Đang giao</option>
+                                <option value={'delivered'}>Đã giao</option>
+                                <option value={'unpaid'}>Chưa thanh toán</option>
+                                <option value={'paid'}>Đã thanh toán</option>
+                                <option value={'completed'}>Đã hoàn tất</option>
+                                <option value={'cancelled'}>Đã hủy đơn</option>
                             </select>
                         </div>
                     </div>
