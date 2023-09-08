@@ -16,7 +16,6 @@ import { imageDefaul } from '~/utils/data';
 
 function SideBar_Profile({ userInfo }) {
     const location = useLocation();
-    console.log('location = ', location.pathname);
     return (
         <>
             <div className=" mr-3 px-2">

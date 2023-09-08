@@ -12,7 +12,6 @@ export const listAllOrder = (state) => state.listAllOrder;
 
 export const orderCreateReviewsRetult = (state) => state.orderCreateReviewsRetult;
 export const orderCompleteReducer = (state) => state.orderCompleteReducer;
-export const returnAmountProductReducer = (state) => state.returnAmountProductReducer;
 
 export const ordersRemainingSelector = createSelector(
     orderAddress,
@@ -24,7 +23,6 @@ export const ordersRemainingSelector = createSelector(
     listAllOrder,
     orderCreateReviewsRetult,
     orderCompleteReducer,
-    returnAmountProductReducer,
     order_ghtk_state,
     (
         orderAddress,
@@ -36,7 +34,6 @@ export const ordersRemainingSelector = createSelector(
         listAllOrder,
         orderCreateReviewsRetult,
         orderCompleteReducer,
-        returnAmountProductReducer,
         order_ghtk_state,
     ) => {
         return {
@@ -49,7 +46,6 @@ export const ordersRemainingSelector = createSelector(
             listAllOrder,
             orderCreateReviewsRetult,
             orderCompleteReducer,
-            returnAmountProductReducer,
             order_ghtk_state,
         };
     },

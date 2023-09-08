@@ -12,13 +12,7 @@ import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import { ordersRemainingSelector } from '~/redux/Selector/ordersSelector';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPhone, faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import {
-    cancelOrder,
-    getOrderDetails,
-    createOrderReview,
-    completeOrder,
-    returnAmountProduct,
-} from '~/redux/Actions/OrderActions';
+import { cancelOrder, getOrderDetails, createOrderReview, completeOrder } from '~/redux/Actions/OrderActions';
 
 function PaymentPaypal() {
     const navigate = useNavigate();

@@ -10,6 +10,7 @@ import {
     paidOrder,
     waitConfirmationOrder,
     completeAdminOrder,
+    updateStatusOrderAction,
 } from '~/Redux/Actions/OrderActions';
 
 import OrderDetailInfo from '~/components/orders/OrderDetailInfo';
@@ -24,20 +25,13 @@ const OrderDetailScreen = () => {
     const orderId = params.id;
     const dispatch = useDispatch();
 
-    const [status, setStatus] = useState('0');
+    const [status, setStatus] = useState('');
 
     // modal
-    const [cancel, setCancel] = useState(false);
-    const [confirm, setConfirm] = useState(false);
-    const [deliver, setDeliver] = useState(false);
-    const [paid, setPaid] = useState(false);
-    const [complete, setComplete] = useState(false);
-    const [recal, setRecal] = useState(false);
+    const [statusOrder, setStatusOrder] = useState(false);
 
     const orderDetails = useSelector((state) => state.orderDetails);
     const { loading, error, order } = orderDetails;
-    // console.log('order = ', order);
-    // const orderUser = useSelector((state) => state.orderPaid);
     const orderwaitGetConfirmation = useSelector((state) => state.orderwaitGetConfirmation);
     const { success: successwaitGetConfirmation } = orderwaitGetConfirmation;
     const orderDeliver = useSelector((state) => state.orderDeliver);
@@ -59,148 +53,33 @@ const OrderDetailScreen = () => {
         successwaitGetConfirmation,
         successCompleteAdmin,
     ]);
-    const setTrueCancel = () => {
-        setCancel(true);
+    console.log('statusOrder = ', statusOrder);
+    const hanldehidden = () => {
+        setStatusOrder(false);
     };
-
-    // ======================
-    const hanldeCancelOrder = () => {
-        setCancel(false);
-    };
-    const noConFirm = () => {
-        setConfirm(false);
-        setStatus('0');
-    };
-    const noDeliver = () => {
-        setDeliver(false);
-        setStatus('1');
-    };
-    const noPaid = () => {
-        setPaid(false);
-        setStatus('2');
-    };
-    const noComplete = () => {
-        setComplete(false);
-        setStatus('3');
-    };
-    const handleConfirm = () => {
-        dispatch(waitConfirmationOrder(order._id, true));
-        setConfirm(!confirm);
-    };
-    const handleDelivered = () => {
-        dispatch(deliverOrder(order));
-        setDeliver(!deliver);
-    };
-    const handlePaid = () => {
-        dispatch(paidOrder(order));
-        setPaid(!paid);
-    };
-    const handleComppleted = () => {
-        dispatch(completeAdminOrder(order._id));
-        setComplete(!complete);
-    };
-    const handleRecall = () => {
-        setStatus('0');
-        setRecal(false);
-        dispatch(waitConfirmationOrder(order._id, false));
-    };
-    const noRecall = () => {
-        setRecal(false);
-        setStatus('1');
-    };
-    // ==========================
-    useEffect(() => {
-        if (status === '1' && order?.waitConfirmation !== true) {
-            setConfirm(true);
-        }
-        if (status === '2' && order?.isDelivered !== true) {
-            setDeliver(!deliver);
-        }
-        if (status === '3' && order?.isPaid !== true) {
-            setPaid(!paid);
-        }
-        if (status === '4' && order?.completeAdmin !== true) {
-            setComplete(!complete);
-        }
-    }, [status]);
-
-    useEffect(() => {
-        if (order?.waitConfirmation === true && order?.isDelivered !== true) {
-            setStatus('1');
-        }
-        if (order?.isDelivered === true && order?.isPaid !== true) {
-            setStatus('2');
-        }
-        if (order?.isPaid === true && order?.completeAdmin !== true) {
-            setStatus('3');
-        }
-        if (order?.completeAdmin === true) {
-            setStatus('4');
-        }
-    }, [order]);
-
     const cancelOrderHandler1 = () => {
-        setCancel(false);
         dispatch(cancelOrder(order));
+    };
+
+    const handleUpdateStatusOrder = () => {
+        const data = {
+            id: orderId,
+            status: status,
+        };
+        dispatch(updateStatusOrderAction(data));
+        setStatusOrder(false);
     };
     return (
         <section className="content-main">
             <div>
-                {cancel && (
+                {statusOrder && (
                     <ConfirmModal
-                        Title="Hủy đơn hàng"
-                        Body="Bạn có chắc chắn hủy đơn hàng này không?"
-                        HandleSubmit={cancelOrderHandler1}
+                        Title="Cập nhật trạng thái"
+                        Body="Bạn có chắc chắn cập nhật trạng thái cho đơn hàng này không?"
+                        HandleSubmit={handleUpdateStatusOrder}
                         Close="modal"
-                        hidenModal={hanldeCancelOrder}
+                        hidenModal={hanldehidden}
                     />
-                )}
-                {confirm && (
-                    <>
-                        <ConfirmModal
-                            Title="Xác nhận"
-                            Body="Đồng ý Xác nhận đơn hàng?"
-                            HandleSubmit={handleConfirm}
-                            Close="modal"
-                            hidenModal={noConFirm}
-                        />
-                    </>
-                )}
-                {deliver && (
-                    <ConfirmModal
-                        Title="Giao hàng"
-                        Body="Đồng ý giao hàng?"
-                        HandleSubmit={handleDelivered}
-                        Close="modal"
-                        hidenModal={noDeliver}
-                    ></ConfirmModal>
-                )}
-                {paid && (
-                    <ConfirmModal
-                        Title="Thanh toán"
-                        Body="Đồng ý thanh toán?"
-                        HandleSubmit={handlePaid}
-                        Close="modal"
-                        hidenModal={noPaid}
-                    ></ConfirmModal>
-                )}
-                {complete && (
-                    <ConfirmModal
-                        Title="Hoàn tất"
-                        Body="Đồng ý hoàn tất?"
-                        HandleSubmit={handleComppleted}
-                        Close="modal"
-                        hidenModal={noComplete}
-                    ></ConfirmModal>
-                )}
-                {recal && (
-                    <ConfirmModal
-                        Title="Thu hồi"
-                        Body="Đồng ý Thu hồi?"
-                        HandleSubmit={handleRecall}
-                        Close="modal"
-                        hidenModal={noRecall}
-                    ></ConfirmModal>
                 )}
             </div>
             <div className="content-header">
@@ -209,34 +88,24 @@ const OrderDetailScreen = () => {
                         Quay lại
                     </Link>
                 </div>
-                {/* {order?.waitConfirmation && order?.isDelivered !== true && (
-                    <div className="col-lg-3 col-md-3 d-flex justify-content-end">
-                        <button
-                            className="btn btn-success text-white"
-                            onClick={() => {
-                                setRecal(true);
-                            }}
-                        >
-                            Thu hồi
-                        </button>
-                    </div>
-                )} */}
                 <div className="col-lg-3 col-md-3">
-                    <select className="form-select" value={status} onChange={(e) => setStatus(e.target.value)}>
-                        {order?.cancel !== 1 && (
-                            <>
-                                <option value={'0'}>Trạng thái...</option>
-                                <option value={'1'}>Xác nhận</option>
-                                {order?.waitConfirmation && <option value={'2'}>Giao hàng</option>}
-                                {order?.waitConfirmation && order?.isDelivered && (
-                                    <option value={'3'}>Thanh toán</option>
-                                )}
-                                {order?.waitConfirmation && order?.isDelivered && order?.isPaid && (
-                                    <option value={'4'}>Hoàn tất</option>
-                                )}
-                                {/* order?.completeUser && */}
-                            </>
-                        )}
+                    <select
+                        className="form-select"
+                        value={status}
+                        onChange={(e) => {
+                            setStatus(e.target.value);
+                            setStatusOrder(true);
+                        }}
+                    >
+                        <>
+                            <option value={''}>Trạng thái...</option>
+                            <option value={'confirm'}>Xác nhận</option>
+                            <option value={'delivery'}>Giao hàng</option>
+                            <option value={'delivered'}>Đã giao</option>
+                            <option value={'received'}>Đã nhận và thanh toán</option>
+                            {/* user */}
+                            <option value={'cancel'}>Hủy đơn hàng</option>
+                        </>
                     </select>
                 </div>
             </div>
@@ -247,7 +116,7 @@ const OrderDetailScreen = () => {
                 <Message variant="alert-danger">{error}</Message>
             ) : (
                 <div className="card">
-                    <header className="card-header p-3 Header-white">
+                    <header className="card-header Header-white p-3">
                         <div className="row align-items-center ">
                             <div className="col-lg-6 col-md-6">
                                 <span>
@@ -262,13 +131,12 @@ const OrderDetailScreen = () => {
                                     </b>
                                 </span>
                                 <br />
-                                <small className="text-black mx-3 ">ID Đơn hàng: {order._id}</small>
+                                <small className="mx-3 text-black ">ID Đơn hàng: {order._id}</small>
                             </div>
                             {order?.cancel !== 1 && order?.waitConfirmation !== true ? (
-                                <div className="col-lg-3 col-md-6 ms-auto d-flex justify-content-end align-items-center">
+                                <div className="col-lg-3 col-md-6 d-flex justify-content-end align-items-center ms-auto">
                                     <button
                                         // onClick={cancelOrderHandler}
-                                        onClick={setTrueCancel}
                                         className="btn btn-dark col-12"
                                         style={{ marginBottom: '15px' }}
                                         disabled={order?.waitConfirmation}

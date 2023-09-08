@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 
 export default function PaginatorOrder(props) {
@@ -36,7 +35,7 @@ export default function PaginatorOrder(props) {
                                         : `/orders/page/${x + 1}`
                                 }
                             >
-                                {x + 1}
+                                <div>{x + 1}</div>
                             </Link>
                         </li>
                     ))}

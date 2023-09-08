@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 function ModalDaiSyUI({ Title, Body, HandleSubmit }) {
     return (
         <Fragment>
-            <dialog id="my_modal_1" className="modal modal-top m-auto mt-5 w-[30%] rounded-lg">
+            <dialog id="my_modal_1" className="col-lg-5 modal modal-top m-auto mt-5 w-[400px] rounded-lg">
                 <form method="dialog" className="modal-box">
                     <div className="rounded-md text-center">
                         <h3 className="text-lg font-bold">{Title}!</h3>

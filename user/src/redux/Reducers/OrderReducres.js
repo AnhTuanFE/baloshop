@@ -139,21 +139,6 @@ export const orderCompleteReducer = (state = {}, action) => {
     }
 };
 
-export const returnAmountProductReducer = (state = {}, action) => {
-    switch (action.type) {
-        case types.ORDER_RETURN_AMOUNT_PRODUCT_REQUEST:
-            return { loading: true };
-        case types.ORDER_RETURN_AMOUNT_PRODUCT_SUCCESS:
-            return { loading: false, success: true, returnAmount: action.payload };
-        case types.ORDER_RETURN_AMOUNT_PRODUCT_FAIL:
-            return { loading: false, error: action.payload };
-        case types.ORDER_RETURN_AMOUNT_PRODUCT_RESET:
-            return {};
-        default:
-            return state;
-    }
-};
-
 // =================================================
 // CREATE ORDER
 export const PaypalReducer = (state = {}, action) => {

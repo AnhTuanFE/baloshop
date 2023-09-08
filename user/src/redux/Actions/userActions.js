@@ -257,12 +257,9 @@ export const VerifyResetPassWordAction = (verifyData) => async (dispatch) => {
             },
         };
         const { data } = await axios.post(`/api/forgotPass/verify-reset-password`, verifyData, config);
-        console.log('data = ', data);
         dataReturn = data;
         dispatch({ type: types.VERIFY_RESET_PASS_WORD_SUCCESS, payload: data });
     } catch (error) {
-        console.log('error = ', error, 'dataReturn = ', dataReturn);
-
         dispatch({
             type: types.VERIFY_RESET_PASS_WORD_FAIL,
             payload: error.response.data.message,

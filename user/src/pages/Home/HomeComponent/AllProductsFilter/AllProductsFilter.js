@@ -19,6 +19,7 @@ const AllProductsFilter = (props) => {
 
     const { productList } = useSelector(productsRemainingSelector);
     const { loading, error, products, page, pages } = productList;
+    console.log('products all = ', products);
 
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
