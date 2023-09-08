@@ -10,8 +10,8 @@ import {
     productListReducer,
     productListAllReducer,
     getAllCommentsReducer,
-    getAllReviewsReducer,
     categoryListReducer,
+    listProductSimilarReducer,
 } from './Reducers/ProductReducers';
 import { cartReducer, CreateCartReducer, DeleteCartReducer } from './Reducers/CartReducers';
 import {
@@ -19,7 +19,6 @@ import {
     userLoginReducer,
     userRegisterReducer,
     userUpdateProfileReducer,
-    userListReducer,
     ProvinceReducer,
     Avatarload,
     userForgotPassWord,
@@ -47,10 +46,10 @@ const reducer = combineReducers({
     productList: productListReducer,
     productAll: productListAllReducer,
     productDetails: productDetailsReducer,
+    listProductSimilar: listProductSimilarReducer,
     productReviewCreate: productCreateReviewReducer,
     productCommentCreate: productCreateCommentReducer,
     productCommentChildCreate: productCreateCommentChildReducer,
-    getAllReviewsProduct: getAllReviewsReducer,
     getAllCommentsProduct: getAllCommentsReducer,
     cart: cartReducer,
     cartCreate: CreateCartReducer,
@@ -59,7 +58,6 @@ const reducer = combineReducers({
     userRegister: userRegisterReducer,
     userDetails: userDetailsReducer,
     userUpdateProfile: userUpdateProfileReducer,
-    userAll: userListReducer,
     orderCreate: orderCreateReducer,
     orderDetails: orderDetailsReducer,
     orderAddress: orderAddressMyReducer,

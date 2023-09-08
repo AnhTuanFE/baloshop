@@ -150,24 +150,6 @@ export const updateUserPassword = (user) => async (dispatch, getState) => {
         });
     }
 };
-// ALL USER
-export const listUser = () => async (dispatch) => {
-    try {
-        dispatch({ type: types.USER_LIST_REQUEST });
-        const { data } = await axios.get(`/api/users/all`);
-
-        dispatch({ type: types.USER_LIST_SUCCESS, payload: data });
-    } catch (error) {
-        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
-        if (message === 'Not authorized, token failed') {
-            dispatch(logout());
-        }
-        dispatch({
-            type: types.USER_LIST_FAIL,
-            payload: message,
-        });
-    }
-};
 
 // CREATE USERS
 export const createUser =

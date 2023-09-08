@@ -13,7 +13,7 @@ function Home() {
     const pageNumber = params.pageNumber;
     const category = params.category;
     const rating = params.rating;
-    const sortProducts = params.sortProducts;
+    const sortBy = params.sortBy;
 
     return (
         <div className=" max-md:px-2 md:px-20">
@@ -24,7 +24,7 @@ function Home() {
                 category={category}
                 keyword={keyword}
                 pageNumber={pageNumber}
-                sortProducts={sortProducts}
+                sortBy={sortBy}
                 rating={rating}
             />
             {/* <NewsMain /> */}

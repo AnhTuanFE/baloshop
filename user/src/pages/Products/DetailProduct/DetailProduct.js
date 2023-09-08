@@ -55,12 +55,6 @@ function DetailProduct() {
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
 
-    // start chức năng khác
-    const productList = useSelector((state) => state.productList);
-    const { products, page, pages } = productList;
-
-    // end chức năng khác
-
     const cartCreate = useSelector((state) => state.cartCreate);
     const { success: successAddCart, loading: loadingAddCart, error: errorAddCart } = cartCreate;
 
@@ -240,7 +234,7 @@ function DetailProduct() {
                     <div className="mx-2">
                         <EvaluateProduct productId={productId} />
                         <AskAndAnswer productId={productId} />
-                        <SimilarProducts products={products} />
+                        <SimilarProducts category={product?.category} />
                     </div>
                 </div>
             </div>

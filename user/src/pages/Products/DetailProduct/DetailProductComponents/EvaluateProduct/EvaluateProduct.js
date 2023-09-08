@@ -6,7 +6,7 @@ import moment from 'moment';
 import Rating from '~/components/Rating/Rating';
 import Message from '~/components/LoadingError/Error';
 import { imageDefaul } from '~/utils/data';
-import { createProductReview, getAllReviews } from '~/redux/Actions/ProductActions';
+import { createProductReview } from '~/redux/Actions/ProductActions';
 import { PRODUCT_CREATE_REVIEW_RESET } from '~/redux/Constants/ProductConstants';
 // ==== rating
 import Box from '@mui/material/Box';
@@ -44,7 +44,6 @@ function EvaluateProduct({ productId }) {
         }
     };
     // modal
-
     const [mediumReview, setMediumReview] = useState();
     const [bulean, setBulean] = useState(false);
     const [rating, setRating] = useState(0);
@@ -53,11 +52,6 @@ function EvaluateProduct({ productId }) {
 
     const [hover, setHover] = useState(-1);
 
-    const listAllReviews = useSelector((state) => state.getAllReviewsProduct);
-    const { reviews } = listAllReviews;
-    const reviewCart = reviews;
-
-    //bên detail product cũng có
     const productReviewCreate = useSelector((state) => state.productReviewCreate);
 
     const userLogin = useSelector((state) => state.userLogin);
@@ -77,13 +71,13 @@ function EvaluateProduct({ productId }) {
     const arrStar = [5, 4, 3, 2, 1];
 
     const returnStar = arrStar.map((star) => {
-        let review = reviewCart?.filter((rev) => {
+        let review = product?.reviews?.filter((rev) => {
             return star === rev.rating;
         });
         star = {
             rating: star,
             numReview: review.length,
-            percentage: (review.length / (reviewCart.length === 0 ? 1 : reviewCart.length)) * 100,
+            percentage: (review.length / (product?.reviews?.length === 0 ? 1 : product?.reviews?.length)) * 100,
         };
         return star;
     });
@@ -103,20 +97,16 @@ function EvaluateProduct({ productId }) {
     //     });
     // }, [optionIndex, optionColor]);
 
-    useEffect(() => {
-        const medium = returnStar.reduce((total, num) => {
-            return total + num.rating * num.numReview;
-        }, 0);
-        const sumReview = returnStar.reduce((total, num) => {
-            return total + num.numReview;
-        }, 0);
-        let retult = ((medium / (5 * (sumReview === 0 ? 1 : sumReview))) * 5).toFixed(1);
-        setMediumReview(retult);
-    }, [reviewCart]);
-
-    useEffect(() => {
-        dispatch(getAllReviews(productId));
-    }, [productId, successCreateReview]);
+    // useEffect(() => {
+    //     const medium = returnStar.reduce((total, num) => {
+    //         return total + num.rating * num.numReview;
+    //     }, 0);
+    //     const sumReview = returnStar.reduce((total, num) => {
+    //         return total + num.numReview;
+    //     }, 0);
+    //     let retult = ((medium / (5 * (sumReview === 0 ? 1 : sumReview))) * 5).toFixed(1);
+    //     setMediumReview(retult);
+    // }, [reviewCart]);
 
     useEffect(() => {
         if (bulean) {
@@ -128,9 +118,8 @@ function EvaluateProduct({ productId }) {
         }
     }, [bulean]);
 
-    const submitHandler = (e) => {
-        e.preventDefault();
-        dispatch(createProductReview(productId, rating, reviewColor, comment));
+    const submitHandler = () => {
+        dispatch(createProductReview(productId, rating, comment));
     };
     return (
         <div className="rounded-xl bg-white shadow-custom-shadow">
@@ -141,13 +130,13 @@ function EvaluateProduct({ productId }) {
                         <div className="col-md-4 col-sm-5 pt-4 text-center">
                             <div className="flex">
                                 <div className="mx-auto rounded-xl bg-[#fbc02d] px-6 py-8 text-white">
-                                    <h1 className="text-2xl">{mediumReview} / 5</h1>
+                                    <h1 className="text-2xl">{product?.rating} / 5</h1>
                                 </div>
                             </div>
                             <div className="mx-1 mt-1 text-sm">
-                                <Rating value={mediumReview} />
+                                <Rating value={product?.rating} />
                             </div>
-                            <p className="text-xl">{reviewCart.length} đánh giá và nhận xét</p>
+                            <p className="text-xl">{product?.numReviews} đánh giá và nhận xét</p>
                         </div>
                         <div className="col-md-8 col-sm-7">
                             <div className=" px-4 py-1 max-md:mt-2">
@@ -215,9 +204,10 @@ function EvaluateProduct({ productId }) {
                                 )}
                             </div>
                             {userInfo ? (
-                                <form onSubmit={submitHandler}>
-                                    <div className="my-4">
-                                        <strong>Đánh giá</strong>
+                                // onSubmit={submitHandler}
+                                <form>
+                                    <div className="mb-3">
+                                        <div className="text-center font-bold">Đánh giá</div>
                                         <Box className=" flex justify-center">
                                             <div>
                                                 <RatingMUI
@@ -245,7 +235,7 @@ function EvaluateProduct({ productId }) {
                                             </div>
                                         </Box>
                                     </div>
-                                    <div className="my-4">
+                                    {/* <div className="my-4">
                                         <strong>Màu sắc</strong>
                                         <select
                                             value={reviewColor}
@@ -261,7 +251,7 @@ function EvaluateProduct({ productId }) {
                                                 );
                                             })}
                                         </select>
-                                    </div>
+                                    </div> */}
                                     <div className="my-4">
                                         <strong>Bình luận</strong>
                                         <textarea
@@ -275,7 +265,7 @@ function EvaluateProduct({ productId }) {
                                         <button
                                             disabled={loadingCreateReview}
                                             className="col-12 rounded-md border-0 bg-[var(--main-color)] px-3 py-2 font-semibold text-white"
-                                            type="submit"
+                                            onClick={submitHandler}
                                         >
                                             Gửi đánh giá
                                         </button>
@@ -304,7 +294,7 @@ function EvaluateProduct({ productId }) {
             <div className=" mt-3 w-full py-1">
                 <div className="rating-review">
                     <hr className="my-4"></hr>
-                    {reviews?.map((review) => (
+                    {product?.reviews?.map((review) => (
                         <div key={review._id} className="rounded-5 rounded-xl bg-white px-3 py-3 shadow-custom-shadow">
                             <div className="flex items-center">
                                 <div className="flex items-center">

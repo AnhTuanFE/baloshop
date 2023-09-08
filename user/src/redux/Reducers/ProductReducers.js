@@ -36,23 +36,6 @@ export const productListReducer = (state = { products: [] }, action) => {
     }
 };
 
-//PRODUCT GET ALL REVIEWS
-export const getAllReviewsReducer = (state = { reviews: [] }, action) => {
-    switch (action.type) {
-        case types.PRODUCT_ALL_REVIEW_REQUEST:
-            return { loading: true, reviews: [] };
-        case types.PRODUCT_ALL_REVIEW_SUCCESS:
-            return {
-                loading: false,
-                reviews: action.payload,
-            };
-        case types.PRODUCT_ALL_REVIEW_FAIL:
-            return { loading: false, error: action.payload };
-        default:
-            return state;
-    }
-};
-
 //PRODUCT GET ALL COMMENTS
 export const getAllCommentsReducer = (state = { comments: [] }, action) => {
     switch (action.type) {
@@ -78,6 +61,20 @@ export const productDetailsReducer = (state = { product: { reviews: [] } }, acti
         case types.PRODUCT_DETAILS_SUCCESS:
             return { loading: false, product: action.payload };
         case types.PRODUCT_DETAILS_FAIL:
+            return { loading: false, error: action.payload };
+        default:
+            return state;
+    }
+};
+
+// SIMILAR PRODUCT
+export const listProductSimilarReducer = (state = { products: [] }, action) => {
+    switch (action.type) {
+        case types.LIST_PRODUCT_SIMILAR_REQUEST:
+            return { ...state, loading: true };
+        case types.LIST_PRODUCT_SIMILAR_SUCCESS:
+            return { loading: false, products: action.payload };
+        case types.LIST_PRODUCT_SIMILAR_FAIL:
             return { loading: false, error: action.payload };
         default:
             return state;

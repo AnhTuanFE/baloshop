@@ -1,15 +1,17 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ListProductAll } from '~/redux/Actions/ProductActions';
+import { ListProductSimilarAction } from '~/redux/Actions/ProductActions';
 import SliderProducts from '~/pages/Home/HomeComponent/SliderProducts/SliderProducts';
-function SimilarProducts() {
+function SimilarProducts(prop) {
+    const { category } = prop;
     const dispatch = useDispatch();
 
-    const allProduct = useSelector((state) => state.productAll);
-    const { products } = allProduct;
+    const similarProducts = useSelector((state) => state.listProductSimilar);
+    const { products } = similarProducts;
+    console.log('products similar = ', products);
 
     useEffect(() => {
-        dispatch(ListProductAll());
+        dispatch(ListProductSimilarAction({ category: category }));
     }, []);
     return (
         <>

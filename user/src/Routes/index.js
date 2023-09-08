@@ -21,16 +21,16 @@ import Test from '~/pages/Test/Test';
 
 const publicRoutes = [
     { path: '/', component: Home },
-    { path: '/search/:keyword/sortProducts/:sortProducts/rating/:rating/page/:pageNumber', component: Home },
+    { path: '/search/:keyword/sortBy/:sortBy/rating/:rating/page/:pageNumber', component: Home },
     { path: '/search/:keyword/page/:pageNumber', component: Home },
     { path: '/search/:keyword', component: Home },
 
-    { path: '/category/:category/sortProducts/:sortProducts/rating/:rating/page/:pageNumber', component: Home },
+    { path: '/category/:category/sortBy/:sortBy/rating/:rating/page/:pageNumber', component: Home },
     { path: '/category/:category/page/:pageNumber', component: Home },
     { path: '/category/:category', component: Home },
 
-    { path: '/sortProducts/:sortProducts/rating/:rating/page/:pageNumber', component: Home },
-    { path: '/sortProducts/:sortProducts/page/:pageNumber', component: Home },
+    { path: '/sortBy/:sortBy/rating/:rating/page/:pageNumber', component: Home },
+    { path: '/sortBy/:sortBy/page/:pageNumber', component: Home },
 
     { path: '/page/:pageNumber', component: Home },
     { path: '/rating/:rating/page/:pageNumber', component: Home },

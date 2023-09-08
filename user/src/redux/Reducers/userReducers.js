@@ -64,22 +64,6 @@ export const userUpdateProfileReducer = (state = {}, action) => {
     }
 };
 
-// ALL USER
-export const userListReducer = (state = { users: [] }, action) => {
-    switch (action.type) {
-        case types.USER_LIST_REQUEST:
-            return { loading: true };
-        case types.USER_LIST_SUCCESS:
-            return { loading: false, users: action.payload };
-        case types.USER_LIST_FAIL:
-            return { loading: false, error: action.payload };
-        case types.USER_LIST_RESET:
-            return { users: [] };
-        default:
-            return state;
-    }
-};
-
 // CREATE USER
 export const createUserReducer = (state = [], action) => {
     switch (action.type) {

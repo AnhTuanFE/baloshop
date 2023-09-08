@@ -4,11 +4,12 @@ import { logout } from './userActions';
 
 // PRODUCT LIST ALL
 
-export const ListProductAll = () => async (dispatch) => {
+export const ListProductLatestAction = () => async (dispatch) => {
     try {
+        const valueSort = 'newest';
         dispatch({ type: types.PRODUCT_LIST_ALL_REQUEST });
-        const { data } = await axios.get(`/api/products/ProductAll`);
-        dispatch({ type: types.PRODUCT_LIST_ALL_SUCCESS, payload: data });
+        const { data } = await axios.get(`/api/products?&sortBy=${valueSort}&limit=${12}`);
+        dispatch({ type: types.PRODUCT_LIST_ALL_SUCCESS, payload: data.products });
     } catch (error) {
         dispatch({
             type: types.PRODUCT_LIST_ALL_FAIL,
@@ -16,16 +17,15 @@ export const ListProductAll = () => async (dispatch) => {
         });
     }
 };
-
-// PRODUCT LIST ALL REVIEW
-export const getAllReviews = (productId) => async (dispatch) => {
+export const ListProductSimilarAction = (prop) => async (dispatch) => {
+    const { category } = prop;
     try {
-        dispatch({ type: types.PRODUCT_ALL_REVIEW_REQUEST });
-        const { data } = await axios.get(`/api/products/${productId}/onlyProduct/allReview`);
-        dispatch({ type: types.PRODUCT_ALL_REVIEW_SUCCESS, payload: data });
+        dispatch({ type: types.LIST_PRODUCT_SIMILAR_REQUEST });
+        const { data } = await axios.get(`/api/products?&limit=${18}&category=${category}`);
+        dispatch({ type: types.LIST_PRODUCT_SIMILAR_SUCCESS, payload: data.products });
     } catch (error) {
         dispatch({
-            type: types.PRODUCT_ALL_REVIEW_FAIL,
+            type: types.LIST_PRODUCT_SIMILAR_FAIL,
             payload: error.response && error.response.data.message ? error.response.data.message : error.message,
         });
     }
@@ -47,13 +47,13 @@ export const getAllComments = (productId) => async (dispatch) => {
 
 // PRODUCT LIST
 export const listProduct =
-    (category = '', keyword = '', pageNumber = '', rating = '', minPrice = '', maxPrice = '', sortProducts = '1') =>
+    (category = '', keyword = '', pageNumber = '', rating = '', minPrice = '', maxPrice = '', sortBy = '1') =>
     async (dispatch) => {
         try {
             dispatch({ type: types.PRODUCT_LIST_REQUEST });
             const { data } = await axios.get(
                 `/api/products?&category=${category}&keyword=${keyword}&pageNumber=${pageNumber}&rating=${rating}
-        &minPrice=${minPrice}&maxPrice=${maxPrice}&sortProducts=${sortProducts}`,
+        &minPrice=${minPrice}&maxPrice=${maxPrice}&sortBy=${sortBy}`,
             );
             dispatch({ type: types.PRODUCT_LIST_SUCCESS, payload: data });
         } catch (error) {
@@ -79,7 +79,7 @@ export const listProductDetails = (id) => async (dispatch) => {
 };
 
 // PRODUCT REVIEW CREATE
-export const createProductReview = (productId, rating, color, comment, name) => async (dispatch, getState) => {
+export const createProductReview = (productId, rating, comment) => async (dispatch, getState) => {
     try {
         dispatch({ type: types.PRODUCT_CREATE_REVIEW_REQUEST });
 
@@ -94,7 +94,7 @@ export const createProductReview = (productId, rating, color, comment, name) => 
             },
         };
 
-        await axios.post(`/api/products/${productId}/review`, { rating, color, comment, name }, config);
+        await axios.post(`/api/products/${productId}/review`, { rating, comment }, config);
         dispatch({ type: types.PRODUCT_CREATE_REVIEW_SUCCESS });
     } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;

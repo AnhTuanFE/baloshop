@@ -5,10 +5,8 @@ import { Link } from 'react-router-dom';
 import Message from '~/components/LoadingError/Error';
 import Loading from '~/components/LoadingError/Loading';
 import { imageDefaul } from '~/utils/data';
-//
 import { PRODUCT_CREATE_COMMENTCHILD_RESET, PRODUCT_CREATE_COMMENT_RESET } from '~/redux/Constants/ProductConstants';
-import { createProductComment, createProductCommentChild, getAllComments } from '~/redux/Actions/ProductActions';
-import { listUser } from '~/redux/Actions/userActions';
+import { createProductComment, createProductCommentChild } from '~/redux/Actions/ProductActions';
 
 import './AskAndAnswer.css';
 
@@ -43,12 +41,6 @@ function AskAndAnswer({ productId }) {
         success: successCreateCommentChild,
     } = productCommentChildCreate;
 
-    const listAllComments = useSelector((state) => state.getAllCommentsProduct);
-    const { comments } = listAllComments;
-
-    const userList = useSelector((state) => state.userAll);
-    const { users } = userList;
-
     //comment
     const submitComment = (e) => {
         e.preventDefault();
@@ -73,25 +65,6 @@ function AskAndAnswer({ productId }) {
         }
     }, [successCreateComment, successCreateCommentChild]);
 
-    useEffect(() => {
-        dispatch(getAllComments(productId));
-    }, [productId, successCreateComment, successCreateCommentChild]);
-
-    useEffect(() => {
-        dispatch(listUser());
-    }, [dispatch]);
-
-    function findProductUser(data) {
-        const findUser = users?.find((user) => user._id === data.user);
-
-        return (
-            <img
-                src={`${findUser?.image}` || imageDefaul} // upload ảnh
-                alt=""
-                className="mr-2 h-10 w-10 rounded-[50%] object-cover"
-            />
-        );
-    }
     return (
         <>
             <div className="mt-4 rounded-xl bg-white pt-2">
@@ -130,14 +103,14 @@ function AskAndAnswer({ productId }) {
                     <div className="rating-review">
                         {loadingCreateComment && <Loading />}
                         {errorCreateCommentChild && <Message variant="alert-danger">{errorCreateCommentChild}</Message>}
-                        {comments?.map((review) => (
+                        {product.comments?.map((review) => (
                             <div key={review._id} className="mb-md-2 rounded-5 mb-2 bg-[#ebeced85] p-3">
                                 <div className="">
                                     <div className="flex items-center justify-start">
                                         <div className="flex items-end">
                                             <img
                                                 src={`${review?.user?.image}` || imageDefaul}
-                                                alt=""
+                                                alt="user"
                                                 className="mr-4 h-10 w-10 rounded-[50%] object-cover"
                                             />
                                             <div className="">
@@ -158,7 +131,7 @@ function AskAndAnswer({ productId }) {
                                         </div>
                                     </div>
                                     <div className="mt-3 flex">
-                                        <div className=" min-h-16 rounded-xl border-2 border-solid border-[#343a40] bg-white p-3">
+                                        <div className=" min-h-16 w-4/5 rounded-xl border-2 border-solid border-[#343a40] bg-white p-3">
                                             <span>{review.question}</span>
                                         </div>
                                         <div className=" my-auto ml-1 min-w-[100px]">
@@ -182,7 +155,13 @@ function AskAndAnswer({ productId }) {
                                         <div key={child._id} className="mb-md-2 rounded-5 mb-2 mt-2 bg-[#ebeced85] p-3">
                                             <div className="flex items-center">
                                                 <div className="flex items-end">
-                                                    <div className="min-w-[40px]">{findProductUser(child)}</div>
+                                                    <div className="min-w-[40px]">
+                                                        <img
+                                                            src={`${child?.user?.image}` || imageDefaul}
+                                                            alt="user"
+                                                            className="mr-2 h-10 w-10 rounded-[50%] object-cover"
+                                                        />
+                                                    </div>
                                                     <div className="min-w-[100px]">
                                                         <strong>{child.name}</strong>
                                                     </div>
@@ -209,7 +188,6 @@ function AskAndAnswer({ productId }) {
                                 {buleanReview === review._id && (
                                     <form onSubmit={submitQuestionChild} className="ml-6 mt-2 flex">
                                         <textarea
-                                            // className="question-product"
                                             className="h-20 w-[300px] rounded-xl px-2 py-1 text-base shadow-sm"
                                             placeholder="Bình luận"
                                             value={questionChild}

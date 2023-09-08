@@ -210,11 +210,12 @@ export const orderGetAddress = () => async (dispatch, getState) => {
 };
 
 // ODERS LIST ALL
-export const listAllOrderAction = () => async (dispatch) => {
+export const listProductsBestSellingAction = () => async (dispatch) => {
     try {
+        const valueSort = 'total_sales';
         dispatch({ type: types.ORDER_LIST_ALL_REQUEST });
-        const { data } = await axios.get(`/api/orders/productbestseller`);
-        dispatch({ type: types.ORDER_LIST_ALL_SUCCESS, payload: data });
+        const { data } = await axios.get(`/api/products?&sortBy=${valueSort}&limit=${12}`);
+        dispatch({ type: types.ORDER_LIST_ALL_SUCCESS, payload: data?.products });
     } catch (error) {
         dispatch({
             type: types.ORDER_LIST_ALL_FAIL,
