@@ -1,16 +1,4 @@
 import {
-    ORDER_CANCEL_FAIL,
-    ORDER_CANCEL_REQUEST,
-    ORDER_CANCEL_RESET,
-    ORDER_CANCEL_SUCCESS,
-    ORDER_COMPLETE_ADMIN_FAIL,
-    ORDER_COMPLETE_ADMIN_REQUEST,
-    ORDER_COMPLETE_ADMIN_RESET,
-    ORDER_COMPLETE_ADMIN_SUCCESS,
-    ORDER_DELIVERED_FAIL,
-    ORDER_DELIVERED_REQUEST,
-    ORDER_DELIVERED_RESET,
-    ORDER_DELIVERED_SUCCESS,
     ORDER_DETAILS_FAIL,
     ORDER_DETAILS_REQUEST,
     ORDER_DETAILS_SUCCESS,
@@ -20,14 +8,10 @@ import {
     ORDER_LIST_FAIL,
     ORDER_LIST_REQUEST,
     ORDER_LIST_SUCCESS,
-    ORDER_PAID_FAIL,
-    ORDER_PAID_REQUEST,
-    ORDER_PAID_RESET,
-    ORDER_PAID_SUCCESS,
-    ORDER_WAITCONFIRMATION_FAIL,
-    ORDER_WAITCONFIRMATION_REQUEST,
-    ORDER_WAITCONFIRMATION_RESET,
-    ORDER_WAITCONFIRMATION_SUCCESS,
+    UPDATE_STATUS_ORDER_ADMIN_REQUEST,
+    UPDATE_STATUS_ORDER_ADMIN_SUCCESS,
+    UPDATE_STATUS_ORDER_ADMIN_FAIL,
+    UPDATE_STATUS_ORDER_ADMIN_RESET,
 } from '../Constants/OrderConstants';
 
 export const orderListReducer = (state = {}, action) => {
@@ -78,76 +62,15 @@ export const orderDetailsReducer = (state = { loading: true, orderItems: [], shi
     }
 };
 
-// ORDER DELIVERED
-export const orderDeliveredReducer = (state = {}, action) => {
+export const updateStatusOrderAdminReducer = (state = {}, action) => {
     switch (action.type) {
-        case ORDER_DELIVERED_REQUEST:
+        case UPDATE_STATUS_ORDER_ADMIN_REQUEST:
             return { loading: true };
-        case ORDER_DELIVERED_SUCCESS:
+        case UPDATE_STATUS_ORDER_ADMIN_SUCCESS:
             return { loading: false, success: true };
-        case ORDER_DELIVERED_FAIL:
+        case UPDATE_STATUS_ORDER_ADMIN_FAIL:
             return { loading: false, error: action.payload };
-        case ORDER_DELIVERED_RESET:
-            return {};
-        default:
-            return state;
-    }
-};
-
-export const orderPaidReducer = (state = {}, action) => {
-    switch (action.type) {
-        case ORDER_PAID_REQUEST:
-            return { loading: true };
-        case ORDER_PAID_SUCCESS:
-            return { loading: false, success: true };
-        case ORDER_PAID_FAIL:
-            return { loading: false, error: action.payload };
-        case ORDER_PAID_RESET:
-            return {};
-        default:
-            return state;
-    }
-};
-
-export const orderCancelReducer = (state = {}, action) => {
-    switch (action.type) {
-        case ORDER_CANCEL_REQUEST:
-            return { loading: true };
-        case ORDER_CANCEL_SUCCESS:
-            return { loading: false, success: true };
-        case ORDER_CANCEL_FAIL:
-            return { loading: false, error: action.payload };
-        case ORDER_CANCEL_RESET:
-            return {};
-        default:
-            return state;
-    }
-};
-
-export const orderwaitConfirmationReducer = (state = {}, action) => {
-    switch (action.type) {
-        case ORDER_WAITCONFIRMATION_REQUEST:
-            return { loading: true };
-        case ORDER_WAITCONFIRMATION_SUCCESS:
-            return { loading: false, success: true };
-        case ORDER_WAITCONFIRMATION_FAIL:
-            return { loading: false, error: action.payload };
-        case ORDER_WAITCONFIRMATION_RESET:
-            return {};
-        default:
-            return state;
-    }
-};
-
-export const ordercompleteAdminReducer = (state = {}, action) => {
-    switch (action.type) {
-        case ORDER_COMPLETE_ADMIN_REQUEST:
-            return { loading: true };
-        case ORDER_COMPLETE_ADMIN_SUCCESS:
-            return { loading: false, success: true };
-        case ORDER_COMPLETE_ADMIN_FAIL:
-            return { loading: false, error: action.payload };
-        case ORDER_COMPLETE_ADMIN_RESET:
+        case UPDATE_STATUS_ORDER_ADMIN_RESET:
             return {};
         default:
             return state;

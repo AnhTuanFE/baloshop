@@ -109,36 +109,6 @@ export const productbestseller = (state = { products: [] }, action) => {
     }
 };
 
-export const orderCancelReducer = (state = {}, action) => {
-    switch (action.type) {
-        case types.ORDER_CANCEL_REQUEST:
-            return { loading: true };
-        case types.ORDER_CANCEL_SUCCESS:
-            return { loading: false, success: true };
-        case types.ORDER_CANCEL_FAIL:
-            return { loading: false, error: action.payload };
-        case types.ORDER_CANCEL_RESET:
-            return {};
-        default:
-            return state;
-    }
-};
-
-export const orderCompleteReducer = (state = {}, action) => {
-    switch (action.type) {
-        case types.ORDER_COMPLETE_USER_REQUEST:
-            return { loading: true };
-        case types.ORDER_COMPLETE_USER_SUCCESS:
-            return { loading: false, success: true };
-        case types.ORDER_COMPLETE_USER_FAIL:
-            return { loading: false, error: action.payload };
-        case types.ORDER_COMPLETE_USER_RESET:
-            return {};
-        default:
-            return state;
-    }
-};
-
 // =================================================
 // CREATE ORDER
 export const PaypalReducer = (state = {}, action) => {
@@ -174,6 +144,21 @@ export const GHTK_Reducer = (state = {}, action) => {
             return { loading: false, data_label_order: action.payload };
         case types.GET_LABEL_ORDER_GHTK_FAIL:
             return { loading: false, error: action.payload };
+        default:
+            return state;
+    }
+};
+
+export const updateStatusOrderUserReducer = (state = {}, action) => {
+    switch (action.type) {
+        case types.UPDATE_STATUS_ORDER_USER_REQUEST:
+            return { loading: true };
+        case types.UPDATE_STATUS_ORDER_USER_SUCCESS:
+            return { loading: false, success: true };
+        case types.UPDATE_STATUS_ORDER_USER_FAIL:
+            return { loading: false, error: action.payload };
+        case types.UPDATE_STATUS_ORDER_USER_RESET:
+            return {};
         default:
             return state;
     }

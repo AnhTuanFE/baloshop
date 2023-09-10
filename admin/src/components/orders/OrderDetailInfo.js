@@ -1,3 +1,4 @@
+import { handleChangePayMethod } from '~/useHooks/HandleChangeMethod';
 const OrderDetailInfo = (props) => {
     const { order } = props;
     return (
@@ -8,10 +9,18 @@ const OrderDetailInfo = (props) => {
                         <i className="text-success fas fa-user"></i>
                     </span>
                     <div className="text">
-                        <p className="mb-1">
-                            Họ tên: {order?.order.name} <br />
-                            <p>Số điện thoại: {order?.order.phone}</p>
-                        </p>
+                        <div className="mb-1">
+                            <div>
+                                <b>id: </b>
+                                {order?.order.user}
+                            </div>
+                            <div>
+                                <b>Họ tên: </b> {order?.order.name}
+                            </div>
+                            <div>
+                                <b>Số điện thoại: </b> {order?.order.phone}
+                            </div>
+                        </div>
                     </div>
                 </article>
             </div>
@@ -22,8 +31,8 @@ const OrderDetailInfo = (props) => {
                     </span>
                     <div className="text">
                         <p className="mb-1">
-                            Địa chỉ: {order?.order.shippingAddress?.city}, {order?.order.shippingAddress?.district},{' '}
-                            {order?.order.shippingAddress?.ward}
+                            <b>Địa chỉ: </b> {order?.order.shippingAddress?.city},{' '}
+                            {order?.order.shippingAddress?.district}, {order?.order.shippingAddress?.ward}
                             <br />
                             {order?.order.shippingAddress?.address}
                             <br />
@@ -37,7 +46,10 @@ const OrderDetailInfo = (props) => {
                         <i className="text-success fab fa-paypal"></i>
                     </span>
                     <div className="text">
-                        <p className="mb-1">Phương thức thanh toán: {order?.order.paymentMethod}</p>
+                        <p className="mb-1">
+                            <b>Phương thức thanh toán: </b>
+                            {handleChangePayMethod(order?.order.paymentMethod)}
+                        </p>
                     </div>
                 </article>
             </div>

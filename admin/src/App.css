@@ -9,6 +9,26 @@
 /* ========================
 INCLUDE STYLES AND COMPONENTS
 ===================== */
+:root {
+    --white-color: #fff;
+    --main-color: #e85d97;
+    --main-color-hover: #e83781;
+    --blue-color: #3abff8;
+    --green-color: #37c871;
+
+    --main-color2: #007fff;
+
+    --color-button1: #ffff;
+    --color-button2: #007fff;
+
+    --color-layout: #000;
+    --color-layout2: #333f48;
+
+    --content-color: #f4f4f4;
+
+    --tw-ring-color: transparent;
+    --color-infor-store: #252a2b;
+}
 /* ================== HELPERS =================== */
 .table thead th {
     color: #adb5bd;

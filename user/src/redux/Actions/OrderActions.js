@@ -1,6 +1,5 @@
 import * as types from '../Constants/OrderConstants';
 import axios from 'axios';
-import { CART_CLEAR_ITEMS } from '../Constants/CartConstants';
 import { logout } from './userActions';
 
 //CALCULATE FEE SHIP
@@ -224,68 +223,6 @@ export const listProductsBestSellingAction = () => async (dispatch) => {
     }
 };
 
-export const cancelOrder = (order) => async (dispatch, getState) => {
-    try {
-        dispatch({ type: types.ORDER_CANCEL_REQUEST });
-
-        const {
-            userLogin: { userInfo },
-        } = getState();
-
-        const config = {
-            headers: {
-                Authorization: `Bearer ${userInfo.token}`,
-            },
-        };
-
-        const { data } = await axios.put(
-            `/api/orders/${order?.order._id}/cancel`,
-            { descripetion: 'Muốn mua sp khác' },
-            config,
-        );
-        dispatch({ type: types.ORDER_CANCEL_SUCCESS, payload: data });
-    } catch (error) {
-        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
-        if (message === 'Not authorized, token failed') {
-            dispatch(logout());
-        }
-        dispatch({
-            type: types.ORDER_CANCEL_FAIL,
-            payload: message,
-        });
-    }
-};
-
-// COMPLETE ORDER PUT
-export const completeOrder = (id) => async (dispatch, getState) => {
-    try {
-        dispatch({ type: types.ORDER_COMPLETE_USER_REQUEST });
-
-        const {
-            userLogin: { userInfo },
-        } = getState();
-
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${userInfo.token}`,
-            },
-        };
-
-        const { data } = await axios.put(`/api/orders/${id}/completeUser`, {}, config);
-        dispatch({ type: types.ORDER_COMPLETE_USER_SUCCESS, payload: data });
-    } catch (error) {
-        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
-        if (message === 'Not authorized, token failed') {
-            dispatch(logout());
-        }
-        dispatch({
-            type: types.ORDER_COMPLETE_USER_FAIL,
-            payload: message,
-        });
-    }
-};
-
 // =========================================================
 
 export const paypalCreateOrderAction = () => async (dispatch, getState) => {
@@ -374,6 +311,35 @@ export const getLabelOrderGHTKAction = (id_Ghtk) => async (dispatch, getState) =
         }
         dispatch({
             type: types.GET_LABEL_ORDER_GHTK_FAIL,
+            payload: message,
+        });
+    }
+};
+
+export const updateStatusOrderUserAction = (data) => async (dispatch, getState) => {
+    const { id, status } = data;
+    try {
+        dispatch({ type: types.UPDATE_STATUS_ORDER_USER_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        const { data } = await axios.put(`/api/orders/${id}/${status}`, {}, config);
+        dispatch({ type: types.UPDATE_STATUS_ORDER_USER_SUCCESS, payload: data });
+    } catch (error) {
+        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+        if (message === 'Not authorized, token failed') {
+            dispatch(logout());
+        }
+        dispatch({
+            type: types.UPDATE_STATUS_ORDER_USER_FAIL,
             payload: message,
         });
     }

@@ -1,7 +1,7 @@
 {
     "name": "baloshop",
     "version": "0.1.0",
-    "proxy": "https://e787-116-102-172-212.ngrok-free.app/",
+    "proxy": "http://localhost:5000/",
     "private": true,
     "dependencies": {
         "@emotion/react": "^11.11.1",

@@ -132,15 +132,14 @@ const ProductScreen = () => {
                             </div>
                         </div>
                     )}
-
-                    <Pagination
-                        pages={pages}
-                        page={page}
-                        category={category ? category : ''}
-                        keyword={keyword ? keyword : ''}
-                    ></Pagination>
                 </div>
             </div>
+            <Pagination
+                pages={pages}
+                page={page}
+                category={category ? category : ''}
+                keyword={keyword ? keyword : ''}
+            />
         </section>
     );
 };

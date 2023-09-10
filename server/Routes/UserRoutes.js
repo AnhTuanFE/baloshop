@@ -1,7 +1,7 @@
 import express from 'express';
 import asyncHandler from 'express-async-handler';
 import multer from 'multer';
-import { protect, admin } from '../middleware/AuthMiddleware.js';
+import { protect, admin } from '../Middleware/AuthMiddleware.js';
 import userController from '../controllers/userController.js';
 
 // UPDATE PROFILE

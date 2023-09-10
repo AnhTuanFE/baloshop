@@ -1,6 +1,7 @@
 import AccountCircleSharpIcon from '@mui/icons-material/AccountCircleSharp';
 import AddLocationSharpIcon from '@mui/icons-material/AddLocationSharp';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import { handleChangePayMethod } from '~/hooks/HandleChangeMethod';
 
 function InfoPayer({ order }) {
     return (
@@ -37,7 +38,7 @@ function InfoPayer({ order }) {
                     <div className="">
                         <p>
                             <span className="font-semibold">Phương thức thanh toán:</span>
-                            <div>{order.paymentMethod.replace(/"/g, '')}</div>
+                            <div>{handleChangePayMethod(order?.paymentMethod)}</div>
                         </p>
                     </div>
                 </div>

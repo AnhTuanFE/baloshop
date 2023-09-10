@@ -1,13 +1,4 @@
 import {
-    ORDER_CANCEL_FAIL,
-    ORDER_CANCEL_REQUEST,
-    ORDER_CANCEL_SUCCESS,
-    ORDER_COMPLETE_ADMIN_FAIL,
-    ORDER_COMPLETE_ADMIN_REQUEST,
-    ORDER_COMPLETE_ADMIN_SUCCESS,
-    ORDER_DELIVERED_FAIL,
-    ORDER_DELIVERED_REQUEST,
-    ORDER_DELIVERED_SUCCESS,
     ORDER_DETAILS_FAIL,
     ORDER_DETAILS_REQUEST,
     ORDER_DETAILS_SUCCESS,
@@ -17,12 +8,10 @@ import {
     ORDER_LIST_FAIL,
     ORDER_LIST_REQUEST,
     ORDER_LIST_SUCCESS,
-    ORDER_PAID_FAIL,
-    ORDER_PAID_REQUEST,
-    ORDER_PAID_SUCCESS,
-    ORDER_WAITCONFIRMATION_FAIL,
-    ORDER_WAITCONFIRMATION_REQUEST,
-    ORDER_WAITCONFIRMATION_SUCCESS,
+    UPDATE_STATUS_ORDER_ADMIN_REQUEST,
+    UPDATE_STATUS_ORDER_ADMIN_SUCCESS,
+    UPDATE_STATUS_ORDER_ADMIN_FAIL,
+    UPDATE_STATUS_ORDER_ADMIN_RESET,
 } from '../Constants/OrderConstants';
 import { logout } from './userActions';
 import axios from 'axios';
@@ -119,153 +108,11 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
     }
 };
 
-// ORDER DELIVER
-export const deliverOrder = (order) => async (dispatch, getState) => {
-    try {
-        dispatch({ type: ORDER_DELIVERED_REQUEST });
-
-        const {
-            userLogin: { userInfo },
-        } = getState();
-
-        const config = {
-            headers: {
-                Authorization: `Bearer ${userInfo.token}`,
-            },
-        };
-
-        const { data } = await axios.put(`/api/orders/${order._id}/delivered`, {}, config);
-        dispatch({ type: ORDER_DELIVERED_SUCCESS, payload: data });
-    } catch (error) {
-        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
-        if (message === 'Not authorized, token failed') {
-            dispatch(logout());
-        }
-        dispatch({
-            type: ORDER_DELIVERED_FAIL,
-            payload: message,
-        });
-    }
-};
-
-//order PAID
-export const paidOrder = (order) => async (dispatch, getState) => {
-    try {
-        dispatch({ type: ORDER_PAID_REQUEST });
-
-        const {
-            userLogin: { userInfo },
-        } = getState();
-
-        const config = {
-            headers: {
-                Authorization: `Bearer ${userInfo.token}`,
-            },
-        };
-
-        const { data } = await axios.put(`/api/orders/${order._id}/paid`, {}, config);
-        dispatch({ type: ORDER_PAID_SUCCESS, payload: data });
-    } catch (error) {
-        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
-        if (message === 'Not authorized, token failed') {
-            dispatch(logout());
-        }
-        dispatch({
-            type: ORDER_PAID_FAIL,
-            payload: message,
-        });
-    }
-};
-
-export const cancelOrder = (order) => async (dispatch, getState) => {
-    try {
-        dispatch({ type: ORDER_CANCEL_REQUEST });
-
-        const {
-            userLogin: { userInfo },
-        } = getState();
-
-        const config = {
-            headers: {
-                Authorization: `Bearer ${userInfo.token}`,
-            },
-        };
-
-        const { data } = await axios.delete(`/api/orders/${order._id}/cancel`, config);
-        dispatch({ type: ORDER_CANCEL_SUCCESS, payload: data });
-    } catch (error) {
-        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
-        if (message === 'Not authorized, token failed') {
-            dispatch(logout());
-        }
-        dispatch({
-            type: ORDER_CANCEL_FAIL,
-            payload: message,
-        });
-    }
-};
-
-export const waitConfirmationOrder = (id, status) => async (dispatch, getState) => {
-    try {
-        dispatch({ type: ORDER_WAITCONFIRMATION_REQUEST });
-
-        const {
-            userLogin: { userInfo },
-        } = getState();
-        let address_shop = userInfo.address_shop;
-        const config = {
-            headers: {
-                Authorization: `Bearer ${userInfo.token}`,
-            },
-        };
-
-        const { data } = await axios.put(`/api/orders/${id}/waitConfirmation`, { status, address_shop }, config);
-        dispatch({ type: ORDER_WAITCONFIRMATION_SUCCESS, payload: data });
-    } catch (error) {
-        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
-        if (message === 'Not authorized, token failed') {
-            dispatch(logout());
-        }
-        dispatch({
-            type: ORDER_WAITCONFIRMATION_FAIL,
-            payload: message,
-        });
-    }
-};
-
-export const completeAdminOrder = (id) => async (dispatch, getState) => {
-    try {
-        dispatch({ type: ORDER_COMPLETE_ADMIN_REQUEST });
-
-        const {
-            userLogin: { userInfo },
-        } = getState();
-
-        const config = {
-            headers: {
-                Authorization: `Bearer ${userInfo.token}`,
-            },
-        };
-
-        const { data } = await axios.put(`/api/orders/${id}/completeAdmin`, {}, config);
-        dispatch({ type: ORDER_COMPLETE_ADMIN_SUCCESS, payload: data });
-    } catch (error) {
-        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
-        if (message === 'Not authorized, token failed') {
-            dispatch(logout());
-        }
-        dispatch({
-            type: ORDER_COMPLETE_ADMIN_FAIL,
-            payload: message,
-        });
-    }
-};
-
 //
-export const updateStatusOrderAction = (data) => async (dispatch, getState) => {
+export const updateStatusOrderAdminAction = (data) => async (dispatch, getState) => {
     const { id, status } = data;
     try {
-        dispatch({ type: ORDER_COMPLETE_ADMIN_REQUEST });
+        dispatch({ type: UPDATE_STATUS_ORDER_ADMIN_REQUEST });
 
         const {
             userLogin: { userInfo },
@@ -278,14 +125,14 @@ export const updateStatusOrderAction = (data) => async (dispatch, getState) => {
         };
 
         const { data } = await axios.put(`/api/orders/${id}/${status}`, {}, config);
-        dispatch({ type: ORDER_COMPLETE_ADMIN_SUCCESS, payload: data });
+        dispatch({ type: UPDATE_STATUS_ORDER_ADMIN_SUCCESS, payload: data });
     } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;
         if (message === 'Not authorized, token failed') {
             dispatch(logout());
         }
         dispatch({
-            type: ORDER_COMPLETE_ADMIN_FAIL,
+            type: UPDATE_STATUS_ORDER_ADMIN_FAIL,
             payload: message,
         });
     }

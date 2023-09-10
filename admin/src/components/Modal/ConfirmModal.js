@@ -6,7 +6,7 @@ function ConfirmModal({ Title, Body, HandleSubmit, hidenModal }) {
     };
     return (
         <div>
-            <div class="modal1" tabindex="-1" role="dialog">
+            <div class="modal1" tabIndex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">

@@ -3,7 +3,7 @@ const TopTotal = (props) => {
 
     let totalSale = 0;
     if (orders) {
-        orders.map((order) => (order.isPaid === true ? (totalSale = totalSale + order.totalPrice) : null));
+        orders.map((order) => (totalSale = totalSale + order.totalPrice));
     }
 
     return (

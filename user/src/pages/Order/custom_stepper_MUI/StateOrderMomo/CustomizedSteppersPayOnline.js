@@ -74,23 +74,8 @@ function ColorlibStepIcon(props) {
         </ColorlibStepIconRoot>
     );
 }
-
-/*
-    'placed';
-    'confirm';
-    'delivering';
-    'delivered';
-    'cancelled';
-    'completed';
-
-    - Trước tiên thì cần có một khung của trạng thái, dựa vào history status
-    - đầu tiên cần xử lý các trạng thái đơn hàng
-    - Dựa vào trạng thái hiện tại rồi đánh dấu trạng thái đơn hàng
-    - nếu trạng thái hiện tại là place thì set cái trạng thái trước đó của nó là content (làm đậm) 
-       và cái đằng sau cho nó hiển thị label (làm mờ)
-    - Nếu đơn hàng bị hủy thì sau đó sẽ ẩn những cái đằng sau đi vẫn làm đậm cái trước
-    */
-export default function CustomizedSteppersMoney({ order }) {
+// export default function CustomizedSteppersMomo({ order }) {
+export default function CustomizedSteppersPayOnline({ order }) {
     const { statusHistory } = order;
     const [actiStep, setActiStep] = useState(0);
 
@@ -196,7 +181,7 @@ export default function CustomizedSteppersMoney({ order }) {
     };
     const arrayStatusHistory = [];
     statusHistory.map((item) => {
-        arrayStatusHistory.push(handleConfigContent(item.status, item.createdAt, item.description));
+        arrayStatusHistory.push(handleConfigContent(item.status, item.createdAt));
     });
 
     // if (arrayStatusHistory.length > 0) {

@@ -117,7 +117,11 @@ const CommentScreen = () => {
                                                 <tr>
                                                     <td>
                                                         <img
-                                                            src={`${product?.imageProduct}`}
+                                                            src={`${
+                                                                product?.imageProduct
+                                                                    ? product?.imageProduct
+                                                                    : imageDefaul
+                                                            } `}
                                                             alt=""
                                                             style={{ height: '40px', width: '40px' }}
                                                         />
@@ -130,7 +134,7 @@ const CommentScreen = () => {
                                 </h2>
                                 <div
                                     id={`panelsStayOpen-collapse${index}`}
-                                    class="accordion-collapse collapse show"
+                                    class="accordion-collapse show collapse"
                                     aria-labelledby={`panelsStayOpen-heading${index}`}
                                 >
                                     <div class="accordion-body">
@@ -171,13 +175,13 @@ const CommentScreen = () => {
                                             </div>
                                         </div>
                                         <div
-                                            className="alert mt-3 product-review"
+                                            className="alert product-review mt-3"
                                             style={{ display: 'flex', flexDirection: 'column' }}
                                         >
                                             <span>{product.question}</span>
                                             <div className="d-flex justify-content-end">
                                                 <span
-                                                    className="commentChild pe-2 text-dark"
+                                                    className="commentChild text-dark pe-2"
                                                     onClick={() => {
                                                         handlerCommentDelete(product?.idProduct, product?._id);
                                                     }}
@@ -200,7 +204,7 @@ const CommentScreen = () => {
                                         </div>
                                         <div className="product-review" style={{ padding: '0px', boxShadow: 'none' }}>
                                             {product.commentChilds?.map((child) => (
-                                                <div key={child._id} className="mb-5 mb-md-3 p-1 rounded marginbottom">
+                                                <div key={child._id} className="mb-md-3 marginbottom mb-5 rounded p-1">
                                                     <div
                                                         style={{
                                                             display: 'flex',
@@ -226,7 +230,7 @@ const CommentScreen = () => {
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <div className="alert mt-3 product-review">
+                                                    <div className="alert product-review mt-3">
                                                         <span>{child.questionChild}</span>
                                                         <div className="d-flex justify-content-end">
                                                             <span

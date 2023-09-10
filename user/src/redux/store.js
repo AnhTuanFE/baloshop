@@ -27,16 +27,15 @@ import {
 } from './Reducers/userReducers';
 import {
     orderAddressMyReducer,
-    orderCancelReducer,
     orderCreateReducer,
     orderDetailsReducer,
     orderListMyReducer,
     orderPayReducer,
     productbestseller,
     orderCreateReviewReducer,
-    orderCompleteReducer,
     PaypalReducer,
     GHTK_Reducer,
+    updateStatusOrderUserReducer,
 } from './Reducers/OrderReducres';
 import { Sliderload } from './Reducers/SliderReducer';
 import { getNewsReducer, newsListReducer } from './Reducers/NewsReducer';
@@ -63,10 +62,9 @@ const reducer = combineReducers({
     orderAddress: orderAddressMyReducer,
     orderPay: orderPayReducer,
     orderListMy: orderListMyReducer,
-    orderCancel: orderCancelReducer,
     orderCreateReviewsRetult: orderCreateReviewReducer,
-    orderGetComplete: orderCompleteReducer,
     order_ghtk_state: GHTK_Reducer,
+    stateUpdateStatusOrderUser: updateStatusOrderUserReducer,
     paypalstate: PaypalReducer,
     sliderLoad: Sliderload,
     CategoryList: categoryListReducer,

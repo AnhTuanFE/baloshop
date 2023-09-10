@@ -1,8 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '~/Redux/Actions/userActions';
-import { imageDefaul } from '~/data/data';
-import { useEffect, useState, Fragment, memo } from 'react';
+import { imageDefaul, logoDefaul } from '~/data/data';
 
 const Header = () => {
     const dispatch = useDispatch();
@@ -15,7 +14,7 @@ const Header = () => {
         navigate('/login');
     };
     return (
-        <header className="main-header navbar justify-content-end border-none bg-blue-100">
+        <header className="main-header z-3 justify-content-end navbar border-none   bg-blue-100">
             <div className="col-nav">
                 <button className="btn btn-icon btn-mobile me-auto">
                     <i className="md-28 fas fa-bars"></i>
@@ -35,7 +34,7 @@ const Header = () => {
                                 borderRadius: '50%',
                                 border: '1px solid #ccc',
                             }}
-                            src={`${userInfo?.image === undefined ? imageDefaul : userInfo?.image?.urlImageCloudinary}`}
+                            src={`${userInfo?.image === undefined ? imageDefaul : userInfo?.image}`}
                             alt="User"
                         />
                     </Link>

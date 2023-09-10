@@ -47,8 +47,9 @@ export const getAllComments = (productId) => async (dispatch) => {
 
 // PRODUCT LIST
 export const listProduct =
-    (category = '', keyword = '', pageNumber = '', rating = '', minPrice = '', maxPrice = '', sortBy = '1') =>
+    (category = '', keyword = '', pageNumber = 1, rating = '', minPrice = '', maxPrice = '', sortBy = '1') =>
     async (dispatch) => {
+        // const { category, keyword, pageNumber, rating, minPrice, maxPrice, sortBy } = data;
         try {
             dispatch({ type: types.PRODUCT_LIST_REQUEST });
             const { data } = await axios.get(

@@ -65,7 +65,7 @@ export const listProducts =
                 `/api/products/admin?category=${category}&keyword=${keyword}&pageNumber=${pageNumber}`,
                 config,
             );
-
+            console.log('data product list = ', data);
             dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
         } catch (error) {
             const message = error.response && error.response.data.message ? error.response.data.message : error.message;

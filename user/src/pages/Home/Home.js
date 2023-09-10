@@ -8,9 +8,10 @@ import BestSellingProduct from './HomeComponent/SliderProducts/BestSellingProduc
 // import NewsMain from '~/components/news/NewsMain';
 function Home() {
     const params = useParams();
+    console.log('params = ', params);
 
     const keyword = params.keyword;
-    const pageNumber = params.pageNumber;
+    const pageNumber = params.pageNumber || 1;
     const category = params.category;
     const rating = params.rating;
     const sortBy = params.sortBy;

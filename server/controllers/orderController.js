@@ -228,17 +228,21 @@ const getOrderAll = async (req, res) => {
 
     res.json({ orders, page, pages: Math.ceil(count / limit), total: count });
 };
-// const completed = async (req, res) => {
-//     // const orders = await Order.find({ completeAdmin: true }).sort({ _id: -1 });
-//     const orders = await Order.find({ 'payment.paid': true })
-//         .sort({ _id: -1 })
-//         .populate('user', 'id name email')
-//         .populate('payment');
+const completed = async (req, res) => {
+    try {
+        const orders = await Order.find({ status: 'completed' }).sort({ _id: -1 });
+        // const orders = await Order.find({ 'payment.paid': true })
+        //     .sort({ _id: -1 })
+        //     .populate('user', 'id name email')
+        //     .populate('payment');
 
-//     if (orders) {
-//         res.json(orders);
-//     }
-// };
+        if (orders) {
+            res.json(orders);
+        }
+    } catch (err) {
+        console.log('err');
+    }
+};
 
 const getOrderByUser = async (req, res) => {
     // const limit = Number(req.query.limit) || 20; //EDIT HERE
@@ -309,7 +313,7 @@ const handleCreateOrderGHTK = async (products, order, address_shop) => {
             id: order._id,
             pick_name: 'SHOP BALO',
             pick_money: 0,
-            pick_tel: '0123456789',
+            pick_tel: '0357666666',
             pick_province: 'Thành phố Hồ Chí Minh',
             pick_district: 'Quận Gò Vấp',
             pick_ward: 'Phường 05',
@@ -576,7 +580,7 @@ const cancelOrder = async (req, res, next) => {
                 await momo
                     .post('/v2/gateway/api/refund', requestBody)
                     .then(async (response) => {
-                        console.log(response.data);
+                        console.log('response.data momo = ', response.data);
                         const {
                             partnerCode,
                             requestId,
@@ -642,7 +646,7 @@ const cancelOrder = async (req, res, next) => {
 const orderController = {
     createOrder,
     getOrderAll,
-    // completed,
+    completed,
     getOrderByUser,
     getOrderById,
     confirmOrder,

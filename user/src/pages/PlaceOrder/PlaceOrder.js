@@ -18,7 +18,7 @@ import LoadingLarge from '~/components/LoadingError/LoadingLarge';
 import { usersRemainingSelector } from '~/redux/Selector/usersSelector';
 
 function PlaceOrder() {
-    const [paymentMethodState, setPaymentMethodState] = useState('pay-with-momo');
+    const [paymentMethodState, setPaymentMethodState] = useState('pay-with-cash');
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -90,7 +90,6 @@ function PlaceOrder() {
             dispatch({ type: ORDER_CREATE_RESET });
         }
         if (success) {
-            console.log('order = ', order);
             if (order?.newOrder?.payment?.payUrl) {
                 window.location.href = `${order.newOrder.payment.payUrl}`;
                 return;
@@ -99,6 +98,7 @@ function PlaceOrder() {
                 dispatch({ type: ORDER_CREATE_RESET });
                 navigate(`/order/${order?.newOrder?._id}`);
             }
+            console.log('order?.newOrder = ', order?.newOrder);
         }
     }, [error, success]);
 
@@ -260,6 +260,10 @@ function PlaceOrder() {
                                                 defaultValue={paymentMethodState}
                                                 options={[
                                                     {
+                                                        value: 'pay-with-cash',
+                                                        label: 'Thanh toán bằng tiền mặt',
+                                                    },
+                                                    {
                                                         value: 'pay-with-momo',
                                                         label: 'Thanh toán qua momo',
                                                     },
@@ -267,17 +271,13 @@ function PlaceOrder() {
                                                         value: 'pay-with-atm',
                                                         label: 'Thanh toán bằng ATM',
                                                     },
-                                                    {
-                                                        value: 'pay-with-paypal',
-                                                        label: 'Thanh toán qua paypal',
-                                                    },
+                                                    // {
+                                                    //     value: 'pay-with-paypal',
+                                                    //     label: 'Thanh toán qua paypal',
+                                                    // },
                                                     {
                                                         value: 'pay-with-credit-card',
                                                         label: 'Thanh toán qua thẻ Visa',
-                                                    },
-                                                    {
-                                                        value: 'pay-with-cash',
-                                                        label: 'Thanh toán bằng tiền mặt',
                                                     },
                                                 ]}
                                             />

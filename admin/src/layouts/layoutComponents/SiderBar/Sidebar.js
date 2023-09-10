@@ -1,9 +1,11 @@
 import { Link, NavLink } from 'react-router-dom';
 import { logoDefaul } from '~/data/data';
+import './SideBar.css';
+
 const Sidebar = () => {
     return (
         <aside className="navbar-aside border-none shadow-none">
-            <div className="aside-top  bg-blue-100" style={{ padding: '0.65rem 0.5rem' }}>
+            <div className="aside-top  bg-blue-100" style={{ padding: '11px' }}>
                 <Link to="/" className="brand-wrap">
                     <img
                         src={logoDefaul}
@@ -17,8 +19,22 @@ const Sidebar = () => {
             <nav>
                 <ul className="menu-aside mt-7">
                     <li className="menu-item">
-                        <NavLink activeClassName="active" className="menu-link bg-blue-900" to="/" exact={true}>
-                            <i className="icon fas fa-home"></i>
+                        <NavLink
+                            // style={{
+                            //     backgroundColor: 'var(--main-color)',
+                            //     color: '#ffff',
+                            // }}
+                            activeClassName="active"
+                            className="menu-link bg-blue-900"
+                            to="/"
+                            exact={true}
+                        >
+                            <i
+                                // style={{
+                                //     color: 'var(--blue-color)',
+                                // }}
+                                className="icon fas fa-home"
+                            ></i>
                             <span className="text text-white">Trang chủ</span>
                         </NavLink>
                     </li>
@@ -58,7 +74,7 @@ const Sidebar = () => {
                             <span className="text text-white">Bình luận</span>
                         </NavLink>
                     </li>
-                    <li className="menu-item">
+                    {/* <li className="menu-item">
                         <NavLink activeClassName="active" className="menu-link bg-blue-900" to="/news">
                             <i class="icon fas fa-newspaper"></i>
                             <span className="text text-white">Tin tức</span>
@@ -69,7 +85,7 @@ const Sidebar = () => {
                             <i class="icon fas fa-newspaper"></i>
                             <span className="text text-white">Thêm tin tức</span>
                         </NavLink>
-                    </li>
+                    </li> */}
                     <li className="menu-item">
                         <NavLink activeClassName="active" className="menu-link bg-blue-900" to="/slider">
                             <i className="icon fas fa-store-alt"></i>
