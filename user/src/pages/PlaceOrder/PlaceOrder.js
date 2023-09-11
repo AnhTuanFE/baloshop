@@ -4,7 +4,6 @@ import { Link, useNavigate, redirect, Navigate } from 'react-router-dom';
 import { message, Select } from 'antd';
 import { listCart } from '~/redux/Actions/cartActions';
 import { createOrder, calculate_fee_ship_action } from '~/redux/Actions/OrderActions';
-import { getUserDetails } from '~/redux/Actions/userActions';
 import { ORDER_CREATE_RESET } from '~/redux/Constants/OrderConstants';
 
 import ModalDaiSyUI from '~/components/Modal/ModalDaiSyUI';

@@ -36,6 +36,7 @@ import {
     PaypalReducer,
     GHTK_Reducer,
     updateStatusOrderUserReducer,
+    userRequestConfirmPaidMOMOReducer,
 } from './Reducers/OrderReducres';
 import { Sliderload } from './Reducers/SliderReducer';
 import { getNewsReducer, newsListReducer } from './Reducers/NewsReducer';
@@ -65,6 +66,7 @@ const reducer = combineReducers({
     orderCreateReviewsRetult: orderCreateReviewReducer,
     order_ghtk_state: GHTK_Reducer,
     stateUpdateStatusOrderUser: updateStatusOrderUserReducer,
+    stateUserRequestConfirmPaidMOMO: userRequestConfirmPaidMOMOReducer,
     paypalstate: PaypalReducer,
     sliderLoad: Sliderload,
     CategoryList: categoryListReducer,

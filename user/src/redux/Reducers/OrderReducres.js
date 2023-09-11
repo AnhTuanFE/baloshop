@@ -163,3 +163,18 @@ export const updateStatusOrderUserReducer = (state = {}, action) => {
             return state;
     }
 };
+
+export const userRequestConfirmPaidMOMOReducer = (state = {}, action) => {
+    switch (action.type) {
+        case types.USER_REQUEST_CONFIRM_PAID_REQUEST:
+            return { loading: true };
+        case types.USER_REQUEST_CONFIRM_PAID_SUCCESS:
+            return { loading: false, success: true, data: action.payload };
+        case types.USER_REQUEST_CONFIRM_PAID_FAIL:
+            return { loading: false, error: action.payload };
+        case types.USER_REQUEST_CONFIRM_PAID_RESET:
+            return {};
+        default:
+            return state;
+    }
+};

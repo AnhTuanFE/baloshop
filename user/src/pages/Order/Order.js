@@ -1,11 +1,16 @@
 import { React, useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import { Button, notification } from 'antd';
-import { getOrderDetails, createOrderReview, updateStatusOrderUserAction } from '~/redux/Actions/OrderActions';
+import {
+    getOrderDetails,
+    createOrderReview,
+    updateStatusOrderUserAction,
+    userRequestConfirmPaidMOMOAction,
+} from '~/redux/Actions/OrderActions';
 import { createProductReview } from '~/redux/Actions/ProductActions';
 import { PRODUCT_CREATE_REVIEW_RESET } from '~/redux/Constants/ProductConstants';
 import {
@@ -45,9 +50,26 @@ function Order() {
         });
     };
     const params = useParams();
-    const orderId = params.id;
+    const location = useLocation();
 
-    const { stateUpdateStatusOrderUser } = useSelector(ordersRemainingSelector);
+    const orderId = params.id;
+    const searchParams = new URLSearchParams(location.search);
+    const partnerCode = searchParams.get('partnerCode');
+    const idOrderParams = searchParams.get('orderId');
+    const requestId = searchParams.get('requestId');
+    const amount = searchParams.get('amount');
+    const orderInfo = searchParams.get('orderInfo');
+    const orderType = searchParams.get('orderType');
+    const transId = searchParams.get('transId');
+    const resultCode = searchParams.get('resultCode');
+    const message = searchParams.get('message');
+    const payType = searchParams.get('payType');
+    const responseTime = searchParams.get('responseTime');
+    const extraData = searchParams.get('extraData');
+    const signature = searchParams.get('signature');
+
+    const { stateUpdateStatusOrderUser, stateUserRequestConfirmPaidMOMO } = useSelector(ordersRemainingSelector);
+    const { success: successConfirmPaid } = stateUserRequestConfirmPaidMOMO;
     const { loading: loadingUpdateOrder, success: successUpdateOrder } = stateUpdateStatusOrderUser;
     const [productId, setProductId] = useState('');
     // ======================
@@ -98,7 +120,38 @@ function Order() {
         if (successUpdateOrder) {
             dispatch({ type: UPDATE_STATUS_ORDER_USER_RESET });
         }
-    }, [orderId, successUpdateOrder]);
+    }, [orderId, successUpdateOrder, successConfirmPaid]);
+
+    useEffect(() => {
+        if (
+            order != undefined &&
+            !order?.order.payment.paid &&
+            partnerCode &&
+            orderType &&
+            message &&
+            payType &&
+            resultCode == '0' &&
+            Object.keys(stateUserRequestConfirmPaidMOMO).length == 0
+        ) {
+            const dataMomoReturn = {
+                partnerCode: partnerCode,
+                orderId: idOrderParams,
+                requestId: requestId,
+                amount: amount,
+                orderInfo: orderInfo,
+                orderType: orderType,
+                transId: transId,
+                resultCode: resultCode,
+                message: message,
+                payType: payType,
+                responseTime: responseTime,
+                extraData: extraData,
+                signature: signature,
+            };
+            dispatch(userRequestConfirmPaidMOMOAction(dataMomoReturn));
+            console.log('đã gửi cho action = ');
+        }
+    }, [order]);
 
     const handleUpdateStatusOrder = () => {
         dispatch(updateStatusOrderUserAction({ id: order?.order?._id, status: 'received' }));

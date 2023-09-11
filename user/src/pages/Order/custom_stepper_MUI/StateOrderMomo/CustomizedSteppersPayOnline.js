@@ -74,7 +74,6 @@ function ColorlibStepIcon(props) {
         </ColorlibStepIconRoot>
     );
 }
-// export default function CustomizedSteppersMomo({ order }) {
 export default function CustomizedSteppersPayOnline({ order }) {
     const { statusHistory } = order;
     const [actiStep, setActiStep] = useState(0);
@@ -92,8 +91,8 @@ export default function CustomizedSteppersPayOnline({ order }) {
         if (status == 'paid') {
             return {
                 iconNumber: 2,
-                content: 'Đã giao và thanh toán',
-                label: 'Giao hàng và thanh toán',
+                content: 'Đã thanh toán',
+                label: 'Thanh toán',
                 createdAt: date,
                 description: description,
             };
@@ -144,64 +143,10 @@ export default function CustomizedSteppersPayOnline({ order }) {
         }
         // else return null;
     };
-    const dataStepper = [
-        {
-            iconNumber: 1,
-            content: 'Đã đặt hàng',
-            label: 'Đã đặt hàng',
-            createdAt: '',
-        },
-        {
-            iconNumber: 3,
-            content: 'Xác nhận đơn hàng',
-            label: 'Chờ xác nhận',
-            createdAt: '',
-        },
-        {
-            iconNumber: 4,
-            content: 'Đang giao',
-            label: 'Giao hàng',
-            createdAt: '',
-        },
-        {
-            iconNumber: 2,
-            content: 'Đã giao và thanh toán',
-            label: 'Giao hàng và thanh toán',
-            createdAt: '',
-        },
-        {
-            iconNumber: 6,
-            content: 'Đã hoàn thành',
-            label: 'Hoàn thành',
-            createdAt: '',
-        },
-    ];
-    const countItemArray = (arr) => {
-        return arr.filter(Boolean).length;
-    };
     const arrayStatusHistory = [];
     statusHistory.map((item) => {
         arrayStatusHistory.push(handleConfigContent(item.status, item.createdAt));
     });
-
-    // if (arrayStatusHistory.length > 0) {
-    //     const dataLength = countItemArray(arrayStatusHistory);
-    //     if (dataLength >= 1) {
-    //         return dataStepper.splice(1, 0, ...arrayStatusHistory.slice(1, 5));
-    //     }
-
-    //     if (dataLength >= 2) {
-    //         return dataStepper.splice(2, 0, ...arrayStatusHistory.slice(2, 5));
-    //     }
-
-    //     if (dataLength >= 3) {
-    //         return dataStepper.splice(3, 0, ...arrayStatusHistory.slice(3, 5));
-    //     }
-
-    //     if (dataLength >= 4) {
-    //         return dataStepper.splice(4, 0, ...arrayStatusHistory.slice(4, 5));
-    //     }
-    // }
 
     /*
     placed
@@ -215,24 +160,28 @@ export default function CustomizedSteppersPayOnline({ order }) {
     useEffect(() => {
         if (order) {
             if (order?.status) {
-                if (order?.status == 'placed') {
-                    setActiStep(0);
-                }
-                if (order?.status == 'confirm') {
-                    setActiStep(1);
-                }
-                if (order?.status == 'delivering') {
-                    setActiStep(2);
-                }
-                if (order?.status == 'delivered' || order?.status == 'paid') {
-                    setActiStep(3);
-                }
-                if (order?.status == 'completed') {
-                    setActiStep(4);
-                }
-                if (order?.status == 'cancelled') {
-                    setActiStep(Number(arrayStatusHistory.length) - 1);
-                }
+                // if (order?.status == 'placed') {
+                //     setActiStep(0);
+                // }
+                // if (order?.status == 'paid') {
+                //     setActiStep(1);
+                // }
+                // if (order?.status == 'confirm') {
+                //     setActiStep(2);
+                // }
+                // if (order?.status == 'delivering') {
+                //     setActiStep(3);
+                // }
+                // if (order?.status == 'delivered') {
+                //     setActiStep(4);
+                // }
+                // if (order?.status == 'completed') {
+                //     setActiStep(5);
+                // }
+                // if (order?.status == 'cancelled') {
+                //     setActiStep(Number(arrayStatusHistory.length) - 1);
+                // }
+                setActiStep(Number(arrayStatusHistory.length) - 1);
             } else {
                 setActiStep(0);
             }

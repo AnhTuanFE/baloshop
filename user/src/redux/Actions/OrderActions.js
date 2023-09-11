@@ -344,3 +344,58 @@ export const updateStatusOrderUserAction = (data) => async (dispatch, getState) 
         });
     }
 };
+
+export const userRequestConfirmPaidMOMOAction = (dataMomo) => async (dispatch, getState) => {
+    const {
+        partnerCode,
+        orderId,
+        requestId,
+        amount,
+        orderInfo,
+        orderType,
+        transId,
+        resultCode,
+        message,
+        payType,
+        responseTime,
+        extraData,
+        signature,
+    } = dataMomo;
+    console.log('dataMomo = ', dataMomo);
+    if (
+        partnerCode === 'MOMO' &&
+        message === 'Thành công.' &&
+        orderType === 'momo_wallet' &&
+        payType === 'qr' &&
+        resultCode == '0'
+    ) {
+        try {
+            dispatch({ type: types.USER_REQUEST_CONFIRM_PAID_REQUEST });
+            const {
+                userLogin: { userInfo },
+            } = getState();
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${userInfo.token}`,
+                },
+            };
+            const { data } = await axios.post(`/api/payments/user-notification-paid-from-momo`, dataMomo, config);
+            console.log('data = ', dataMomo);
+            dispatch({ type: types.USER_REQUEST_CONFIRM_PAID_SUCCESS, payload: data });
+        } catch (error) {
+            const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+            if (message === 'Not authorized, token failed') {
+                dispatch(logout());
+            }
+            dispatch({
+                type: types.USER_REQUEST_CONFIRM_PAID_FAIL,
+                payload: message,
+            });
+        }
+    } else {
+        dispatch({
+            type: types.USER_REQUEST_CONFIRM_PAID_FAIL,
+            payload: 'Thông tin yêu cầu không hợp lệ',
+        });
+    }
+};

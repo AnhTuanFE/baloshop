@@ -108,7 +108,29 @@ const createOrder = async (req, res, next) => {
                 status: 'placed',
                 statusHistory: [],
             });
-            orderInfo.statusHistory.push({ status: 'placed', description: '', updateBy: req.user._id });
+
+            if (
+                paymentMethod == PAY_WITH_MOMO ||
+                paymentMethod == PAY_WITH_ATM ||
+                paymentMethod == PAY_WITH_CREDIT_CARD
+            ) {
+                orderInfo.statusHistory = [
+                    { status: 'placed', description: '', updateBy: req.user._id },
+                    { status: 'paid', description: '', updateBy: req.user._id },
+                    { status: 'confirm', description: '', updateBy: req.user._id },
+                    { status: 'delivered', description: '', updateBy: req.user._id },
+                    { status: 'completed', description: '', updateBy: req.user._id },
+                ];
+            }
+            if (paymentMethod == PAY_WITH_CASH) {
+                orderInfo.statusHistory = [
+                    { status: 'placed', description: '', updateBy: req.user._id },
+                    { status: 'confirm', description: '', updateBy: req.user._id },
+                    { status: 'delivered', description: '', updateBy: req.user._id },
+                    { status: 'paid', description: '', updateBy: req.user._id },
+                    { status: 'completed', description: '', updateBy: req.user._id },
+                ];
+            }
 
             const newPayment = new Payment({
                 user: req.user._id,
@@ -171,10 +193,11 @@ const createOrder = async (req, res, next) => {
                     .post('/v2/gateway/api/create', requestBody)
                     .then((response) => {
                         newPayment.payUrl = response.data.payUrl;
+                        console.log('tạo đơn momo thành công');
                     })
                     .catch(async (error) => {
                         await session.abortTransaction();
-                        console.log(JSON.stringify(error));
+                        console.log('lỗi tạo đơn momo', JSON.stringify(error));
                         res.status(400);
                         throw new Error(error.response?.message || error.message);
                     });
@@ -197,7 +220,7 @@ const createOrder = async (req, res, next) => {
             await session.commitTransaction();
         }, transactionOptions);
     } catch (error) {
-        console.log(JSON.stringify(error));
+        console.log('lỗi tạo đơn catch', JSON.stringify(error));
         next(error);
     } finally {
         session.endSession();

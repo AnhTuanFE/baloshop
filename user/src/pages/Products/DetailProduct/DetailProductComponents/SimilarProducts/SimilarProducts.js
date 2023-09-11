@@ -8,7 +8,6 @@ function SimilarProducts(prop) {
 
     const similarProducts = useSelector((state) => state.listProductSimilar);
     const { products } = similarProducts;
-    console.log('products similar = ', products);
 
     useEffect(() => {
         dispatch(ListProductSimilarAction({ category: category }));
