@@ -99,7 +99,25 @@ export default function CustomizedSteppersMoney({ order }) {
             return {
                 iconNumber: 1,
                 content: 'Đã đặt hàng',
-                label: 'Đã đặt hàng',
+                label: 'Chờ đặt hàng',
+                createdAt: date,
+                description: description,
+            };
+        }
+        if (status == 'confirm') {
+            return {
+                iconNumber: 3,
+                content: 'Đã xác nhận đơn hàng',
+                label: 'Chờ xác nhận đơn hàng',
+                createdAt: date,
+                description: description,
+            };
+        }
+        if (status == 'delivered') {
+            return {
+                iconNumber: 4,
+                content: 'Đang giao',
+                label: 'Chờ giao hàng',
                 createdAt: date,
                 description: description,
             };
@@ -108,42 +126,16 @@ export default function CustomizedSteppersMoney({ order }) {
             return {
                 iconNumber: 2,
                 content: 'Đã giao và thanh toán',
-                label: 'Giao hàng và thanh toán',
+                label: 'Chờ nhận hàng và thanh toán',
                 createdAt: date,
                 description: description,
             };
         }
-        if (status == 'confirm') {
-            return {
-                iconNumber: 3,
-                content: 'Xác nhận đơn hàng',
-                label: 'Chờ xác nhận',
-                createdAt: date,
-                description: description,
-            };
-        }
-        if (status == 'delivering') {
-            return {
-                iconNumber: 4,
-                content: 'Đang giao',
-                label: 'Giao hàng',
-                createdAt: date,
-                description: description,
-            };
-        }
-        // if (status == 'delivered') {
-        //     return {
-        //         iconNumber: 4,
-        //         content: 'Đã giao',
-        //         label: 'Giao hàng',
-        //         createdAt: date,
-        //     };
-        // }
         if (status == 'completed') {
             return {
                 iconNumber: 6,
                 content: 'Đã hoàn thành',
-                label: 'Hoàn thành',
+                label: 'Xác nhận hoàn thành đơn hàng',
                 createdAt: date,
                 description: description,
             };
@@ -159,74 +151,11 @@ export default function CustomizedSteppersMoney({ order }) {
         }
         // else return null;
     };
-    const dataStepper = [
-        {
-            iconNumber: 1,
-            content: 'Đã đặt hàng',
-            label: 'Đã đặt hàng',
-            createdAt: '',
-        },
-        {
-            iconNumber: 3,
-            content: 'Xác nhận đơn hàng',
-            label: 'Chờ xác nhận',
-            createdAt: '',
-        },
-        {
-            iconNumber: 4,
-            content: 'Đang giao',
-            label: 'Giao hàng',
-            createdAt: '',
-        },
-        {
-            iconNumber: 2,
-            content: 'Đã giao và thanh toán',
-            label: 'Giao hàng và thanh toán',
-            createdAt: '',
-        },
-        {
-            iconNumber: 6,
-            content: 'Đã hoàn thành',
-            label: 'Hoàn thành',
-            createdAt: '',
-        },
-    ];
-    const countItemArray = (arr) => {
-        return arr.filter(Boolean).length;
-    };
     const arrayStatusHistory = [];
     statusHistory.map((item) => {
-        arrayStatusHistory.push(handleConfigContent(item.status, item.createdAt, item.description));
+        arrayStatusHistory.push(handleConfigContent(item.status, item.updatedAt, item.description));
     });
 
-    // if (arrayStatusHistory.length > 0) {
-    //     const dataLength = countItemArray(arrayStatusHistory);
-    //     if (dataLength >= 1) {
-    //         return dataStepper.splice(1, 0, ...arrayStatusHistory.slice(1, 5));
-    //     }
-
-    //     if (dataLength >= 2) {
-    //         return dataStepper.splice(2, 0, ...arrayStatusHistory.slice(2, 5));
-    //     }
-
-    //     if (dataLength >= 3) {
-    //         return dataStepper.splice(3, 0, ...arrayStatusHistory.slice(3, 5));
-    //     }
-
-    //     if (dataLength >= 4) {
-    //         return dataStepper.splice(4, 0, ...arrayStatusHistory.slice(4, 5));
-    //     }
-    // }
-
-    /*
-    placed
-    confirm
-    delivering
-    paid
-    delivered
-    completed
-    cancelled
-    */
     useEffect(() => {
         if (order) {
             if (order?.status) {
@@ -236,10 +165,10 @@ export default function CustomizedSteppersMoney({ order }) {
                 if (order?.status == 'confirm') {
                     setActiStep(1);
                 }
-                if (order?.status == 'delivering') {
+                if (order?.status == 'delivered') {
                     setActiStep(2);
                 }
-                if (order?.status == 'delivered' || order?.status == 'paid') {
+                if (order?.status == 'paid') {
                     setActiStep(3);
                 }
                 if (order?.status == 'completed') {
@@ -272,73 +201,32 @@ export default function CustomizedSteppersMoney({ order }) {
                                                     <ColorlibStepIcon {...props} iconNumber={item.iconNumber} />
                                                 )}
                                             >
-                                                <div>
-                                                    {item.content}
-                                                    <div className="text-sm font-semibold text-red-500">
-                                                        {moment(item.createdAt).hours()}
-                                                        {':'}
-                                                        {moment(item.createdAt).minutes() < 10
-                                                            ? `0${moment(item.createdAt).minutes()}`
-                                                            : moment(item.createdAt).minutes()}{' '}
-                                                        {moment(item.createdAt).format('DD/MM/YYYY')}{' '}
-                                                    </div>
-                                                    {item.content == 'Đơn hàng đã bị hủy' && (
-                                                        <div className="text-sm font-semibold text-red-600">
-                                                            <b>{item.description}</b>
+                                                {index <= actiStep ? (
+                                                    <div>
+                                                        {item.content}
+                                                        <div className="text-sm font-semibold text-red-500">
+                                                            {moment(item.createdAt).hours()}
+                                                            {':'}
+                                                            {moment(item.createdAt).minutes() < 10
+                                                                ? `0${moment(item.createdAt).minutes()}`
+                                                                : moment(item.createdAt).minutes()}{' '}
+                                                            {moment(item.createdAt).format('DD/MM/YYYY')}{' '}
                                                         </div>
-                                                    )}
-                                                </div>
+                                                        {item.content == 'Đơn hàng đã bị hủy' && (
+                                                            <div className="text-sm font-semibold text-red-600">
+                                                                <b>{item.description}</b>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                ) : (
+                                                    item.label
+                                                )}
                                             </StepLabel>
                                         </div>
                                     </Step>
                                 );
                             }
                         })}
-                        {/* <Step key={1}>
-                            <div>
-                                <StepLabel
-                                    StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={1} />}
-                                >
-                                    Đã đặt hàng
-                                </StepLabel>
-                            </div>
-                        </Step>
-                        <Step key={2}>
-                            <div>
-                                <StepLabel
-                                    StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={3} />}
-                                >
-                                    Xác nhận đơn hàng
-                                </StepLabel>
-                            </div>
-                        </Step>
-                        <Step key={3}>
-                            <div>
-                                <StepLabel
-                                    StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={4} />}
-                                >
-                                    Đang giao
-                                </StepLabel>
-                            </div>
-                        </Step>
-                        <Step key={4}>
-                            <div>
-                                <StepLabel
-                                    StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={2} />}
-                                >
-                                    Đã giao và thanh toán
-                                </StepLabel>
-                            </div>
-                        </Step>
-                        <Step key={5}>
-                            <div>
-                                <StepLabel
-                                    StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={6} />}
-                                >
-                                    Hoàn tất
-                                </StepLabel>
-                            </div>
-                        </Step> */}
                     </Stepper>
                 </Box>
             </Stack>

@@ -118,6 +118,7 @@ const createOrder = async (req, res, next) => {
                     { status: 'placed', description: '', updateBy: req.user._id },
                     { status: 'paid', description: '', updateBy: req.user._id },
                     { status: 'confirm', description: '', updateBy: req.user._id },
+                    { status: 'delivering', description: '', updateBy: req.user._id },
                     { status: 'delivered', description: '', updateBy: req.user._id },
                     { status: 'completed', description: '', updateBy: req.user._id },
                 ];
@@ -303,27 +304,61 @@ const confirmOrder = async (req, res) => {
         res.status(404);
         throw new Error('Đơn hàng không tồn tại!');
     }
-    switch (order.status) {
-        case 'confirm':
-            res.status(400);
-            throw new Error('Đơn hàng đã được xác nhận');
-        case 'delivering':
-            res.status(400);
-            throw new Error('Đơn hàng đang ở trạng thái đang giao');
-        case 'delivered':
-            res.status(400);
-            throw new Error('Đơn hàng đã được giao thành công');
-        case 'completed':
-            res.status(400);
-            throw new Error('Đơn hàng đã được hoàn thành');
-        case 'cancelled':
-            res.status(400);
-            throw new Error('Đơn hàng đã bị hủy');
-        default:
-            break;
+    if (order.paymentMethod == 'pay-with-cash') {
+        switch (order.status) {
+            case 'confirm':
+                res.status(400);
+                throw new Error('Đơn hàng đã được xác nhận');
+            case 'delivered':
+                res.status(400);
+                throw new Error('Đơn hàng đang ở trạng thái đang giao');
+            case 'paid':
+                res.status(400);
+                throw new Error('Đơn hàng đã giao thành công');
+            case 'completed':
+                res.status(400);
+                throw new Error('Đơn hàng đã được hoàn thành');
+            case 'cancelled':
+                res.status(400);
+                throw new Error('Đơn hàng đã bị hủy');
+            default:
+                break;
+        }
+    } else {
+        switch (order.status) {
+            case 'placed':
+                res.status(400);
+                throw new Error('Đơn hàng chưa thanh toán');
+            case 'confirm':
+                res.status(400);
+                throw new Error('Đơn hàng đã được xác nhận');
+            case 'delivering':
+                res.status(400);
+                throw new Error('Đơn hàng đang ở trạng thái đang giao');
+            case 'delivered':
+                res.status(400);
+                throw new Error('Đơn hàng đã được giao thành công');
+            case 'completed':
+                res.status(400);
+                throw new Error('Đơn hàng đã được hoàn thành');
+            case 'cancelled':
+                res.status(400);
+                throw new Error('Đơn hàng đã bị hủy');
+            default:
+                break;
+        }
     }
-    order.statusHistory.push({ status: 'confirm', description: description, updateBy: req.user._id });
     order.status = 'confirm';
+    if (
+        order.paymentMethod == PAY_WITH_MOMO ||
+        order.paymentMethod == PAY_WITH_ATM ||
+        order.paymentMethod == PAY_WITH_CREDIT_CARD
+    ) {
+        order.statusHistory[2] = { status: 'confirm', description: description, updateBy: req.user._id };
+    }
+    if (order.paymentMethod == PAY_WITH_CASH) {
+        order.statusHistory[1] = { status: 'confirm', description: description, updateBy: req.user._id };
+    }
 
     const updateOrder = await order.save();
     await updateOrder.populate('payment');
@@ -379,32 +414,66 @@ const confirmDelivery = async (req, res) => {
         res.status(404);
         throw new Error('Đơn hàng không tồn tại!');
     }
-    switch (order.status) {
-        case 'placed':
-            res.status(400);
-            throw new Error('Đơn hàng chưa được xác nhận');
-        case 'delivering':
-            res.status(400);
-            throw new Error('Đơn hàng đã ở trạng thái đang giao');
-        case 'delivered':
-            res.status(400);
-            throw new Error('Đơn hàng đã được giao thành công');
-        case 'completed':
-            res.status(400);
-            throw new Error('Đơn hàng đã được hoàn thành');
-        case 'cancelled':
-            res.status(400);
-            throw new Error('Đơn hàng đã bị hủy');
-        default:
-            break;
+    if (order.paymentMethod == 'pay-with-cash') {
+        switch (order.status) {
+            case 'placed':
+                res.status(400);
+                throw new Error('Đơn hàng chưa được xác nhận');
+            case 'delivered':
+                res.status(400);
+                throw new Error('Đơn hàng đã ở trạng thái đang giao');
+            case 'paid':
+                res.status(400);
+                throw new Error('Đơn hàng đã giao thành công');
+            case 'completed':
+                res.status(400);
+                throw new Error('Đơn hàng đã được hoàn thành');
+            case 'cancelled':
+                res.status(400);
+                throw new Error('Đơn hàng đã bị hủy');
+            default:
+                break;
+        }
+    } else {
+        switch (order.status) {
+            case 'placed':
+                res.status(400);
+                throw new Error('Đơn hàng chưa thanh toán');
+            case 'paid':
+                res.status(400);
+                throw new Error('Đơn hàng chưa được xác nhận');
+            case 'delivering':
+                res.status(400);
+                throw new Error('Đơn hàng đang ở trạng thái đang giao');
+            case 'delivered':
+                res.status(400);
+                throw new Error('Đơn hàng đã được giao thành công');
+            case 'completed':
+                res.status(400);
+                throw new Error('Đơn hàng đã được hoàn thành');
+            case 'cancelled':
+                res.status(400);
+                throw new Error('Đơn hàng đã bị hủy');
+            default:
+                break;
+        }
     }
-
     const products = await handleConfigProducts(order.orderItems);
     const dataOrderGHTK = await handleCreateOrderGHTK(products, order, address_shop);
     order.label_id_GiaoHangTK = dataOrderGHTK.order.label;
-    order.status = 'delivering';
 
-    order.statusHistory.push({ status: 'delivering', description: description, updateBy: req.user._id });
+    if (
+        order.paymentMethod == PAY_WITH_MOMO ||
+        order.paymentMethod == PAY_WITH_ATM ||
+        order.paymentMethod == PAY_WITH_CREDIT_CARD
+    ) {
+        order.status = 'delivering';
+        order.statusHistory[3] = { status: 'delivering', description: description, updateBy: req.user._id };
+    }
+    if (order.paymentMethod == PAY_WITH_CASH) {
+        order.status = 'delivered';
+        order.statusHistory[2] = { status: 'delivered', description: description, updateBy: req.user._id };
+    }
 
     const updatedOrder = await order.save();
     await updatedOrder.populate('payment');
@@ -419,33 +488,70 @@ const confirmDelivered = async (req, res) => {
         res.status(404);
         throw new Error('Đơn hàng không tồn tại!');
     }
-    switch (order.status) {
-        case 'placed':
-            res.status(400);
-            throw new Error('Đơn hàng chưa được xác nhận');
-        case 'confirm':
-            res.status(400);
-            throw new Error('Đơn hàng chưa được tạo đơn giao hàng');
-        case 'delivered':
-            res.status(400);
-            throw new Error('Đơn hàng đã được giao thành công');
-        case 'completed':
-            res.status(400);
-            throw new Error('Đơn hàng đã được hoàn thành');
-        case 'cancelled':
-            res.status(400);
-            throw new Error('Đơn hàng đã bị hủy');
-        default:
-            break;
+    if (order.paymentMethod == 'pay-with-cash') {
+        switch (order.status) {
+            case 'placed':
+                res.status(400);
+                throw new Error('Đơn hàng chưa được xác nhận');
+            case 'confirm':
+                res.status(400);
+                throw new Error('Đơn hàng chưa được tạo đơn giao hàng');
+            // case 'delivered':
+            //     res.status(400);
+            //     throw new Error('Đơn hàng đã được giao thành công');
+            case 'paid':
+                res.status(400);
+                throw new Error('Đơn hàng đã được giao thành công');
+            case 'completed':
+                res.status(400);
+                throw new Error('Đơn hàng đã được hoàn thành');
+            case 'cancelled':
+                res.status(400);
+                throw new Error('Đơn hàng đã bị hủy');
+            default:
+                break;
+        }
+    } else {
+        switch (order.status) {
+            case 'placed':
+                res.status(400);
+                throw new Error('Đơn hàng chưa thanh toán');
+            case 'paid':
+                res.status(400);
+                // throw new Error('Đơn hàng chưa được tạo đơn giao hàng');
+                throw new Error('Đơn hàng chưa được xác nhận');
+            case 'confirm':
+                res.status(400);
+                throw new Error('Đơn hàng chưa được tạo đơn giao hàng');
+            // chỉ cho phép delivering
+            case 'delivered':
+                res.status(400);
+                throw new Error('Đơn hàng đã được giao thành công');
+            case 'completed':
+                res.status(400);
+                throw new Error('Đơn hàng đã được hoàn thành');
+            case 'cancelled':
+                res.status(400);
+                throw new Error('Đơn hàng đã bị hủy');
+            default:
+                break;
+        }
+    }
+
+    if (
+        order.paymentMethod == PAY_WITH_MOMO ||
+        order.paymentMethod == PAY_WITH_ATM ||
+        order.paymentMethod == PAY_WITH_CREDIT_CARD
+    ) {
+        order.status = 'delivered';
+        order.statusHistory[4] = { status: 'delivered', description: description, updateBy: req.user._id };
     }
     if (order.paymentMethod == PAY_WITH_CASH) {
+        order.status = 'paid';
+        order.statusHistory[3] = { status: 'paid', description: description, updateBy: req.user._id };
         order.payment.paid = true;
         order.payment.paidAt = new Date();
-        order.statusHistory.push({ status: 'paid', description: description });
-        await order.payment.save();
     }
-    order.statusHistory.push({ status: 'delivered', description: description });
-    order.status = 'delivered';
     const updateOrder = await order.save();
     await updateOrder.populate('payment');
     res.status(200).json({ message: 'Xác nhận giao hàng thành công', updateOrder });
@@ -459,27 +565,65 @@ const confirmReceived = async (req, res) => {
         res.status(404);
         throw new Error('Đơn hàng không tồn tại!');
     }
-    switch (order.status) {
-        case 'placed':
-            res.status(400);
-            throw new Error('Đơn hàng chưa được xác nhận');
-        case 'confirm':
-            res.status(400);
-            throw new Error('Đơn hàng  chỉ mới xác nhận chưa bắt đầu giao hàng');
-        case 'delivering':
-            res.status(400);
-            throw new Error('Đơn hàng chưa được giao thành công');
-        case 'completed':
-            res.status(400);
-            throw new Error('Đơn hàng đã được hoàn thành');
-        case 'cancelled':
-            res.status(400);
-            throw new Error('Đơn hàng đã bị hủy');
-        default:
-            break;
+    if (order.paymentMethod == 'pay-with-cash') {
+        // chỉ cho phép paid
+        switch (order.status) {
+            case 'placed':
+                res.status(400);
+                throw new Error('Đơn hàng chưa được xác nhận');
+            case 'confirm':
+                res.status(400);
+                throw new Error('Đơn hàng chưa bắt đầu giao hàng');
+            case 'delivered':
+                res.status(400);
+                throw new Error('Đơn hàng chưa được giao thành công');
+            case 'completed':
+                res.status(400);
+                throw new Error('Đơn hàng đã được hoàn thành');
+            case 'cancelled':
+                res.status(400);
+                throw new Error('Đơn hàng đã bị hủy');
+            default:
+                break;
+        }
+    } else {
+        // chỉ cho phép delivered
+        switch (order.status) {
+            case 'placed':
+                res.status(400);
+                throw new Error('Đơn hàng chưa được thanh toán');
+            case 'paid':
+                res.status(400);
+                throw new Error('Đơn hàng chưa được xác nhận');
+            case 'confirm':
+                res.status(400);
+                throw new Error('Đơn hàng chưa bắt đầu giao hàng');
+            case 'delivering':
+                res.status(400);
+                throw new Error('Đơn hàng chưa được giao thành công');
+            case 'completed':
+                res.status(400);
+                throw new Error('Đơn hàng đã được hoàn thành');
+            case 'cancelled':
+                res.status(400);
+                throw new Error('Đơn hàng đã bị hủy');
+            default:
+                break;
+        }
     }
-    order.statusHistory.push({ status: 'completed', description: description, updateBy: req.user._id });
+
     order.status = 'completed';
+
+    if (
+        order.paymentMethod == PAY_WITH_MOMO ||
+        order.paymentMethod == PAY_WITH_ATM ||
+        order.paymentMethod == PAY_WITH_CREDIT_CARD
+    ) {
+        order.statusHistory[5] = { status: 'completed', description: description, updateBy: req.user._id };
+    }
+    if (order.paymentMethod == PAY_WITH_CASH) {
+        order.statusHistory[4] = { status: 'completed', description: description, updateBy: req.user._id };
+    }
     order.orderItems = order.orderItems.map((orderItem) => {
         orderItem.isAbleToReview = true;
         return orderItem;
@@ -488,6 +632,7 @@ const confirmReceived = async (req, res) => {
     await updateOrder.populate('payment');
     res.status(200).json({ message: 'Xác nhận giao hàng thành công', updateOrder });
 };
+
 const cancelOrder = async (req, res, next) => {
     const orderId = req.params.id || '';
     const description = req.body.description?.toString()?.trim() || '';
@@ -497,38 +642,87 @@ const cancelOrder = async (req, res, next) => {
         throw new Error('Đơn hàng không tồn tại');
     }
     if (req.user.isAdmin) {
-        switch (order.status) {
-            case 'delivered':
-                res.status(400);
-                throw new Error('Đơn hàng đã được giao thành công. Không thể hủy đơn hàng');
-            case 'completed':
-                res.status(400);
-                throw new Error('Đơn hàng đã được hoàn thành. Không thể hủy đơn hàng');
-            case 'cancelled':
-                res.status(400);
-                throw new Error('Đơn hàng đã bị hủy');
-            default:
-                break;
+        if (
+            order.paymentMethod == PAY_WITH_MOMO ||
+            order.paymentMethod == PAY_WITH_ATM ||
+            order.paymentMethod == PAY_WITH_CREDIT_CARD
+        ) {
+            switch (order.status) {
+                case 'delivered':
+                    res.status(400);
+                    throw new Error('Đơn hàng đã được giao thành công. Không thể hủy đơn hàng');
+                case 'completed':
+                    res.status(400);
+                    throw new Error('Đơn hàng đã được hoàn thành. Không thể hủy đơn hàng');
+                case 'cancelled':
+                    res.status(400);
+                    throw new Error('Đơn hàng đã bị hủy');
+                default:
+                    break;
+            }
+        }
+        if (order.paymentMethod == PAY_WITH_CASH) {
+            switch (order.status) {
+                case 'paid':
+                    res.status(400);
+                    throw new Error('Đơn hàng đã được giao thành công. Không thể hủy đơn hàng');
+                case 'completed':
+                    res.status(400);
+                    throw new Error('Đơn hàng đã được hoàn thành. Không thể hủy đơn hàng');
+                case 'cancelled':
+                    res.status(400);
+                    throw new Error('Đơn hàng đã bị hủy');
+                default:
+                    break;
+            }
         }
     } else if (req.user._id.toString() == order.user.toString()) {
-        switch (order.status) {
-            case 'confirm':
-                res.status(400);
-                throw new Error('Đơn hàng đã được xác nhận. Không thể hủy đơn hàng');
-            case 'delivering':
-                res.status(400);
-                throw new Error('Đơn hàng đang được giao đến bạn. Không thể hủy đơn hàng');
-            case 'delivered':
-                res.status(400);
-                throw new Error('Đơn hàng đã được giao thành công. Không thể hủy đơn hàng');
-            case 'completed':
-                res.status(400);
-                throw new Error('Đơn hàng đã được hoàn thành. Không thể hủy đơn hàng');
-            case 'cancelled':
-                res.status(400);
-                throw new Error('Đơn hàng đã bị hủy');
-            default:
-                break;
+        if (
+            order.paymentMethod == PAY_WITH_MOMO ||
+            order.paymentMethod == PAY_WITH_ATM ||
+            order.paymentMethod == PAY_WITH_CREDIT_CARD
+        ) {
+            switch (order.status) {
+                // chỉ cho phép placed
+                case 'confirm':
+                    res.status(400);
+                    throw new Error('Đơn hàng đã được xác nhận. Không thể hủy đơn hàng');
+                case 'delivering':
+                    res.status(400);
+                    throw new Error('Đơn hàng đang được giao đến bạn. Không thể hủy đơn hàng');
+                case 'delivered':
+                    res.status(400);
+                    throw new Error('Đơn hàng đã được giao thành công. Không thể hủy đơn hàng');
+                case 'completed':
+                    res.status(400);
+                    throw new Error('Đơn hàng đã được hoàn thành. Không thể hủy đơn hàng');
+                case 'cancelled':
+                    res.status(400);
+                    throw new Error('Đơn hàng đã bị hủy');
+                default:
+                    break;
+            }
+        }
+        if (order.paymentMethod == PAY_WITH_CASH) {
+            switch (order.status) {
+                case 'confirm':
+                    res.status(400);
+                    throw new Error('Đơn hàng đã được xác nhận. Không thể hủy đơn hàng');
+                case 'delivered':
+                    res.status(400);
+                    throw new Error('Đơn hàng đang được giao đến bạn. Không thể hủy đơn hàng');
+                case 'paid':
+                    res.status(400);
+                    throw new Error('Đơn hàng đã được giao thành công. Không thể hủy đơn hàng');
+                case 'completed':
+                    res.status(400);
+                    throw new Error('Đơn hàng đã được hoàn thành. Không thể hủy đơn hàng');
+                case 'cancelled':
+                    res.status(400);
+                    throw new Error('Đơn hàng đã bị hủy');
+                default:
+                    break;
+            }
         }
     } else {
         res.status(404);
@@ -541,6 +735,7 @@ const cancelOrder = async (req, res, next) => {
         writeConcern: { w: 'majority' },
     };
     try {
+        // cập nhập lại SL sp
         await session.withTransaction(async () => {
             const updateOrderItems = order.orderItems.map(async (orderItem) => {
                 const updateProduct = await Product.findOne({ _id: orderItem.product });
@@ -551,28 +746,7 @@ const cancelOrder = async (req, res, next) => {
                 await updateProduct.save({ session });
             });
             await Promise.all(updateOrderItems);
-            // if (order.status == 'delivering' && order.delivery.deliveryCode) {
-            //     const config = {
-            //         data: JSON.stringify({
-            //             shop_id: Number(process.env.GHN_SHOP_ID),
-            //             order_codes: [new String(order.delivery.deliveryCode)],
-            //         }),
-            //     };
-            //     const deliveryInfo = await GHN_Request.get('v2/switch-status/cancel', config)
-            //         .then((response) => {
-            //             return response.data.data;
-            //         })
-            //         .catch((error) => {
-            //             res.status(error.response.data.code || 502);
-            //             throw new Error(error.response.data.message || error.message || null);
-            //         });
-
-            //     if (!deliveryInfo) {
-            //         await session.abortTransaction();
-            //         res.status(502);
-            //         throw new Error('Gặp lỗi khi hủy đơn giao hàng của đơn vị Giao Hàng Nhanh');
-            //     }
-            // }
+            // xử lý hoàn tiền
             if (
                 order.payment.paid &&
                 (order.paymentMethod == PAY_WITH_MOMO ||
@@ -648,16 +822,117 @@ const cancelOrder = async (req, res, next) => {
                         throw new Error(error.response?.message || error.message);
                     });
             }
+            /*
+        orderInfo.statusHistory = [
+            { status: 'placed', description: '', updateBy: req.user._id },
+            { status: 'paid', description: '', updateBy: req.user._id },
+            { status: 'confirm', description: '', updateBy: req.user._id },
+            { status: 'delivering', description: '', updateBy: req.user._id },
+            { status: 'delivered', description: '', updateBy: req.user._id },
+            { status: 'completed', description: '', updateBy: req.user._id },
+        ];
+        orderInfo.statusHistory = [
+            { status: 'placed', description: '', updateBy: req.user._id },
+            { status: 'confirm', description: '', updateBy: req.user._id },
+            { status: 'delivered', description: '', updateBy: req.user._id },
+            { status: 'paid', description: '', updateBy: req.user._id },
+            { status: 'completed', description: '', updateBy: req.user._id },
+        ];
+    */
             order.status = 'cancelled';
-            order.statusHistory.push({ status: 'cancelled', description: description });
-            const cancelledOrder = await order.save();
-            console.log(cancelOrder);
-            if (!cancelledOrder) {
-                await session.abortTransaction();
-                res.status(502);
-                throw new Error('Gặp lỗi khi hủy đơn hàng');
+
+            if (
+                order.paymentMethod == PAY_WITH_MOMO ||
+                order.paymentMethod == PAY_WITH_ATM ||
+                order.paymentMethod == PAY_WITH_CREDIT_CARD
+            ) {
+                if (order.status == 'placed') {
+                    order.statusHistory[1] = { status: 'cancelled', description: description, updateBy: req.user._id };
+                    order.statusHistory.splice(1, 4);
+                    const cancelledOrder = await order.save();
+                    console.log(cancelOrder);
+                    if (!cancelledOrder) {
+                        await session.abortTransaction();
+                        res.status(502);
+                        throw new Error('Gặp lỗi khi hủy đơn hàng');
+                    }
+                    res.status(200).json({ message: 'Hủy đơn hàng thành công' });
+                }
+                if (order.status == 'paid') {
+                    order.statusHistory[2] = { status: 'cancelled', description: description, updateBy: req.user._id };
+                    order.statusHistory.splice(2, 3);
+                    const cancelledOrder = await order.save();
+                    console.log(cancelOrder);
+                    if (!cancelledOrder) {
+                        await session.abortTransaction();
+                        res.status(502);
+                        throw new Error('Gặp lỗi khi hủy đơn hàng');
+                    }
+                    res.status(200).json({ message: 'Hủy đơn hàng thành công' });
+                }
+                if (order.status == 'confirm') {
+                    order.statusHistory[3] = { status: 'cancelled', description: description, updateBy: req.user._id };
+                    order.statusHistory.splice(3, 2);
+                    const cancelledOrder = await order.save();
+                    console.log(cancelOrder);
+                    if (!cancelledOrder) {
+                        await session.abortTransaction();
+                        res.status(502);
+                        throw new Error('Gặp lỗi khi hủy đơn hàng');
+                    }
+                    res.status(200).json({ message: 'Hủy đơn hàng thành công' });
+                }
+                if (order.status == 'delivering') {
+                    order.statusHistory[4] = { status: 'cancelled', description: description, updateBy: req.user._id };
+                    order.statusHistory.splice(4, 1);
+                    const cancelledOrder = await order.save();
+                    console.log(cancelOrder);
+                    if (!cancelledOrder) {
+                        await session.abortTransaction();
+                        res.status(502);
+                        throw new Error('Gặp lỗi khi hủy đơn hàng');
+                    }
+                    res.status(200).json({ message: 'Hủy đơn hàng thành công' });
+                }
             }
-            res.status(200).json({ message: 'Hủy đơn hàng thành công' });
+            if (order.paymentMethod == PAY_WITH_CASH) {
+                if (order.status == 'placed') {
+                    order.statusHistory[1] = { status: 'cancelled', description: description, updateBy: req.user._id };
+                    order.statusHistory.splice(1, 3);
+                    const cancelledOrder = await order.save();
+                    console.log(cancelOrder);
+                    if (!cancelledOrder) {
+                        await session.abortTransaction();
+                        res.status(502);
+                        throw new Error('Gặp lỗi khi hủy đơn hàng');
+                    }
+                    res.status(200).json({ message: 'Hủy đơn hàng thành công' });
+                }
+                if (order.status == 'confirm') {
+                    order.statusHistory[2] = { status: 'cancelled', description: description, updateBy: req.user._id };
+                    order.statusHistory.splice(2, 2);
+                    const cancelledOrder = await order.save();
+                    console.log(cancelOrder);
+                    if (!cancelledOrder) {
+                        await session.abortTransaction();
+                        res.status(502);
+                        throw new Error('Gặp lỗi khi hủy đơn hàng');
+                    }
+                    res.status(200).json({ message: 'Hủy đơn hàng thành công' });
+                }
+                if (order.status == 'delivered') {
+                    order.statusHistory[3] = { status: 'cancelled', description: description, updateBy: req.user._id };
+                    order.statusHistory.splice(3, 1);
+                    const cancelledOrder = await order.save();
+                    console.log(cancelOrder);
+                    if (!cancelledOrder) {
+                        await session.abortTransaction();
+                        res.status(502);
+                        throw new Error('Gặp lỗi khi hủy đơn hàng');
+                    }
+                    res.status(200).json({ message: 'Hủy đơn hàng thành công' });
+                }
+            }
         }, transactionOptions);
     } catch (error) {
         next(error);

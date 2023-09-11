@@ -115,14 +115,14 @@ export default function CustomizedSteppersPayOnline({ order }) {
                 description: description,
             };
         }
-        // if (status == 'delivered') {
-        //     return {
-        //         iconNumber: 4,
-        //         content: 'Đã giao',
-        //         label: 'Giao hàng',
-        //         createdAt: date,
-        //     };
-        // }
+        if (status == 'delivered') {
+            return {
+                iconNumber: 4,
+                content: 'Đã giao hàng',
+                label: 'Chờ giao hàng',
+                createdAt: date,
+            };
+        }
         if (status == 'completed') {
             return {
                 iconNumber: 6,
@@ -148,40 +148,30 @@ export default function CustomizedSteppersPayOnline({ order }) {
         arrayStatusHistory.push(handleConfigContent(item.status, item.createdAt));
     });
 
-    /*
-    placed
-    confirm
-    delivering
-    paid
-    delivered
-    completed
-    cancelled
-    */
     useEffect(() => {
         if (order) {
             if (order?.status) {
-                // if (order?.status == 'placed') {
-                //     setActiStep(0);
-                // }
-                // if (order?.status == 'paid') {
-                //     setActiStep(1);
-                // }
-                // if (order?.status == 'confirm') {
-                //     setActiStep(2);
-                // }
-                // if (order?.status == 'delivering') {
-                //     setActiStep(3);
-                // }
-                // if (order?.status == 'delivered') {
-                //     setActiStep(4);
-                // }
-                // if (order?.status == 'completed') {
-                //     setActiStep(5);
-                // }
-                // if (order?.status == 'cancelled') {
-                //     setActiStep(Number(arrayStatusHistory.length) - 1);
-                // }
-                setActiStep(Number(arrayStatusHistory.length) - 1);
+                if (order?.status == 'placed') {
+                    setActiStep(0);
+                }
+                if (order?.status == 'paid') {
+                    setActiStep(1);
+                }
+                if (order?.status == 'confirm') {
+                    setActiStep(2);
+                }
+                if (order?.status == 'delivering') {
+                    setActiStep(3);
+                }
+                if (order?.status == 'delivered') {
+                    setActiStep(4);
+                }
+                if (order?.status == 'completed') {
+                    setActiStep(5);
+                }
+                if (order?.status == 'cancelled') {
+                    setActiStep(Number(arrayStatusHistory.length) - 1);
+                }
             } else {
                 setActiStep(0);
             }
@@ -206,22 +196,26 @@ export default function CustomizedSteppersPayOnline({ order }) {
                                                     <ColorlibStepIcon {...props} iconNumber={item.iconNumber} />
                                                 )}
                                             >
-                                                <div>
-                                                    {item.content}
-                                                    <div className="text-sm font-semibold text-red-500">
-                                                        {moment(item.createdAt).hours()}
-                                                        {':'}
-                                                        {moment(item.createdAt).minutes() < 10
-                                                            ? `0${moment(item.createdAt).minutes()}`
-                                                            : moment(item.createdAt).minutes()}{' '}
-                                                        {moment(item.createdAt).format('DD/MM/YYYY')}{' '}
-                                                    </div>
-                                                    {item.content == 'Đơn hàng đã bị hủy' && (
-                                                        <div className="text-sm font-semibold text-red-600">
-                                                            <b>{item.description}</b>
+                                                {index <= actiStep ? (
+                                                    <div>
+                                                        {item.content}
+                                                        <div className="text-sm font-semibold text-red-500">
+                                                            {moment(item.createdAt).hours()}
+                                                            {':'}
+                                                            {moment(item.createdAt).minutes() < 10
+                                                                ? `0${moment(item.createdAt).minutes()}`
+                                                                : moment(item.createdAt).minutes()}{' '}
+                                                            {moment(item.createdAt).format('DD/MM/YYYY')}{' '}
                                                         </div>
-                                                    )}
-                                                </div>
+                                                        {item.content == 'Đơn hàng đã bị hủy' && (
+                                                            <div className="text-sm font-semibold text-red-600">
+                                                                <b>{item.description}</b>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                ) : (
+                                                    item.label
+                                                )}
                                             </StepLabel>
                                         </div>
                                     </Step>

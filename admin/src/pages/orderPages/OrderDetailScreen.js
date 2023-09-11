@@ -43,7 +43,6 @@ const OrderDetailScreen = () => {
                             <option value={'delivery'}>Giao hàng</option>
                             <option value={'delivered'}>Đã giao</option>
                             <option value={'received'}>Đã nhận và thanh toán</option>
-                            {/* user */}
                             <option value={'cancel'}>Hủy đơn hàng</option>
                         </>
                     </select>

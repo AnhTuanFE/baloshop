@@ -17,29 +17,57 @@ const handleChangePayMethod = (method) => {
         return method;
     }
 };
-const handleChangeStateOrder = (status) => {
-    if (status == 'placed') {
-        return <span className="badge alert-danger">Chờ xác nhận</span>;
-    }
-    if (status == 'cancelled') {
-        return <span className="badge bg-dark">Đơn này đã bị hủy</span>;
-    }
-    if (status == 'confirm') {
-        return <span className="badge alert-warning">Đã xác nhận</span>;
-    }
-    if (status == 'delivering') {
-        return <span className="badge alert-warning">Đang giao</span>;
-    }
-    if (status == 'paid') {
-        return <span className="badge alert-success">Đã thanh toán</span>;
-    }
-    if (status == 'delivered') {
-        return <span className="badge alert-success">Đã giao</span>;
-    }
-    if (status == 'completed') {
-        return <span className="badge alert-success">Hoàn tất</span>;
+const handleChangeStateOrder = (order) => {
+    const { status } = order;
+
+    if (order.paymentMethod == 'pay-with-cash') {
+        if (status == 'placed') {
+            return <span className="badge alert-danger">Chờ xác nhận</span>;
+        }
+        if (status == 'cancelled') {
+            return <span className="badge bg-dark">Đơn này đã bị hủy</span>;
+        }
+        if (status == 'confirm') {
+            return <span className="badge alert-warning">Đã xác nhận</span>;
+        }
+        if (status == 'delivering') {
+            return <span className="badge alert-warning">Đang giao</span>;
+        }
+        if (status == 'paid') {
+            return <span className="badge alert-success">Đã thanh toán</span>;
+        }
+        if (status == 'delivered') {
+            return <span className="badge alert-success">Đã giao</span>;
+        }
+        if (status == 'completed') {
+            return <span className="badge alert-success">Hoàn tất</span>;
+        } else {
+            return <span className="badge alert-warning">{status}</span>;
+        }
     } else {
-        return <span className="badge alert-warning">{status}</span>;
+        if (status == 'placed') {
+            return <span className="badge alert-danger">Chờ xác nhận</span>;
+        }
+        if (status == 'cancelled') {
+            return <span className="badge bg-dark">Đơn này đã bị hủy</span>;
+        }
+        if (status == 'confirm') {
+            return <span className="badge alert-warning">Đã xác nhận</span>;
+        }
+        if (status == 'delivering') {
+            return <span className="badge alert-warning">Đang giao</span>;
+        }
+        if (status == 'paid') {
+            return <span className="badge alert-danger">Chờ xác nhận</span>;
+        }
+        if (status == 'delivered') {
+            return <span className="badge alert-success">Đã giao</span>;
+        }
+        if (status == 'completed') {
+            return <span className="badge alert-success">Hoàn tất</span>;
+        } else {
+            return <span className="badge alert-warning">{status}</span>;
+        }
     }
 };
 export { handleChangePayMethod, handleChangeStateOrder };

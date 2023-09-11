@@ -4,6 +4,11 @@ import { useEffect, useState } from 'react';
 import moment from 'moment';
 import ConfirmModal from '../Modal/ConfirmModal';
 import { updateStatusOrderAdminAction } from '~/Redux/Actions/OrderActions';
+import { handleChangeStateOrder } from '~/useHooks/HandleChangeMethod';
+import {
+    HandleChangeButtonSetStatusOrder,
+    HandleChangeButtonCancelOrder,
+} from '~/useHooks/HandleChangeButtonSetStatusOrder';
 
 const OrderDetailProducts = (props) => {
     const { order, loading } = props;
@@ -135,30 +140,7 @@ const OrderDetailProducts = (props) => {
                                             Trạng thái:
                                         </dt>
                                         <dd>
-                                            <>
-                                                {order.order?.status == 'placed' && (
-                                                    <span className="badge alert-danger">Chờ xác nhận</span>
-                                                )}
-                                                {order.order?.status == 'confirm' && (
-                                                    <span className="badge alert-danger">Đã xác nhận</span>
-                                                )}
-                                                {order.order?.status == 'delivering' && (
-                                                    <span className="badge alert-warning">Đang giao</span>
-                                                )}
-                                                {order.order?.status == 'paid' && (
-                                                    <span className="badge alert-success">Đã thanh toán</span>
-                                                )}
-                                                {order.order?.status == 'delivered' && (
-                                                    <span className="badge alert-success">Đã giao</span>
-                                                )}
-                                                {order.order?.status == 'completed' && (
-                                                    <span className="badge alert-success">Đã hoàn thành</span>
-                                                )}
-                                                {order.order?.status == 'cancelled' && (
-                                                    <span className="badge bg-dark">Đơn hàng bị hủy</span>
-                                                )}
-                                                {/* <span className="badge alert-success">{order.order?.status}</span> */}
-                                            </>
+                                            <>{handleChangeStateOrder(order?.order)}</>
                                         </dd>
                                     </dl>
                                 </article>
@@ -168,94 +150,8 @@ const OrderDetailProducts = (props) => {
                 </tbody>
             </table>
             <div className="">
-                {order.order?.status == 'placed' && (
-                    <button
-                        value={'confirm'}
-                        onClick={(e) => {
-                            handleSetStatusAndShowModal(e.target.value);
-                        }}
-                        className="btn btn-success w-full"
-                    >
-                        Xác nhận đơn hàng
-                    </button>
-                )}
-                {order.order?.status == 'confirm' && (
-                    <button
-                        value={'delivery'}
-                        onClick={(e) => {
-                            handleSetStatusAndShowModal(e.target.value);
-                        }}
-                        className="btn btn-success w-full"
-                    >
-                        Xác nhận giao hàng
-                    </button>
-                )}
-                {order.order?.status == 'delivering' && (
-                    <button
-                        value={'delivered'}
-                        onClick={(e) => {
-                            handleSetStatusAndShowModal(e.target.value);
-                        }}
-                        style={{
-                            color: '#ffff',
-                        }}
-                        className="btn bg-warning w-full"
-                    >
-                        Xác nhận đã giao và thanh toán
-                    </button>
-                )}
-
-                {order.order?.status == 'delivered' && (
-                    <button
-                        style={{
-                            cursor: 'default',
-                        }}
-                        // value={'received'}
-                        // onClick={(e) => {
-                        //     handleSetStatusAndShowModal(e.target.value);
-                        // }}
-                        className="btn btn-success  w-full opacity-75 "
-                    >
-                        Đơn hàng đã giao
-                    </button>
-                )}
-                {order.order?.status == 'completed' && (
-                    <button
-                        style={{
-                            cursor: 'default',
-                        }}
-                        className="btn btn-success  w-full opacity-75 "
-                    >
-                        Đơn hàng đã hoàn tất
-                    </button>
-                )}
-                {order.order?.status == 'cancelled' && (
-                    <button
-                        style={{
-                            cursor: 'default',
-                        }}
-                        className="btn btn-dark  w-full opacity-75 "
-                    >
-                        Đơn hàng đã bị hủy
-                    </button>
-                )}
-                {(order?.order.status == 'placed' ||
-                    order?.order.status == 'confirm' ||
-                    order?.order.status == 'delivering' ||
-                    order?.order.status == 'paid') && (
-                    <div className="d-flex justify-content-center align-items-center">
-                        <button
-                            value={'cancel'}
-                            onClick={(e) => {
-                                handleSetStatusAndShowModal(e.target.value);
-                            }}
-                            className="btn btn-dark mt-2  w-full p-2 "
-                            style={{ marginBottom: '15px' }}
-                        >
-                            Hủy đơn hàng này
-                        </button>
-                    </div>
-                )}
+                {HandleChangeButtonSetStatusOrder(order?.order, handleSetStatusAndShowModal)}
+                {HandleChangeButtonCancelOrder(order?.order, handleSetStatusAndShowModal)}
             </div>
         </div>
     );

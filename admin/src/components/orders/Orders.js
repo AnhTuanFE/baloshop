@@ -129,7 +129,7 @@ const Orders = (props) => {
                                             {moment(order?.createdAt).format('DD/MM/YYYY')}{' '}
                                         </span>
                                     </td>
-                                    <td>{handleChangeStateOrder(order?.status)}</td>
+                                    <td>{handleChangeStateOrder(order)}</td>
                                     <td className="d-flex justify-content-end align-item-center">
                                         <Link to={`/order/${order._id}`} className="text-success">
                                             <i className="fas fa-eye"></i>

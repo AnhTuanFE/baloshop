@@ -185,13 +185,13 @@ const paymentNotificationFromMomo = async (req, res) => {
                 res.status(400);
                 throw new Error('Đơn hàng không tồn tại');
             }
+            order.status = 'paid';
+            order.statusHistory[1] = { status: 'paid', description: '', updateBy: req.user._id };
             order.payment.paid = true;
-
             // order.payment.paidAt = new Date();
             // order.payment.message = message;
             order.payment.status = PAYMENT_SUCCESS;
             order.payment.paymentTransaction = { ...paymentTransaction };
-            order.statusHistory.push({ status: 'paid', description: '', updateBy: order.user });
             await order.payment.save();
             await order.save();
 
@@ -212,7 +212,9 @@ const paymentNotificationFromMomo = async (req, res) => {
             await order.payment.save();
 
             order.status = 'canceled';
-            order.statusHistory.push({ status: 'canceled', description: message });
+            order.statusHistory[1] = { status: 'canceled', description: message };
+            order.statusHistory.splice(1, 4);
+
             await order.save();
             res.status(204);
         }
@@ -355,12 +357,13 @@ const paymentUserNotificationPaidFromMomo = async (req, res) => {
                 res.status(400);
                 throw new Error('Đơn hàng không tồn tại');
             }
+            order.status = 'paid';
+            order.statusHistory[1] = { status: 'paid', description: '', updateBy: req.user._id };
             order.payment.paid = true;
             // order.payment.paidAt = new Date();
             // order.payment.message = message;
             order.payment.status = PAYMENT_SUCCESS;
             order.payment.momoPaymentTransaction = { ...paymentTransaction };
-            order.statusHistory.push({ status: 'paid', description: '', updateBy: order.user });
             await order.payment.save();
             await order.save();
 
@@ -379,7 +382,8 @@ const paymentUserNotificationPaidFromMomo = async (req, res) => {
             await order.payment.save();
 
             order.status = 'canceled';
-            order.statusHistory.push({ status: 'canceled', description: message });
+            order.statusHistory[1] = { status: 'canceled', description: message };
+            order.statusHistory.splice(1, 4);
             await order.save();
             res.status(204);
         }
