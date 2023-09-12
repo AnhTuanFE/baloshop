@@ -21,6 +21,7 @@ const handleChangeStateOrder = (order) => {
     const { status } = order;
 
     if (order.paymentMethod == 'pay-with-cash') {
+        //ko có delivering
         if (status == 'placed') {
             return <span className="badge alert-danger">Chờ xác nhận</span>;
         }
@@ -30,14 +31,11 @@ const handleChangeStateOrder = (order) => {
         if (status == 'confirm') {
             return <span className="badge alert-warning">Đã xác nhận</span>;
         }
-        if (status == 'delivering') {
-            return <span className="badge alert-warning">Đang giao</span>;
-        }
         if (status == 'paid') {
-            return <span className="badge alert-success">Đã thanh toán</span>;
+            return <span className="badge alert-success">Đã giao và thanh toán</span>;
         }
         if (status == 'delivered') {
-            return <span className="badge alert-success">Đã giao</span>;
+            return <span className="badge alert-warning">Đang giao</span>;
         }
         if (status == 'completed') {
             return <span className="badge alert-success">Hoàn tất</span>;

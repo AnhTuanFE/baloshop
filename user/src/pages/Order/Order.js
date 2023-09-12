@@ -28,6 +28,7 @@ import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
 import { ordersRemainingSelector } from '~/redux/Selector/ordersSelector';
+import { HandleShowButton } from './handleShowButton/HandleShowButton';
 
 const labels = {
     1: 'Không hài lòng',
@@ -255,37 +256,7 @@ function Order() {
                                             </tr>
                                         </tbody>
                                     </table>
-                                    {order?.order.status == 'delivered' && (
-                                        <div className="">
-                                            <div className="">
-                                                <button
-                                                    value={'received'}
-                                                    className=" btn mb-2 w-full cursor-pointer rounded-lg bg-success px-1 py-2 text-base font-semibold uppercase text-white hover:opacity-[0.9]"
-                                                    onClick={() => window.my_modal_3.showModal()}
-                                                >
-                                                    Hoàn tất đơn hàng
-                                                </button>
-                                                <a
-                                                    className="mt-3 cursor-pointer rounded-lg bg-red-600 py-2 text-center text-white hover:opacity-[0.9]"
-                                                    onClick={() => window.my_modal_4.showModal()}
-                                                >
-                                                    <button className="w-full text-lg font-semibold uppercase">
-                                                        Trả hàng
-                                                    </button>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    )}
-                                    {order?.order.status == 'placed' && (
-                                        <div className="mx-2 pt-2">
-                                            <button
-                                                onClick={() => window.my_modal_1.showModal()}
-                                                className=" w-full cursor-pointer rounded-lg bg-red-600 py-1 text-sm font-semibold uppercase text-white"
-                                            >
-                                                HỦY ĐƠN HÀNG
-                                            </button>
-                                        </div>
-                                    )}
+                                    {HandleShowButton(order?.order)}
                                 </div>
                             </div>
                             {/* ====================================================================================================== */}

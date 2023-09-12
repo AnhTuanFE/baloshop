@@ -318,7 +318,12 @@ export const getLabelOrderGHTKAction = (id_Ghtk) => async (dispatch, getState) =
 
 export const updateStatusOrderUserAction = (data) => async (dispatch, getState) => {
     const { id, status } = data;
+    let description = '';
+
     try {
+        if (status == 'cancel') {
+            description = 'Muốn mua SP khác';
+        }
         dispatch({ type: types.UPDATE_STATUS_ORDER_USER_REQUEST });
 
         const {
@@ -331,7 +336,7 @@ export const updateStatusOrderUserAction = (data) => async (dispatch, getState) 
             },
         };
 
-        const { data } = await axios.put(`/api/orders/${id}/${status}`, {}, config);
+        const { data } = await axios.put(`/api/orders/${id}/${status}`, { description }, config);
         dispatch({ type: types.UPDATE_STATUS_ORDER_USER_SUCCESS, payload: data });
     } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;

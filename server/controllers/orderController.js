@@ -17,7 +17,23 @@ import {
     REFUND,
 } from '../config/paymentMethodConfig.js';
 import { orderQueryParams, validateConstants } from '../utils/searchConstants.js';
-
+/*
+        orderInfo.statusHistory = [
+            { status: 'placed', description: '', updateBy: req.user._id },
+            { status: 'paid', description: '', updateBy: req.user._id },
+            { status: 'confirm', description: '', updateBy: req.user._id },
+            { status: 'delivering', description: '', updateBy: req.user._id },
+            { status: 'delivered', description: '', updateBy: req.user._id },
+            { status: 'completed', description: '', updateBy: req.user._id },
+        ];
+        orderInfo.statusHistory = [
+            { status: 'placed', description: '', updateBy: req.user._id },
+            { status: 'confirm', description: '', updateBy: req.user._id },
+            { status: 'delivered', description: '', updateBy: req.user._id },
+            { status: 'paid', description: '', updateBy: req.user._id },
+            { status: 'completed', description: '', updateBy: req.user._id },
+        ];
+    */
 const handleConfigProducts = (orderItems) => {
     const products = [];
     for (let i = 0; i < orderItems.length; i++) {
@@ -489,6 +505,7 @@ const confirmDelivered = async (req, res) => {
         throw new Error('Đơn hàng không tồn tại!');
     }
     if (order.paymentMethod == 'pay-with-cash') {
+        // chấp nhận delivered
         switch (order.status) {
             case 'placed':
                 res.status(400);
@@ -496,9 +513,6 @@ const confirmDelivered = async (req, res) => {
             case 'confirm':
                 res.status(400);
                 throw new Error('Đơn hàng chưa được tạo đơn giao hàng');
-            // case 'delivered':
-            //     res.status(400);
-            //     throw new Error('Đơn hàng đã được giao thành công');
             case 'paid':
                 res.status(400);
                 throw new Error('Đơn hàng đã được giao thành công');
@@ -513,17 +527,16 @@ const confirmDelivered = async (req, res) => {
         }
     } else {
         switch (order.status) {
+            // chỉ cho phép delivering
             case 'placed':
                 res.status(400);
                 throw new Error('Đơn hàng chưa thanh toán');
             case 'paid':
                 res.status(400);
-                // throw new Error('Đơn hàng chưa được tạo đơn giao hàng');
                 throw new Error('Đơn hàng chưa được xác nhận');
             case 'confirm':
                 res.status(400);
                 throw new Error('Đơn hàng chưa được tạo đơn giao hàng');
-            // chỉ cho phép delivering
             case 'delivered':
                 res.status(400);
                 throw new Error('Đơn hàng đã được giao thành công');
@@ -545,16 +558,24 @@ const confirmDelivered = async (req, res) => {
     ) {
         order.status = 'delivered';
         order.statusHistory[4] = { status: 'delivered', description: description, updateBy: req.user._id };
+        order.payment.paidAt = new Date();
+        order.payment.paid = true;
+        await order.payment.save();
+        const updateOrder = await order.save();
+        await updateOrder.populate('payment');
+        res.status(200).json({ message: 'Xác nhận giao hàng thành công', updateOrder });
     }
     if (order.paymentMethod == PAY_WITH_CASH) {
+        console.log('đã chạy vào pay with cash');
         order.status = 'paid';
         order.statusHistory[3] = { status: 'paid', description: description, updateBy: req.user._id };
-        order.payment.paid = true;
         order.payment.paidAt = new Date();
+        order.payment.paid = true;
+        await order.payment.save();
+        const updateOrder = await order.save();
+        // await updateOrder.populate('payment');
+        res.status(200).json({ message: 'Xác nhận giao hàng thành công', updateOrder });
     }
-    const updateOrder = await order.save();
-    await updateOrder.populate('payment');
-    res.status(200).json({ message: 'Xác nhận giao hàng thành công', updateOrder });
 };
 
 const confirmReceived = async (req, res) => {
@@ -566,7 +587,7 @@ const confirmReceived = async (req, res) => {
         throw new Error('Đơn hàng không tồn tại!');
     }
     if (order.paymentMethod == 'pay-with-cash') {
-        // chỉ cho phép paid
+        // chỉ cho phép paid là đã giao và thanh toán
         switch (order.status) {
             case 'placed':
                 res.status(400);
@@ -587,7 +608,7 @@ const confirmReceived = async (req, res) => {
                 break;
         }
     } else {
-        // chỉ cho phép delivered
+        // chỉ cho phép delivered là đã giao
         switch (order.status) {
             case 'placed':
                 res.status(400);
@@ -611,26 +632,32 @@ const confirmReceived = async (req, res) => {
                 break;
         }
     }
-
-    order.status = 'completed';
-
     if (
         order.paymentMethod == PAY_WITH_MOMO ||
         order.paymentMethod == PAY_WITH_ATM ||
         order.paymentMethod == PAY_WITH_CREDIT_CARD
     ) {
+        order.status = 'completed';
         order.statusHistory[5] = { status: 'completed', description: description, updateBy: req.user._id };
+        order.orderItems = order.orderItems.map((orderItem) => {
+            orderItem.isAbleToReview = true;
+            return orderItem;
+        });
+        const updateOrder = await order.save();
+        await updateOrder.populate('payment');
+        res.status(200).json({ message: 'Xác nhận giao hàng thành công', updateOrder });
     }
     if (order.paymentMethod == PAY_WITH_CASH) {
+        order.status = 'completed';
         order.statusHistory[4] = { status: 'completed', description: description, updateBy: req.user._id };
+        order.orderItems = order.orderItems.map((orderItem) => {
+            orderItem.isAbleToReview = true;
+            return orderItem;
+        });
+        const updateOrder = await order.save();
+        await updateOrder.populate('payment');
+        res.status(200).json({ message: 'Xác nhận giao hàng thành công', updateOrder });
     }
-    order.orderItems = order.orderItems.map((orderItem) => {
-        orderItem.isAbleToReview = true;
-        return orderItem;
-    });
-    const updateOrder = await order.save();
-    await updateOrder.populate('payment');
-    res.status(200).json({ message: 'Xác nhận giao hàng thành công', updateOrder });
 };
 
 const cancelOrder = async (req, res, next) => {
@@ -746,7 +773,7 @@ const cancelOrder = async (req, res, next) => {
                 await updateProduct.save({ session });
             });
             await Promise.all(updateOrderItems);
-            // xử lý hoàn tiền
+            // bắt đầu xử lý hoàn tiền
             if (
                 order.payment.paid &&
                 (order.paymentMethod == PAY_WITH_MOMO ||
@@ -822,24 +849,7 @@ const cancelOrder = async (req, res, next) => {
                         throw new Error(error.response?.message || error.message);
                     });
             }
-            /*
-        orderInfo.statusHistory = [
-            { status: 'placed', description: '', updateBy: req.user._id },
-            { status: 'paid', description: '', updateBy: req.user._id },
-            { status: 'confirm', description: '', updateBy: req.user._id },
-            { status: 'delivering', description: '', updateBy: req.user._id },
-            { status: 'delivered', description: '', updateBy: req.user._id },
-            { status: 'completed', description: '', updateBy: req.user._id },
-        ];
-        orderInfo.statusHistory = [
-            { status: 'placed', description: '', updateBy: req.user._id },
-            { status: 'confirm', description: '', updateBy: req.user._id },
-            { status: 'delivered', description: '', updateBy: req.user._id },
-            { status: 'paid', description: '', updateBy: req.user._id },
-            { status: 'completed', description: '', updateBy: req.user._id },
-        ];
-    */
-            order.status = 'cancelled';
+            // kết thúc xử lý hoàn tiền
 
             if (
                 order.paymentMethod == PAY_WITH_MOMO ||
@@ -847,92 +857,52 @@ const cancelOrder = async (req, res, next) => {
                 order.paymentMethod == PAY_WITH_CREDIT_CARD
             ) {
                 if (order.status == 'placed') {
-                    order.statusHistory[1] = { status: 'cancelled', description: description, updateBy: req.user._id };
+                    order.status = 'cancelled';
                     order.statusHistory.splice(1, 4);
-                    const cancelledOrder = await order.save();
-                    console.log(cancelOrder);
-                    if (!cancelledOrder) {
-                        await session.abortTransaction();
-                        res.status(502);
-                        throw new Error('Gặp lỗi khi hủy đơn hàng');
-                    }
-                    res.status(200).json({ message: 'Hủy đơn hàng thành công' });
+                    order.statusHistory[1] = { status: 'cancelled', description: description, updateBy: req.user._id };
                 }
                 if (order.status == 'paid') {
-                    order.statusHistory[2] = { status: 'cancelled', description: description, updateBy: req.user._id };
+                    order.status = 'cancelled';
                     order.statusHistory.splice(2, 3);
-                    const cancelledOrder = await order.save();
-                    console.log(cancelOrder);
-                    if (!cancelledOrder) {
-                        await session.abortTransaction();
-                        res.status(502);
-                        throw new Error('Gặp lỗi khi hủy đơn hàng');
-                    }
-                    res.status(200).json({ message: 'Hủy đơn hàng thành công' });
+                    order.statusHistory[2] = { status: 'cancelled', description: description, updateBy: req.user._id };
                 }
                 if (order.status == 'confirm') {
-                    order.statusHistory[3] = { status: 'cancelled', description: description, updateBy: req.user._id };
+                    order.status = 'cancelled';
                     order.statusHistory.splice(3, 2);
-                    const cancelledOrder = await order.save();
-                    console.log(cancelOrder);
-                    if (!cancelledOrder) {
-                        await session.abortTransaction();
-                        res.status(502);
-                        throw new Error('Gặp lỗi khi hủy đơn hàng');
-                    }
-                    res.status(200).json({ message: 'Hủy đơn hàng thành công' });
+                    order.statusHistory[3] = { status: 'cancelled', description: description, updateBy: req.user._id };
                 }
                 if (order.status == 'delivering') {
-                    order.statusHistory[4] = { status: 'cancelled', description: description, updateBy: req.user._id };
+                    order.status = 'cancelled';
                     order.statusHistory.splice(4, 1);
-                    const cancelledOrder = await order.save();
-                    console.log(cancelOrder);
-                    if (!cancelledOrder) {
-                        await session.abortTransaction();
-                        res.status(502);
-                        throw new Error('Gặp lỗi khi hủy đơn hàng');
-                    }
-                    res.status(200).json({ message: 'Hủy đơn hàng thành công' });
+                    order.statusHistory[4] = { status: 'cancelled', description: description, updateBy: req.user._id };
                 }
             }
             if (order.paymentMethod == PAY_WITH_CASH) {
                 if (order.status == 'placed') {
-                    order.statusHistory[1] = { status: 'cancelled', description: description, updateBy: req.user._id };
+                    console.log('đã hủy đơn hàng ở trạng thái placed');
+                    order.status = 'cancelled';
                     order.statusHistory.splice(1, 3);
-                    const cancelledOrder = await order.save();
-                    console.log(cancelOrder);
-                    if (!cancelledOrder) {
-                        await session.abortTransaction();
-                        res.status(502);
-                        throw new Error('Gặp lỗi khi hủy đơn hàng');
-                    }
-                    res.status(200).json({ message: 'Hủy đơn hàng thành công' });
+                    order.statusHistory[1] = { status: 'cancelled', description: description, updateBy: req.user._id };
                 }
                 if (order.status == 'confirm') {
-                    order.statusHistory[2] = { status: 'cancelled', description: description, updateBy: req.user._id };
+                    order.status = 'cancelled';
                     order.statusHistory.splice(2, 2);
-                    const cancelledOrder = await order.save();
-                    console.log(cancelOrder);
-                    if (!cancelledOrder) {
-                        await session.abortTransaction();
-                        res.status(502);
-                        throw new Error('Gặp lỗi khi hủy đơn hàng');
-                    }
-                    res.status(200).json({ message: 'Hủy đơn hàng thành công' });
+                    order.statusHistory[2] = { status: 'cancelled', description: description, updateBy: req.user._id };
                 }
                 if (order.status == 'delivered') {
-                    order.statusHistory[3] = { status: 'cancelled', description: description, updateBy: req.user._id };
+                    order.status = 'cancelled';
                     order.statusHistory.splice(3, 1);
-                    const cancelledOrder = await order.save();
-                    console.log(cancelOrder);
-                    if (!cancelledOrder) {
-                        await session.abortTransaction();
-                        res.status(502);
-                        throw new Error('Gặp lỗi khi hủy đơn hàng');
-                    }
-                    res.status(200).json({ message: 'Hủy đơn hàng thành công' });
+                    order.statusHistory[3] = { status: 'cancelled', description: description, updateBy: req.user._id };
                 }
             }
+            const cancelledOrder = await order.save();
+            console.log('đã hủy đơn hàng', cancelledOrder);
+            if (!cancelledOrder) {
+                await session.abortTransaction();
+                res.status(502);
+                throw new Error('Gặp lỗi khi hủy đơn hàng');
+            }
+            res.status(200).json({ message: 'Hủy đơn hàng thành công' });
         }, transactionOptions);
     } catch (error) {
         next(error);

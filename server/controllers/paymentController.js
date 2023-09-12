@@ -212,8 +212,8 @@ const paymentNotificationFromMomo = async (req, res) => {
             await order.payment.save();
 
             order.status = 'canceled';
-            order.statusHistory[1] = { status: 'canceled', description: message };
             order.statusHistory.splice(1, 4);
+            order.statusHistory[1] = { status: 'canceled', description: message };
 
             await order.save();
             res.status(204);
@@ -382,8 +382,8 @@ const paymentUserNotificationPaidFromMomo = async (req, res) => {
             await order.payment.save();
 
             order.status = 'canceled';
-            order.statusHistory[1] = { status: 'canceled', description: message };
             order.statusHistory.splice(1, 4);
+            order.statusHistory[1] = { status: 'canceled', description: message };
             await order.save();
             res.status(204);
         }
