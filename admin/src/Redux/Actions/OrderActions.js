@@ -111,7 +111,11 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
 //
 export const updateStatusOrderAdminAction = (data) => async (dispatch, getState) => {
     const { id, status } = data;
+    let description = '';
     try {
+        if (status == 'cancel') {
+            description = 'Lỗi thông tin đơn hàng';
+        }
         dispatch({ type: UPDATE_STATUS_ORDER_ADMIN_REQUEST });
 
         const {
@@ -124,7 +128,7 @@ export const updateStatusOrderAdminAction = (data) => async (dispatch, getState)
             },
         };
 
-        const { data } = await axios.put(`/api/orders/${id}/${status}`, {}, config);
+        const { data } = await axios.put(`/api/orders/${id}/${status}`, { description }, config);
         dispatch({ type: UPDATE_STATUS_ORDER_ADMIN_SUCCESS, payload: data });
     } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;

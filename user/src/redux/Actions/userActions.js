@@ -32,6 +32,7 @@ export const logout = () => (dispatch) => {
     dispatch({ type: types.USER_DETAILS_RESET });
     dispatch({ type: ORDER_LIST_MY_RESET });
     dispatch({ type: CART_LIST_MY_RESET });
+    dispatch({ type: types.USER_REGISTER_RESET });
 };
 
 // REGISTER
@@ -48,7 +49,6 @@ export const register = (name, email, phone, password) => async (dispatch) => {
         const { data } = await axios.post(`/api/users`, { name, email, phone, password }, config);
         dispatch({ type: types.USER_REGISTER_SUCCESS, payload: data });
         dispatch({ type: types.USER_LOGIN_SUCCESS, payload: data });
-
         localStorage.setItem('userInfo', JSON.stringify(data));
     } catch (error) {
         dispatch({

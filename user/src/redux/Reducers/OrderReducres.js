@@ -15,22 +15,6 @@ export const orderCreateReducer = (state = { loading: false, order: {} }, action
     }
 };
 
-// CREATE ORDER REVIEW
-export const orderCreateReviewReducer = (state = {}, action) => {
-    switch (action.type) {
-        case types.ORDER_CREATE_REVIEW_REQUEST:
-            return { loading: true };
-        case types.ORDER_CREATE_REVIEW_SUCCESS:
-            return { loading: false, success: true, orderReview: action.payload };
-        case types.ORDER_CREATE_REVIEW_FAIL:
-            return { loading: false, error: action.payload };
-        case types.ORDER_CREATE_REVIEW_RESET:
-            return {};
-        default:
-            return state;
-    }
-};
-
 // ORDER DETAILS
 export const orderDetailsReducer = (state = { loading: true, orderItems: [], shippingAddress: {} }, action) => {
     switch (action.type) {

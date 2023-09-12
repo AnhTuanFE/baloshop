@@ -9,6 +9,7 @@ import {
     PRODUCT_EDIT_FAIL,
     PRODUCT_EDIT_REQUEST,
     PRODUCT_EDIT_SUCCESS,
+    PRODUCT_EDIT_RESET,
     PRODUCT_LIST_FAIL,
     PRODUCT_LIST_REQUEST,
     PRODUCT_LIST_SUCCESS,
@@ -144,6 +145,8 @@ export const productEditReducer = (state = { product: { reviews: [] } }, action)
             return { loading: false, product: action.payload };
         case PRODUCT_EDIT_FAIL:
             return { loading: false, error: action.payload };
+        case PRODUCT_EDIT_RESET:
+            return { state };
         default:
             return state;
     }

@@ -57,6 +57,7 @@ export default function SliderScreen() {
                                         src={`${value.url}`}
                                         style={{
                                             height: '100px',
+                                            width: '200px',
                                         }}
                                     />
                                 </div>

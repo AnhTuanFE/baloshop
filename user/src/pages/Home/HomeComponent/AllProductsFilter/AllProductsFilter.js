@@ -1,4 +1,3 @@
-import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,43 +18,42 @@ const AllProductsFilter = (props) => {
 
     const { productList } = useSelector(productsRemainingSelector);
     const { loading, error, products, page, pages } = productList;
-    console.log('productList = ', productList);
 
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
 
     useEffect(() => {
         dispatch(listCart());
-        dispatch(listProduct(category, keyword, pageNumber, rating, minPrice, maxPrice, sortBy));
-    }, [dispatch, category, keyword, pageNumber, rating, minPrice, maxPrice, sortBy]);
+        dispatch(listProduct({ category, keyword, minPrice, maxPrice, pageNumber, rating, sortBy }));
+    }, [dispatch, category, keyword, pageNumber, minPrice, maxPrice, rating, sortBy]);
 
     const handlerSort = (value) => {
         console.log('value = ', value);
-        if (rating === undefined && keyword === undefined && category === undefined) {
+        if (rating === '' && keyword === '' && category === '') {
             navigate(`/sortBy/${value}/page/${'1'}`);
         }
-        if (rating !== undefined && keyword === undefined && category === undefined) {
+        if (rating !== '' && keyword === '' && category === '') {
             navigate(`/sortBy/${value}/rating/${rating}/page/${'1'}`);
         }
-        if (keyword !== undefined && category === undefined) {
+        if (keyword !== '' && category === '') {
             navigate(`/search/${keyword}/sortBy/${value}/rating/${rating}/page/${'1'}`);
         }
-        if (keyword === undefined && category !== undefined) {
+        if (keyword === '' && category !== '') {
             navigate(`/category/${category}/sortBy/${value}/rating/${rating}/page/${'1'}`);
         }
     };
 
     const handlerRating = (value) => {
-        if (rating === undefined && keyword === undefined && category === undefined) {
+        if (rating === '' && keyword === '' && category === '') {
             navigate(`/rating/${value}/page/${'1'}`);
         }
-        if (sortBy !== undefined && keyword === undefined && category === undefined) {
+        if (sortBy !== '' && keyword === '' && category === '') {
             navigate(`/sortBy/${sortBy}/rating/${value}/page/${'1'}`);
         }
-        if (keyword !== undefined && category === undefined) {
+        if (keyword !== '' && category === '') {
             navigate(`/search/${keyword}/sortBy/${sortBy}/rating/${value}/page/${'1'}`);
         }
-        if (keyword === undefined && category !== undefined) {
+        if (keyword === '' && category !== '') {
             navigate(`/category/${category}/sortBy/${sortBy}/rating/${value}/page/${'1'}`);
         }
     };
@@ -157,7 +155,7 @@ const AllProductsFilter = (props) => {
                                                             <Link to={`/product/${product?._id}`}>
                                                                 <div className="hover:-translate-y-4 hover:transform hover:transition hover:duration-200 hover:ease-linear">
                                                                     <img
-                                                                        src={`${product?.image[0].urlImage}`}
+                                                                        src={`${product?.image}`}
                                                                         alt={product?.name}
                                                                         className="filter-[brightness(1)] m-auto max-md:h-[150px] md:h-[200px]"
                                                                     />

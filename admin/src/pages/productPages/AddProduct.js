@@ -12,6 +12,7 @@ import {
     PRODUCT_CREATE_RESET,
     PRODUCT_OPTIONCOLOR_RESET,
     PRODUCT_CREATE_IMAGE_RESET,
+    PRODUCT_EDIT_RESET,
 } from '~/Redux/Constants/ProductConstants';
 import { createProduct, createOptionColor, editProduct } from '~/Redux/Actions/ProductActions';
 
@@ -32,8 +33,6 @@ const AddProduct = () => {
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     const [category, setCategory] = useState('');
-
-    // const [image, setImage] = useState('');
     const [image, setImage] = useState();
     const [imgUrl, setImgUrl] = useState('');
 
@@ -46,8 +45,8 @@ const AddProduct = () => {
     }, [image]);
     // const [arrImage, setArrImage] = useState([]);
     const [countInStock, setCountInStock] = useState('');
-    const [description, setDescription] = useState('');
     const [color, setColor] = useState('');
+    const [description, setDescription] = useState('');
     const [productId, setProducId] = useState('');
     const [validate, setValidate] = useState({});
 
@@ -58,6 +57,7 @@ const AddProduct = () => {
 
     const productCreate = useSelector((state) => state.productCreate);
     const { loading, error, product } = productCreate;
+    console.log('productCreate = ', productCreate);
 
     const productColor = useSelector((state) => state.optionColorCreate);
     const { loading: loadingOption, error: errorOption, success: successOption } = productColor;
@@ -71,17 +71,24 @@ const AddProduct = () => {
     useEffect(() => {
         if (product) {
             toast.success('Thêm sản phẩm thành công', ToastObjects);
-            dispatch({ type: PRODUCT_CREATE_RESET });
             setProducId(product._id);
+            dispatch({ type: PRODUCT_CREATE_RESET });
         }
-    }, [product, dispatch]);
+    }, [product]);
+    useEffect(() => {
+        dispatch({ type: PRODUCT_EDIT_RESET });
+    }, []);
 
     useEffect(() => {
-        dispatch(editProduct(productId));
+        if (productId) {
+            dispatch(editProduct(productId));
+        }
     }, [productId, successOption]);
 
     useEffect(() => {
-        dispatch(ListCategory());
+        if (categories.length == 0) {
+            dispatch(ListCategory());
+        }
     }, []);
 
     const isEmptyCheckEdit = () => {
@@ -126,9 +133,8 @@ const AddProduct = () => {
             formData.append('price', price);
             formData.append('description', description);
             formData.append('category', category);
-            formData.append('countInStock', countInStock);
+            // formData.append('countInStock', countInStock);
             formData.append('image', image);
-
             dispatch(createProduct(formData));
             // dispatch(createProduct(name, price, description, category, image, countInStock));
             setDisabledProduct(false);
@@ -138,6 +144,8 @@ const AddProduct = () => {
     const submitOptionHandler = (e) => {
         e.preventDefault();
         dispatch(createOptionColor(productId, { color, countInStock }));
+        setCountInStock('');
+        setColor('');
     };
 
     return (
@@ -251,7 +259,7 @@ const AddProduct = () => {
                                                                     className="img_css col-10 col-sm-10 col-md-10 col-lg-10"
                                                                     src={imgUrl}
                                                                     alt="product img"
-                                                                ></img>
+                                                                />
                                                             </div>
                                                         </div>
                                                     )}
@@ -259,7 +267,6 @@ const AddProduct = () => {
                                                 <div style={{ display: 'flex' }}>
                                                     <input
                                                         type="file"
-                                                        // onChange={(e) => setImage(e.target.value)}
                                                         onChange={(e) => {
                                                             setImage(e.target.files[0]);
                                                         }}

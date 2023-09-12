@@ -7,17 +7,12 @@ import 'primeicons/primeicons.css';
 import { Button, notification } from 'antd';
 import {
     getOrderDetails,
-    createOrderReview,
     updateStatusOrderUserAction,
     userRequestConfirmPaidMOMOAction,
 } from '~/redux/Actions/OrderActions';
 import { createProductReview } from '~/redux/Actions/ProductActions';
 import { PRODUCT_CREATE_REVIEW_RESET } from '~/redux/Constants/ProductConstants';
-import {
-    ORDER_CREATE_REVIEW_RESET,
-    ORDER_PAY_RESET,
-    UPDATE_STATUS_ORDER_USER_RESET,
-} from '~/redux/Constants/OrderConstants';
+import { ORDER_PAY_RESET, UPDATE_STATUS_ORDER_USER_RESET } from '~/redux/Constants/OrderConstants';
 import { listCart } from '~/redux/Actions/cartActions';
 import Loading from '~/components/LoadingError/Loading';
 import Message from '~/components/LoadingError/Error';
@@ -100,20 +95,11 @@ function Order() {
         dispatch(updateStatusOrderUserAction({ id: order?.order?._id, status: 'cancel' }));
     };
 
-    const orderCreateReviewsRetult = useSelector((state) => state.orderCreateReviewsRetult);
-    const { success: successReviewOrder, orderReview } = orderCreateReviewsRetult;
-
     useEffect(() => {
         if (orderId) {
             dispatch(listCart());
         }
-    }, [orderId, successReviewOrder]);
-    useEffect(() => {
-        if (successReviewOrder) {
-            dispatch({ type: ORDER_CREATE_REVIEW_RESET });
-            return;
-        }
-    }, [successReviewOrder]);
+    }, [orderId]);
 
     useEffect(() => {
         dispatch({ type: ORDER_PAY_RESET });
@@ -188,7 +174,7 @@ function Order() {
                                                         <img src={item.image} alt={item.name} />
                                                     </div>
                                                     <div className="m-auto text-center">
-                                                        <Link to={`/products/${item.product}`}>
+                                                        <Link to={`/product/${item.product}`}>
                                                             <h6 className="text-base font-semibold">{item.name}</h6>
                                                         </Link>
                                                     </div>
@@ -383,27 +369,11 @@ function Order() {
                                                 <button
                                                     className="col-12 bg-orange rounded border-0 bg-[var(--main-color)] px-3 py-2 text-white"
                                                     type="button"
-                                                    data-bs-dismiss={successReviewOrder === true ? 'modal' : ''}
+                                                    // data-bs-dismiss={ true ? 'modal' : ''}
+                                                    data-bs-dismiss={''}
                                                     onClick={() => {
                                                         dispatch(
-                                                            createProductReview(
-                                                                productId,
-                                                                rating,
-                                                                product.color,
-                                                                comment,
-                                                                order.name,
-                                                            ),
-                                                            setRating(''),
-                                                            setComment(''),
-                                                        );
-                                                        dispatch(
-                                                            createOrderReview(
-                                                                orderId,
-                                                                orderItemId,
-                                                                rating,
-                                                                comment,
-                                                                order.name,
-                                                            ),
+                                                            createProductReview(productId, rating, comment),
                                                             setRating(''),
                                                             setComment(''),
                                                         );

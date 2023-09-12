@@ -46,27 +46,27 @@ export const getAllComments = (productId) => async (dispatch) => {
 };
 
 // PRODUCT LIST
-export const listProduct =
-    (category = '', keyword = '', pageNumber = 1, rating = '', minPrice = '', maxPrice = '', sortBy = '1') =>
-    async (dispatch) => {
-        // const { category, keyword, pageNumber, rating, minPrice, maxPrice, sortBy } = data;
-        try {
-            dispatch({ type: types.PRODUCT_LIST_REQUEST });
-            const { data } = await axios.get(
-                `/api/products?&category=${category}&keyword=${keyword}&pageNumber=${pageNumber}&rating=${rating}
-        &minPrice=${minPrice}&maxPrice=${maxPrice}&sortBy=${sortBy}`,
-            );
-            dispatch({ type: types.PRODUCT_LIST_SUCCESS, payload: data });
-        } catch (error) {
-            dispatch({
-                type: types.PRODUCT_LIST_FAIL,
-                payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-            });
-        }
-    };
+export const listProduct = (dataReceived) => async (dispatch) => {
+    // category = '', keyword = '', pageNumber = '', rating = '', minPrice = '', maxPrice = '', sortBy = '1'
+    const { category, keyword, pageNumber, rating, sortBy, minPrice, maxPrice } = dataReceived;
+    const limit = 12;
+    try {
+        dispatch({ type: types.PRODUCT_LIST_REQUEST });
+        const { data } = await axios.get(
+            `/api/products?&category=${category}&keyword=${keyword}&page=${pageNumber}&rating=${rating}
+    &minPrice=${minPrice}&maxPrice=${maxPrice}&sortBy=${sortBy}&limit=${limit}`,
+        );
+        dispatch({ type: types.PRODUCT_LIST_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({
+            type: types.PRODUCT_LIST_FAIL,
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+        });
+    }
+};
 
 // SINGLE PRODUCT
-export const listProductDetails = (id) => async (dispatch) => {
+export const productDetailAction = (id) => async (dispatch) => {
     try {
         dispatch({ type: types.PRODUCT_DETAILS_REQUEST });
         const { data } = await axios.get(`/api/products/${id}`);

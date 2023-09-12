@@ -32,6 +32,7 @@ const getProducts = async (req, res) => {
         ...priceRangeFilter(minPrice, maxPrice),
     };
     const count = await Product.countDocuments({ ...productFilter });
+    let countReal = count - 2;
     if (count == 0) {
         res.json({ products: [], page: 0, pages: 0, total: 0 });
     }
@@ -41,7 +42,7 @@ const getProducts = async (req, res) => {
         .sort(sortBy)
         .populate('category');
 
-    res.status(200).json({ products, page, pages: Math.ceil(count / limit), total: count });
+    res.status(200).json({ products, page, pages: Math.ceil(count / limit), total: countReal });
 };
 
 const getAllProductComment = async (req, res) => {
@@ -49,9 +50,11 @@ const getAllProductComment = async (req, res) => {
     const products = await Product.find({})
         .sort({ _id: -1 })
         .populate('comments.user', 'name image')
-        .populate('comments.commentChilds.user', 'name image');
+        .populate('comments.commentChilds.user', 'name image')
+        .populate('image');
     const filterProduct = products.filter((product) => product.comments != '');
     for (let i = 0; i < filterProduct.length; i++) {
+        // ...filterProduct[i].image
         commentArr.push(...filterProduct[i].comments);
     }
     const commentSort = commentArr.sort(({ createdAt: b }, { createdAt: a }) => (a > b ? 1 : a < b ? -1 : 0));
@@ -75,6 +78,7 @@ const getProductsByAdmin = async (req, res) => {
     }
     if (req.query.category) {
         search.category = req.query.category;
+        // .toString()
     }
     if (rating) {
         search.rating = { $gte: rating };
@@ -86,6 +90,7 @@ const getProductsByAdmin = async (req, res) => {
         ...priceRangeFilter(minPrice, maxPrice),
     };
     const count = await Product.countDocuments({ ...productFilter });
+    let countReal = count - 2;
     if (count == 0) {
         res.json({ products: [], page: 0, pages: 0, total: 0 });
     }
@@ -95,7 +100,7 @@ const getProductsByAdmin = async (req, res) => {
         .sort(sortBy)
         .populate('category');
 
-    res.status(200).json({ products, page, pages: Math.ceil(count / limit), total: count });
+    res.status(200).json({ products, page, pages: Math.ceil(count / limit), total: countReal });
 };
 
 const getProductById = async (req, res) => {
@@ -238,7 +243,7 @@ const addProduct = async (req, res) => {
         res.status(400);
         throw new Error('Product name already exist');
     } else {
-        cloudinary.v2.uploader.upload(imagePath, { folder: 'baloshopImage' }, function (err, result) {
+        cloudinary.v2.uploader.upload(imagePath, { folder: 'baloshopImage' }, async function (err, result) {
             if (err) {
                 req.json(err.message);
             }
@@ -250,12 +255,11 @@ const addProduct = async (req, res) => {
                 price,
                 description,
                 category,
-                image: { urlImage: req.body.image, nameCloudinary: req.body.imageId },
-                id_product: id_product,
-                // user: req.user._id,
+                // image: { urlImage: req.body.image, nameCloudinary: req.body.imageId },
+                image: req.body.image,
             });
             if (product) {
-                const createdproduct = Product.create(product);
+                const createdproduct = await Product.create(product);
                 res.status(201).json(createdproduct);
             } else {
                 res.status(400);
@@ -303,13 +307,14 @@ const updateProduct = async (req, res) => {
         throw new Error('Price or Count in stock is not valid, please correct it and try again');
     }
     if (product) {
-        cloudinary.uploader.destroy(nameImage, function (error, result) {
-            try {
-                console.log('result = ', result, 'error = ', error);
-            } catch (err) {
-                console.log('lỗi = '.err);
-            }
-        });
+        // ko xóa sp khi cập nhập
+        // cloudinary.uploader.destroy(nameImage, function (error, result) {
+        //     try {
+        //         console.log('result = ', result, 'error = ', error);
+        //     } catch (err) {
+        //         console.log('lỗi = '.err);
+        //     }
+        // });
         // ===================
         cloudinary.v2.uploader.upload(imagePath, { folder: 'baloshopImage' }, async function (err, result) {
             if (err) {
@@ -327,8 +332,7 @@ const updateProduct = async (req, res) => {
                     category: category,
                     image: [
                         {
-                            urlImage: urlImageCloudinary,
-                            nameCloudinary: nameImageCloudinary,
+                            urlImageCloudinary,
                         },
                     ],
                 },

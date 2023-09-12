@@ -226,7 +226,7 @@ function Cart() {
                                         <div className=" flex flex-col justify-center">
                                             <img
                                                 className=" h-[100px] object-contain"
-                                                src={`${item.product?.image[0]?.urlImage}`}
+                                                src={`${item.product?.image[0]}`}
                                                 alt={item.product?.name}
                                             />
                                         </div>

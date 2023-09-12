@@ -13,9 +13,10 @@ import Pagination from '~/components/Home/pagination';
 const ProductScreen = () => {
     const params = useParams();
 
-    const keyword = params.keyword;
-    const pageNumber = params.pageNumber;
-    const category = params.category;
+    const keyword = params.keyword || '';
+    const pageNumber = params.pageNumber || 1;
+    const category = params.category || '';
+    console.log('category = ', category);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -51,7 +52,7 @@ const ProductScreen = () => {
         }
     };
     useEffect(() => {
-        dispatch(listProducts(category, keyword, pageNumber));
+        dispatch(listProducts({ category: category, keyword: keyword, pageNumber: pageNumber }));
         dispatch(ListCategory());
     }, [dispatch, successDelete, category, keyword, pageNumber]);
 

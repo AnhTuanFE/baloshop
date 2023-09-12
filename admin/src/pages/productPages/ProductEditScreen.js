@@ -113,14 +113,14 @@ const ProductEditScreen = () => {
             dispatch({ type: PRODUCT_UPDATE_RESET });
             toast.success('Đã cập nhật thành công', ToastObjects);
         } else {
-            if (!product.name || product._id !== productId) {
+            if (!product?.name || product?._id !== productId) {
                 dispatch(editProduct(productId));
             } else {
                 setName(product.name);
                 setDescription(product.description);
                 setCountInStock(product.countInStock);
                 setCategory(product.category);
-                setImage(product.image[0]?.urlImage);
+                setImage(product.image[0]);
                 setNameImage(product.image[0]?.nameCloudinary);
                 setPrice(product.price);
             }

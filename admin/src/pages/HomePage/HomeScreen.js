@@ -16,7 +16,6 @@ const HomeScreen = () => {
     // orderList
     const productList = useSelector((state) => state.productList);
     const { total } = productList;
-    console.log('productList = ', productList);
 
     const userList = useSelector((state) => state.userList);
     const { users } = userList;

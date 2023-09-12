@@ -11,7 +11,7 @@ import AskAndAnswer from './DetailProductComponents/AskAndAnswer/AskAndAnswer';
 import EvaluateProduct from './DetailProductComponents/EvaluateProduct/EvaluateProduct';
 
 // redux
-import { listProductDetails, listProduct } from '~/redux/Actions/ProductActions';
+import { productDetailAction, listProduct } from '~/redux/Actions/ProductActions';
 import { CART_CREATE_RESET } from '~/redux/Constants/CartConstants';
 import { addToCart, listCart } from '~/redux/Actions/cartActions';
 
@@ -34,24 +34,14 @@ function DetailProduct() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    // state
     const [qty, setQty] = useState(1);
-    const [category, setCategory] = useState('');
-    const [keyword, setKeyword] = useState('');
-    const [pageNumber, setPageNumber] = useState('');
-    const [minPrice, setMinPrice] = useState('');
-    const [maxPrice, setMaxPrice] = useState('');
-    const [sortProducts, setSortProducts] = useState('3');
-
     const [optionIndex, setOptionIndex] = useState(0);
     const [optionsArrColor, setOptionArrColor] = useState('');
     const [color, setColor] = useState('');
-    // const [rating, setRating] = useState(0);
 
-    // Lấy state từ store redux
     const productDetail = useSelector((state) => state.productDetails);
     const { loading, error, product } = productDetail;
-
+    // re-render lại UI khi bình luận và đánh giá
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
 
@@ -61,8 +51,9 @@ function DetailProduct() {
     const optionColor = product?.optionColor?.sort(({ color: b }, { color: a }) => (a > b ? 1 : a < b ? -1 : 0));
 
     useEffect(() => {
-        dispatch(listProductDetails(productId));
-    }, [dispatch, productId]);
+        dispatch(productDetailAction(productId));
+    }, [productId]);
+    // successCreateReview
 
     useEffect(() => {
         if (optionColor) {
@@ -80,28 +71,15 @@ function DetailProduct() {
     }, [optionIndex, optionColor]);
 
     useEffect(() => {
-        if (product._id !== undefined) {
-            setCategory(product.category);
-            setMinPrice(Math.floor(product.price / 2));
-            setMaxPrice(Math.round(product.price * 2));
-        }
-    }, [product._id]);
-
-    useEffect(() => {
-        if (product !== undefined && maxPrice) {
-            dispatch(listProduct(category, keyword, pageNumber, minPrice, maxPrice, sortProducts)); // rating,
-        }
-    }, [category, maxPrice]);
-
-    useEffect(() => {
         if (successAddCart) {
             openNotification('top', 'Thêm sản phẩm vào giỏ hàng Thành công', 'success');
             dispatch({ type: CART_CREATE_RESET });
+            // cập nhập số lượng sản phẩm trong giỏ hàng
+            dispatch(listCart());
             // navigate(`/cart/${productId}?qty=${qty}?color=${color}`);
         }
         if (errorAddCart) {
             openNotification('top', 'Thêm sản phẩm vào giỏ hàng thất bại', 'error');
-
             dispatch({ type: CART_CREATE_RESET });
         }
     }, [dispatch, successAddCart, errorAddCart]);
@@ -113,10 +91,6 @@ function DetailProduct() {
             dispatch(addToCart({ productId, color, id_product, qty, _id: userInfo._id }));
         } else navigate('/login');
     };
-    useEffect(() => {
-        // cập nhập số lượng sản phẩm trong giỏ hàng
-        dispatch(listCart());
-    }, [successAddCart]);
     const handleRender = () => {
         return (
             <div className="mx-auto my-auto max-w-screen-2xl">
@@ -127,13 +101,13 @@ function DetailProduct() {
                             <div className="row">
                                 <div className="col-md-5">
                                     <div className="flex justify-center bg-white max-md:h-[200px] md:h-[400px]">
-                                        <SliderImageProducts images={product.image} />
+                                        <SliderImageProducts images={product?.image} />
                                     </div>
                                 </div>
                                 <div className="col-md-7">
                                     <div className="">
                                         <div className="w-full text-center">
-                                            <div className="mb-2 text-xl font-semibold">{product.name}</div>
+                                            <div className="mb-2 text-xl font-semibold">{product?.name}</div>
                                         </div>
                                         <div className="product-baner">
                                             <img
@@ -160,8 +134,8 @@ function DetailProduct() {
                                             <div className=" d-flex justify-content-between align-items-center px-6 py-2">
                                                 <h6 className="text-base font-semibold">Đánh giá</h6>
                                                 <Rating
-                                                    value={product.rating}
-                                                    text={`(${product.numReviews}) đánh giá`}
+                                                    value={product?.rating}
+                                                    text={`(${product?.numReviews}) đánh giá`}
                                                 />
                                             </div>
                                             <div className=" d-flex justify-content-between align-items-center px-6 py-2">
@@ -232,8 +206,8 @@ function DetailProduct() {
                         </div>
                     </div>
                     <div className="mx-2">
-                        <EvaluateProduct productId={productId} />
-                        <AskAndAnswer productId={productId} />
+                        <EvaluateProduct product={product} userInfo={userInfo} />
+                        <AskAndAnswer product={product} userInfo={userInfo} />
                         <SimilarProducts category={product?.category} />
                     </div>
                 </div>
@@ -244,7 +218,7 @@ function DetailProduct() {
     let content;
     if (loading) {
         content = (
-            <div className="min-h-[100vh]">
+            <div className="">
                 <LoadingLarge content={'Đang load thông tin'} />
             </div>
         );

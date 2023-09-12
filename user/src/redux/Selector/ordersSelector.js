@@ -11,8 +11,6 @@ export const stateUserRequestConfirmPaidMOMO = (state) => state.stateUserRequest
 
 export const listAllOrder = (state) => state.listAllOrder;
 
-export const orderCreateReviewsRetult = (state) => state.orderCreateReviewsRetult;
-
 export const ordersRemainingSelector = createSelector(
     orderAddress,
     orderCreate,
@@ -20,7 +18,6 @@ export const ordersRemainingSelector = createSelector(
     orderListMy,
     orderPayReducer,
     listAllOrder,
-    orderCreateReviewsRetult,
     order_ghtk_state,
     stateUpdateStatusOrderUser,
     stateUserRequestConfirmPaidMOMO,
@@ -31,7 +28,6 @@ export const ordersRemainingSelector = createSelector(
         orderListMy,
         orderPayReducer,
         listAllOrder,
-        orderCreateReviewsRetult,
         order_ghtk_state,
         stateUpdateStatusOrderUser,
         stateUserRequestConfirmPaidMOMO,
@@ -43,7 +39,6 @@ export const ordersRemainingSelector = createSelector(
             orderListMy,
             orderPayReducer,
             listAllOrder,
-            orderCreateReviewsRetult,
             order_ghtk_state,
             stateUpdateStatusOrderUser,
             stateUserRequestConfirmPaidMOMO,

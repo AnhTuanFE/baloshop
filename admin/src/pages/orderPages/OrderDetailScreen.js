@@ -35,7 +35,7 @@ const OrderDetailScreen = () => {
                         Quay lại
                     </Link>
                 </div>
-                <div className="col-lg-3 col-md-3">
+                {/* <div className="col-lg-3 col-md-3">
                     <select className="form-select">
                         <>
                             <option value={''}>Trạng thái...</option>
@@ -46,7 +46,7 @@ const OrderDetailScreen = () => {
                             <option value={'cancel'}>Hủy đơn hàng</option>
                         </>
                     </select>
-                </div>
+                </div> */}
             </div>
 
             {loading ? (

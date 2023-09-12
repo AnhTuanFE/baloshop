@@ -36,6 +36,7 @@ function PlaceOrder() {
     };
     const cart = useSelector((state) => state.cart);
     const { cartItems } = cart;
+    console.log('cartItems = ', cartItems);
     const { userDetails, userLogin } = useSelector(usersRemainingSelector);
     const { user } = userDetails;
     const { userInfo } = userLogin;
@@ -57,7 +58,7 @@ function PlaceOrder() {
                 name: pro.product.name,
                 color: pro.color,
                 quantity: pro.qty,
-                image: pro.product.image[0].urlImage,
+                image: pro.product.image[0],
                 price: pro.product.price,
                 id_product: pro.id_product,
                 product: pro.product._id,
@@ -139,11 +140,11 @@ function PlaceOrder() {
                 )}
                 {findCart?.countInStock < item?.qty ? (
                     <div className="col-lg-3">
-                        <img className="h-[100px]" src={`${item.product?.image[0]?.urlImage}`} alt={item.name} />
+                        <img className="h-[100px]" src={`${item.product?.image[0]}`} alt={item.name} />
                     </div>
                 ) : (
                     <div className="col-lg-2">
-                        <img className="h-[100px]" src={`${item.product?.image[0]?.urlImage}`} alt={item.name} />
+                        <img className="h-[100px]" src={`${item.product?.image[0]}`} alt={item.name} />
                     </div>
                 )}
                 <div className="col-lg-2 flex items-center">

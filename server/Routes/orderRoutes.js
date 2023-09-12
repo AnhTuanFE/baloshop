@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 const orderRouter = express.Router();
 
 orderRouter.post('/', protect, asyncHandler(orderController.createOrder));
-orderRouter.post('/:id/poductReview', protect, asyncHandler(orderController.productReview));
+// orderRouter.post('/:id/poductReview', protect, asyncHandler(orderController.productReview));
 
 // orderRouter.get('/:id/address', protect, asyncHandler(orderController.getAddress));
 orderRouter.get('/all', protect, admin, asyncHandler(orderController.getOrderAll));

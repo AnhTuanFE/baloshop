@@ -30,16 +30,15 @@ function Register() {
     } = useForm();
 
     const dispatch = useDispatch();
-    const redirect = location.search ? location.search.split('=')[1] : '/';
-
     const userRegister = useSelector((state) => state.userRegister);
-    const { error, loading, userInfo } = userRegister;
+    const { error, loading, userInfo: userInfoRegister } = userRegister;
+    const userInfo = localStorage.getItem('userInfo');
 
     useEffect(() => {
-        if (userInfo) {
-            navigate(redirect);
+        if (userInfo || userInfoRegister) {
+            navigate('/');
         }
-    }, [userInfo, navigate, redirect]);
+    }, [userInfo, navigate]);
 
     const submitHandler = (data) => {
         const { name, email, phone, password } = data;
