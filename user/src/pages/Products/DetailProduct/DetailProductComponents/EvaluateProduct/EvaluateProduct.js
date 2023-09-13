@@ -50,7 +50,6 @@ function EvaluateProduct(props) {
     const [hover, setHover] = useState(-1);
 
     const reviews = useSelector((state) => state.productReviewCreate);
-    console.log('reviews = ', reviews);
     const { loading: loadingCreateReview, error: errorCreateReview, success: successCreateReview } = reviews;
 
     const arrStar = [5, 4, 3, 2, 1];

@@ -28,9 +28,6 @@ function ModalMain(prop, ref) {
         },
     }));
     const { content } = prop;
-    useEffect(() => {
-        console.log('content = ', content);
-    });
     return (
         <dialog ref={modalRef} className="w-1/3 rounded-lg" onClick={handleOverlayClick}>
             <button

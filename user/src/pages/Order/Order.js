@@ -136,7 +136,6 @@ function Order() {
                 signature: signature,
             };
             dispatch(userRequestConfirmPaidMOMOAction(dataMomoReturn));
-            console.log('đã gửi cho action = ');
         }
     }, [order]);
 

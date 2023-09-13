@@ -22,8 +22,6 @@ const CommentScreen = () => {
     const commentList = useSelector((state) => state.productCommentGet);
     const { products, loading, error } = commentList;
 
-    console.log('commentList = ', commentList);
-
     const productCommentChildCreate = useSelector((state) => state.productCommentChildCreate);
     const { success: successCommentChild } = productCommentChildCreate;
     const productDeleteComments = useSelector((state) => state.productDeleteComments);
@@ -97,10 +95,14 @@ const CommentScreen = () => {
                 {errorCommentChild && <Message variant="alert-danger">{errorCommentChild}</Message>}
                 <div class="accordion" id="accordionPanelsStayOpenExample">
                     {products?.map((product, index) => {
-                        // products là mảng, mảng đó chứa nhiều đối tượng
-                        // mỗi đối tượng con trong mảng sẽ chứa 2 mảng là image và comment
                         return (
-                            <div class="accordion-item" key={product._id}>
+                            <div
+                                style={{
+                                    marginTop: '12px',
+                                }}
+                                class="accordion-item"
+                                key={product._id}
+                            >
                                 <h2 class="accordion-header" id={`panelsStayOpen-heading${index}`}>
                                     <button
                                         class="accordion-button"
@@ -117,7 +119,7 @@ const CommentScreen = () => {
                                                         #
                                                     </th>
                                                     <th scope="col" style={{ width: '90%' }}>
-                                                        Sản phẩm
+                                                        Bình luận của sản phẩm {product?.nameProduct}
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -155,7 +157,7 @@ const CommentScreen = () => {
                                         >
                                             <div className="rating-review__flex">
                                                 <img
-                                                    src={imageDefaul}
+                                                    src={`${product?.user?.image ? product?.user?.image : imageDefaul}`}
                                                     alt=""
                                                     style={{
                                                         height: '40px',
@@ -188,7 +190,7 @@ const CommentScreen = () => {
                                         >
                                             <span>{product.question}</span>
                                             <div className="d-flex justify-content-end">
-                                                <span
+                                                {/* <span
                                                     className="commentChild text-dark pe-2"
                                                     onClick={() => {
                                                         handlerCommentDelete(product?.idProduct, product?._id);
@@ -196,7 +198,7 @@ const CommentScreen = () => {
                                                 >
                                                     <i class="fas fa-comment-times" style={{ paddingRight: '5px' }}></i>
                                                     Thu hồi
-                                                </span>
+                                                </span> */}
                                                 <span
                                                     className="commentChild ps-2"
                                                     onClick={() => {

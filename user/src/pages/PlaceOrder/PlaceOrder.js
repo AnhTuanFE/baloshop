@@ -36,7 +36,6 @@ function PlaceOrder() {
     };
     const cart = useSelector((state) => state.cart);
     const { cartItems } = cart;
-    console.log('cartItems = ', cartItems);
     const { userDetails, userLogin } = useSelector(usersRemainingSelector);
     const { user } = userDetails;
     const { userInfo } = userLogin;
@@ -98,7 +97,6 @@ function PlaceOrder() {
                 dispatch({ type: ORDER_CREATE_RESET });
                 navigate(`/order/${order?.newOrder?._id}`);
             }
-            console.log('order?.newOrder = ', order?.newOrder);
         }
     }, [error, success]);
 

@@ -46,7 +46,6 @@ export default function SliderProducts({ products, labelSlider }) {
             },
         ],
     };
-    console.log('products = ', products);
     return (
         <div className="mx-auto my-auto max-w-screen-2xl pt-3 max-md:mt-1 md:mt-3">
             <h2 className="pb-3 text-center">

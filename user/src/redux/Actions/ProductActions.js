@@ -110,32 +110,41 @@ export const createProductReview = (productId, rating, comment) => async (dispat
 };
 
 // PRODUCT COMMENT CREATE
-export const createProductComment = (productId, comments) => async (dispatch, getState) => {
-    try {
-        dispatch({ type: types.PRODUCT_CREATE_COMMENT_REQUEST });
-
-        const {
-            userLogin: { userInfo },
-        } = getState();
-
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${userInfo.token}`,
-            },
-        };
-
-        await axios.post(`/api/products/${productId}/comment`, comments, config);
-        dispatch({ type: types.PRODUCT_CREATE_COMMENT_SUCCESS });
-    } catch (error) {
-        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
-        if (message === 'Not authorized, token failed') {
-            dispatch(logout());
-        }
+export const createProductComment = (dataReceived) => async (dispatch, getState) => {
+    const { productId, nameProduct, imageProduct, question } = dataReceived;
+    const comments = { nameProduct, imageProduct, question };
+    if (question == '') {
         dispatch({
             type: types.PRODUCT_CREATE_COMMENT_FAIL,
-            payload: message,
+            payload: 'Bạn chưa nhập câu hỏi',
         });
+    } else {
+        try {
+            dispatch({ type: types.PRODUCT_CREATE_COMMENT_REQUEST });
+
+            const {
+                userLogin: { userInfo },
+            } = getState();
+
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${userInfo.token}`,
+                },
+            };
+
+            await axios.post(`/api/products/${productId}/comment`, comments, config);
+            dispatch({ type: types.PRODUCT_CREATE_COMMENT_SUCCESS });
+        } catch (error) {
+            const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+            if (message === 'Not authorized, token failed') {
+                dispatch(logout());
+            }
+            dispatch({
+                type: types.PRODUCT_CREATE_COMMENT_FAIL,
+                payload: message,
+            });
+        }
     }
 };
 

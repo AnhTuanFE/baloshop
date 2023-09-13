@@ -28,7 +28,6 @@ const AllProductsFilter = (props) => {
     }, [dispatch, category, keyword, pageNumber, minPrice, maxPrice, rating, sortBy]);
 
     const handlerSort = (value) => {
-        console.log('value = ', value);
         if (rating === '' && keyword === '' && category === '') {
             navigate(`/sortBy/${value}/page/${'1'}`);
         }

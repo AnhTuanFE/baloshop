@@ -57,7 +57,6 @@ const AddProduct = () => {
 
     const productCreate = useSelector((state) => state.productCreate);
     const { loading, error, product } = productCreate;
-    console.log('productCreate = ', productCreate);
 
     const productColor = useSelector((state) => state.optionColorCreate);
     const { loading: loadingOption, error: errorOption, success: successOption } = productColor;

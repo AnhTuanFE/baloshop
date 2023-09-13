@@ -53,7 +53,9 @@ const getAllProductComment = async (req, res) => {
         .populate('comments.commentChilds.user', 'name image')
         .populate('image');
     const filterProduct = products.filter((product) => product.comments != '');
+    // tìm các sản phẩm có phần bình luận khác rỗng
     for (let i = 0; i < filterProduct.length; i++) {
+        // lặp qua các sản phẩm đó để lấy các bình luận và tách ra mỗi bình luận thành một đối tượng riêng biệt
         // ...filterProduct[i].image
         commentArr.push(...filterProduct[i].comments);
     }

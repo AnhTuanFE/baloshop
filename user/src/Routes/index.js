@@ -15,7 +15,6 @@ import PurchaseHistory from '~/pages/PurchaseHistory';
 import ResetPasswordRequest from '~/pages/ResetPasswordRequest/ResetPasswordRequest';
 import VerifyResetPassWord from '~/pages/VerifyResetPassWord/VerifyResetPassWord';
 import ResetPassword from '~/pages/ResetPassword/ResetPassword';
-import Header2 from '~/layouts/headerMUI/Header2';
 import NotFound from '~/pages/NotFound/NotFound';
 import Test from '~/pages/Test/Test';
 
@@ -43,7 +42,6 @@ const publicRoutes = [
     { path: '/verify-reset-password/:id/:token', component: VerifyResetPassWord, layout: HeaderOnly },
 
     { path: '/resetpassword', component: ResetPassword, layout: HeaderOnly },
-    { path: '/header2', component: Header2, layout: null },
     { path: '/test', component: Test, layout: null },
 
     { path: '*', component: NotFound, layout: HeaderOnly },

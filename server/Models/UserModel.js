@@ -55,18 +55,35 @@ const userSchema = mongoose.Schema(
     },
 );
 
-// Login
 userSchema.methods.matchPassword = async function (enterPassword) {
-    return await bcrypt.compare(enterPassword, this.password);
+    console.log('enterPassword = ', enterPassword);
+    console.log('this so sánh = ', this);
+    console.log('this.password so sánh = ', this.password);
+    const sosanhpass = await bcrypt.compare(enterPassword, this.password);
+    console.log('sosanhpass = ', sosanhpass);
+    return sosanhpass;
 };
 
 // Register
+// userSchema.pre('save', async function (next) {
+//     if (!this.isModified('password')) {
+//         next();
+//     }
+//     const salt = await bcrypt.genSalt(10);
+//     this.password = await bcrypt.hash(this.password, salt);
+// });
 userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) {
-        next();
+        return next();
     }
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
+    try {
+        const salt = await bcrypt.genSalt(10);
+        const newPass = await bcrypt.hash(this.password, salt);
+        this.password = newPass;
+        return next();
+    } catch (error) {
+        return next(error);
+    }
 });
 
 // quen mk

@@ -16,7 +16,6 @@ const ProductScreen = () => {
     const keyword = params.keyword || '';
     const pageNumber = params.pageNumber || 1;
     const category = params.category || '';
-    console.log('category = ', category);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();

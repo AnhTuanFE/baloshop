@@ -16,8 +16,7 @@ function AskAndAnswer(props) {
     const dispatch = useDispatch();
 
     const [question, setQuestion] = useState('');
-    const [imageProduct, setImageProduct] = useState('');
-    const [nameProduct, setNameProduct] = useState('');
+
     const [idComment, setIdComment] = useState('');
     const [buleanReview, setBuleanReview] = useState('');
     const [questionChild, setQuestionChild] = useState('');
@@ -28,7 +27,6 @@ function AskAndAnswer(props) {
         error: errorCreateComment,
         success: successCreateComment,
     } = productCommentCreate;
-
     const productCommentChildCreate = useSelector((state) => state.productCommentChildCreate); //comment child
     const {
         loading: loadingCreateCommentChild,
@@ -39,7 +37,15 @@ function AskAndAnswer(props) {
     //comment
     const submitComment = (e) => {
         e.preventDefault();
-        dispatch(createProductComment(productId, { nameProduct, imageProduct, question }));
+        // dispatch(createProductComment(productId, { nameProduct, imageProduct, question }));
+        dispatch(
+            createProductComment({
+                productId: productId,
+                nameProduct: product.name,
+                imageProduct: product.image[0],
+                question: question,
+            }),
+        );
         setQuestion('');
     };
 
@@ -59,12 +65,17 @@ function AskAndAnswer(props) {
             dispatch({ type: PRODUCT_CREATE_COMMENTCHILD_RESET });
         }
     }, [successCreateComment, successCreateCommentChild]);
-
+    useEffect(() => {
+        dispatch({ type: PRODUCT_CREATE_COMMENT_RESET });
+        dispatch({ type: PRODUCT_CREATE_COMMENTCHILD_RESET });
+    }, []);
     return (
         <>
             {Object.keys(product).length > 1 && (
                 <div className="mt-4 rounded-xl bg-white pt-2">
                     <div className="rounded-xl py-4 shadow-custom-shadow max-md:px-1 md:px-5">
+                        {/* {loadingCreateComment && <Loading />} */}
+                        {errorCreateComment && <Message variant="alert-danger">{errorCreateComment}</Message>}
                         <h2 className="ml-5 pb-1 text-2xl font-semibold">Hỏi và đáp</h2>
                         <form onSubmit={submitComment} className="flex max-sm:ml-1 sm:ml-5">
                             <textarea
@@ -73,8 +84,6 @@ function AskAndAnswer(props) {
                                 placeholder="Xin mời để lại câu hỏi, BaloStore sẽ trả lời lại trong 1h, các câu hỏi sau 22h - 8h sẽ được trả lời vào sáng hôm sau"
                                 onChange={(e) => {
                                     setQuestion(e.target.value);
-                                    setImageProduct(product?.image[0].image);
-                                    setNameProduct(product.name);
                                 }}
                             ></textarea>
                             {userInfo ? (

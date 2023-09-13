@@ -252,7 +252,6 @@ export const paypalConfirmPaidOrderAction = (orderID) => async (dispatch, getSta
 
 export const getLabelOrderGHTKAction = (id_Ghtk) => async (dispatch, getState) => {
     const apiBase = 'https://services-staging.ghtklab.com';
-    // console.log('id_Ghtk = ', id_Ghtk);
     try {
         dispatch({ type: types.GET_LABEL_ORDER_GHTK_REQUEST });
 
@@ -332,7 +331,6 @@ export const userRequestConfirmPaidMOMOAction = (dataMomo) => async (dispatch, g
         extraData,
         signature,
     } = dataMomo;
-    console.log('dataMomo = ', dataMomo);
     if (
         partnerCode === 'MOMO' &&
         message === 'Thành công.' &&
@@ -351,7 +349,6 @@ export const userRequestConfirmPaidMOMOAction = (dataMomo) => async (dispatch, g
                 },
             };
             const { data } = await axios.post(`/api/payments/user-notification-paid-from-momo`, dataMomo, config);
-            console.log('data = ', dataMomo);
             dispatch({ type: types.USER_REQUEST_CONFIRM_PAID_SUCCESS, payload: data });
         } catch (error) {
             const message = error.response && error.response.data.message ? error.response.data.message : error.message;
