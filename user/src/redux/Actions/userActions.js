@@ -203,64 +203,62 @@ export const ListAvatar = () => async (dispatch) => {
     }
 };
 
-export const ForgotPassWord = (email) => async (dispatch) => {
-    try {
-        dispatch({ type: types.FORGOT_PASS_WORD_REQUEST });
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                'Access-Control-Allow-Origin': '*',
-            },
-        };
-        const { data } = await axios.post(`/api/forgotPass/forgotPassword`, email, config);
-        dispatch({ type: types.FORGOT_PASS_WORD_SUCCESS, payload: data });
-    } catch (error) {
+export const ForgotPassWordAction = (dataReceived) => async (dispatch) => {
+    const { email } = dataReceived;
+    if (email) {
+        try {
+            dispatch({ type: types.FORGOT_PASS_WORD_REQUEST });
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                },
+            };
+            const { data } = await axios.post(`/api/forgotPass/forgotPassword`, { email }, config);
+            dispatch({ type: types.FORGOT_PASS_WORD_SUCCESS, payload: data });
+        } catch (error) {
+            dispatch({
+                type: types.FORGOT_PASS_WORD_FAIL,
+                payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+            });
+        }
+    } else {
         dispatch({
             type: types.FORGOT_PASS_WORD_FAIL,
-            payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+            payload: 'Bạn chưa nhập email',
         });
     }
 };
 
-export const VerifyResetPassWordAction = (verifyData) => async (dispatch) => {
-    let dataReturn;
-    try {
-        dispatch({ type: types.VERIFY_RESET_PASS_WORD_REQUEST });
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                'Access-Control-Allow-Origin': '*',
-            },
-        };
-        const { data } = await axios.post(`/api/forgotPass/verify-reset-password`, verifyData, config);
-        dataReturn = data;
-        dispatch({ type: types.VERIFY_RESET_PASS_WORD_SUCCESS, payload: data });
-    } catch (error) {
-        dispatch({
-            type: types.VERIFY_RESET_PASS_WORD_FAIL,
-            payload: error.response.data.message,
-        });
-    }
-};
-
-export const ResetPassWordAction = (newPassword) => async (dispatch) => {
-    try {
-        dispatch({ type: types.RESET_PASS_WORD_REQUEST });
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                'Access-Control-Allow-Origin': '*',
-            },
-        };
-        const { data } = await axios.post(`/api/forgotPass/reset-password`, newPassword, config);
-        dispatch({ type: types.RESET_PASS_WORD_SUCCESS, payload: data });
-    } catch (error) {
+export const resetPassWordAction = (dataReceived) => async (dispatch) => {
+    const { newPassword, id, token, newConfirmPassword } = dataReceived;
+    if (newPassword != newConfirmPassword) {
         dispatch({
             type: types.RESET_PASS_WORD_FAIL,
-            payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+            payload: 'Mật khẩu và xác nhận mật khẩu không trùng khớp',
         });
+    } else {
+        try {
+            dispatch({ type: types.RESET_PASS_WORD_REQUEST });
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                },
+            };
+            const { data } = await axios.post(
+                `/api/forgotPass/reset-password`,
+                { newPassword, id, token, newConfirmPassword },
+                config,
+            );
+            dispatch({ type: types.RESET_PASS_WORD_SUCCESS, payload: data });
+        } catch (error) {
+            dispatch({
+                type: types.RESET_PASS_WORD_FAIL,
+                payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+            });
+        }
     }
 };

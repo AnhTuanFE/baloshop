@@ -13,7 +13,6 @@ import Order from '~/pages/Order';
 import Profile from '~/pages/Profile/Profile';
 import PurchaseHistory from '~/pages/PurchaseHistory';
 import ResetPasswordRequest from '~/pages/ResetPasswordRequest/ResetPasswordRequest';
-import VerifyResetPassWord from '~/pages/VerifyResetPassWord/VerifyResetPassWord';
 import ResetPassword from '~/pages/ResetPassword/ResetPassword';
 import NotFound from '~/pages/NotFound/NotFound';
 import Test from '~/pages/Test/Test';
@@ -39,9 +38,8 @@ const publicRoutes = [
     { path: '/login', component: Login, layout: HeaderOnly },
     { path: '/register', component: Register, layout: HeaderOnly },
     { path: '/resetpassword-request', component: ResetPasswordRequest, layout: HeaderOnly },
-    { path: '/verify-reset-password/:id/:token', component: VerifyResetPassWord, layout: HeaderOnly },
 
-    { path: '/resetpassword', component: ResetPassword, layout: HeaderOnly },
+    { path: '/reset-password/:id/:token/:email', component: ResetPassword, layout: HeaderOnly },
     { path: '/test', component: Test, layout: null },
 
     { path: '*', component: NotFound, layout: HeaderOnly },
