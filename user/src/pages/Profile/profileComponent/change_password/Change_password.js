@@ -1,11 +1,12 @@
 import { Box, Typography, TextField, Button, Stack } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
-import { updateUserPassword } from '~/redux/Actions/userActions';
+import { updateUserPasswordAction } from '~/redux/Actions/userActions';
 import { notification } from 'antd';
 import { useEffect } from 'react';
+import { USER_UPDATE_PASSWORD_RESET } from '~/redux/Constants/UserContants';
 
-function Change_password({ user }) {
+function Change_password() {
     const dispatch = useDispatch();
     const [api, contextHolder] = notification.useNotification();
     const openNotification = (placement, notify, type) => {
@@ -15,14 +16,9 @@ function Change_password({ user }) {
             placement,
         });
     };
-    const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
+    const userUpdatePassword = useSelector((state) => state.stateUserUpdatePassword);
 
-    const {
-        successPass: updatesuccessPass,
-        success: updatesuccess,
-        loading: updateLoading,
-        error: errorProfile,
-    } = userUpdateProfile;
+    const { success, loading, data, error } = userUpdatePassword;
 
     const {
         register,
@@ -30,19 +26,28 @@ function Change_password({ user }) {
         control,
         handleSubmit,
         formState: { errors },
+        reset,
     } = useForm();
 
     const submitUpdatePassword = (data) => {
         const { password, oldPassword } = data;
-        dispatch(updateUserPassword({ password, oldPassword }));
+        dispatch(updateUserPasswordAction({ password, oldPassword }));
     };
     useEffect(() => {
-        if (updatesuccessPass === true) {
+        if (success === true) {
             openNotification('top', 'Mật khẩu cập nhật thành công', 'success');
-
-            // dispatch({ type: USER_UPDATE_PROFILE_RESET });
+            dispatch({ type: USER_UPDATE_PASSWORD_RESET });
+            reset();
         }
-    }, [dispatch, updatesuccessPass]);
+        if (error) {
+            openNotification('top', `${error}`, 'error');
+            dispatch({ type: USER_UPDATE_PASSWORD_RESET });
+        }
+    }, [dispatch, success, error]);
+    useEffect(() => {
+        dispatch({ type: USER_UPDATE_PASSWORD_RESET });
+        reset();
+    }, []);
     return (
         <>
             {contextHolder}

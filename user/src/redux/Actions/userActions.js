@@ -104,7 +104,6 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
         const { data } = await axios.put(`/api/users/profile`, user, config);
         dispatch({ type: types.USER_UPDATE_PROFILE_SUCCESS, payload: data });
         dispatch({ type: types.USER_LOGIN_SUCCESS, payload: data });
-
         // localStorage.removeItem('userInfo');
         localStorage.setItem('userInfo', JSON.stringify(data));
     } catch (error) {
@@ -119,10 +118,10 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
     }
 };
 
-export const updateUserPassword = (dataReceived) => async (dispatch, getState) => {
+export const updateUserPasswordAction = (dataReceived) => async (dispatch, getState) => {
     const { password, oldPassword } = dataReceived;
     try {
-        dispatch({ type: types.USER_UPDATE_PROFILE_REQUEST });
+        dispatch({ type: types.USER_UPDATE_PASSWORD_REQUEST });
 
         const {
             userLogin: { userInfo },
@@ -134,19 +133,15 @@ export const updateUserPassword = (dataReceived) => async (dispatch, getState) =
                 Authorization: `Bearer ${userInfo.token}`,
             },
         };
-
         const { data } = await axios.put(`/api/users/updatePassword`, { password, oldPassword }, config);
         dispatch({ type: types.USER_UPDATE_PASSWORD_SUCCESS, payload: data });
-        dispatch({ type: types.USER_LOGIN_SUCCESS, payload: data });
-
-        localStorage.setItem('userInfo', JSON.stringify(data));
     } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;
         if (message === 'Not authorized, token failed') {
             dispatch(logout());
         }
         dispatch({
-            type: types.USER_UPDATE_PROFILE_FAIL,
+            type: types.USER_UPDATE_PASSWORD_FAIL,
             payload: message,
         });
     }

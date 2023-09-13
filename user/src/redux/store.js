@@ -24,6 +24,7 @@ import {
     userForgotPassWord,
     userVerifyResetPassWordReducer,
     ResetPassWordReducer,
+    userUpdatePasswordReducer,
 } from './Reducers/userReducers';
 import {
     orderAddressMyReducer,
@@ -57,6 +58,7 @@ const reducer = combineReducers({
     userRegister: userRegisterReducer,
     userDetails: userDetailsReducer,
     userUpdateProfile: userUpdateProfileReducer,
+    stateUserUpdatePassword: userUpdatePasswordReducer,
     orderCreate: orderCreateReducer,
     orderDetails: orderDetailsReducer,
     orderAddress: orderAddressMyReducer,

@@ -250,66 +250,24 @@ const updateProfile = async (req, res) => {
 const updatePassword = async (req, res) => {
     const { password, oldPassword } = req.body;
     const user = req.user;
-    const information_admin = await User.findOne({ email: 'admin@gmail.com' });
-    if (user && information_admin) {
-        const data = {
-            city: information_admin.city,
-            district: information_admin.district,
-            ward: information_admin.ward,
-            address: information_admin.address,
-            phone: information_admin.phone,
-        };
-
+    if (user) {
         if (user?.disabled) {
             res.status(400);
             throw new Error('account lock up');
         }
-        // bỏ chức năng bên dưới
         if (password && oldPassword) {
-            console.log('chạy password password = ', password, 'oldPassword = ', oldPassword);
             if (await user.matchPassword(oldPassword)) {
-                console.log('chạy password bên trong');
                 user.password = password;
-                const updatedPassword = await user.save();
-                res.status(201).json({
-                    _id: user._id,
-                    name: user.name,
-                    dateOfBirth: user?.dateOfBirth,
-                    email: user.email,
-                    phone: user.phone,
-                    isAdmin: user.isAdmin,
-                    createdAt: user.createdAt,
-                    token: generateToken(user._id),
-                    city: user?.city,
-                    district: user?.district,
-                    ward: user?.ward,
-                    address: user?.address,
-                    image: user?.image,
-                    disabled: user.disabled,
-                    address_shop: data,
-                });
+                await user.save();
+                res.json({ status: 'success', message: 'Cập nhập mật khẩu thành công!' });
             } else {
                 res.status(404);
-                throw new Error('Old Password is not correct!');
+                throw new Error('Mật khẩu cũ không đúng!');
             }
         } else {
-            const updatedUser = await user.save();
-            res.json({
-                _id: updatedUser._id,
-                name: updatedUser.name,
-                dateOfBirth: updatedUser?.dateOfBirth,
-                phone: updatedUser.phone,
-                city: updatedUser?.city,
-                district: updatedUser?.district,
-                ward: updatedUser?.ward,
-                address: updatedUser?.address,
-                email: user.email,
-                isAdmin: updatedUser.isAdmin,
-                createdAt: updatedUser.createdAt,
-                token: generateToken(updatedUser._id),
-                image: user?.image,
-                disabled: user.disabled,
-                address_shop: data,
+            res.status(400).json({
+                status: 'failed',
+                message: 'Vui lòng nhập đủ thông tin của mật khẩu cũ và mật khẩu mới',
             });
         }
     } else {

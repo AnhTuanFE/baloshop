@@ -55,11 +55,24 @@ export const userUpdateProfileReducer = (state = {}, action) => {
             return { loading: true };
         case types.USER_UPDATE_PROFILE_SUCCESS:
             return { loading: false, success: true, userInfo: action.payload };
-        case types.USER_UPDATE_PASSWORD_SUCCESS:
-            return { loading: false, successPass: true, userInfo: action.payload };
         case types.USER_UPDATE_PROFILE_FAIL:
             return { loading: false, error: action.payload };
         case types.USER_UPDATE_PROFILE_RESET:
+            return {};
+        default:
+            return state;
+    }
+};
+// UPDATE PROFILE
+export const userUpdatePasswordReducer = (state = {}, action) => {
+    switch (action.type) {
+        case types.USER_UPDATE_PASSWORD_REQUEST:
+            return { loading: true };
+        case types.USER_UPDATE_PASSWORD_SUCCESS:
+            return { loading: false, success: true, data: action.payload };
+        case types.USER_UPDATE_PASSWORD_FAIL:
+            return { loading: false, error: action.payload };
+        case types.USER_UPDATE_PASSWORD_RESET:
             return {};
         default:
             return state;
