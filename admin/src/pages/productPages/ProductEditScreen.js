@@ -185,11 +185,11 @@ const ProductEditScreen = () => {
     return (
         <>
             <Toast />
-            <section className="content-main" style={{ maxWidth: '1200px' }}>
+            <section className="content-main">
                 <form>
                     <div className="content-header">
                         <Link to="/products" className="btn btn-danger text-white">
-                            Trở về Trang sản phẩm
+                            Quay lại
                         </Link>
                         <h2 className="content-title">Cập nhật sản phẩm</h2>
                         <div></div>
@@ -197,9 +197,9 @@ const ProductEditScreen = () => {
 
                     <div className="row mb-0">
                         <div className="col-xl-12 col-lg-12">
-                            <div className="card mb-0">
+                            <div className="card mb-0 overflow-auto " style={{ height: '74vh' }}>
                                 <div className="card-body shadow-sm">
-                                    <div className="card-body shadow-sm" style={{ border: '1px solid #ccc' }}>
+                                    <div className="card-body">
                                         {error && <Message variant="alert-danger">{error}</Message>}
                                         {loading && <Loading />}
                                         <from>
@@ -304,10 +304,7 @@ const ProductEditScreen = () => {
                                             <div
                                                 style={{ marginTop: '10px', display: 'flex', justifyContent: 'right' }}
                                             >
-                                                <button
-                                                    onClick={submitHandler}
-                                                    className="btn btn-primary color-orange"
-                                                >
+                                                <button onClick={submitHandler} className="btn btn-primary">
                                                     Lưu
                                                 </button>
                                             </div>
@@ -358,7 +355,7 @@ const ProductEditScreen = () => {
                                                         <div className="d-grid" style={{ marginTop: '10px' }}>
                                                             <button
                                                                 onClick={submitOptionHandler}
-                                                                className="btn btn-primary color-orange py-2"
+                                                                className="btn btn-primary py-2"
                                                             >
                                                                 Cập nhật
                                                             </button>
@@ -423,7 +420,10 @@ const ProductEditScreen = () => {
                                                                                     }
                                                                                 }}
                                                                             >
-                                                                                <i class="icon fas fa-trash-alt"></i>
+                                                                                <i
+                                                                                    class="icon fas fa-trash-alt"
+                                                                                    style={{ color: 'red' }}
+                                                                                ></i>
                                                                             </button>
                                                                         </div>
                                                                     </td>
@@ -468,7 +468,7 @@ const ProductEditScreen = () => {
                                                         <div className="d-grid" style={{ marginTop: '10px' }}>
                                                             <button
                                                                 onClick={submitOptionSaveHandler}
-                                                                className="btn btn-primary color-orange py-2"
+                                                                className="btn btn-primary py-2"
                                                             >
                                                                 Thêm
                                                             </button>

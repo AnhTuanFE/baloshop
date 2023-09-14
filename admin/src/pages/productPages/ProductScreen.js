@@ -56,12 +56,12 @@ const ProductScreen = () => {
     }, [dispatch, successDelete, category, keyword, pageNumber]);
 
     return (
-        <section className="content-main bg-slate-300 pb-0">
+        <section className="content-main pb-0">
             <div className="content-header">
                 <h3 className="content-title fw-bold">Sản phẩm</h3>
             </div>
 
-            <div className="card mb-4 shadow-sm">
+            <div className="card mb-0 shadow-sm">
                 <header className="card-header border-none bg-white">
                     <div className="row gx-3 py-0">
                         <div className="col-lg-4 col-md-4 me-auto ">

@@ -14,7 +14,7 @@ const Header = () => {
         navigate('/login');
     };
     return (
-        <header className="main-header z-3 justify-content-end navbar border-none   bg-blue-100">
+        <header className="main-header z-3 justify-content-end navbar border-none">
             <div className="col-nav">
                 <button className="btn btn-icon btn-mobile me-auto">
                     <i className="md-28 fas fa-bars"></i>
