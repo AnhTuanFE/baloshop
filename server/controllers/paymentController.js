@@ -160,8 +160,7 @@ const paymentNotificationFromMomo = async (req, res) => {
 
     const createSignature = crypto.createHmac('sha256', process.env.MOMO_SECRET_KEY).update(rawSignature).digest('hex');
 
-    console.log('createSignature');
-    console.log(createSignature);
+    console.log('createSignature = ', createSignature);
 
     if (signature == createSignature) {
         console.log('Chữ ký hợp lệ');

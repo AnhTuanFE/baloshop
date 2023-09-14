@@ -253,33 +253,133 @@ const getOrderAll = async (req, res) => {
     const sortBy = validateConstants(orderQueryParams, 'sort', req.query.sortBy);
     const orderStatusFilter = validateConstants(orderQueryParams, 'status', req.query.status);
     let search = {};
+    let allDeliveredOrders = [];
+    let orders;
     let limitFilter;
     if (req.query.keyword) {
         const keywordRegex = new RegExp(req.query.keyword, 'i');
         search.$or = [{ name: keywordRegex }, { phone: keywordRegex }, { id: keywordRegex }];
     }
-    // if (req.query.status) {
-    //     const statusValues = req.query.status.split(',');
-    //     if (statusValues.length > 0) {
-    //         orderStatusFilter.status = { $in: statusValues };
-    //     }
-    // }
+    if (req.query.status) {
+        console.log('req.query.status = ', req.query.status);
+        if (req.query.status == 'delivering') {
+            let ordersPayMoney = await Order.find({ paymentMethod: 'pay-with-cash', status: 'delivered' })
+                .populate('payment')
+                .sort({
+                    _id: -1,
+                });
+            const ordersPayMomo = await Order.find({ paymentMethod: 'pay-with-momo', status: 'delivering' })
+                .populate('payment')
+                .sort({
+                    _id: -1,
+                });
+            const ordersPayAtm = await Order.find({ paymentMethod: 'pay-with-atm', status: 'delivering' })
+                .populate('payment')
+                .sort({
+                    _id: -1,
+                });
+            const ordersPayCredit = await Order.find({
+                paymentMethod: 'pay-with-credit-card',
+                status: 'delivering',
+            })
+                .populate('payment')
+                .sort({
+                    _id: -1,
+                });
+
+            allDeliveredOrders = [...ordersPayMoney, ...ordersPayMomo, ...ordersPayAtm, ...ordersPayCredit];
+        }
+        if (req.query.status == 'delivered') {
+            const ordersPayMoney = await Order.find({ paymentMethod: 'pay-with-cash', status: 'paid' })
+                .populate('payment')
+                .sort({
+                    _id: -1,
+                });
+            const ordersPayMomo = await Order.find({ paymentMethod: 'pay-with-momo', status: 'delivered' })
+                .populate('payment')
+                .sort({
+                    _id: -1,
+                });
+            const ordersPayAtm = await Order.find({ paymentMethod: 'pay-with-atm', status: 'delivered' })
+                .populate('payment')
+                .sort({
+                    _id: -1,
+                });
+            const ordersPayCredit = await Order.find({
+                paymentMethod: 'pay-with-credit-card',
+                status: 'delivered',
+            })
+                .populate('payment')
+                .sort({
+                    _id: -1,
+                });
+
+            allDeliveredOrders = [...ordersPayMoney, ...ordersPayMomo, ...ordersPayAtm, ...ordersPayCredit];
+        }
+        if (req.query.status == 'paid') {
+            let ordersPayMoney = await Order.find({}).populate('payment').sort({
+                _id: -1,
+            });
+            const filteredOrders = ordersPayMoney.filter((order) => order.payment && order.payment.paid === true);
+            allDeliveredOrders = [...filteredOrders];
+        }
+        if (req.query.status == 'unpaid') {
+            let ordersPayMoney = await Order.find({}).populate('payment').sort({
+                _id: -1,
+            });
+            const filteredOrders = ordersPayMoney.filter((order) => order.payment && order.payment.paid === false);
+            allDeliveredOrders = [...filteredOrders];
+        } else {
+            const statusValues = req.query.status.split(',');
+            search.status = { $in: statusValues };
+        }
+    }
     const count = await Order.countDocuments({ ...search, ...orderStatusFilter });
+    if (allDeliveredOrders.length > 0) {
+        limitFilter = allDeliveredOrders.length;
+        // let orders_1 = await Order.find({ ...search })
+        //     .limit(limitFilter)
+        //     .skip(limitFilter * (page - 1))
+        //     .sort({ ...sortBy })
+        //     // .populate('user', 'id name email')
+        //     .populate('payment')
+        //     .lean();
+        orders = [...allDeliveredOrders];
+        res.json({ orders, page: 1, pages: 1, total: allDeliveredOrders.length });
+    }
     if (count < limit) {
         limitFilter = count;
     } else {
         limitFilter = limit;
     }
-    let orders = await Order.find({ ...search })
+    let orders_1 = await Order.find({ ...search })
         .limit(limitFilter)
         .skip(limitFilter * (page - 1))
         .sort({ ...sortBy })
         // .populate('user', 'id name email')
         .populate('payment')
         .lean();
-
+    orders = [...orders_1, ...allDeliveredOrders];
     res.json({ orders, page, pages: Math.ceil(count / limitFilter), total: count });
 };
+// const data = {
+//     name: "Anh Tuấn7",
+//     orderItems: [
+//       {
+//         product: "6502d93f1e4e8101bed1f1b3",
+//         name: "Túi du lich cần kéo 104",
+//         color: "Xám",
+//       }
+//     ],
+//     payment: {
+//       _id: "65035aaaf001992dba797ff8",
+//       user: "6501b84d23bc4d20af58b186",
+//       order: "65035aaaf001992dba797ff1",
+//       paid: true
+//     },
+//     amount: 0,
+//   };
+
 const completed = async (req, res) => {
     try {
         const orders = await Order.find({ status: 'completed' }).sort({ _id: -1 });
@@ -578,7 +678,7 @@ const confirmDelivered = async (req, res) => {
         res.status(200).json({ message: 'Xác nhận giao hàng thành công', updateOrder });
     }
     if (order.paymentMethod == PAY_WITH_CASH) {
-        console.log('đã chạy vào pay with cash');
+        console.log('đã chạy vào pay with cash và xác nhận giao hàng thành công');
         order.status = 'paid';
         order.statusHistory[3] = { status: 'paid', description: description, updateBy: req.user._id };
         order.payment.paidAt = new Date();
@@ -586,6 +686,19 @@ const confirmDelivered = async (req, res) => {
         await order.payment.save();
         const updateOrder = await order.save();
         // await updateOrder.populate('payment');
+        /*
+        let order = await Order.findOne({ _id: orderId }).populate('payment');
+            order.status = 'paid';
+            order.statusHistory[1] = { status: 'paid', description: '', updateBy: req.user._id };
+            order.payment.paid = true;
+            // order.payment.paidAt = new Date();
+            // order.payment.message = message;
+            order.payment.status = PAYMENT_SUCCESS;
+            order.payment.paymentTransaction = { ...paymentTransaction };
+            await order.payment.save();
+            await order.save();
+        
+        */
         res.status(200).json({ message: 'Xác nhận giao hàng thành công', updateOrder });
     }
 };

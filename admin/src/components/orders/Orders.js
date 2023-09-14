@@ -68,6 +68,8 @@ const Orders = (props) => {
                                 <option value={'confirm'}>Đã xác nhận</option>
                                 <option value={'delivering'}>Đang giao</option>
                                 <option value={'delivered'}>Đã giao</option>
+                                {/* <option value={'delivered'}>Đang giao</option>
+                                <option value={'paid'}>Đã giao</option> */}
                                 <option value={'unpaid'}>Chưa thanh toán</option>
                                 <option value={'paid'}>Đã thanh toán</option>
                                 <option value={'completed'}>Đã hoàn tất</option>
