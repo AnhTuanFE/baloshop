@@ -12,6 +12,7 @@ const getProducts = async (req, res) => {
     const page = parseInt(req.query.page) >= 1 ? parseInt(req.query.page) : 1;
     const sortBy = validateConstants(productQueryParams, 'sort', req.query.sortBy || 'default');
     let statusFilter = validateConstants(productQueryParams, 'status', 'default');
+
     let search = {};
     if (req.query.keyword) {
         search.name = {

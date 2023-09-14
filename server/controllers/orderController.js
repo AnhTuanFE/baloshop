@@ -17,6 +17,7 @@ import {
     REFUND,
 } from '../config/paymentMethodConfig.js';
 import { orderQueryParams, validateConstants } from '../utils/searchConstants.js';
+
 /*
         orderInfo.statusHistory = [
             { status: 'placed', description: '', updateBy: req.user._id },
@@ -244,29 +245,40 @@ const createOrder = async (req, res, next) => {
     }
 };
 
+// console.log('req.body = ', req.body);
+// console.log('req.query = ', req.query);
 const getOrderAll = async (req, res) => {
     const limit = Number(req.query.limit || 12);
     const page = Number(req.query.pageNumber) || 1;
     const sortBy = validateConstants(orderQueryParams, 'sort', req.query.sortBy);
     const orderStatusFilter = validateConstants(orderQueryParams, 'status', req.query.status);
     let search = {};
+    let limitFilter;
     if (req.query.keyword) {
-        search.email = {
-            $regex: req.query.keyword,
-            $options: 'i',
-        };
+        const keywordRegex = new RegExp(req.query.keyword, 'i');
+        search.$or = [{ name: keywordRegex }, { phone: keywordRegex }, { id: keywordRegex }];
     }
-
+    // if (req.query.status) {
+    //     const statusValues = req.query.status.split(',');
+    //     if (statusValues.length > 0) {
+    //         orderStatusFilter.status = { $in: statusValues };
+    //     }
+    // }
     const count = await Order.countDocuments({ ...search, ...orderStatusFilter });
+    if (count < limit) {
+        limitFilter = count;
+    } else {
+        limitFilter = limit;
+    }
     let orders = await Order.find({ ...search })
-        .limit(limit)
-        .skip(limit * (page - 1))
+        .limit(limitFilter)
+        .skip(limitFilter * (page - 1))
         .sort({ ...sortBy })
         // .populate('user', 'id name email')
         .populate('payment')
         .lean();
 
-    res.json({ orders, page, pages: Math.ceil(count / limit), total: count });
+    res.json({ orders, page, pages: Math.ceil(count / limitFilter), total: count });
 };
 const completed = async (req, res) => {
     try {

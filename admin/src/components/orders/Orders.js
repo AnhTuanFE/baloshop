@@ -17,7 +17,7 @@ const Orders = (props) => {
     const [kewywordSearch, setKewywordSearch] = useState('');
     useEffect(() => {
         const limit = 10;
-        dispatch(listOrders(keyword, status, pageNumber, limit));
+        dispatch(listOrders({ keyword: keyword, status: status, pageNumber: pageNumber, limit: limit }));
     }, [dispatch, status, keyword, pageNumber]);
 
     const handleStatus = (value) => {
