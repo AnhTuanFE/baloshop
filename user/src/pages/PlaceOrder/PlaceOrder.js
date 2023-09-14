@@ -59,7 +59,6 @@ function PlaceOrder() {
                 quantity: pro.qty,
                 image: pro.product.image[0],
                 price: pro.product.price,
-                id_product: pro.id_product,
                 product: pro.product._id,
             });
             return arr;

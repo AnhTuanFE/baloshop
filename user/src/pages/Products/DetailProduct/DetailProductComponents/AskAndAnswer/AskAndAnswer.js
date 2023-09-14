@@ -7,14 +7,21 @@ import Loading from '~/components/LoadingError/Loading';
 import { imageDefaul } from '~/utils/data';
 import { PRODUCT_CREATE_COMMENTCHILD_RESET, PRODUCT_CREATE_COMMENT_RESET } from '~/redux/Constants/ProductConstants';
 import { createProductComment, createProductCommentChild } from '~/redux/Actions/ProductActions';
+import { Radio, notification, ConfigProvider } from 'antd';
 
 import './AskAndAnswer.css';
 
 function AskAndAnswer(props) {
     const { product, userInfo } = props;
-    let productId = product._id;
     const dispatch = useDispatch();
-
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (placement, notify, type) => {
+        api[type]({
+            message: `Thông báo `,
+            description: `${notify}`,
+            placement,
+        });
+    };
     const [question, setQuestion] = useState('');
 
     const [idComment, setIdComment] = useState('');
@@ -27,6 +34,7 @@ function AskAndAnswer(props) {
         error: errorCreateComment,
         success: successCreateComment,
     } = productCommentCreate;
+
     const productCommentChildCreate = useSelector((state) => state.productCommentChildCreate); //comment child
     const {
         loading: loadingCreateCommentChild,
@@ -37,10 +45,9 @@ function AskAndAnswer(props) {
     //comment
     const submitComment = (e) => {
         e.preventDefault();
-        // dispatch(createProductComment(productId, { nameProduct, imageProduct, question }));
         dispatch(
             createProductComment({
-                productId: productId,
+                productId: product._id,
                 nameProduct: product.name,
                 imageProduct: product.image[0],
                 question: question,
@@ -52,7 +59,7 @@ function AskAndAnswer(props) {
     // quenstion child
     const submitQuestionChild = (e) => {
         e.preventDefault();
-        dispatch(createProductCommentChild(productId, { questionChild, idComment }));
+        dispatch(createProductCommentChild({ productId: product._id, questionChild: question, idComment: idComment }));
         setQuestionChild('');
     };
 
@@ -71,7 +78,8 @@ function AskAndAnswer(props) {
     }, []);
     return (
         <>
-            {Object.keys(product).length > 1 && (
+            {contextHolder}
+            {Object.keys(product).length > 1 ? (
                 <div className="mt-4 rounded-xl bg-white pt-2">
                     <div className="rounded-xl py-4 shadow-custom-shadow max-md:px-1 md:px-5">
                         {/* {loadingCreateComment && <Loading />} */}
@@ -226,6 +234,8 @@ function AskAndAnswer(props) {
                         </div>
                     </div>
                 </div>
+            ) : (
+                ''
             )}
         </>
     );

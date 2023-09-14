@@ -62,12 +62,12 @@ export const orderDetailsReducer = (state = { loading: true, orderItems: [], shi
     }
 };
 
-export const updateStatusOrderAdminReducer = (state = {}, action) => {
+export const updateStatusOrderAdminReducer = (state = { data: {} }, action) => {
     switch (action.type) {
         case UPDATE_STATUS_ORDER_ADMIN_REQUEST:
             return { loading: true };
         case UPDATE_STATUS_ORDER_ADMIN_SUCCESS:
-            return { loading: false, success: true };
+            return { loading: false, success: true, data: action.payload };
         case UPDATE_STATUS_ORDER_ADMIN_FAIL:
             return { loading: false, error: action.payload };
         case UPDATE_STATUS_ORDER_ADMIN_RESET:

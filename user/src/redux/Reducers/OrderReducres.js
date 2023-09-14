@@ -1,3 +1,4 @@
+import { act } from 'react-dom/test-utils';
 import * as types from '../Constants/OrderConstants';
 // CREATE ORDER
 export const orderCreateReducer = (state = { loading: false, order: {} }, action) => {
@@ -133,12 +134,12 @@ export const GHTK_Reducer = (state = {}, action) => {
     }
 };
 
-export const updateStatusOrderUserReducer = (state = {}, action) => {
+export const updateStatusOrderUserReducer = (state = { data: {} }, action) => {
     switch (action.type) {
         case types.UPDATE_STATUS_ORDER_USER_REQUEST:
             return { loading: true };
         case types.UPDATE_STATUS_ORDER_USER_SUCCESS:
-            return { loading: false, success: true };
+            return { loading: false, success: true, data: action.payload };
         case types.UPDATE_STATUS_ORDER_USER_FAIL:
             return { loading: false, error: action.payload };
         case types.UPDATE_STATUS_ORDER_USER_RESET:

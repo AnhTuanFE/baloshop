@@ -11,8 +11,7 @@ const getCartById = async (req, res) => {
     }
 };
 const addCartItem = async (req, res) => {
-    const { productId, id_product, color, qty, _id } = req.body;
-    // const product = await Pcolorroduct.findById(productId);
+    const { productId, color, qty, _id } = req.body;
     const cartExist = await Cart.findOne({ user: _id });
     if (req?.user?.disabled) {
         res.status(400);
@@ -42,7 +41,6 @@ const addCartItem = async (req, res) => {
             product: productId,
             color: color,
             qty: qty,
-            id_product: id_product,
         };
         cartExist.cartItems.push(cartadd);
         await cartExist.save();
@@ -57,7 +55,6 @@ const addCartItem = async (req, res) => {
                     product: productId,
                     color,
                     qty,
-                    id_product,
                 },
             ],
         });

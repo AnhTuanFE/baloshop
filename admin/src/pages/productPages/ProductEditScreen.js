@@ -36,12 +36,11 @@ const ToastObjects = {
 const ProductEditScreen = () => {
     const params = useParams();
     const productId = params.id;
-    const [category, setCategory] = useState('');
+
     const [name, setName] = useState('');
     const [price, setPrice] = useState(0);
+    const [category, setCategory] = useState('');
     const [image, setImage] = useState('');
-    const [nameImage, setNameImage] = useState('');
-
     const [imageTemp, setImageTemp] = useState();
 
     const [countInStock, setCountInStock] = useState('');
@@ -55,9 +54,7 @@ const ProductEditScreen = () => {
     const dispatch = useDispatch();
 
     const productEdit = useSelector((state) => state.productEdit);
-    const { loading, error, product } = productEdit;
-
-    const optionColor = product?.optionColor?.sort(({ color: b }, { color: a }) => (a > b ? 1 : a < b ? -1 : 0));
+    const { loading, error, stateProductEdit } = productEdit;
 
     const productUpdate = useSelector((state) => state.productUpdate);
     const { loading: loadingUpdate, error: errorUpdate, success: successUpdate } = productUpdate;
@@ -72,8 +69,6 @@ const ProductEditScreen = () => {
     const lcategories = useSelector((state) => state.CategoryList);
     const { categories } = lcategories;
 
-    // const productCreateImage = useSelector((state) => state.productCreateImage);
-    // const { urlImages, success: successCreactImage } = productCreateImage;
     const productDeleteImage = useSelector((state) => state.productDeleteImage);
     const { success: successDeleteImage } = productDeleteImage;
 
@@ -83,64 +78,80 @@ const ProductEditScreen = () => {
             setCheckAdd(true);
             dispatch({ type: PRODUCT_UPDATE_OPTION_RESET });
             toast.success('Đã cập nhật thành công', ToastObjects);
+            dispatch(editProduct(productId));
         }
         if (successOption) {
             dispatch({ type: PRODUCT_OPTIONCOLOR_RESET });
             toast.success('Đã cập nhật thành công', ToastObjects);
+            dispatch(editProduct(productId));
         }
         if (successDelete) {
             dispatch({ type: PRODUCT_DELETE_OPTION_RESET });
             toast.success('Đã xóa thành công', ToastObjects);
+            dispatch(editProduct(productId));
         }
         if (successDeleteImage) {
             dispatch({ type: PRODUCT_DELETE_IMAGE_RESET });
             toast.success('Đã xóa thành công', ToastObjects);
+            dispatch(editProduct(productId));
         }
-        dispatch(editProduct(productId));
     }, [successOptionUpdate, successOption, successDelete, successDeleteImage]);
 
     useEffect(() => {
-        const options = product?.optionColor?.find((option) => option._id === optionId);
-        if (options) {
-            setColor(options?.color);
-            setCountInStock(options?.countInStock);
+        if (stateProductEdit.product) {
+            const options = stateProductEdit?.product.optionColor?.find((option) => option._id === optionId);
+            if (options) {
+                setColor(options?.color);
+                setCountInStock(options?.countInStock);
+            }
         }
     }, [optionId]);
 
     useEffect(() => {
-        dispatch(ListCategory());
         if (successUpdate) {
             dispatch({ type: PRODUCT_UPDATE_RESET });
             toast.success('Đã cập nhật thành công', ToastObjects);
-        } else {
-            if (!product?.name || product?._id !== productId) {
-                dispatch(editProduct(productId));
-            } else {
+            dispatch(editProduct(productId));
+        }
+    }, [successUpdate]);
+
+    useEffect(() => {
+        dispatch(editProduct(productId));
+    }, [productId]);
+
+    useEffect(() => {
+        if (stateProductEdit.product) {
+            const { product } = stateProductEdit;
+            if (Object.keys(product).length > 0) {
                 setName(product.name);
                 setDescription(product.description);
                 setCountInStock(product.countInStock);
                 setCategory(product.category);
-                setImage(product.image[0]);
-                setNameImage(product.image[0]?.nameCloudinary);
+                setImage(product.image);
                 setPrice(product.price);
             }
         }
-    }, [product, dispatch, productId, successUpdate]);
+    }, [stateProductEdit]);
+    useEffect(() => {
+        dispatch(ListCategory());
+    }, []);
 
-    const submitHandler = (e) => {
+    const handleUpdateProduct = (e) => {
         e.preventDefault();
-        if (category != -1) {
-            let formData = new FormData();
-            formData.append('id', productId);
-            formData.append('name', name);
-            formData.append('price', price);
-            formData.append('category', category);
-            formData.append('description', description);
-            formData.append('image', image);
-            formData.append('nameImage', nameImage);
-
-            dispatch(updateProduct(formData));
-        }
+        console.log('productId = ', productId);
+        console.log('name = ', name);
+        console.log('price = ', price);
+        console.log('category = ', category);
+        console.log('description = ', description);
+        console.log('image = ', image);
+        let formData = new FormData();
+        formData.append('id', productId);
+        formData.append('name', name);
+        formData.append('price', price);
+        formData.append('category', category);
+        formData.append('description', description);
+        formData.append('image', image);
+        dispatch(updateProduct({ id: productId, formData: formData }));
     };
     const submitOptionHandler = (e) => {
         e.preventDefault();
@@ -305,7 +316,7 @@ const ProductEditScreen = () => {
                                                 style={{ marginTop: '10px', display: 'flex', justifyContent: 'right' }}
                                             >
                                                 <button
-                                                    onClick={submitHandler}
+                                                    onClick={handleUpdateProduct}
                                                     className="btn btn-primary color-orange"
                                                 >
                                                     Lưu
@@ -378,57 +389,61 @@ const ProductEditScreen = () => {
                                                     </thead>
                                                     {/* Table Data */}
                                                     <tbody>
-                                                        {optionColor &&
-                                                            optionColor?.map((option, index) => (
-                                                                <tr>
-                                                                    <td>{index + 1}</td>
-                                                                    <td>
-                                                                        <b>{option.color}</b>
-                                                                    </td>
-                                                                    <td>
-                                                                        <span>{option.countInStock}</span>
-                                                                    </td>
-                                                                    <td className="text-end">
-                                                                        <div
-                                                                            style={{
-                                                                                display: 'flex',
-                                                                                alignItems: 'center',
-                                                                                justifyContent: 'right',
-                                                                            }}
-                                                                        >
-                                                                            <button
-                                                                                className="open-option"
-                                                                                onClick={(e) => {
-                                                                                    e.preventDefault();
-                                                                                    setOptionId(option._id);
-                                                                                    setCheckEdit(true);
-                                                                                    setCheckAdd(false);
+                                                        {stateProductEdit?.product?.optionColor &&
+                                                            stateProductEdit?.product?.optionColor?.map(
+                                                                (option, index) => (
+                                                                    <tr>
+                                                                        <td>{index + 1}</td>
+                                                                        <td>
+                                                                            <b>{option.color}</b>
+                                                                        </td>
+                                                                        <td>
+                                                                            <span>{option.countInStock}</span>
+                                                                        </td>
+                                                                        <td className="text-end">
+                                                                            <div
+                                                                                style={{
+                                                                                    display: 'flex',
+                                                                                    alignItems: 'center',
+                                                                                    justifyContent: 'right',
                                                                                 }}
                                                                             >
-                                                                                <i class="icon fas fa-edit"></i>
-                                                                            </button>
-                                                                            <button
-                                                                                className="open-option"
-                                                                                onClick={(e) => {
-                                                                                    e.preventDefault();
-                                                                                    if (
-                                                                                        window.confirm('Are you sure??')
-                                                                                    ) {
-                                                                                        dispatch(
-                                                                                            deleteOptionProduct(
-                                                                                                productId,
-                                                                                                option._id,
-                                                                                            ),
-                                                                                        );
-                                                                                    }
-                                                                                }}
-                                                                            >
-                                                                                <i class="icon fas fa-trash-alt"></i>
-                                                                            </button>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                            ))}
+                                                                                <button
+                                                                                    className="open-option"
+                                                                                    onClick={(e) => {
+                                                                                        e.preventDefault();
+                                                                                        setOptionId(option._id);
+                                                                                        setCheckEdit(true);
+                                                                                        setCheckAdd(false);
+                                                                                    }}
+                                                                                >
+                                                                                    <i class="icon fas fa-edit"></i>
+                                                                                </button>
+                                                                                <button
+                                                                                    className="open-option"
+                                                                                    onClick={(e) => {
+                                                                                        e.preventDefault();
+                                                                                        if (
+                                                                                            window.confirm(
+                                                                                                'Are you sure??',
+                                                                                            )
+                                                                                        ) {
+                                                                                            dispatch(
+                                                                                                deleteOptionProduct(
+                                                                                                    productId,
+                                                                                                    option._id,
+                                                                                                ),
+                                                                                            );
+                                                                                        }
+                                                                                    }}
+                                                                                >
+                                                                                    <i class="icon fas fa-trash-alt"></i>
+                                                                                </button>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                ),
+                                                            )}
                                                     </tbody>
                                                 </table>
                                             </div>

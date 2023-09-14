@@ -15,7 +15,6 @@ const OrderDetailProducts = (props) => {
     const dispatch = useDispatch();
     const [statusModal, setStatusModal] = useState(false);
     const [status, setStatus] = useState('');
-
     const handleHidden = () => {
         setStatusModal(false);
     };

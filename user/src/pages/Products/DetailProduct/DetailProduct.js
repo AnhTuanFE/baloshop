@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
-// component child
 import Loading from '~/components/LoadingError/Loading';
 import Message from '~/components/LoadingError/Error';
 import Rating from '~/components/Rating/Rating';
@@ -10,13 +9,12 @@ import SliderImageProducts from './DetailProductComponents/SliderImageProducts/S
 import AskAndAnswer from './DetailProductComponents/AskAndAnswer/AskAndAnswer';
 import EvaluateProduct from './DetailProductComponents/EvaluateProduct/EvaluateProduct';
 
-// redux
-import { productDetailAction, listProduct } from '~/redux/Actions/ProductActions';
+import { productDetailAction } from '~/redux/Actions/ProductActions';
 import { CART_CREATE_RESET } from '~/redux/Constants/CartConstants';
 import { addToCart, listCart } from '~/redux/Actions/cartActions';
 
 import SimilarProducts from './DetailProductComponents/SimilarProducts/SimilarProducts';
-import { notification } from 'antd';
+import { Radio, notification, ConfigProvider } from 'antd';
 import LoadingLarge from '~/components/LoadingError/LoadingLarge';
 import './DetailProduct.css';
 
@@ -36,39 +34,57 @@ function DetailProduct() {
 
     const [qty, setQty] = useState(1);
     const [optionIndex, setOptionIndex] = useState(0);
-    const [optionsArrColor, setOptionArrColor] = useState('');
+    const [optionsArrColor, setOptionArrColor] = useState({});
     const [color, setColor] = useState('');
 
     const productDetail = useSelector((state) => state.productDetails);
-    const { loading, error, product } = productDetail;
-    // re-render lại UI khi bình luận và đánh giá
+    const { loading, error, data } = productDetail;
+    const { product } = data;
+    // start state component com dùng để re-render khi cần
+    const reviews = useSelector((state) => state.productReviewCreate);
+    const {
+        loading: loadingCreateReview,
+        error: errorCreateReview,
+        success: successCreateReview,
+        data: dataCreateReview,
+    } = reviews;
+    const productCommentCreate = useSelector((state) => state.productCommentCreate); //comment
+    const {
+        loading: loadingCreateComment,
+        error: errorCreateComment,
+        success: successCreateComment,
+    } = productCommentCreate;
+
+    const productCommentChildCreate = useSelector((state) => state.productCommentChildCreate); //comment child
+    const {
+        loading: loadingCreateCommentChild,
+        error: errorCreateCommentChild,
+        success: successCreateCommentChild,
+    } = productCommentChildCreate;
+    // end state component com dùng để re-render khi cần
+
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
 
     const cartCreate = useSelector((state) => state.cartCreate);
     const { success: successAddCart, loading: loadingAddCart, error: errorAddCart } = cartCreate;
-
-    const optionColor = product?.optionColor?.sort(({ color: b }, { color: a }) => (a > b ? 1 : a < b ? -1 : 0));
+    // antd
+    const [selected, setSelected] = useState('');
+    const handleSelectedChange = (e) => {
+        setSelected(e.target.value);
+    };
+    //
+    useEffect(() => {
+        dispatch(productDetailAction({ id: productId }));
+    }, [productId, successCreateReview, successCreateComment, successCreateCommentChild]);
 
     useEffect(() => {
-        dispatch(productDetailAction(productId));
-    }, [productId]);
-    // successCreateReview
-
-    useEffect(() => {
-        if (optionColor) {
-            setColor(optionColor[0]?.color);
+        if (data.product) {
+            setColor(data.product.optionColor[optionIndex]?.color);
+            setSelected(data.product.optionColor[optionIndex]?.color);
+            setOptionArrColor(data.product.optionColor[optionIndex]);
         }
-    }, [optionColor]);
-
-    useEffect(() => {
-        setOptionArrColor(() => {
-            if (optionColor !== undefined && optionIndex !== undefined) {
-                let x = optionColor[optionIndex];
-                return x;
-            }
-        });
-    }, [optionIndex, optionColor]);
+    }, [data, optionIndex]);
 
     useEffect(() => {
         if (successAddCart) {
@@ -86,9 +102,8 @@ function DetailProduct() {
 
     const AddToCartHandle = (e) => {
         e.preventDefault();
-        const id_product = product?.id_product || 151138769223;
         if (userInfo) {
-            dispatch(addToCart({ productId, color, id_product, qty, _id: userInfo._id }));
+            dispatch(addToCart({ productId, color, qty, _id: userInfo._id }));
         } else navigate('/login');
     };
     const handleRender = () => {
@@ -141,19 +156,44 @@ function DetailProduct() {
                                             <div className=" d-flex justify-content-between align-items-center px-6 py-2">
                                                 <h6 className="text-base font-semibold">Màu sắc</h6>
                                                 <div>
-                                                    {optionColor?.map((option, index) => (
-                                                        <button
-                                                            type="button"
-                                                            key={option._id}
-                                                            onClick={() => {
-                                                                setOptionIndex(index);
-                                                                setColor(option.color);
-                                                            }}
-                                                            className="mt-2 rounded bg-[var(--blue-color)] px-3 py-1 text-white"
-                                                        >
-                                                            {option.color}
-                                                        </button>
-                                                    ))}
+                                                    <ConfigProvider
+                                                        theme={{
+                                                            token: {
+                                                                // Seed Token
+                                                                colorPrimary: '#e83781',
+                                                                borderRadius: 2,
+                                                                // Alias Token
+                                                                // colorBgContainer: '#f6ffed',
+                                                            },
+                                                        }}
+                                                    >
+                                                        <Radio.Group value={selected} onChange={handleSelectedChange}>
+                                                            {product?.optionColor?.map((option, index) => (
+                                                                // <button
+                                                                //     type="button"
+                                                                //     key={option._id}
+                                                                //     onClick={() => {
+                                                                //         setOptionIndex(index);
+                                                                //         setColor(option.color);
+                                                                //     }}
+                                                                //     className="mr-1 mt-2 rounded bg-[var(--blue-color)] px-2 py-1 text-white"
+                                                                // >
+                                                                //     {option.color}
+                                                                // </button>
+                                                                <Radio.Button
+                                                                    key={option._id}
+                                                                    onClick={() => {
+                                                                        setOptionIndex(index);
+                                                                        setColor(option.color);
+                                                                    }}
+                                                                    value={option.color}
+                                                                    className=""
+                                                                >
+                                                                    {option.color}
+                                                                </Radio.Button>
+                                                            ))}
+                                                        </Radio.Group>
+                                                    </ConfigProvider>
                                                 </div>
                                             </div>
 
@@ -199,16 +239,20 @@ function DetailProduct() {
                                     </h2>
                                     <div
                                         className="product-description"
-                                        dangerouslySetInnerHTML={{ __html: product.description }}
+                                        dangerouslySetInnerHTML={{ __html: product?.description }}
                                     ></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="mx-2">
-                        <EvaluateProduct product={product} userInfo={userInfo} />
-                        <AskAndAnswer product={product} userInfo={userInfo} />
-                        <SimilarProducts category={product?.category} />
+                        {data?.product && (
+                            <>
+                                <EvaluateProduct product={data?.product} userInfo={userInfo} />
+                                <AskAndAnswer product={data?.product} userInfo={userInfo} />
+                                <SimilarProducts category={data?.product?.category} />
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

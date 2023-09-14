@@ -66,7 +66,8 @@ export const listProduct = (dataReceived) => async (dispatch) => {
 };
 
 // SINGLE PRODUCT
-export const productDetailAction = (id) => async (dispatch) => {
+export const productDetailAction = (dataReceived) => async (dispatch) => {
+    const { id } = dataReceived;
     try {
         dispatch({ type: types.PRODUCT_DETAILS_REQUEST });
         const { data } = await axios.get(`/api/products/${id}`);
@@ -80,7 +81,8 @@ export const productDetailAction = (id) => async (dispatch) => {
 };
 
 // PRODUCT REVIEW CREATE
-export const createProductReview = (productId, rating, comment) => async (dispatch, getState) => {
+export const createProductReview = (dataReceived) => async (dispatch, getState) => {
+    const { productId, rating, comment } = dataReceived;
     try {
         dispatch({ type: types.PRODUCT_CREATE_REVIEW_REQUEST });
 
@@ -95,8 +97,8 @@ export const createProductReview = (productId, rating, comment) => async (dispat
             },
         };
 
-        await axios.post(`/api/products/${productId}/review`, { rating, comment }, config);
-        dispatch({ type: types.PRODUCT_CREATE_REVIEW_SUCCESS });
+        const { data } = await axios.post(`/api/products/${productId}/review`, { rating, comment }, config);
+        dispatch({ type: types.PRODUCT_CREATE_REVIEW_SUCCESS, payload: data });
     } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;
         if (message === 'Not authorized, token failed') {
@@ -133,8 +135,8 @@ export const createProductComment = (dataReceived) => async (dispatch, getState)
                 },
             };
 
-            await axios.post(`/api/products/${productId}/comment`, comments, config);
-            dispatch({ type: types.PRODUCT_CREATE_COMMENT_SUCCESS });
+            const { data } = await axios.post(`/api/products/${productId}/comment`, comments, config);
+            dispatch({ type: types.PRODUCT_CREATE_COMMENT_SUCCESS, payload: data });
         } catch (error) {
             const message = error.response && error.response.data.message ? error.response.data.message : error.message;
             if (message === 'Not authorized, token failed') {
@@ -149,7 +151,8 @@ export const createProductComment = (dataReceived) => async (dispatch, getState)
 };
 
 // PRODUCT COMMENTCHILDS CREATE
-export const createProductCommentChild = (productId, question) => async (dispatch, getState) => {
+export const createProductCommentChild = (dataReceived) => async (dispatch, getState) => {
+    const { productId, questionChild, idComment } = dataReceived;
     try {
         dispatch({ type: types.PRODUCT_CREATE_COMMENTCHILD_REQUEST });
 
@@ -164,8 +167,12 @@ export const createProductCommentChild = (productId, question) => async (dispatc
             },
         };
 
-        await axios.post(`/api/products/${productId}/commentchild`, question, config);
-        dispatch({ type: types.PRODUCT_CREATE_COMMENTCHILD_SUCCESS });
+        const { data } = await axios.post(
+            `/api/products/${productId}/commentchild`,
+            { questionChild, idComment },
+            config,
+        );
+        dispatch({ type: types.PRODUCT_CREATE_COMMENTCHILD_SUCCESS, payload: data });
     } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;
         if (message === 'Not authorized, token failed') {

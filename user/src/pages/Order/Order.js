@@ -64,9 +64,14 @@ function Order() {
     const extraData = searchParams.get('extraData');
     const signature = searchParams.get('signature');
 
-    const { stateUpdateStatusOrderUser, stateUserRequestConfirmPaidMOMO } = useSelector(ordersRemainingSelector);
+    const { stateUpdateStatusOrderUser, stateUserRequestConfirmPaidMOMO, orderDetails } =
+        useSelector(ordersRemainingSelector);
     const { success: successConfirmPaid } = stateUserRequestConfirmPaidMOMO;
-    const { loading: loadingUpdateOrder, success: successUpdateOrder } = stateUpdateStatusOrderUser;
+    const {
+        loading: loadingUpdateOrder,
+        success: successUpdateOrder,
+        data: dataUpdateOrder,
+    } = stateUpdateStatusOrderUser;
     const [productId, setProductId] = useState('');
     // ======================
     const [rating, setRating] = useState(0);
@@ -74,22 +79,22 @@ function Order() {
     // ======================
     const [comment, setComment] = useState('');
     const [product, setProduct] = useState('');
-    const [bulean, setBulean] = useState(false);
-    const [orderItemId, setOrderItemId] = useState('');
     const dispatch = useDispatch();
 
-    const orderDetails = useSelector((state) => state.orderDetails);
+    // const  = useSelector((state) => state.orderDetails);
     const { order, loading, error } = orderDetails;
 
     const reviews = useSelector((state) => state.productReviewCreate);
-    const { success: successReview, error: errorReview } = reviews;
+    const { success: successReview, error: errorReview, data } = reviews;
     useEffect(() => {
-        dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
-        setProductId('');
-        setRating('');
-        setComment('');
-        setBulean('');
-    }, [bulean]);
+        if (successReview) {
+            openNotification('top', 'Đã đánh giá Thành công', 'success');
+            dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
+            setProductId('');
+            setRating('');
+            setComment('');
+        }
+    }, [reviews]);
 
     const cancelOrderHandler = () => {
         dispatch(updateStatusOrderUserAction({ id: order?.order?._id, status: 'cancel' }));
@@ -105,9 +110,12 @@ function Order() {
         dispatch({ type: ORDER_PAY_RESET });
         dispatch(getOrderDetails(orderId));
         if (successUpdateOrder) {
+            if (dataUpdateOrder?.message) {
+                openNotification('top', `${dataUpdateOrder?.message}`, 'success');
+            }
             dispatch({ type: UPDATE_STATUS_ORDER_USER_RESET });
         }
-    }, [orderId, successUpdateOrder, successConfirmPaid]);
+    }, [orderId, successUpdateOrder, successConfirmPaid, successReview]);
 
     useEffect(() => {
         if (
@@ -199,7 +207,6 @@ function Order() {
                                                                 onClick={() => {
                                                                     setProduct(item);
                                                                     setProductId(item.product);
-                                                                    setOrderItemId(item._id);
                                                                     window.my_modal_2.showModal();
                                                                 }}
                                                             >
@@ -274,6 +281,7 @@ function Order() {
                                         </form>
                                     </dialog>
                                 </div>
+
                                 <div>
                                     <dialog
                                         id="my_modal_4"
@@ -298,6 +306,7 @@ function Order() {
                                         </form>
                                     </dialog>
                                 </div>
+
                                 <dialog id="my_modal_2" className="modal">
                                     <form method="dialog" className="modal-box">
                                         <h3 className="text-center text-lg font-bold">Đánh giá sản phẩm!</h3>
@@ -317,7 +326,7 @@ function Order() {
                                                     src={`${product?.image}`}
                                                     className="m-auto h-32 w-32 items-center"
                                                     alt="hình ảnh"
-                                                ></img>
+                                                />
                                                 <p className="text-center">{product?.name}</p>
                                                 <div className="flex justify-center text-base">
                                                     <p className="pr-1">
@@ -372,9 +381,13 @@ function Order() {
                                                     data-bs-dismiss={''}
                                                     onClick={() => {
                                                         dispatch(
-                                                            createProductReview(productId, rating, comment),
-                                                            setRating(''),
-                                                            setComment(''),
+                                                            createProductReview({
+                                                                productId: productId,
+                                                                rating: rating,
+                                                                comment: comment,
+                                                            }),
+                                                            // setRating(''),
+                                                            // setComment(''),
                                                         );
                                                     }}
                                                 >

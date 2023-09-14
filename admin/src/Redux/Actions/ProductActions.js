@@ -226,7 +226,9 @@ export const editProduct = (id) => async (dispatch) => {
 };
 
 // UPDATE PRODUCT
-export const updateProduct = (product) => async (dispatch, getState) => {
+export const updateProduct = (dataReceived) => async (dispatch, getState) => {
+    const { formData, id } = dataReceived;
+    console.log('product gửi cho action', dataReceived);
     try {
         dispatch({ type: PRODUCT_UPDATE_REQUEST });
 
@@ -241,7 +243,7 @@ export const updateProduct = (product) => async (dispatch, getState) => {
             },
         };
 
-        const { data } = await axios.put(`/api/products/${product._id}`, product, config);
+        const { data } = await axios.put(`/api/products/${id}`, formData, config);
 
         dispatch({ type: PRODUCT_UPDATE_SUCCESS, payload: data });
         dispatch({ type: PRODUCT_EDIT_SUCCESS, payload: data });

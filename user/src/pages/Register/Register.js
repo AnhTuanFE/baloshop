@@ -55,7 +55,7 @@ function Register() {
                     >
                         {error && <Message variant="alert-danger block">{error}</Message>}
                         {loading && <Loading />}
-                        <div className="mb-2 text-center text-xl font-semibold"> Đăng ký tài khoản</div>
+                        <div className="mb-3 mt-2 text-center text-xl font-semibold"> Đăng ký tài khoản</div>
                         <div className=" ">
                             <Controller
                                 name="name"

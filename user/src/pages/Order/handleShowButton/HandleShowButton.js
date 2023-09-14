@@ -27,7 +27,7 @@ const HandleShowButton = (order) => {
                 <div className="mx-2 pt-2">
                     <button
                         onClick={() => window.my_modal_1.showModal()}
-                        className=" w-full cursor-pointer rounded-lg bg-red-600 py-1 text-sm font-semibold uppercase text-white"
+                        className=" w-full cursor-pointer rounded-lg bg-[var(--red-color)] py-1 text-sm font-semibold uppercase text-white hover:bg-[var(--red-color-hover)]"
                     >
                         HỦY ĐƠN HÀNG
                     </button>
