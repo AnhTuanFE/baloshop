@@ -62,6 +62,10 @@ const CreateCategory = () => {
         // setImage('');
         setDescription('');
     };
+
+    const handleCreateCategory1 = (e) => {
+        window.location.reload();
+    };
     return (
         <>
             <Toast />
@@ -101,6 +105,7 @@ const CreateCategory = () => {
                             placeholder=""
                             className={`form-control ${validate.borderRed3}`}
                             rows="4"
+                            style={{ resize: 'none' }}
                             value={description}
                             onClick={() => {
                                 setValidate((values) => {
@@ -117,9 +122,12 @@ const CreateCategory = () => {
                         <p className="product_validate">{validate.description}</p>
                     </div>
 
-                    <div className="d-grid">
-                        <button className="btn btn-primary py-3 color-orange" onClick={handleCreateCategory}>
+                    <div className="d-flex justify-content-end warn">
+                        <button className="btn btn-primary mx-2" onClick={handleCreateCategory}>
                             Thêm loại hàng
+                        </button>
+                        <button className="btn btn-danger" onClick={handleCreateCategory1}>
+                            Hủy
                         </button>
                     </div>
                 </form>

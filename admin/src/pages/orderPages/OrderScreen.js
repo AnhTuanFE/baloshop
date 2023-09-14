@@ -14,8 +14,8 @@ const OrderScreen = () => {
                 <h2 className="content-title">Đơn hàng</h2>
             </div>
 
-            <div className="card mb-4 shadow-sm">
-                <div className="card-body">
+            <div className="card mb-2 shadow-sm">
+                <div className="card-body px-2 py-0">
                     <div className="table-responsive">
                         <Orders keyword={keyword} status={status} pageNumber={pageNumber} />
                     </div>

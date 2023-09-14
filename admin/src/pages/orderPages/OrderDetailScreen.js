@@ -31,7 +31,7 @@ const OrderDetailScreen = () => {
         <section className="content-main">
             <div className="content-header">
                 <div className="col-lg-6 col-md-6">
-                    <Link to="/orders" className="btn btn-dark text-white">
+                    <Link to="/orders" className="btn btn-danger">
                         Quay lại
                     </Link>
                 </div>

@@ -84,7 +84,7 @@ const CommentScreen = () => {
     };
     return (
         <>
-            <div className="content-main" style={{ backgroundColor: '#ffffff' }}>
+            <div className="content-main ">
                 <div className="content-header">
                     <h2 className="content-title" style={{ padding: '15px' }}>
                         Bình luận
@@ -93,14 +93,18 @@ const CommentScreen = () => {
                 {loading && <Loading />}
                 {error && <Message variant="alert-danger">{error}</Message>}
                 {errorCommentChild && <Message variant="alert-danger">{errorCommentChild}</Message>}
-                <div class="accordion" id="accordionPanelsStayOpenExample">
+                <div
+                    class="accordion overflow-auto px-1"
+                    style={{ height: '74vh', boxShadow: '0px 0px 4px 2px rgba(0,0,0,0.24) inset' }}
+                    id="accordionPanelsStayOpenExample"
+                >
                     {products?.map((product, index) => {
                         return (
                             <div
                                 style={{
                                     marginTop: '12px',
                                 }}
-                                class="accordion-item"
+                                class="accordion-item "
                                 key={product._id}
                             >
                                 <h2 class="accordion-header" id={`panelsStayOpen-heading${index}`}>

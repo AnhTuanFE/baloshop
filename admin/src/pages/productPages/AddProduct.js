@@ -150,17 +150,22 @@ const AddProduct = () => {
     return (
         <>
             <Toast />
-            <section className="content-main" style={{ maxWidth: '1200px' }}>
+            <section className="content-main">
                 <form>
                     <div className="content-header">
                         <h2 className="content-title">Thêm sản phẩm</h2>
                     </div>
 
-                    <div className="row mb-0 ">
-                        <div className="col-xl-12 col-lg-12 overflow-y-auto " style={{ height: '74vh' }}>
-                            <div className="card mb-1  border-none ">
+                    <div className="row my-0">
+                        <div className=" col-lg-12" style={{ boxShadow: '0px 0px 4px 2px rgba(0,0,0,0.24) inset' }}>
+                            <div
+                                className="card my-2 overflow-y-auto border-none"
+                                style={{
+                                    height: '74vh',
+                                }}
+                            >
                                 <div className="card-body p-0">
-                                    <div className="card-body shadow-sm" style={{ border: '1px solid #ccc' }}>
+                                    <div className="card-body -z-10 border">
                                         {error && <Message variant="alert-danger">{error}</Message>}
                                         {loading && <Loading />}
                                         <from>
@@ -311,10 +316,7 @@ const AddProduct = () => {
                                             </div>
                                         </from>
                                     </div>
-                                    <div
-                                        className="card-body shadow-sm"
-                                        style={{ marginTop: '10px', border: '1px solid #ccc' }}
-                                    >
+                                    <div className="card-body mt-1 border ">
                                         <div className="row">
                                             <div className="col-md-4 col-lg-4">
                                                 {errorOption && (

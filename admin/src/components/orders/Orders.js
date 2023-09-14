@@ -75,70 +75,75 @@ const Orders = (props) => {
                             </select>
                         </div>
                     </div>
-                    <table className="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Tên</th>
-                                <th scope="col">Thanh toán bằng</th>
-                                <th scope="col">Tổng tiền</th>
-                                <th scope="col">Thanh toán</th>
-                                <th scope="col">Thời gian mua</th>
-                                <th>Trạng thái</th>
-                                <th scope="col" className="text-end">
-                                    Quản lý
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {orders?.map((order) => (
-                                <tr key={order._id}>
-                                    <td>
-                                        <div>
-                                            <b>{order.name}</b>
-                                            <div>{order.user}</div>
-                                        </div>
-                                    </td>
-                                    <td>{handleChangePayMethod(order.paymentMethod)}</td>
-                                    <td>{Number(order?.totalPrice)?.toLocaleString('de-DE')}đ</td>
-                                    <td>
-                                        <span className="">
-                                            {order?.payment?.paid ? (
-                                                <div className="badge alert-success">
-                                                    <div>Đã thanh toán</div>
-                                                    <span className="">
-                                                        {moment(order?.createdAt).hours()}
-                                                        {':'}
-                                                        {moment(order.payment?.createdAt).minutes() < 10
-                                                            ? `0${moment(order?.createdAt).minutes()}`
-                                                            : moment(order.payment?.createdAt).minutes()}{' '}
-                                                        {moment(order.payment?.createdAt).format('DD/MM/YYYY')}{' '}
-                                                    </span>
-                                                </div>
-                                            ) : (
-                                                <span className="badge alert-danger">Chờ thanh toán</span>
-                                            )}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span className="badge alert-warning">
-                                            {moment(order?.createdAt).hours()}
-                                            {':'}
-                                            {moment(order?.createdAt).minutes() < 10
-                                                ? `0${moment(order?.createdAt).minutes()}`
-                                                : moment(order?.createdAt).minutes()}{' '}
-                                            {moment(order?.createdAt).format('DD/MM/YYYY')}{' '}
-                                        </span>
-                                    </td>
-                                    <td>{handleChangeStateOrder(order)}</td>
-                                    <td className="d-flex justify-content-end align-item-center">
-                                        <Link to={`/order/${order._id}`} className="text-success">
-                                            <i className="fas fa-eye"></i>
-                                        </Link>
-                                    </td>
+                    <div
+                        className="overflow-auto"
+                        style={{ height: '61vh', boxShadow: '0px 0px 8px 2px rgba(0,0,0,0.24) inset' }}
+                    >
+                        <table className="table ">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Tên</th>
+                                    <th scope="col">Thanh toán bằng</th>
+                                    <th scope="col">Tổng tiền</th>
+                                    <th scope="col">Thanh toán</th>
+                                    <th scope="col">Thời gian mua</th>
+                                    <th>Trạng thái</th>
+                                    <th scope="col" className="text-end">
+                                        Quản lý
+                                    </th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {orders?.map((order) => (
+                                    <tr key={order._id}>
+                                        <td>
+                                            <div>
+                                                <b>{order.name}</b>
+                                                <div>{order.user}</div>
+                                            </div>
+                                        </td>
+                                        <td>{handleChangePayMethod(order.paymentMethod)}</td>
+                                        <td>{Number(order?.totalPrice)?.toLocaleString('de-DE')}đ</td>
+                                        <td>
+                                            <span className="">
+                                                {order?.payment?.paid ? (
+                                                    <div className="badge alert-success">
+                                                        <div>Đã thanh toán</div>
+                                                        <span className="">
+                                                            {moment(order?.createdAt).hours()}
+                                                            {':'}
+                                                            {moment(order.payment?.createdAt).minutes() < 10
+                                                                ? `0${moment(order?.createdAt).minutes()}`
+                                                                : moment(order.payment?.createdAt).minutes()}{' '}
+                                                            {moment(order.payment?.createdAt).format('DD/MM/YYYY')}{' '}
+                                                        </span>
+                                                    </div>
+                                                ) : (
+                                                    <span className="badge alert-danger">Chờ thanh toán</span>
+                                                )}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span className="badge alert-warning">
+                                                {moment(order?.createdAt).hours()}
+                                                {':'}
+                                                {moment(order?.createdAt).minutes() < 10
+                                                    ? `0${moment(order?.createdAt).minutes()}`
+                                                    : moment(order?.createdAt).minutes()}{' '}
+                                                {moment(order?.createdAt).format('DD/MM/YYYY')}{' '}
+                                            </span>
+                                        </td>
+                                        <td>{handleChangeStateOrder(order)}</td>
+                                        <td className="d-flex justify-content-end align-item-center">
+                                            <Link to={`/order/${order._id}`} className="text-success">
+                                                <i className="fas fa-eye"></i>
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                     <PaginatorOrder
                         pages={pages}
                         page={page}

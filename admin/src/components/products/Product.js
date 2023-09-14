@@ -35,11 +35,11 @@ const Product = (props) => {
                     </td> */}
                     <td className="text-end" style={{ width: '10%' }}>
                         <div className="d-flex">
-                            <Link to={`/product/${product._id}/edit`} className="dropdown-item">
+                            <Link to={`/product/${product._id}/edit`} className="btn btn-success">
                                 Sửa
                             </Link>
                             <button
-                                className="dropdown-item"
+                                className="btn btn-danger ml-1"
                                 onClick={() => {
                                     deletehandler(product._id);
                                 }}

@@ -49,10 +49,13 @@ const CategoriesTable = ({ handleEditInfo, handleCurrentCategory }) => {
         dispatch(ListCategory());
     }, [csuccess, success, updateSuccess]);
     return (
-        <div className="col-md-8 col-lg-8">
+        <div
+            className="col-md-8 col-lg-8 overflow-auto "
+            style={{ height: '70vh', boxShadow: '0px 0px 4px 2px rgba(0,0,0,0.24) inset' }}
+        >
             {loadingUpdate && <Loading />}
             <Toast />
-            <table className="table slider-data">
+            <table className="slider-data table">
                 <thead>
                     <tr>
                         <th>
