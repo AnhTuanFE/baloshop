@@ -1,7 +1,7 @@
 const HandleShowButton = (order) => {
     const { status, paymentMethod } = order;
     if (paymentMethod == 'pay-with-cash') {
-        if (status == 'paid') {
+        if (status == 'delivered') {
             return (
                 <div className="">
                     <div className="">

@@ -113,7 +113,7 @@ export default function CustomizedSteppersMoney({ order }) {
                 description: description,
             };
         }
-        if (status == 'delivered') {
+        if (status == 'delivering') {
             return {
                 iconNumber: 4,
                 content: 'Đang giao',
@@ -122,7 +122,7 @@ export default function CustomizedSteppersMoney({ order }) {
                 description: description,
             };
         }
-        if (status == 'paid') {
+        if (status == 'delivered') {
             return {
                 iconNumber: 2,
                 content: 'Đã giao và thanh toán',
@@ -165,10 +165,10 @@ export default function CustomizedSteppersMoney({ order }) {
                 if (order?.status == 'confirm') {
                     setActiStep(1);
                 }
-                if (order?.status == 'delivered') {
+                if (order?.status == 'delivering') {
                     setActiStep(2);
                 }
-                if (order?.status == 'paid') {
+                if (order?.status == 'delivered') {
                     setActiStep(3);
                 }
                 if (order?.status == 'completed') {

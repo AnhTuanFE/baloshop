@@ -222,51 +222,6 @@ export default function CustomizedSteppersPayOnline({ order }) {
                                 );
                             }
                         })}
-                        {/* <Step key={1}>
-                            <div>
-                                <StepLabel
-                                    StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={1} />}
-                                >
-                                    Đã đặt hàng
-                                </StepLabel>
-                            </div>
-                        </Step>
-                        <Step key={2}>
-                            <div>
-                                <StepLabel
-                                    StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={3} />}
-                                >
-                                    Xác nhận đơn hàng
-                                </StepLabel>
-                            </div>
-                        </Step>
-                        <Step key={3}>
-                            <div>
-                                <StepLabel
-                                    StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={4} />}
-                                >
-                                    Đang giao
-                                </StepLabel>
-                            </div>
-                        </Step>
-                        <Step key={4}>
-                            <div>
-                                <StepLabel
-                                    StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={2} />}
-                                >
-                                    Đã giao và thanh toán
-                                </StepLabel>
-                            </div>
-                        </Step>
-                        <Step key={5}>
-                            <div>
-                                <StepLabel
-                                    StepIconComponent={(props) => <ColorlibStepIcon {...props} iconNumber={6} />}
-                                >
-                                    Hoàn tất
-                                </StepLabel>
-                            </div>
-                        </Step> */}
                     </Stepper>
                 </Box>
             </Stack>

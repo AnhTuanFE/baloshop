@@ -30,8 +30,8 @@ import { orderQueryParams, validateConstants } from '../utils/searchConstants.js
         orderInfo.statusHistory = [
             { status: 'placed', description: '', updateBy: req.user._id },
             { status: 'confirm', description: '', updateBy: req.user._id },
+            { status: 'delivering', description: '', updateBy: req.user._id },
             { status: 'delivered', description: '', updateBy: req.user._id },
-            { status: 'paid', description: '', updateBy: req.user._id },
             { status: 'completed', description: '', updateBy: req.user._id },
         ];
     */
@@ -51,7 +51,7 @@ const handleConfigProducts = (orderItems) => {
 };
 
 const createOrder = async (req, res, next) => {
-    const { orderItems, shippingAddress, paymentMethod, shippingPrice, phone, name } = req.body;
+    const { orderItems, shippingAddress, paymentMethod, shippingPrice, phone, name, email } = req.body;
 
     if (!orderItems && orderItems.length <= 0) {
         res.status(400);
@@ -117,6 +117,7 @@ const createOrder = async (req, res, next) => {
                 user: req.user._id,
                 name: name,
                 phone: phone,
+                email: email,
                 paymentMethod: paymentMethod,
                 shippingAddress: shippingAddress,
                 shippingPrice: shippingPrice,
@@ -144,8 +145,8 @@ const createOrder = async (req, res, next) => {
                 orderInfo.statusHistory = [
                     { status: 'placed', description: '', updateBy: req.user._id },
                     { status: 'confirm', description: '', updateBy: req.user._id },
+                    { status: 'delivering', description: '', updateBy: req.user._id },
                     { status: 'delivered', description: '', updateBy: req.user._id },
-                    { status: 'paid', description: '', updateBy: req.user._id },
                     { status: 'completed', description: '', updateBy: req.user._id },
                 ];
             }
@@ -258,63 +259,23 @@ const getOrderAll = async (req, res) => {
     let limitFilter;
     if (req.query.keyword) {
         const keywordRegex = new RegExp(req.query.keyword, 'i');
-        search.$or = [{ name: keywordRegex }, { phone: keywordRegex }, { id: keywordRegex }];
+        search.$or = [{ name: keywordRegex }, { phone: keywordRegex }, { email: keywordRegex }];
     }
     if (req.query.status) {
         console.log('req.query.status = ', req.query.status);
         if (req.query.status == 'delivering') {
-            let ordersPayMoney = await Order.find({ paymentMethod: 'pay-with-cash', status: 'delivered' })
-                .populate('payment')
-                .sort({
-                    _id: -1,
-                });
-            const ordersPayMomo = await Order.find({ paymentMethod: 'pay-with-momo', status: 'delivering' })
-                .populate('payment')
-                .sort({
-                    _id: -1,
-                });
-            const ordersPayAtm = await Order.find({ paymentMethod: 'pay-with-atm', status: 'delivering' })
-                .populate('payment')
-                .sort({
-                    _id: -1,
-                });
-            const ordersPayCredit = await Order.find({
-                paymentMethod: 'pay-with-credit-card',
-                status: 'delivering',
-            })
-                .populate('payment')
-                .sort({
-                    _id: -1,
-                });
+            let ordersPayMoney = await Order.find({ status: 'delivering' }).populate('payment').sort({
+                _id: -1,
+            });
 
-            allDeliveredOrders = [...ordersPayMoney, ...ordersPayMomo, ...ordersPayAtm, ...ordersPayCredit];
+            allDeliveredOrders = [...ordersPayMoney];
         }
         if (req.query.status == 'delivered') {
-            const ordersPayMoney = await Order.find({ paymentMethod: 'pay-with-cash', status: 'paid' })
-                .populate('payment')
-                .sort({
-                    _id: -1,
-                });
-            const ordersPayMomo = await Order.find({ paymentMethod: 'pay-with-momo', status: 'delivered' })
-                .populate('payment')
-                .sort({
-                    _id: -1,
-                });
-            const ordersPayAtm = await Order.find({ paymentMethod: 'pay-with-atm', status: 'delivered' })
-                .populate('payment')
-                .sort({
-                    _id: -1,
-                });
-            const ordersPayCredit = await Order.find({
-                paymentMethod: 'pay-with-credit-card',
-                status: 'delivered',
-            })
-                .populate('payment')
-                .sort({
-                    _id: -1,
-                });
+            const ordersPayMoney = await Order.find({ status: 'delivered' }).populate('payment').sort({
+                _id: -1,
+            });
 
-            allDeliveredOrders = [...ordersPayMoney, ...ordersPayMomo, ...ordersPayAtm, ...ordersPayCredit];
+            allDeliveredOrders = [...ordersPayMoney];
         }
         if (req.query.status == 'paid') {
             let ordersPayMoney = await Order.find({}).populate('payment').sort({
@@ -336,7 +297,11 @@ const getOrderAll = async (req, res) => {
     }
     const count = await Order.countDocuments({ ...search, ...orderStatusFilter });
     if (allDeliveredOrders.length > 0) {
-        limitFilter = allDeliveredOrders.length;
+        if (allDeliveredOrders.length < limit) {
+            limitFilter = allDeliveredOrders.length;
+        } else {
+            limitFilter = limit;
+        }
         // let orders_1 = await Order.find({ ...search })
         //     .limit(limitFilter)
         //     .skip(limitFilter * (page - 1))
@@ -345,7 +310,13 @@ const getOrderAll = async (req, res) => {
         //     .populate('payment')
         //     .lean();
         orders = [...allDeliveredOrders];
-        res.json({ orders, page: 1, pages: 1, total: allDeliveredOrders.length });
+        // res.json({ orders, page: 1, pages: 1, total: allDeliveredOrders.length });
+        res.json({
+            orders,
+            page,
+            pages: Math.ceil(allDeliveredOrders.length / limitFilter),
+            total: allDeliveredOrders.length,
+        });
     }
     if (count < limit) {
         limitFilter = count;
@@ -362,23 +333,6 @@ const getOrderAll = async (req, res) => {
     orders = [...orders_1, ...allDeliveredOrders];
     res.json({ orders, page, pages: Math.ceil(count / limitFilter), total: count });
 };
-// const data = {
-//     name: "Anh Tuấn7",
-//     orderItems: [
-//       {
-//         product: "6502d93f1e4e8101bed1f1b3",
-//         name: "Túi du lich cần kéo 104",
-//         color: "Xám",
-//       }
-//     ],
-//     payment: {
-//       _id: "65035aaaf001992dba797ff8",
-//       user: "6501b84d23bc4d20af58b186",
-//       order: "65035aaaf001992dba797ff1",
-//       paid: true
-//     },
-//     amount: 0,
-//   };
 
 const completed = async (req, res) => {
     try {
@@ -423,6 +377,21 @@ const getOrderById = async (req, res) => {
     res.status(200).json({ order });
 };
 
+// orderInfo.statusHistory = [
+//     { status: 'placed', description: '', updateBy: req.user._id },
+//     { status: 'paid', description: '', updateBy: req.user._id },
+//     { status: 'confirm', description: '', updateBy: req.user._id },
+//     { status: 'delivering', description: '', updateBy: req.user._id },
+//     { status: 'delivered', description: '', updateBy: req.user._id },
+//     { status: 'completed', description: '', updateBy: req.user._id },
+// ];
+// orderInfo.statusHistory = [
+//     { status: 'placed', description: '', updateBy: req.user._id },
+//     { status: 'confirm', description: '', updateBy: req.user._id },
+//     { status: 'delivering', description: '', updateBy: req.user._id },
+//     { status: 'delivered', description: '', updateBy: req.user._id },
+//     { status: 'completed', description: '', updateBy: req.user._id },
+// ];
 // Update: CONFIRM ORDER
 const confirmOrder = async (req, res) => {
     const orderId = req.params.id || '';
@@ -437,10 +406,10 @@ const confirmOrder = async (req, res) => {
             case 'confirm':
                 res.status(400);
                 throw new Error('Đơn hàng đã được xác nhận');
-            case 'delivered':
+            case 'delivering':
                 res.status(400);
                 throw new Error('Đơn hàng đang ở trạng thái đang giao');
-            case 'paid':
+            case 'delivered':
                 res.status(400);
                 throw new Error('Đơn hàng đã giao thành công');
             case 'completed':
@@ -547,10 +516,10 @@ const confirmDelivery = async (req, res) => {
             case 'placed':
                 res.status(400);
                 throw new Error('Đơn hàng chưa được xác nhận');
-            case 'delivered':
+            case 'delivering':
                 res.status(400);
                 throw new Error('Đơn hàng đã ở trạng thái đang giao');
-            case 'paid':
+            case 'delivered':
                 res.status(400);
                 throw new Error('Đơn hàng đã giao thành công');
             case 'completed':
@@ -599,8 +568,8 @@ const confirmDelivery = async (req, res) => {
         order.statusHistory[3] = { status: 'delivering', description: description, updateBy: req.user._id };
     }
     if (order.paymentMethod == PAY_WITH_CASH) {
-        order.status = 'delivered';
-        order.statusHistory[2] = { status: 'delivered', description: description, updateBy: req.user._id };
+        order.status = 'delivering';
+        order.statusHistory[2] = { status: 'delivering', description: description, updateBy: req.user._id };
     }
 
     const updatedOrder = await order.save();
@@ -679,26 +648,14 @@ const confirmDelivered = async (req, res) => {
     }
     if (order.paymentMethod == PAY_WITH_CASH) {
         console.log('đã chạy vào pay with cash và xác nhận giao hàng thành công');
-        order.status = 'paid';
-        order.statusHistory[3] = { status: 'paid', description: description, updateBy: req.user._id };
+        order.status = 'delivered';
+        order.statusHistory[3] = { status: 'delivered', description: description, updateBy: req.user._id };
         order.payment.paidAt = new Date();
         order.payment.paid = true;
         await order.payment.save();
         const updateOrder = await order.save();
-        // await updateOrder.populate('payment');
-        /*
-        let order = await Order.findOne({ _id: orderId }).populate('payment');
-            order.status = 'paid';
-            order.statusHistory[1] = { status: 'paid', description: '', updateBy: req.user._id };
-            order.payment.paid = true;
-            // order.payment.paidAt = new Date();
-            // order.payment.message = message;
-            order.payment.status = PAYMENT_SUCCESS;
-            order.payment.paymentTransaction = { ...paymentTransaction };
-            await order.payment.save();
-            await order.save();
-        
-        */
+        await updateOrder.populate('payment');
+
         res.status(200).json({ message: 'Xác nhận giao hàng thành công', updateOrder });
     }
 };
@@ -712,7 +669,7 @@ const confirmReceived = async (req, res) => {
         throw new Error('Đơn hàng không tồn tại!');
     }
     if (order.paymentMethod == 'pay-with-cash') {
-        // chỉ cho phép paid là đã giao và thanh toán
+        // chỉ cho phép delivered là đã giao
         switch (order.status) {
             case 'placed':
                 res.status(400);
@@ -720,9 +677,9 @@ const confirmReceived = async (req, res) => {
             case 'confirm':
                 res.status(400);
                 throw new Error('Đơn hàng chưa bắt đầu giao hàng');
-            case 'delivered':
+            case 'delivering':
                 res.status(400);
-                throw new Error('Đơn hàng chưa được giao thành công');
+                throw new Error('Đơn hàng đang giao đến bạn');
             case 'completed':
                 res.status(400);
                 throw new Error('Đơn hàng đã được hoàn thành');
@@ -746,7 +703,7 @@ const confirmReceived = async (req, res) => {
                 throw new Error('Đơn hàng chưa bắt đầu giao hàng');
             case 'delivering':
                 res.status(400);
-                throw new Error('Đơn hàng chưa được giao thành công');
+                throw new Error('Đơn hàng đang giao đến bạn');
             case 'completed':
                 res.status(400);
                 throw new Error('Đơn hàng đã được hoàn thành');
@@ -815,7 +772,7 @@ const cancelOrder = async (req, res, next) => {
         }
         if (order.paymentMethod == PAY_WITH_CASH) {
             switch (order.status) {
-                case 'paid':
+                case 'delivered':
                     res.status(400);
                     throw new Error('Đơn hàng đã được giao thành công. Không thể hủy đơn hàng');
                 case 'completed':
@@ -860,10 +817,10 @@ const cancelOrder = async (req, res, next) => {
                 case 'confirm':
                     res.status(400);
                     throw new Error('Đơn hàng đã được xác nhận. Không thể hủy đơn hàng');
-                case 'delivered':
+                case 'delivering':
                     res.status(400);
                     throw new Error('Đơn hàng đang được giao đến bạn. Không thể hủy đơn hàng');
-                case 'paid':
+                case 'delivered':
                     res.status(400);
                     throw new Error('Đơn hàng đã được giao thành công. Không thể hủy đơn hàng');
                 case 'completed':
@@ -1014,7 +971,7 @@ const cancelOrder = async (req, res, next) => {
                     order.statusHistory.splice(2, 2);
                     order.statusHistory[2] = { status: 'cancelled', description: description, updateBy: req.user._id };
                 }
-                if (order.status == 'delivered') {
+                if (order.status == 'delivering') {
                     order.status = 'cancelled';
                     order.statusHistory.splice(3, 1);
                     order.statusHistory[3] = { status: 'cancelled', description: description, updateBy: req.user._id };

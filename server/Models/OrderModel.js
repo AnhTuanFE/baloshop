@@ -2,16 +2,6 @@ import mongoose from 'mongoose';
 import { PAYMENT_METHODS } from '../config/paymentMethodConfig.js';
 import { PLACED, ORDER_STATUS } from '../config/orderStatusConfig.js';
 
-// const productReviewSchema = mongoose.Schema(
-//     {
-//         userName: { type: String, required: true },
-//         rating: { type: Number, required: true },
-//         comment: { type: String, required: true },
-//     },
-//     {
-//         timestamps: true,
-//     },
-// );
 const orderStatus = mongoose.Schema(
     {
         status: {
@@ -95,17 +85,6 @@ const orderSchema = mongoose.Schema(
             enum: PAYMENT_METHODS,
             default: PAYMENT_METHODS[1],
         },
-        // paypalOrder: {
-        //     orderID: { type: String, required: false },
-        //     payerID: { type: String, required: false },
-        //     cost: { type: Number, required: false },
-        // },
-        // paymentResult: {
-        //     id: { type: String },
-        //     status: { type: String },
-        //     update_time: { type: String },
-        //     email_address: { type: String },
-        // },
         shippingPrice: {
             type: Number,
             required: true,
@@ -121,50 +100,6 @@ const orderSchema = mongoose.Schema(
             required: true,
             default: 0.0,
         },
-        // waitConfirmation: {
-        //     type: Boolean,
-        //     required: true,
-        //     default: false,
-        // },
-        // waitConfirmationAt: {
-        //     type: Date,
-        // },
-        // isPaid: {
-        //     type: Boolean,
-        //     required: true,
-        //     default: false,
-        // },
-        // paidAt: {
-        //     type: Date,
-        // },
-        // completeUser: {
-        //     type: Boolean,
-        //     required: true,
-        //     default: false,
-        // },
-        // completeUserAt: {
-        //     type: Date,
-        // },
-        // completeAdmin: {
-        //     type: Boolean,
-        //     required: true,
-        //     default: false,
-        // },
-        // completeAdminAt: {
-        //     type: Date,
-        // },
-        // cancel: {
-        //     type: Number,
-        //     default: 0,
-        // },
-        // isDelivered: {
-        //     type: Boolean,
-        //     required: true,
-        //     default: false,
-        // },
-        // deliveredAt: {
-        //     type: Date,
-        // },
         phone: {
             type: String,
             require: true,

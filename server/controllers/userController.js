@@ -118,8 +118,6 @@ const updateProfile = async (req, res) => {
         const { name, dateOfBirth, phone, city, district, ward, address, password, oldPassword } = req?.body;
         const user = req?.user;
         const information_admin = await User.findOne({ email: 'admin@gmail.com' });
-        // console.log('req.body = ', req?.body);
-        // console.log('imagePath = ', req?.file?.path);
 
         if (user && information_admin) {
             const data = {

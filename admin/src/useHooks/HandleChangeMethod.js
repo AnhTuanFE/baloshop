@@ -31,10 +31,10 @@ const handleChangeStateOrder = (order) => {
         if (status == 'confirm') {
             return <span className="badge alert-warning">Đã xác nhận</span>;
         }
-        if (status == 'paid') {
-            return <span className="badge alert-success">Đã giao và thanh toán</span>;
-        }
         if (status == 'delivered') {
+            return <span className="badge alert-success">Đã giao</span>;
+        }
+        if (status == 'delivering') {
             return <span className="badge alert-warning">Đang giao</span>;
         }
         if (status == 'completed') {
@@ -44,7 +44,7 @@ const handleChangeStateOrder = (order) => {
         }
     } else {
         if (status == 'placed') {
-            return <span className="badge alert-danger">Chờ xác nhận</span>;
+            return <span className="badge alert-danger">Chờ thanh toán</span>;
         }
         if (status == 'cancelled') {
             return <span className="badge bg-dark">Đơn này đã bị hủy</span>;

@@ -20,11 +20,15 @@ const Orders = (props) => {
         dispatch(listOrders({ keyword: keyword, status: status, pageNumber: pageNumber, limit: limit }));
     }, [dispatch, status, keyword, pageNumber]);
 
-    const handleStatus = (value) => {
+    const handleStatus = (e) => {
         if (keyword) {
-            navigate(`/orders/search/${keyword}/status/${value.target.value}`);
+            navigate(`/orders/search/${keyword}/status/${e.target.value}`);
         } else {
-            navigate(`/orders/status/${value.target.value}`);
+            if (e.target.value == '') {
+                navigate(`/orders`);
+            } else {
+                navigate(`/orders/status/${e.target.value}`);
+            }
         }
     };
     const handleSearch = (e) => {
@@ -43,7 +47,12 @@ const Orders = (props) => {
                 <Message variant="alert-danger">{error}</Message>
             ) : (
                 <>
-                    <div className="d-flex justify-content-between">
+                    <div
+                        style={{
+                            marginBottom: '12px',
+                        }}
+                        className="d-flex justify-content-between"
+                    >
                         <div className="col-lg-2 col-3 col-md-3 ms-2">
                             <form onSubmit={handleSearch}>
                                 <div className="input-group" style={{ alignItems: 'center' }}>
@@ -61,15 +70,16 @@ const Orders = (props) => {
                                 </div>
                             </form>
                         </div>
-                        <div className="col-lg-2 col-3 col-md-3 me-2">
-                            <select className="form-select" value={status} onChange={handleStatus}>
-                                <option value={''}>Trạng thái...</option>
+                        <div className="col-lg-4 d-flex col-6 col-md-6 justify-content-center me-4 ">
+                            <div className="d-flex flex-column justify-content-center w-full">
+                                <div className="font-semibold ">Trạng thái : </div>
+                            </div>
+                            <select className="form-select w-full" value={status} onChange={handleStatus}>
+                                <option value={''}>Tất cả...</option>
                                 <option value={'placed'}>Chờ xác nhận</option>
                                 <option value={'confirm'}>Đã xác nhận</option>
                                 <option value={'delivering'}>Đang giao</option>
                                 <option value={'delivered'}>Đã giao</option>
-                                {/* <option value={'delivered'}>Đang giao</option>
-                                <option value={'paid'}>Đã giao</option> */}
                                 <option value={'unpaid'}>Chưa thanh toán</option>
                                 <option value={'paid'}>Đã thanh toán</option>
                                 <option value={'completed'}>Đã hoàn tất</option>

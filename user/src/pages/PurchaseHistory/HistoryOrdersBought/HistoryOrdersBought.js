@@ -59,6 +59,7 @@ const HistoryOrdersBought = (props) => {
                                                 <th className="fw-normal fs-6">ID</th>
                                                 <th className="fw-normal fs-6">Trạng thái</th>
                                                 <th className="fw-normal fs-6">Thời gian mua</th>
+                                                <th className="fw-normal fs-6">Thanh toán bằng</th>
                                                 <th className="fw-normal fs-6">Tổng tiền</th>
                                                 <th className="fw-normal fs-6">Thanh toán</th>
                                                 <th className="fw-normal fs-6">Đánh giá</th>
@@ -83,9 +84,7 @@ const HistoryOrdersBought = (props) => {
                                                             {order._id}
                                                         </Link>
                                                     </td>
-                                                    <td className="text-center">
-                                                        {handleChangeStateOrder(order.status)}
-                                                    </td>
+                                                    <td className="text-center">{handleChangeStateOrder(order)}</td>
                                                     <td className="fs-6 text-center ">
                                                         {moment(order.createdAt).hours()}
                                                         {':'}
@@ -94,11 +93,36 @@ const HistoryOrdersBought = (props) => {
                                                             : moment(order.createdAt).minutes()}{' '}
                                                         {moment(order.createdAt).format('MM/DD/YYYY')}
                                                     </td>
+                                                    <td className="text-center">
+                                                        {handleChangePayMethod(order?.paymentMethod)}
+                                                    </td>
                                                     <td className="font-semibold">
                                                         {order.totalPrice.toLocaleString('de-DE')}đ
                                                     </td>
                                                     <td className="text-center">
-                                                        {handleChangePayMethod(order?.paymentMethod)}
+                                                        <span className="">
+                                                            {order?.payment?.paid ? (
+                                                                <div className="alert-success">
+                                                                    <div>Đã thanh toán</div>
+                                                                    <span className="">
+                                                                        {moment(order?.createdAt).hours()}
+                                                                        {':'}
+                                                                        {moment(order.payment?.createdAt).minutes() < 10
+                                                                            ? `0${moment(order?.createdAt).minutes()}`
+                                                                            : moment(
+                                                                                  order.payment?.createdAt,
+                                                                              ).minutes()}{' '}
+                                                                        {moment(order.payment?.createdAt).format(
+                                                                            'DD/MM/YYYY',
+                                                                        )}{' '}
+                                                                    </span>
+                                                                </div>
+                                                            ) : (
+                                                                <span className="alert-danger badge">
+                                                                    Chờ thanh toán
+                                                                </span>
+                                                            )}
+                                                        </span>
                                                     </td>
                                                     <td className="fs-6 font-semibold">
                                                         {checkReview(order.orderItems, order._id)}

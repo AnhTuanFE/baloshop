@@ -17,29 +17,53 @@ const handleChangePayMethod = (method) => {
         return method;
     }
 };
-const handleChangeStateOrder = (status) => {
-    if (status == 'placed') {
-        return <span className="font-semibold text-warning">Chờ xác nhận</span>;
-    }
-    if (status == 'cancelled') {
-        return <span className="font-semibold text-red-500">Đơn này đã bị hủy</span>;
-    }
-    if (status == 'confirm') {
-        return <span className="font-semibold text-warning">Đã xác nhận</span>;
-    }
-    if (status == 'delivering') {
-        return <span className="font-semibold text-warning">Đang giao</span>;
-    }
-    if (status == 'paid') {
-        return <span className="font-semibold text-success">Đã thanh toán</span>;
-    }
-    if (status == 'delivered') {
-        return <span className="font-semibold text-success">Đã giao và thanh toán</span>;
-    }
-    if (status == 'completed') {
-        return <span className="font-semibold text-success">Hoàn tất</span>;
+const handleChangeStateOrder = (order) => {
+    const { status, paymentMethod } = order;
+    if (paymentMethod == 'pay-with-cash') {
+        if (status == 'placed') {
+            return <span className="font-semibold text-warning">Chờ xác nhận</span>;
+        }
+        if (status == 'cancelled') {
+            return <span className="font-semibold text-red-500">Đơn này đã bị hủy</span>;
+        }
+        if (status == 'confirm') {
+            return <span className="font-semibold text-warning">Đã xác nhận</span>;
+        }
+        if (status == 'delivering') {
+            return <span className="font-semibold text-warning">Đang giao</span>;
+        }
+        if (status == 'delivered') {
+            return <span className="font-semibold text-success">Đã giao</span>;
+        }
+        if (status == 'completed') {
+            return <span className="font-semibold text-success">Hoàn tất</span>;
+        } else {
+            return <span className="font-semibold text-warning">{status}</span>;
+        }
     } else {
-        return <span className="font-semibold text-warning">{status}</span>;
+        if (status == 'placed') {
+            return <span className="font-semibold text-warning">Chờ thanh toán</span>;
+        }
+        if (status == 'cancelled') {
+            return <span className="font-semibold text-red-500">Đơn này đã bị hủy</span>;
+        }
+        if (status == 'confirm') {
+            return <span className="font-semibold text-warning">Đã xác nhận</span>;
+        }
+        if (status == 'delivering') {
+            return <span className="font-semibold text-warning">Đang giao</span>;
+        }
+        if (status == 'paid') {
+            return <span className="font-semibold text-success">Chờ xác nhận</span>;
+        }
+        if (status == 'delivered') {
+            return <span className="font-semibold text-success">Đã giao và thanh toán</span>;
+        }
+        if (status == 'completed') {
+            return <span className="font-semibold text-success">Hoàn tất</span>;
+        } else {
+            return <span className="font-semibold text-warning">{status}</span>;
+        }
     }
 };
 export { handleChangePayMethod, handleChangeStateOrder };
