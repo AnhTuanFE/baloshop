@@ -1,7 +1,6 @@
 import { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Message from '~/components/LoadingError/Error';
 import Loading from '~/components/LoadingError/Loading';
 import { useForm, Controller } from 'react-hook-form';
@@ -48,7 +47,6 @@ const Login = () => {
 
     return (
         <>
-            {/* flex items-center justify-center text-center  */}
             <div className="row col-lg-12 col-md-12 col-sm-12 flex justify-center max-sm:mx-4">
                 <form
                     className=" col-lg-4 col-md-6 col-sm-6 mt-4 rounded-xl bg-white py-10 shadow-custom-shadow max-sm:px-5 sm:px-10"

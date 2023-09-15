@@ -59,7 +59,6 @@ function PlaceOrder() {
                 quantity: pro.qty,
                 image: pro.product.image[0],
                 price: pro.product.price,
-                id_product: pro.id_product,
                 product: pro.product._id,
             });
             return arr;
@@ -112,13 +111,13 @@ function PlaceOrder() {
                     postalCode: '',
                 },
                 paymentMethod: paymentMethodState,
-                itemsPrice: cart.itemsPrice,
                 shippingPrice: cart.shippingPrice,
-                totalPrice: cart.totalPrice,
                 phone: user?.phone,
                 name: user?.name,
                 email: user?.email,
-                address_shop: user?.address_shop,
+                // itemsPrice: cart.itemsPrice,
+                // totalPrice: cart.totalPrice,
+                // address_shop: user?.address_shop,
             }),
         );
     };

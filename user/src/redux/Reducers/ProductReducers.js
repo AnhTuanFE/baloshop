@@ -54,12 +54,13 @@ export const getAllCommentsReducer = (state = { comments: [] }, action) => {
 };
 
 // SINGLE PRODUCT
-export const productDetailsReducer = (state = { product: { reviews: [] } }, action) => {
+// export const productDetailsReducer = (state = { product: { reviews: [] } }, action) => {
+export const productDetailsReducer = (state = { data: {} }, action) => {
     switch (action.type) {
         case types.PRODUCT_DETAILS_REQUEST:
             return { ...state, loading: true };
         case types.PRODUCT_DETAILS_SUCCESS:
-            return { loading: false, product: action.payload };
+            return { loading: false, data: action.payload };
         case types.PRODUCT_DETAILS_FAIL:
             return { loading: false, error: action.payload };
         default:
@@ -82,12 +83,12 @@ export const listProductSimilarReducer = (state = { products: [] }, action) => {
 };
 
 // PRODUCT REVIEW CREATE
-export const productCreateReviewReducer = (state = {}, action) => {
+export const productCreateReviewReducer = (state = { data: {} }, action) => {
     switch (action.type) {
         case types.PRODUCT_CREATE_REVIEW_REQUEST:
             return { loading: true };
         case types.PRODUCT_CREATE_REVIEW_SUCCESS:
-            return { loading: false, success: true };
+            return { loading: false, success: true, data: action.payload };
         case types.PRODUCT_CREATE_REVIEW_FAIL:
             return { loading: false, error: action.payload };
         case types.PRODUCT_CREATE_REVIEW_RESET:
@@ -98,12 +99,12 @@ export const productCreateReviewReducer = (state = {}, action) => {
 };
 
 // PRODUCT COMMENT CREATE
-export const productCreateCommentReducer = (state = {}, action) => {
+export const productCreateCommentReducer = (state = { data: {} }, action) => {
     switch (action.type) {
         case types.PRODUCT_CREATE_COMMENT_REQUEST:
             return { loading: true };
         case types.PRODUCT_CREATE_COMMENT_SUCCESS:
-            return { loading: false, success: true };
+            return { loading: false, success: true, data: action.payload };
         case types.PRODUCT_CREATE_COMMENT_FAIL:
             return { loading: false, error: action.payload };
         case types.PRODUCT_CREATE_COMMENT_RESET:
@@ -114,12 +115,12 @@ export const productCreateCommentReducer = (state = {}, action) => {
 };
 
 // PRODUCT COMMENTCHILD CREATE
-export const productCreateCommentChildReducer = (state = {}, action) => {
+export const productCreateCommentChildReducer = (state = { data: {} }, action) => {
     switch (action.type) {
         case types.PRODUCT_CREATE_COMMENTCHILD_REQUEST:
             return { loading: true };
         case types.PRODUCT_CREATE_COMMENTCHILD_SUCCESS:
-            return { loading: false, success: true };
+            return { loading: false, success: true, data: action.payload };
         case types.PRODUCT_CREATE_COMMENTCHILD_FAIL:
             return { loading: false, error: action.payload };
         case types.PRODUCT_CREATE_COMMENTCHILD_RESET:

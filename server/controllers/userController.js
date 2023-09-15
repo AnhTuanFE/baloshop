@@ -118,8 +118,6 @@ const updateProfile = async (req, res) => {
         const { name, dateOfBirth, phone, city, district, ward, address, password, oldPassword } = req?.body;
         const user = req?.user;
         const information_admin = await User.findOne({ email: 'admin@gmail.com' });
-        // console.log('req.body = ', req?.body);
-        // console.log('imagePath = ', req?.file?.path);
 
         if (user && information_admin) {
             const data = {
@@ -137,14 +135,14 @@ const updateProfile = async (req, res) => {
             if (imagePath) {
                 if (user?.image) {
                     let cutUrlImage = user?.image.split('/');
-                    let nameImage = cutUrlImage.slice(7).join('/').slice(0, -4);
-                    cloudinary.uploader.destroy(nameImage, function (error, result) {
-                        try {
-                            console.log('result = ', result, 'error = ', error);
-                        } catch (err) {
-                            console.log('lỗi = '.err);
-                        }
-                    });
+                    // let nameImage = cutUrlImage.slice(7).join('/').slice(0, -4);
+                    // cloudinary.uploader.destroy(nameImage, function (error, result) {
+                    //     try {
+                    //         console.log('result = ', result, 'error = ', error);
+                    //     } catch (err) {
+                    //         console.log('lỗi = '.err);
+                    //     }
+                    // });
                 }
                 cloudinary.v2.uploader.upload(imagePath, { folder: 'baloshopAvatar' }, async function (err, result) {
                     if (err) {

@@ -22,7 +22,6 @@ import {
     ProvinceReducer,
     Avatarload,
     userForgotPassWord,
-    userVerifyResetPassWordReducer,
     ResetPassWordReducer,
     userUpdatePasswordReducer,
 } from './Reducers/userReducers';
@@ -75,7 +74,6 @@ const reducer = combineReducers({
     listNews: newsListReducer,
     getDetailNews: getNewsReducer,
     forgotPassWordState: userForgotPassWord,
-    verifyState: userVerifyResetPassWordReducer,
     resetPasswordState: ResetPassWordReducer,
 });
 

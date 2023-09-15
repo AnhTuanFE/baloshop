@@ -137,12 +137,12 @@ export const optionColorCreateReducer = (state = {}, action) => {
 };
 
 // EDIT PRODUCT
-export const productEditReducer = (state = { product: { reviews: [] } }, action) => {
+export const productEditReducer = (state = { stateProductEdit: {} }, action) => {
     switch (action.type) {
         case PRODUCT_EDIT_REQUEST:
             return { ...state, loading: true };
         case PRODUCT_EDIT_SUCCESS:
-            return { loading: false, product: action.payload };
+            return { loading: false, stateProductEdit: action.payload };
         case PRODUCT_EDIT_FAIL:
             return { loading: false, error: action.payload };
         case PRODUCT_EDIT_RESET:

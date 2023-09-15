@@ -7,7 +7,6 @@ export const userUpdateProfile = (state) => state.userUpdateProfile;
 export const provincesVietNam = (state) => state.provincesVietNam;
 export const avatarLoad = (state) => state.avatarLoad;
 export const forgotPassWordState = (state) => state.forgotPassWordState;
-export const verifyState = (state) => state.verifyState;
 export const resetPasswordState = (state) => state.resetPasswordState;
 
 export const usersRemainingSelector = createSelector(
@@ -18,7 +17,6 @@ export const usersRemainingSelector = createSelector(
     provincesVietNam,
     avatarLoad,
     forgotPassWordState,
-    verifyState,
     resetPasswordState,
     (
         userDetails,
@@ -28,7 +26,6 @@ export const usersRemainingSelector = createSelector(
         provincesVietNam,
         avatarLoad,
         forgotPassWordState,
-        verifyState,
         resetPasswordState,
     ) => {
         return {
@@ -39,7 +36,6 @@ export const usersRemainingSelector = createSelector(
             provincesVietNam,
             avatarLoad,
             forgotPassWordState,
-            verifyState,
             resetPasswordState,
         };
     },

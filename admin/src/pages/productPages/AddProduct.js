@@ -65,29 +65,36 @@ const AddProduct = () => {
     const { categories } = lcategories;
 
     const productEdit = useSelector((state) => state.productEdit);
-    const { product: productOption } = productEdit;
+    const { stateProductEdit } = productEdit;
 
     useEffect(() => {
         if (product) {
             toast.success('Thêm sản phẩm thành công', ToastObjects);
             setProducId(product._id);
             dispatch({ type: PRODUCT_CREATE_RESET });
+            dispatch({ type: PRODUCT_OPTIONCOLOR_RESET });
+            setDisabledProduct(false);
+            setDisabledOptionColor(true);
         }
     }, [product]);
     useEffect(() => {
         dispatch({ type: PRODUCT_EDIT_RESET });
+        dispatch({ type: PRODUCT_OPTIONCOLOR_RESET });
     }, []);
 
     useEffect(() => {
-        if (productId) {
+        if (successOption) {
+            toast.success('Thêm màu sắc sản phẩm thành công', ToastObjects);
+            dispatch({ type: PRODUCT_OPTIONCOLOR_RESET });
             dispatch(editProduct(productId));
         }
-    }, [productId, successOption]);
+    }, [successOption]);
+    useEffect(() => {
+        dispatch(editProduct(productId));
+    }, [productId]);
 
     useEffect(() => {
-        if (categories.length == 0) {
-            dispatch(ListCategory());
-        }
+        dispatch(ListCategory());
     }, []);
 
     const isEmptyCheckEdit = () => {
@@ -136,8 +143,6 @@ const AddProduct = () => {
             formData.append('image', image);
             dispatch(createProduct(formData));
             // dispatch(createProduct(name, price, description, category, image, countInStock));
-            setDisabledProduct(false);
-            setDisabledOptionColor(true);
         }
     };
     const submitOptionHandler = (e) => {
@@ -146,14 +151,41 @@ const AddProduct = () => {
         setCountInStock('');
         setColor('');
     };
-
+    const handleResetForAddProductOther = () => {
+        dispatch({ type: PRODUCT_EDIT_RESET });
+        dispatch({ type: PRODUCT_OPTIONCOLOR_RESET });
+        dispatch({ type: PRODUCT_CREATE_RESET });
+        setName('');
+        setPrice('');
+        setCategory('');
+        setImage();
+        setImgUrl('');
+        setCountInStock('');
+        setColor('');
+        setDescription('');
+        setProducId('');
+        setValidate({});
+        setDisabledOptionColor(false);
+        setDisabledProduct(true);
+    };
+    console.log('stateProductEdit = ', stateProductEdit);
     return (
         <>
             <Toast />
             <section className="content-main">
                 <form>
-                    <div className="content-header">
-                        <h2 className="content-title">Thêm sản phẩm</h2>
+                    <div className="d-flex justify-content-between">
+                        <div className="content-header">
+                            <h2 className="content-title">Thêm sản phẩm</h2>
+                        </div>
+                        <div>
+                            <button
+                                onClick={handleResetForAddProductOther}
+                                className="btn btn-primary color-orange mr-5 py-2"
+                            >
+                                Thêm sản phẩm khác
+                            </button>
+                        </div>
                     </div>
 
                     <div className="row my-0">
@@ -396,18 +428,20 @@ const AddProduct = () => {
                                                     </thead>
                                                     {/* Table Data */}
                                                     <tbody>
-                                                        {productOption?.optionColor &&
-                                                            productOption?.optionColor?.map((option, index) => (
-                                                                <tr key={index}>
-                                                                    <td>{index + 1}</td>
-                                                                    <td>
-                                                                        <b>{option.color}</b>
-                                                                    </td>
-                                                                    <td>
-                                                                        <span>{option.countInStock}</span>
-                                                                    </td>
-                                                                </tr>
-                                                            ))}
+                                                        {stateProductEdit?.product?.optionColor &&
+                                                            stateProductEdit?.product?.optionColor?.map(
+                                                                (option, index) => (
+                                                                    <tr key={index}>
+                                                                        <td>{index + 1}</td>
+                                                                        <td>
+                                                                            <b>{option.color}</b>
+                                                                        </td>
+                                                                        <td>
+                                                                            <span>{option.countInStock}</span>
+                                                                        </td>
+                                                                    </tr>
+                                                                ),
+                                                            )}
                                                     </tbody>
                                                 </table>
                                             </div>

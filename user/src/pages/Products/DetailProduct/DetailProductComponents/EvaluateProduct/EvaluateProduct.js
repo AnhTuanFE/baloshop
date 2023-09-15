@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import { notification } from 'antd';
+import Loading from '~/components/LoadingError/Loading';
 
 import Rating from '~/components/Rating/Rating';
 import Message from '~/components/LoadingError/Error';
@@ -26,8 +28,16 @@ function getLabelText(value) {
 }
 function EvaluateProduct(props) {
     const { product, userInfo } = props;
-    let productId = product._id;
     const dispatch = useDispatch();
+
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (placement, notify, type) => {
+        api[type]({
+            message: `Thông báo `,
+            description: `${notify}`,
+            placement,
+        });
+    };
     // modal
     const modalRef = useRef(null);
 
@@ -50,7 +60,7 @@ function EvaluateProduct(props) {
     const [hover, setHover] = useState(-1);
 
     const reviews = useSelector((state) => state.productReviewCreate);
-    const { loading: loadingCreateReview, error: errorCreateReview, success: successCreateReview } = reviews;
+    const { loading: loadingCreateReview, error: errorCreateReview, success: successCreateReview, data } = reviews;
 
     const arrStar = [5, 4, 3, 2, 1];
 
@@ -60,23 +70,35 @@ function EvaluateProduct(props) {
         });
         star = {
             rating: star,
-            numReview: review.length,
-            percentage: (review.length / (product?.reviews?.length === 0 ? 1 : product?.reviews?.length)) * 100,
+            numReview: review?.length,
+            percentage: (review?.length / (product?.reviews?.length === 0 ? 1 : product?.reviews?.length)) * 100,
         };
         return star;
     });
 
-    const submitHandler = () => {
-        dispatch(createProductReview(productId, rating, comment));
+    const submitHandler = (e) => {
+        e.preventDefault();
+        dispatch(createProductReview({ productId: product?._id, rating: rating, comment: comment }));
+        handleCloseModal();
         setRating(0);
         setComment('');
     };
     useEffect(() => {
-        dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
-    }, [successCreateReview]);
+        if (successCreateReview) {
+            if (data.message) {
+                openNotification('top', `${data?.message}`, 'success');
+            }
+            dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
+        }
+        if (errorCreateReview) {
+            openNotification('top', `${errorCreateReview}`, 'error');
+            dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
+        }
+    }, [successCreateReview, errorCreateReview]);
     return (
         <>
-            {Object.keys(product).length > 1 && (
+            {contextHolder}
+            {Object.keys(product).length > 1 ? (
                 <div className="rounded-xl bg-white shadow-custom-shadow">
                     <div className=" mt-5 max-md:mx-2 md:mx-5">
                         <h2 className="mt-3 py-2 text-center text-xl font-bold">Đánh giá & nhận xét</h2>
@@ -153,6 +175,7 @@ function EvaluateProduct(props) {
                                 ✕
                             </button>
                             <div className="shadow-[0 1px 2px 0 rgb(60 64 67 / 10%), 0 2px 6px 2px rgb(60 64 67 / 15%)] rounded-2xl">
+                                {loadingCreateReview && <Loading />}
                                 <div class="modal-body">
                                     <div className="my-4">
                                         {errorCreateReview && (
@@ -313,6 +336,8 @@ function EvaluateProduct(props) {
                         </div>
                     </div>
                 </div>
+            ) : (
+                ''
             )}
         </>
     );

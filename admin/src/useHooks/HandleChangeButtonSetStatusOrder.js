@@ -28,7 +28,7 @@ const HandleChangeButtonSetStatusOrder = (order, handleSetStatusAndShowModal) =>
                 </button>
             );
         }
-        if (status == 'delivered') {
+        if (status == 'delivering') {
             return (
                 <button
                     value={'delivered'}
@@ -57,7 +57,7 @@ const HandleChangeButtonSetStatusOrder = (order, handleSetStatusAndShowModal) =>
             );
         }
 
-        if (status == 'paid') {
+        if (status == 'delivered') {
             return (
                 <span
                     style={{
@@ -188,7 +188,7 @@ const HandleChangeButtonSetStatusOrder = (order, handleSetStatusAndShowModal) =>
 const HandleChangeButtonCancelOrder = (order, handleSetStatusAndShowModal) => {
     const { status } = order;
     if (order.paymentMethod == 'pay-with-cash') {
-        if (status == 'placed' || status == 'confirm' || status == 'delivered') {
+        if (status == 'placed' || status == 'confirm' || status == 'delivering') {
             return (
                 <div className="d-flex justify-content-center align-items-center">
                     <button

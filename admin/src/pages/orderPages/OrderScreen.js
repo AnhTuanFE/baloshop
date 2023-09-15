@@ -4,10 +4,10 @@ import Orders from '~/components/orders/Orders';
 const OrderScreen = () => {
     const params = useParams();
 
-    const keyword = params.keyword;
-    const pageNumber = params.pageNumber;
-    const status = params.status;
-
+    const keyword = params.keyword || '';
+    const pageNumber = params.pageNumber || 1;
+    const status = params.status || '';
+    console.log('params = ', params);
     return (
         <section className="content-main">
             <div className="content-header">
