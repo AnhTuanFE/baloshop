@@ -24,7 +24,8 @@ const getProducts = async (req, res) => {
         search.category = req.query.category;
     }
     if (rating) {
-        search.rating = { $gte: rating };
+        // search.rating = { $gte: rating };
+        search.rating = req.query.rating;
     }
 
     const productFilter = {
@@ -33,7 +34,6 @@ const getProducts = async (req, res) => {
         ...priceRangeFilter(minPrice, maxPrice),
     };
     const count = await Product.countDocuments({ ...productFilter });
-    let countReal = count - 2;
     if (count == 0) {
         res.json({ products: [], page: 0, pages: 0, total: 0 });
     }
@@ -43,7 +43,7 @@ const getProducts = async (req, res) => {
         .sort(sortBy)
         .populate('category');
 
-    res.status(200).json({ products, page, pages: Math.ceil(count / limit), total: countReal });
+    res.status(200).json({ products, page, pages: Math.ceil(count / limit), total: count });
 };
 
 const getAllProductComment = async (req, res) => {

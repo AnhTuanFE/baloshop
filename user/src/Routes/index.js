@@ -20,18 +20,32 @@ import Test from '~/pages/Test/Test';
 const publicRoutes = [
     { path: '/', component: Home },
     { path: '/search/:keyword/sortBy/:sortBy/rating/:rating/page/:pageNumber', component: Home },
+    { path: '/search/:keyword/rating/:rating/page/:pageNumber', component: Home },
+    { path: '/search/:keyword/sortBy/:sortBy/page/:pageNumber', component: Home },
+    { path: '/search/:keyword/rating/:rating', component: Home },
+    { path: '/search/:keyword/sortBy/:sortBy', component: Home },
     { path: '/search/:keyword/page/:pageNumber', component: Home },
     { path: '/search/:keyword', component: Home },
 
+    { path: '/search/:keyword/category/:category/sortBy/:sortBy/rating/:rating/page/:pageNumber', component: Home },
+    { path: '/search/:keyword/category/:category/sortBy/:sortBy/page/:pageNumber', component: Home },
+    { path: '/search/:keyword/category/:category/rating/:rating/page/:pageNumber', component: Home },
+    { path: '/search/:keyword/category/:category/page/:pageNumber', component: Home },
+    { path: '/search/:keyword/category/:category', component: Home },
+
     { path: '/category/:category/sortBy/:sortBy/rating/:rating/page/:pageNumber', component: Home },
+    { path: '/category/:category/sortBy/:sortBy/page/:pageNumber', component: Home },
+    { path: '/category/:category/rating/:rating/page/:pageNumber', component: Home },
     { path: '/category/:category/page/:pageNumber', component: Home },
     { path: '/category/:category', component: Home },
 
     { path: '/sortBy/:sortBy/rating/:rating/page/:pageNumber', component: Home },
     { path: '/sortBy/:sortBy/page/:pageNumber', component: Home },
+    { path: '/sortBy/:sortBy', component: Home },
 
-    { path: '/page/:pageNumber', component: Home },
     { path: '/rating/:rating/page/:pageNumber', component: Home },
+    { path: '/rating/:rating', component: Home },
+    { path: '/page/:pageNumber', component: Home },
 
     // =========
     { path: '/product/:id', component: DetailProduct },

@@ -28,6 +28,23 @@ const AllProductsFilter = (props) => {
     }, [dispatch, category, keyword, pageNumber, minPrice, maxPrice, rating, sortBy]);
 
     const handlerSort = (value) => {
+        console.log('value handle sort = ', value);
+        console.log('props = ', props);
+        // if(category !== '') {
+        //     if(rating === "" && keyword === "")
+        //     {
+        //         // navigate(`/category/${category}/sortBy/${value}/rating/${rating}/page/${'1'}`);
+        //         navigate(`/category/${category}/sortBy/${value}/page/${'1'}`);
+        //     }
+        //     if(rating === "") {
+        //         // navigate(`/category/${category}/sortBy/${value}/rating/${rating}/page/${'1'}`);
+
+        //         navigate(`/category/${category}/sortBy/${value}/rating/${rating}/page/${'1'}`);
+
+        //     }
+        //     if()
+
+        // }
         if (rating === '' && keyword === '' && category === '') {
             navigate(`/sortBy/${value}/page/${'1'}`);
         }
@@ -43,6 +60,8 @@ const AllProductsFilter = (props) => {
     };
 
     const handlerRating = (value) => {
+        console.log('value handle rating = ', value);
+
         if (rating === '' && keyword === '' && category === '') {
             navigate(`/rating/${value}/page/${'1'}`);
         }
@@ -72,67 +91,58 @@ const AllProductsFilter = (props) => {
                     </Divider>
                 </h2>
                 <div className="pt-2">
-                    {products?.length !== 0 ? (
-                        <div className="mb-4 mr-9 flex justify-end">
-                            <div className="">
-                                <select
-                                    className="form-select"
-                                    value={sortBy === undefined ? 'newest' : sortBy}
-                                    onChange={(e) => {
-                                        handlerSort(e.target.value);
-                                    }}
-                                >
-                                    {/* asc
-                                        desc
-                                        newest
-                                        latest
-                                        total_sales */}
-                                    <option className="text-sm font-medium" value="newest">
-                                        Sản phẩm mới
-                                    </option>
-                                    <option className="text-sm font-medium" value="asc">
-                                        Giá tăng dần
-                                    </option>
-                                    <option className="text-sm font-medium" value="desc">
-                                        Giá giảm dần
-                                    </option>
-                                    <option className="text-sm font-medium" value="total_sales">
-                                        Bán chạy
-                                    </option>
-                                </select>
-                            </div>
-                            <div className="ms-2">
-                                <select
-                                    className="form-select"
-                                    value={rating === undefined ? '0' : rating}
-                                    onChange={(e) => {
-                                        handlerRating(e.target.value);
-                                    }}
-                                >
-                                    <option className="text-sm font-medium" value="0">
-                                        Đánh giá
-                                    </option>
-                                    <option className="text-sm font-medium" value="5">
-                                        5 sao
-                                    </option>
-                                    <option className="text-sm font-medium" value="4">
-                                        4 sao trở lên
-                                    </option>
-                                    <option className="text-sm font-medium" value="3">
-                                        3 sao trở lên
-                                    </option>
-                                    <option className="text-sm font-medium" value="2">
-                                        2 sao trở lên
-                                    </option>
-                                    <option className="text-sm font-medium" value="1">
-                                        1 sao trở lên
-                                    </option>
-                                </select>
-                            </div>
+                    <div className="mb-4 mr-9 flex justify-end">
+                        <div className="">
+                            <select
+                                className="form-select"
+                                value={sortBy === undefined ? 'newest' : sortBy}
+                                onChange={(e) => {
+                                    handlerSort(e.target.value);
+                                }}
+                            >
+                                <option className="text-sm font-medium" value="newest">
+                                    Sản phẩm mới
+                                </option>
+                                <option className="text-sm font-medium" value="asc">
+                                    Giá tăng dần
+                                </option>
+                                <option className="text-sm font-medium" value="desc">
+                                    Giá giảm dần
+                                </option>
+                                <option className="text-sm font-medium" value="total_sales">
+                                    Bán chạy
+                                </option>
+                            </select>
                         </div>
-                    ) : (
-                        ''
-                    )}
+                        <div className="ms-2">
+                            <select
+                                className="form-select"
+                                value={rating === undefined ? '0' : rating}
+                                onChange={(e) => {
+                                    handlerRating(e.target.value);
+                                }}
+                            >
+                                <option className="text-sm font-medium" value="0">
+                                    Đánh giá
+                                </option>
+                                <option className="text-sm font-medium" value="5">
+                                    5 sao
+                                </option>
+                                <option className="text-sm font-medium" value="4">
+                                    4 sao
+                                </option>
+                                <option className="text-sm font-medium" value="3">
+                                    3 sao
+                                </option>
+                                <option className="text-sm font-medium" value="2">
+                                    2 sao
+                                </option>
+                                <option className="text-sm font-medium" value="1">
+                                    1 sao
+                                </option>
+                            </select>
+                        </div>
+                    </div>
                     <div className="row">
                         <div className="col-lg-12 col-md-12 article">
                             <div className="row">
