@@ -4,6 +4,7 @@ import Cart from '../models/CartModel.js';
 import cloudinary from 'cloudinary';
 import { v4 as uuidv4 } from 'uuid';
 import { validateConstants, productQueryParams, priceRangeFilter } from '../utils/searchConstants.js';
+
 const getProducts = async (req, res) => {
     const limit = parseInt(req.query.limit) > 0 ? parseInt(req.query.limit) : 12;
     const rating = parseInt(req.query.rating) >= 0 && parseInt(req.query.rating) <= 5 ? parseInt(req.query.rating) : 0;

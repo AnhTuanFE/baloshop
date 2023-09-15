@@ -32,14 +32,14 @@ export const orderListReducer = (state = {}, action) => {
     }
 };
 
-export const orderListCompleteReducer = (state = {}, action) => {
+export const orderListCompleteReducer = (state = { data: {} }, action) => {
     switch (action.type) {
         case ORDER_LIST_COMPLETE_REQUEST:
             return { loading: true };
         case ORDER_LIST_COMPLETE_SUCCESS:
             return {
                 loading: false,
-                orders: action.payload,
+                data: action.payload,
             };
         case ORDER_LIST_COMPLETE_FAIL:
             return { loading: false, error: action.payload };

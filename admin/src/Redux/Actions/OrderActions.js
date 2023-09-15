@@ -50,7 +50,7 @@ export const listOrders = (dataReceived) => async (dispatch, getState) => {
 };
 
 // GET ALL COMPLETE ADMIN
-export const getOrderCompleteAll = () => async (dispatch, getState) => {
+export const getOrderCompleteAll = (dataReceived) => async (dispatch, getState) => {
     try {
         dispatch({ type: ORDER_LIST_COMPLETE_REQUEST });
 
@@ -64,7 +64,9 @@ export const getOrderCompleteAll = () => async (dispatch, getState) => {
             },
         };
 
-        const { data } = await axios.get(`/api/orders/complete`, config);
+        // const { data } = await axios.get(`/api/orders/complete`, config);
+        const { data } = await axios.get(`/api/orders/paid`, config);
+
         dispatch({ type: ORDER_LIST_COMPLETE_SUCCESS, payload: data });
     } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;

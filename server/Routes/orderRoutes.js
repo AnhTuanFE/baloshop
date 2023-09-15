@@ -17,6 +17,8 @@ orderRouter.post('/', protect, asyncHandler(orderController.createOrder));
 // orderRouter.get('/:id/address', protect, asyncHandler(orderController.getAddress));
 orderRouter.get('/all', protect, admin, asyncHandler(orderController.getOrderAll));
 orderRouter.get('/complete', protect, asyncHandler(orderController.completed));
+orderRouter.get('/paid', protect, asyncHandler(orderController.ordersPaid));
+
 orderRouter.get('/:id', protect, asyncHandler(orderController.getOrderById));
 orderRouter.get('/', protect, asyncHandler(orderController.getOrderByUser));
 

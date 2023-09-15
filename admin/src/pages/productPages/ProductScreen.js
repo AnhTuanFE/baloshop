@@ -51,7 +51,7 @@ const ProductScreen = () => {
         }
     };
     useEffect(() => {
-        dispatch(listProducts({ category: category, keyword: keyword, pageNumber: pageNumber }));
+        dispatch(listProducts({ category: category, keyword: keyword, pageNumber: pageNumber, limit: 12 }));
         dispatch(ListCategory());
     }, [dispatch, successDelete, category, keyword, pageNumber]);
 
