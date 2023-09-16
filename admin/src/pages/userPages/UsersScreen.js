@@ -63,7 +63,10 @@ const UsersScreen = () => {
             </div>
             <div className="card mb-4">
                 {/* Card */}
-                <div className="card-body">
+                <div
+                    className="card-body z-3 overflow-auto"
+                    style={{ height: '75vh', boxShadow: '0px 0px 4px 2px rgba(0,0,0,0.24) inset' }}
+                >
                     <Toast />
                     {loading ? (
                         <Loading />

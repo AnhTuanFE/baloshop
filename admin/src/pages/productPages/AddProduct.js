@@ -179,12 +179,9 @@ const AddProduct = () => {
                             <h2 className="content-title">Thêm sản phẩm</h2>
                         </div>
                         <div>
-                            <button
-                                onClick={handleResetForAddProductOther}
-                                className="btn btn-primary color-orange mr-5 py-2"
-                            >
-                                Thêm sản phẩm khác
-                            </button>
+                            <Link to="/products" className="btn btn-danger ">
+                                Trở về trang sản phẩm
+                            </Link>
                         </div>
                     </div>
 
@@ -323,9 +320,10 @@ const AddProduct = () => {
                                                             return x;
                                                         });
                                                     }}
-                                                    style={{ width: '100%' }}
+                                                    style={{ width: '100%', height: '25vh' }}
                                                 >
                                                     <CustomQuill
+                                                        style={{ height: '20vh' }}
                                                         theme="snow"
                                                         placeholder="Type here"
                                                         value={description}
@@ -337,12 +335,15 @@ const AddProduct = () => {
                                             <div className="d-flex justify-content-end mt-3">
                                                 {disabledProduct && (
                                                     <>
-                                                        <button className="btn btn-primary  " onClick={submitHandler}>
+                                                        <button className="btn btn-primary " onClick={submitHandler}>
                                                             Lưu
                                                         </button>
-                                                        <Link to="/products" className="btn btn-danger ml-2 text-white">
-                                                            Trở về
-                                                        </Link>
+                                                        <button
+                                                            onClick={handleResetForAddProductOther}
+                                                            className="btn btn-danger ml-2"
+                                                        >
+                                                            Hủy
+                                                        </button>
                                                     </>
                                                 )}
                                             </div>
@@ -407,12 +408,20 @@ const AddProduct = () => {
 
                                                     <div className="d-grid" style={{ marginTop: '10px' }}>
                                                         {disabledOptionColor && (
-                                                            <button
-                                                                onClick={submitOptionHandler}
-                                                                className="btn btn-primary color-orange py-2"
-                                                            >
-                                                                Lưu
-                                                            </button>
+                                                            <>
+                                                                <button
+                                                                    onClick={submitOptionHandler}
+                                                                    className="btn btn-primary"
+                                                                >
+                                                                    Lưu
+                                                                </button>
+                                                                <button
+                                                                    onClick={handleResetForAddProductOther}
+                                                                    className="btn btn-danger ml-2"
+                                                                >
+                                                                    Hủy
+                                                                </button>
+                                                            </>
                                                         )}
                                                     </div>
                                                 </form>

@@ -47,12 +47,7 @@ const Orders = (props) => {
                 <Message variant="alert-danger">{error}</Message>
             ) : (
                 <>
-                    <div
-                        style={{
-                            marginBottom: '12px',
-                        }}
-                        className="d-flex justify-content-between"
-                    >
+                    <div className="d-flex justify-content-between">
                         <div className="col-lg-2 col-3 col-md-3 ms-2">
                             <form onSubmit={handleSearch}>
                                 <div className="input-group" style={{ alignItems: 'center' }}>
@@ -74,7 +69,12 @@ const Orders = (props) => {
                             <div className="d-flex flex-column justify-content-center w-full">
                                 <div className="font-semibold ">Trạng thái : </div>
                             </div>
-                            <select className="form-select w-full" value={status} onChange={handleStatus}>
+                            <select
+                                className="form-select mt-1 w-full pl-1 "
+                                style={{ height: '40px' }}
+                                value={status}
+                                onChange={handleStatus}
+                            >
                                 <option value={''}>Tất cả...</option>
                                 <option value={'placed'}>Chờ xác nhận</option>
                                 <option value={'confirm'}>Đã xác nhận</option>
