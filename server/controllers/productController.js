@@ -4,6 +4,7 @@ import Cart from '../models/CartModel.js';
 import cloudinary from 'cloudinary';
 import { v4 as uuidv4 } from 'uuid';
 import { validateConstants, productQueryParams, priceRangeFilter } from '../utils/searchConstants.js';
+
 const getProducts = async (req, res) => {
     const limit = parseInt(req.query.limit) > 0 ? parseInt(req.query.limit) : 12;
     const rating = parseInt(req.query.rating) >= 0 && parseInt(req.query.rating) <= 5 ? parseInt(req.query.rating) : 0;
@@ -24,7 +25,8 @@ const getProducts = async (req, res) => {
         search.category = req.query.category;
     }
     if (rating) {
-        search.rating = { $gte: rating };
+        // search.rating = { $gte: rating };
+        search.rating = req.query.rating;
     }
 
     const productFilter = {
@@ -33,7 +35,6 @@ const getProducts = async (req, res) => {
         ...priceRangeFilter(minPrice, maxPrice),
     };
     const count = await Product.countDocuments({ ...productFilter });
-    let countReal = count - 2;
     if (count == 0) {
         res.json({ products: [], page: 0, pages: 0, total: 0 });
     }
@@ -43,7 +44,7 @@ const getProducts = async (req, res) => {
         .sort(sortBy)
         .populate('category');
 
-    res.status(200).json({ products, page, pages: Math.ceil(count / limit), total: countReal });
+    res.status(200).json({ products, page, pages: Math.ceil(count / limit), total: count });
 };
 
 const getAllProductComment = async (req, res) => {

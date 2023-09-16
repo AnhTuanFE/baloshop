@@ -1,10 +1,5 @@
 const TopTotal = (props) => {
-    const { orders, countProducts, countUsers } = props;
-
-    let totalSale = 0;
-    if (orders) {
-        orders.map((order) => (totalSale = totalSale + order.totalPrice));
-    }
+    const { dataOrders, countProducts, countUsers } = props;
 
     return (
         <div className="row">
@@ -20,7 +15,11 @@ const TopTotal = (props) => {
                     </article>
                     <div className="text ps-3">
                         <span className="fs-5" style={{ fontWeight: '600' }}>
-                            {Number(totalSale?.toFixed(0))?.toLocaleString('de-DE')}đ
+                            {dataOrders?.totalSale ? (
+                                <>{Number(dataOrders?.totalSale?.toFixed(0))?.toLocaleString('de-DE')}đ</>
+                            ) : (
+                                '0đ'
+                            )}
                         </span>
                     </div>
                 </div>
@@ -32,11 +31,12 @@ const TopTotal = (props) => {
                             <span className="icon icon-sm rounded-circle alert-success">
                                 <i className="text-success fas fa-bags-shopping"></i>
                             </span>
-                            <h6 className="fs-5 mb-1">Đơn hàng hoàn tất</h6>
+                            <h6 className="fs-5 mb-1">Đơn hàng đã thanh toán</h6>
                         </div>
                     </article>
                     <div className="text fs-5 fw-semibold ps-3">
-                        {orders ? <span>{orders.length}</span> : <span>0</span>}
+                        {dataOrders?.quantity ? <span>{dataOrders?.quantity}</span> : <span>0</span>} /{' '}
+                        {dataOrders?.total ? <span>{dataOrders?.total}</span> : <span> 0 </span>}
                     </div>
                 </div>
             </div>

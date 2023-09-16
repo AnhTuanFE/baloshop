@@ -190,7 +190,8 @@ function PlaceOrder() {
                     district: userInfo?.district,
                     ward: userInfo?.ward,
                     address: userInfo?.address,
-                    weight: 1000, // đơn vị gam
+                    // weight: 1000, // đơn vị gam
+                    weight: Number(cartItems?.length) * 1000,
                     value: cart?.totalPrice, // giá trị đơn hàng để tính bảo hiểm
                     transport: 'road',
                     deliver_option: 'none',

@@ -246,15 +246,13 @@ const createOrder = async (req, res, next) => {
     }
 };
 
-// console.log('req.body = ', req.body);
-// console.log('req.query = ', req.query);
 const getOrderAll = async (req, res) => {
     const limit = Number(req.query.limit || 12);
     const page = Number(req.query.pageNumber) || 1;
     const sortBy = validateConstants(orderQueryParams, 'sort', req.query.sortBy);
     const orderStatusFilter = validateConstants(orderQueryParams, 'status', req.query.status);
     let search = {};
-    let allDeliveredOrders = [];
+    let allFilteredOrders = [];
     let orders;
     let limitFilter;
     if (req.query.keyword) {
@@ -262,60 +260,55 @@ const getOrderAll = async (req, res) => {
         search.$or = [{ name: keywordRegex }, { phone: keywordRegex }, { email: keywordRegex }];
     }
     if (req.query.status) {
-        console.log('req.query.status = ', req.query.status);
         if (req.query.status == 'delivering') {
-            let ordersPayMoney = await Order.find({ status: 'delivering' }).populate('payment').sort({
+            let ordersFilteredForStatus = await Order.find({ status: 'delivering' }).populate('payment').sort({
                 _id: -1,
             });
 
-            allDeliveredOrders = [...ordersPayMoney];
+            allFilteredOrders = [...ordersFilteredForStatus];
         }
         if (req.query.status == 'delivered') {
-            const ordersPayMoney = await Order.find({ status: 'delivered' }).populate('payment').sort({
+            const ordersFilteredForStatus = await Order.find({ status: 'delivered' }).populate('payment').sort({
                 _id: -1,
             });
 
-            allDeliveredOrders = [...ordersPayMoney];
+            allFilteredOrders = [...ordersFilteredForStatus];
         }
         if (req.query.status == 'paid') {
-            let ordersPayMoney = await Order.find({}).populate('payment').sort({
+            let ordersFilteredForStatus = await Order.find({}).populate('payment').sort({
                 _id: -1,
             });
-            const filteredOrders = ordersPayMoney.filter((order) => order.payment && order.payment.paid === true);
-            allDeliveredOrders = [...filteredOrders];
+            const filteredOrders = ordersFilteredForStatus.filter(
+                (order) => order.payment && order.payment.paid === true,
+            );
+            allFilteredOrders = [...filteredOrders];
         }
         if (req.query.status == 'unpaid') {
-            let ordersPayMoney = await Order.find({}).populate('payment').sort({
+            let ordersFilteredForStatus = await Order.find({}).populate('payment').sort({
                 _id: -1,
             });
-            const filteredOrders = ordersPayMoney.filter((order) => order.payment && order.payment.paid === false);
-            allDeliveredOrders = [...filteredOrders];
+            const filteredOrders = ordersFilteredForStatus.filter(
+                (order) => order.payment && order.payment.paid === false,
+            );
+            allFilteredOrders = [...filteredOrders];
         } else {
             const statusValues = req.query.status.split(',');
             search.status = { $in: statusValues };
         }
     }
     const count = await Order.countDocuments({ ...search, ...orderStatusFilter });
-    if (allDeliveredOrders.length > 0) {
-        if (allDeliveredOrders.length < limit) {
-            limitFilter = allDeliveredOrders.length;
+    if (allFilteredOrders.length > 0) {
+        if (allFilteredOrders.length < limit) {
+            limitFilter = allFilteredOrders.length;
         } else {
             limitFilter = limit;
         }
-        // let orders_1 = await Order.find({ ...search })
-        //     .limit(limitFilter)
-        //     .skip(limitFilter * (page - 1))
-        //     .sort({ ...sortBy })
-        //     // .populate('user', 'id name email')
-        //     .populate('payment')
-        //     .lean();
-        orders = [...allDeliveredOrders];
-        // res.json({ orders, page: 1, pages: 1, total: allDeliveredOrders.length });
+        orders = [...allFilteredOrders];
         res.json({
             orders,
             page,
-            pages: Math.ceil(allDeliveredOrders.length / limitFilter),
-            total: allDeliveredOrders.length,
+            pages: Math.ceil(allFilteredOrders.length / limitFilter),
+            total: allFilteredOrders.length,
         });
     }
     if (count < limit) {
@@ -330,20 +323,60 @@ const getOrderAll = async (req, res) => {
         // .populate('user', 'id name email')
         .populate('payment')
         .lean();
-    orders = [...orders_1, ...allDeliveredOrders];
+    orders = [...orders_1, ...allFilteredOrders];
     res.json({ orders, page, pages: Math.ceil(count / limitFilter), total: count });
 };
 
 const completed = async (req, res) => {
     try {
-        const orders = await Order.find({ status: 'completed' }).sort({ _id: -1 });
+        let search = {};
+        const count = await Order.countDocuments({ ...search });
+        const ordersComplete = await Order.find({ status: 'completed' }).sort({ _id: -1 });
+        // const ordersPaid = await Order.find({ status: '' }).sort({ _id: -1 });
+        let totalSale = 0;
+        if (ordersComplete) {
+            ordersComplete.map((order) => (totalSale = totalSale + order.totalPrice));
+        }
+        // const totalOrders = await Order.find({}).sort({ _id: -1 });
+
         // const orders = await Order.find({ 'payment.paid': true })
         //     .sort({ _id: -1 })
         //     .populate('user', 'id name email')
         //     .populate('payment');
 
-        if (orders) {
-            res.json(orders);
+        if (ordersComplete) {
+            res.json({ orders: ordersComplete, totalSale: totalSale, quantity: ordersComplete.length, total: count });
+        } else {
+            res.json({ orders: {}, totalSale: totalSale, quantity: 0, total: 0 });
+        }
+    } catch (err) {
+        console.log('err');
+    }
+};
+const ordersPaid = async (req, res) => {
+    try {
+        let ordersFilteredForStatus = await Order.find({}).populate('payment').sort({
+            _id: -1,
+        });
+        const filterOrdersPaid = ordersFilteredForStatus.filter(
+            (order) => order.payment && order.payment.paid === true,
+        );
+
+        let search = {};
+        const count = await Order.countDocuments({ ...search });
+        let totalSale = 0;
+        if (filterOrdersPaid) {
+            filterOrdersPaid.map((order) => (totalSale = totalSale + order.totalPrice));
+        }
+        if (filterOrdersPaid) {
+            res.json({
+                orders: filterOrdersPaid,
+                totalSale: totalSale,
+                quantity: filterOrdersPaid.length,
+                total: count,
+            });
+        } else {
+            res.json({ orders: {}, totalSale: totalSale, quantity: 0, total: 0 });
         }
     } catch (err) {
         console.log('err');
@@ -997,6 +1030,7 @@ const orderController = {
     createOrder,
     getOrderAll,
     completed,
+    ordersPaid,
     getOrderByUser,
     getOrderById,
     confirmOrder,

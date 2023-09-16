@@ -48,8 +48,7 @@ import { logout } from './userActions';
 export const listProducts = (dataReceived) => async (dispatch, getState) => {
     // category = '', keyword = '', pageNumber = ''
     // , rating, sortBy, minPrice, maxPrice
-    const { category, keyword, pageNumber } = dataReceived;
-    const limit = 12;
+    const { category, keyword, pageNumber, limit } = dataReceived;
     try {
         dispatch({ type: PRODUCT_LIST_REQUEST });
 

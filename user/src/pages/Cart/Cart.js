@@ -7,7 +7,6 @@ import { addToCart, listCart, removefromcart } from '~/redux/Actions/cartActions
 
 import Loading from '~/components/LoadingError/Loading';
 import { notification, Select, Space } from 'antd';
-import ModalDaiSyUI from '~/components/Modal/ModalDaiSyUI';
 import './Cart.css';
 
 function Cart() {

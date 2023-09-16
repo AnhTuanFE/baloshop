@@ -12,7 +12,7 @@ import TotalPriceStatistics from '~/components/Home/TotalPriceStatistics';
 const HomeScreen = () => {
     const dispatch = useDispatch();
     const orderListComplete = useSelector((state) => state.orderListComplete);
-    const { orders } = orderListComplete;
+    const { data } = orderListComplete;
     // orderList
     const productList = useSelector((state) => state.productList);
     const { total } = productList;
@@ -25,8 +25,7 @@ const HomeScreen = () => {
 
     useEffect(() => {
         if (userInfo) {
-            dispatch(listProducts());
-            // dispatch(listOrders());
+            dispatch(listProducts({ category: '', keyword: '', pageNumber: '', limit: '' }));
             dispatch(listUser());
             dispatch(getOrderCompleteAll());
         }
@@ -38,7 +37,7 @@ const HomeScreen = () => {
                 <div className="content-header mb-1">
                     <h3 className="content-title fw-bold "> Trang chủ </h3>
                 </div>
-                <TopTotal orders={orders} countProducts={total} countUsers={users ? users.length : 0} />
+                <TopTotal dataOrders={data} countProducts={total} countUsers={users ? users.length : 0} />
 
                 <div className="row">
                     <ListOrderStatistics />
