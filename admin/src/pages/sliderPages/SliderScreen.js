@@ -33,12 +33,12 @@ export default function SliderScreen() {
                 </h2>
             </div>
 
-            {/* <AddSlider/> */}
             <AddSlider />
             <table className="table">
                 <thead>
                     <tr>
                         <th scope="col">Tên</th>
+                        <th scope="col">Xem trước</th>
                         <th scope="col">Đường dẫn</th>
                         <th scope="col" className="text-end" style={{ padding: '0 20px' }}>
                             Chỉnh sửa
@@ -50,6 +50,17 @@ export default function SliderScreen() {
                         <tr key={value._id}>
                             <td>
                                 <b>Hình ảnh {index + 1}</b>
+                            </td>
+                            <td>
+                                <div>
+                                    <img
+                                        src={`${value.url}`}
+                                        style={{
+                                            height: '100px',
+                                            width: '200px',
+                                        }}
+                                    />
+                                </div>
                             </td>
                             <td>{value.url}</td>
                             <td className="d-flex justify-content-end align-item-center">

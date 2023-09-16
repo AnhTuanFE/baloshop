@@ -22,11 +22,7 @@ const Product = (props) => {
                         <span> {product._id}</span>
                     </td>
                     <td style={{ width: '10%' }}>
-                        <img
-                            src={`${product?.image[0].urlImage}`}
-                            alt="Product"
-                            style={{ height: '40px', width: '40px' }}
-                        />
+                        <img src={`${product?.image}`} alt="Product" style={{ height: '40px', width: '40px' }} />
                     </td>
                     <td style={{ width: '30%' }}>
                         <span> {product.name}</span>
@@ -39,11 +35,11 @@ const Product = (props) => {
                     </td> */}
                     <td className="text-end" style={{ width: '10%' }}>
                         <div className="d-flex">
-                            <Link to={`/product/${product._id}/edit`} className="dropdown-item">
+                            <Link to={`/product/${product._id}/edit`} className="btn btn-success">
                                 Sửa
                             </Link>
                             <button
-                                className="dropdown-item"
+                                className="btn btn-danger ml-1"
                                 onClick={() => {
                                     deletehandler(product._id);
                                 }}

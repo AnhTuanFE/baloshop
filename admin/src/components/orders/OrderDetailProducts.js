@@ -1,26 +1,56 @@
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams, Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import moment from 'moment';
+import ConfirmModal from '../Modal/ConfirmModal';
+import { updateStatusOrderAdminAction } from '~/Redux/Actions/OrderActions';
+import { handleChangeStateOrder } from '~/useHooks/HandleChangeMethod';
+import {
+    HandleChangeButtonSetStatusOrder,
+    HandleChangeButtonCancelOrder,
+} from '~/useHooks/HandleChangeButtonSetStatusOrder';
 
 const OrderDetailProducts = (props) => {
     const { order, loading } = props;
-
-    if (!loading) {
-        const addDecimals = (num) => {
-            return (Math.round(num * 100) / 100).toFixed(0);
+    const dispatch = useDispatch();
+    const [statusModal, setStatusModal] = useState(false);
+    const [status, setStatus] = useState('');
+    const handleHidden = () => {
+        setStatusModal(false);
+    };
+    const handleUpdateStatusOrder = () => {
+        const data = {
+            id: order?.order._id,
+            status: status,
         };
-
-        order.itemsPrice = addDecimals(order?.order?.orderItems?.reduce((acc, item) => acc + item.price * item.qty, 0));
-    }
-
+        dispatch(updateStatusOrderAdminAction(data));
+        setStatusModal(false);
+    };
+    const handleSetStatusAndShowModal = (statusDep) => {
+        setStatus(statusDep);
+        setStatusModal(true);
+    };
     return (
         <div>
+            <div>
+                {statusModal && (
+                    <ConfirmModal
+                        Title="Cập nhật trạng thái"
+                        Body="Bạn có chắc chắn cập nhật trạng thái cho đơn hàng này không?"
+                        HandleSubmit={handleUpdateStatusOrder}
+                        Close="modal"
+                        hidenModal={handleHidden}
+                    />
+                )}
+            </div>
             <table className="table-lg table border">
                 <thead>
                     <tr>
-                        <th style={{ width: '40%' }}>Sản phẩm</th>
+                        <th style={{ width: '35%' }}>Sản phẩm</th>
                         <th style={{ width: '15%' }}>Màu sắc</th>
                         <th style={{ width: '15%' }}>Đơn giá</th>
                         <th style={{ width: '15%' }}>Số lượng</th>
-                        <th style={{ width: '15%' }} className="text-end">
+                        <th style={{ width: '20%' }} className="">
                             Giá tiền
                         </th>
                     </tr>
@@ -43,71 +73,84 @@ const OrderDetailProducts = (props) => {
                             </td>
                             <td>{item?.color}</td>
                             <td>{item?.price?.toLocaleString('de-DE')}đ </td>
-                            <td>{item.qty} </td>
-                            <td className="text-end"> {(item.quantity * item.price)?.toLocaleString('de-DE')}đ</td>
+                            <td>{item.quantity} </td>
+                            <td> {(item.quantity * item.price)?.toLocaleString('de-DE')}đ</td>
                         </tr>
                     ))}
 
                     <tr>
                         <td colSpan="6">
-                            <article className="float-end">
-                                <dl className="dlist">
-                                    <dt className="fs-6" style={{ fontWeight: '600' }}>
-                                        Tổng tiền:
-                                    </dt>{' '}
-                                    <dd className="fs-6" style={{ fontWeight: '600' }}>
-                                        {Number(order?.order.totalProductPrice)?.toLocaleString('de-DE')}đ
-                                    </dd>
-                                </dl>
-                                <dl className="dlist">
-                                    <dt className="fs-6" style={{ fontWeight: '600' }}>
-                                        Phí ship:
-                                    </dt>{' '}
-                                    <dd className="fs-6" style={{ fontWeight: '600' }}>
-                                        {Number(order?.order.shippingPrice)?.toLocaleString('de-DE')}đ
-                                    </dd>
-                                </dl>
-                                <dl className="dlist">
-                                    <dt className="fs-6" style={{ fontWeight: '600' }}>
-                                        Tổng cộng:
-                                    </dt>
-                                    <dd className="fs-5" style={{ fontWeight: '600' }}>
-                                        {Number(order?.order.totalPrice)?.toLocaleString('de-DE')}đ
-                                    </dd>
-                                </dl>
-                                <dl className="dlist">
-                                    <dt className="text-muted fs-6" style={{ fontWeight: '600' }}>
-                                        Trạng thái:
-                                    </dt>
-                                    <dd>
-                                        {order?.cancel !== 1 ? (
-                                            order?.waitConfirmation &&
-                                            order?.isDelivered &&
-                                            order?.isPaid &&
-                                            order?.completeUser &&
-                                            order?.completeAdmin ? (
-                                                <span className="badge rounded-pill alert-success">Hoàn tất</span>
-                                            ) : order?.waitConfirmation && order?.isDelivered && order?.isPaid ? (
-                                                <span className="badge alert-success">Đã thanh toán</span>
-                                            ) : order?.waitConfirmation && order?.isDelivered ? (
-                                                <span className="badge alert-warning">Đang giao</span>
-                                            ) : order?.waitConfirmation ? (
-                                                <span className="badge alert-warning">Đã xác nhận</span>
+                            <div className="d-flex justify-content-between">
+                                <div className="d-flex flex-column justify-content-center  text-center ">
+                                    <div>
+                                        <b>Thanh toán : </b>
+                                        <div>
+                                            {order?.order.payment.paid ? (
+                                                <div
+                                                    style={{
+                                                        fontSize: '16px',
+                                                        marginTop: '6px',
+                                                    }}
+                                                    className="badge alert-success"
+                                                >
+                                                    Đã thanh toán
+                                                </div>
                                             ) : (
-                                                <span className="badge alert-danger">Chờ xác nhận</span>
-                                            )
-                                        ) : (
-                                            <span className="badge bg-dark">Đơn này đã bị hủy</span>
-                                        )}
-                                    </dd>
-                                </dl>
-                            </article>
+                                                <div
+                                                    style={{
+                                                        fontSize: '16px',
+                                                        marginTop: '6px',
+                                                    }}
+                                                    className="badge alert-warning"
+                                                >
+                                                    Chưa thanh toán
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                                <article className="">
+                                    <dl className="dlist">
+                                        <dt className="fs-6" style={{ fontWeight: '600' }}>
+                                            Tổng tiền:
+                                        </dt>{' '}
+                                        <dd className="fs-6" style={{ fontWeight: '600' }}>
+                                            {Number(order?.order.totalProductPrice)?.toLocaleString('de-DE')}đ
+                                        </dd>
+                                    </dl>
+                                    <dl className="dlist">
+                                        <dt className="fs-6" style={{ fontWeight: '600' }}>
+                                            Phí ship:
+                                        </dt>{' '}
+                                        <dd className="fs-6" style={{ fontWeight: '600' }}>
+                                            {Number(order?.order.shippingPrice)?.toLocaleString('de-DE')}đ
+                                        </dd>
+                                    </dl>
+                                    <dl className="dlist">
+                                        <dt className="fs-6" style={{ fontWeight: '600' }}>
+                                            Tổng cộng:
+                                        </dt>
+                                        <dd className="fs-5" style={{ fontWeight: '600' }}>
+                                            {Number(order?.order.totalPrice)?.toLocaleString('de-DE')}đ
+                                        </dd>
+                                    </dl>
+                                    <dl className="dlist">
+                                        <dt className="text-muted fs-6" style={{ fontWeight: '600' }}>
+                                            Trạng thái:
+                                        </dt>
+                                        <dd>
+                                            <>{handleChangeStateOrder(order?.order)}</>
+                                        </dd>
+                                    </dl>
+                                </article>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
             </table>
-            <div className=" ">
-                <button className="btn btn-success w-full ">Xác nhận đơn hàng</button>
+            <div className="">
+                {HandleChangeButtonSetStatusOrder(order?.order, handleSetStatusAndShowModal)}
+                {HandleChangeButtonCancelOrder(order?.order, handleSetStatusAndShowModal)}
             </div>
         </div>
     );

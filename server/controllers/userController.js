@@ -13,7 +13,7 @@ const userLogin = async (req, res) => {
     if (user && (await user.matchPassword(password)) && information_admin) {
         const data = {
             city: information_admin.city,
-            distric: information_admin.distric,
+            district: information_admin.district,
             ward: information_admin.ward,
             address: information_admin.address,
             phone: information_admin.phone,
@@ -26,9 +26,10 @@ const userLogin = async (req, res) => {
             isAdmin: user.isAdmin,
             token: generateToken(user._id),
             createdAt: user.createdAt,
-            address: user.address,
             city: user.city,
-            country: user.country,
+            district: user.district,
+            ward: user.ward,
+            address: user.address,
             image: user.image,
             disabled: user.disabled,
             address_shop: data,
@@ -78,9 +79,6 @@ const register = async (req, res) => {
 };
 
 const getProfile = async (req, res) => {
-    // let token = req.headers.authorization.split(' ')[1];
-    // const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    // const user = await User.findById(decoded.id).select('-password');
     const user = req.user;
     const information_admin = await User.findOne({ email: 'admin@gmail.com' });
 
@@ -117,11 +115,7 @@ const getProfile = async (req, res) => {
 const updateProfile = async (req, res) => {
     try {
         const imagePath = req?.file?.path;
-        const { id, name, dateOfBirth, phone, city, district, ward, address, nameImage } = req?.body;
-        // console.log('req.body = ', req.body);
-        // console.log('imagePath = ', req.file?.path);
-
-        // const user = await User.findById(id);
+        const { name, dateOfBirth, phone, city, district, ward, address, password, oldPassword } = req?.body;
         const user = req?.user;
         const information_admin = await User.findOne({ email: 'admin@gmail.com' });
 
@@ -137,77 +131,77 @@ const updateProfile = async (req, res) => {
             if (user?.disabled) {
                 res.status(400);
                 throw new Error('account lock up');
-            } else if (imagePath) {
-                cloudinary.uploader.destroy(nameImage, function (error, result) {
-                    try {
-                        console.log('result = ', result, 'error = ', error);
-                    } catch (err) {
-                        console.log('lỗi = '.err);
-                    }
-                });
+            }
+            if (imagePath) {
+                if (user?.image) {
+                    let cutUrlImage = user?.image.split('/');
+                    // let nameImage = cutUrlImage.slice(7).join('/').slice(0, -4);
+                    // cloudinary.uploader.destroy(nameImage, function (error, result) {
+                    //     try {
+                    //         console.log('result = ', result, 'error = ', error);
+                    //     } catch (err) {
+                    //         console.log('lỗi = '.err);
+                    //     }
+                    // });
+                }
                 cloudinary.v2.uploader.upload(imagePath, { folder: 'baloshopAvatar' }, async function (err, result) {
                     if (err) {
                         req.json(err.message);
                     }
                     const imageURL = result.secure_url;
-                    const imageID = result.public_id;
+                    // const imageID = result.public_id;
 
                     const filter = { _id: user._id };
                     const update = {
                         $set: {
-                            name: name || user.name,
-                            dateOfBirth: dateOfBirth || user.dateOfBirth,
-                            phone: phone || user.phone,
-                            city: city || user.city,
-                            district: district || user.district,
-                            ward: ward || user.ward,
-                            address: address || user.address,
-                            image: {
-                                urlImageCloudinary: imageURL,
-                                idImageCloudinary: imageID,
-                            },
+                            image: imageURL,
                         },
                     };
-                    const updataStatus = await User.updateOne(filter, update);
+                    await User.updateOne(filter, update);
                     res.json({
                         _id: user._id,
                         name: name || user.name,
-                        dateOfBirth: dateOfBirth || user.dateOfBirth,
+                        dateOfBirth: dateOfBirth || user?.dateOfBirth,
                         phone: phone || user.phone,
                         isAdmin: user.isAdmin,
                         createdAt: user.createdAt,
                         token: generateToken(user.id),
                         email: user.email,
-                        city: city || user.city,
-                        district: district || user.district,
-                        ward: ward || user.ward,
-                        address: address || user.address,
-                        image: {
-                            urlImageCloudinary: imageURL,
-                            idImageCloudinary: imageID,
-                        },
+                        city: city || user?.city,
+                        district: district || user?.district,
+                        ward: ward || user?.ward,
+                        address: address || user?.address,
+                        image: imageURL,
                         disabled: user.disabled,
                         address_shop: data,
                     });
                 });
-            } else if (req.body.password) {
-                if (await user.matchPassword(req.body.oldPassword)) {
-                    user.password = req.body.password;
+                return;
+            }
+            if (password) {
+                console.log('chạy password password = ', password, 'oldPassword = ', oldPassword);
+                try {
+                    let dataUsserpass = await user.matchPassword(oldPassword);
+                    console.log('dataUsserpass = ', dataUsserpass);
+                } catch {}
+                if (await user.matchPassword(oldPassword)) {
+                    console.log('chạy password bên trong');
+                    user.password = password;
                     const updatedPassword = await user.save();
                     res.status(201).json({
                         _id: user._id,
-                        name: updatedPassword.name,
-                        dateOfBirth: user.dateOfBirth,
+                        name: user.name,
+                        dateOfBirth: user?.dateOfBirth,
                         email: user.email,
                         phone: user.phone,
                         isAdmin: user.isAdmin,
                         createdAt: user.createdAt,
                         token: generateToken(user._id),
-                        city: user.city,
-                        district: user.district,
-                        ward: user.ward,
-                        address: user.address,
-                        image: user.image,
+                        city: user?.city,
+                        district: user?.district,
+                        ward: user?.ward,
+                        address: user?.address,
+                        image: user?.image,
                         disabled: user.disabled,
                         address_shop: data,
                     });
@@ -217,28 +211,28 @@ const updateProfile = async (req, res) => {
                 }
             } else {
                 user.name = name || user.name;
-                user.dateOfBirth = dateOfBirth || user.dateOfBirth;
+                user.dateOfBirth = dateOfBirth || user?.dateOfBirth;
                 user.phone = phone || user.phone;
-                user.city = city || user.city;
-                user.district = district || user.district;
-                user.ward = ward || user.ward;
-                user.address = address || user.address;
+                user.city = city || user?.city;
+                user.district = district || user?.district;
+                user.ward = ward || user?.ward;
+                user.address = address || user?.address;
 
                 const updatedUser = await user.save();
                 res.json({
                     _id: updatedUser._id,
                     name: updatedUser.name,
-                    dateOfBirth: updatedUser.dateOfBirth,
+                    dateOfBirth: updatedUser?.dateOfBirth,
                     phone: updatedUser.phone,
-                    city: updatedUser.city,
-                    district: updatedUser.district,
-                    ward: updatedUser.ward,
-                    address: updatedUser.address,
+                    city: updatedUser?.city,
+                    district: updatedUser?.district,
+                    ward: updatedUser?.ward,
+                    address: updatedUser?.address,
                     email: user.email,
                     isAdmin: updatedUser.isAdmin,
                     createdAt: updatedUser.createdAt,
                     token: generateToken(updatedUser._id),
-                    image: user.image,
+                    image: user?.image,
                     disabled: user.disabled,
                     address_shop: data,
                 });
@@ -249,6 +243,34 @@ const updateProfile = async (req, res) => {
         }
     } catch (error) {
         throw new Error(error);
+    }
+};
+const updatePassword = async (req, res) => {
+    const { password, oldPassword } = req.body;
+    const user = req.user;
+    if (user) {
+        if (user?.disabled) {
+            res.status(400);
+            throw new Error('account lock up');
+        }
+        if (password && oldPassword) {
+            if (await user.matchPassword(oldPassword)) {
+                user.password = password;
+                await user.save();
+                res.json({ status: 'success', message: 'Cập nhập mật khẩu thành công!' });
+            } else {
+                res.status(404);
+                throw new Error('Mật khẩu cũ không đúng!');
+            }
+        } else {
+            res.status(400).json({
+                status: 'failed',
+                message: 'Vui lòng nhập đủ thông tin của mật khẩu cũ và mật khẩu mới',
+            });
+        }
+    } else {
+        res.status(404);
+        throw new Error('User not found');
     }
 };
 
@@ -295,6 +317,7 @@ const userController = {
     register,
     getProfile,
     updateProfile,
+    updatePassword,
     getAllUser,
     disableUser,
 };

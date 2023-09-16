@@ -21,6 +21,7 @@ const CommentScreen = () => {
     const dispatch = useDispatch();
     const commentList = useSelector((state) => state.productCommentGet);
     const { products, loading, error } = commentList;
+
     const productCommentChildCreate = useSelector((state) => state.productCommentChildCreate);
     const { success: successCommentChild } = productCommentChildCreate;
     const productDeleteComments = useSelector((state) => state.productDeleteComments);
@@ -31,6 +32,7 @@ const CommentScreen = () => {
     const [productId, setProductId] = useState('');
     const [idComment, setIdComment] = useState('');
     const [questionChild, setQuestionChild] = useState('');
+
     useEffect(() => {
         if (successCommentChild) {
             dispatch({ type: PRODUCT_DELETE_COMMENT_RESET });
@@ -40,6 +42,8 @@ const CommentScreen = () => {
         }
         dispatch(ListProductCommentAll());
     }, [dispatch, successCommentChild, successDeleteComment, successDeleteCommentChild]);
+
+    // ========================= sắp bỏ
     const userList = useSelector((state) => state.userList);
     const { users } = userList;
     useEffect(() => {
@@ -80,7 +84,7 @@ const CommentScreen = () => {
     };
     return (
         <>
-            <div className="content-main" style={{ backgroundColor: '#ffffff' }}>
+            <div className="content-main ">
                 <div className="content-header">
                     <h2 className="content-title" style={{ padding: '15px' }}>
                         Bình luận
@@ -89,10 +93,20 @@ const CommentScreen = () => {
                 {loading && <Loading />}
                 {error && <Message variant="alert-danger">{error}</Message>}
                 {errorCommentChild && <Message variant="alert-danger">{errorCommentChild}</Message>}
-                <div class="accordion" id="accordionPanelsStayOpenExample">
+                <div
+                    class="accordion overflow-auto px-1"
+                    style={{ height: '74vh', boxShadow: '0px 0px 4px 2px rgba(0,0,0,0.24) inset' }}
+                    id="accordionPanelsStayOpenExample"
+                >
                     {products?.map((product, index) => {
                         return (
-                            <div class="accordion-item" key={product._id}>
+                            <div
+                                style={{
+                                    marginTop: '12px',
+                                }}
+                                class="accordion-item "
+                                key={product._id}
+                            >
                                 <h2 class="accordion-header" id={`panelsStayOpen-heading${index}`}>
                                     <button
                                         class="accordion-button"
@@ -109,7 +123,7 @@ const CommentScreen = () => {
                                                         #
                                                     </th>
                                                     <th scope="col" style={{ width: '90%' }}>
-                                                        Sản phẩm
+                                                        Bình luận của sản phẩm {product?.nameProduct}
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -117,7 +131,11 @@ const CommentScreen = () => {
                                                 <tr>
                                                     <td>
                                                         <img
-                                                            src={`${product?.imageProduct}`}
+                                                            src={`${
+                                                                product?.imageProduct
+                                                                    ? product?.imageProduct
+                                                                    : imageDefaul
+                                                            } `}
                                                             alt=""
                                                             style={{ height: '40px', width: '40px' }}
                                                         />
@@ -130,7 +148,7 @@ const CommentScreen = () => {
                                 </h2>
                                 <div
                                     id={`panelsStayOpen-collapse${index}`}
-                                    class="accordion-collapse collapse show"
+                                    class="accordion-collapse show collapse"
                                     aria-labelledby={`panelsStayOpen-heading${index}`}
                                 >
                                     <div class="accordion-body">
@@ -143,7 +161,7 @@ const CommentScreen = () => {
                                         >
                                             <div className="rating-review__flex">
                                                 <img
-                                                    src={imageDefaul}
+                                                    src={`${product?.user?.image ? product?.user?.image : imageDefaul}`}
                                                     alt=""
                                                     style={{
                                                         height: '40px',
@@ -171,20 +189,20 @@ const CommentScreen = () => {
                                             </div>
                                         </div>
                                         <div
-                                            className="alert mt-3 product-review"
+                                            className="alert product-review mt-3"
                                             style={{ display: 'flex', flexDirection: 'column' }}
                                         >
                                             <span>{product.question}</span>
                                             <div className="d-flex justify-content-end">
-                                                <span
-                                                    className="commentChild pe-2 text-dark"
+                                                {/* <span
+                                                    className="commentChild text-dark pe-2"
                                                     onClick={() => {
                                                         handlerCommentDelete(product?.idProduct, product?._id);
                                                     }}
                                                 >
                                                     <i class="fas fa-comment-times" style={{ paddingRight: '5px' }}></i>
                                                     Thu hồi
-                                                </span>
+                                                </span> */}
                                                 <span
                                                     className="commentChild ps-2"
                                                     onClick={() => {
@@ -200,7 +218,7 @@ const CommentScreen = () => {
                                         </div>
                                         <div className="product-review" style={{ padding: '0px', boxShadow: 'none' }}>
                                             {product.commentChilds?.map((child) => (
-                                                <div key={child._id} className="mb-5 mb-md-3 p-1 rounded marginbottom">
+                                                <div key={child._id} className="mb-md-3 marginbottom mb-5 rounded p-1">
                                                     <div
                                                         style={{
                                                             display: 'flex',
@@ -226,7 +244,7 @@ const CommentScreen = () => {
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <div className="alert mt-3 product-review">
+                                                    <div className="alert product-review mt-3">
                                                         <span>{child.questionChild}</span>
                                                         <div className="d-flex justify-content-end">
                                                             <span

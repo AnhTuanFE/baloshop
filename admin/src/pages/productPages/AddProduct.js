@@ -12,6 +12,7 @@ import {
     PRODUCT_CREATE_RESET,
     PRODUCT_OPTIONCOLOR_RESET,
     PRODUCT_CREATE_IMAGE_RESET,
+    PRODUCT_EDIT_RESET,
 } from '~/Redux/Constants/ProductConstants';
 import { createProduct, createOptionColor, editProduct } from '~/Redux/Actions/ProductActions';
 
@@ -32,8 +33,6 @@ const AddProduct = () => {
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     const [category, setCategory] = useState('');
-
-    // const [image, setImage] = useState('');
     const [image, setImage] = useState();
     const [imgUrl, setImgUrl] = useState('');
 
@@ -46,8 +45,8 @@ const AddProduct = () => {
     }, [image]);
     // const [arrImage, setArrImage] = useState([]);
     const [countInStock, setCountInStock] = useState('');
-    const [description, setDescription] = useState('');
     const [color, setColor] = useState('');
+    const [description, setDescription] = useState('');
     const [productId, setProducId] = useState('');
     const [validate, setValidate] = useState({});
 
@@ -66,19 +65,33 @@ const AddProduct = () => {
     const { categories } = lcategories;
 
     const productEdit = useSelector((state) => state.productEdit);
-    const { product: productOption } = productEdit;
+    const { stateProductEdit } = productEdit;
 
     useEffect(() => {
         if (product) {
             toast.success('Thêm sản phẩm thành công', ToastObjects);
-            dispatch({ type: PRODUCT_CREATE_RESET });
             setProducId(product._id);
+            dispatch({ type: PRODUCT_CREATE_RESET });
+            dispatch({ type: PRODUCT_OPTIONCOLOR_RESET });
+            setDisabledProduct(false);
+            setDisabledOptionColor(true);
         }
-    }, [product, dispatch]);
+    }, [product]);
+    useEffect(() => {
+        dispatch({ type: PRODUCT_EDIT_RESET });
+        dispatch({ type: PRODUCT_OPTIONCOLOR_RESET });
+    }, []);
 
     useEffect(() => {
+        if (successOption) {
+            toast.success('Thêm màu sắc sản phẩm thành công', ToastObjects);
+            dispatch({ type: PRODUCT_OPTIONCOLOR_RESET });
+            dispatch(editProduct(productId));
+        }
+    }, [successOption]);
+    useEffect(() => {
         dispatch(editProduct(productId));
-    }, [productId, successOption]);
+    }, [productId]);
 
     useEffect(() => {
         dispatch(ListCategory());
@@ -126,34 +139,65 @@ const AddProduct = () => {
             formData.append('price', price);
             formData.append('description', description);
             formData.append('category', category);
-            formData.append('countInStock', countInStock);
+            // formData.append('countInStock', countInStock);
             formData.append('image', image);
-
             dispatch(createProduct(formData));
             // dispatch(createProduct(name, price, description, category, image, countInStock));
-            setDisabledProduct(false);
-            setDisabledOptionColor(true);
         }
     };
     const submitOptionHandler = (e) => {
         e.preventDefault();
         dispatch(createOptionColor(productId, { color, countInStock }));
+        setCountInStock('');
+        setColor('');
     };
-
+    const handleResetForAddProductOther = () => {
+        dispatch({ type: PRODUCT_EDIT_RESET });
+        dispatch({ type: PRODUCT_OPTIONCOLOR_RESET });
+        dispatch({ type: PRODUCT_CREATE_RESET });
+        setName('');
+        setPrice('');
+        setCategory('');
+        setImage();
+        setImgUrl('');
+        setCountInStock('');
+        setColor('');
+        setDescription('');
+        setProducId('');
+        setValidate({});
+        setDisabledOptionColor(false);
+        setDisabledProduct(true);
+    };
+    console.log('stateProductEdit = ', stateProductEdit);
     return (
         <>
             <Toast />
-            <section className="content-main" style={{ maxWidth: '1200px' }}>
+            <section className="content-main">
                 <form>
-                    <div className="content-header">
-                        <h2 className="content-title">Thêm sản phẩm</h2>
+                    <div className="d-flex justify-content-between">
+                        <div className="content-header">
+                            <h2 className="content-title">Thêm sản phẩm</h2>
+                        </div>
+                        <div>
+                            <button
+                                onClick={handleResetForAddProductOther}
+                                className="btn btn-primary color-orange mr-5 py-2"
+                            >
+                                Thêm sản phẩm khác
+                            </button>
+                        </div>
                     </div>
 
-                    <div className="row mb-0 ">
-                        <div className="col-xl-12 col-lg-12 overflow-y-auto " style={{ height: '74vh' }}>
-                            <div className="card mb-1  border-none ">
+                    <div className="row my-0">
+                        <div className=" col-lg-12" style={{ boxShadow: '0px 0px 4px 2px rgba(0,0,0,0.24) inset' }}>
+                            <div
+                                className="card my-2 overflow-y-auto border-none"
+                                style={{
+                                    height: '74vh',
+                                }}
+                            >
                                 <div className="card-body p-0">
-                                    <div className="card-body shadow-sm" style={{ border: '1px solid #ccc' }}>
+                                    <div className="card-body -z-10 border">
                                         {error && <Message variant="alert-danger">{error}</Message>}
                                         {loading && <Loading />}
                                         <from>
@@ -251,7 +295,7 @@ const AddProduct = () => {
                                                                     className="img_css col-10 col-sm-10 col-md-10 col-lg-10"
                                                                     src={imgUrl}
                                                                     alt="product img"
-                                                                ></img>
+                                                                />
                                                             </div>
                                                         </div>
                                                     )}
@@ -259,7 +303,6 @@ const AddProduct = () => {
                                                 <div style={{ display: 'flex' }}>
                                                     <input
                                                         type="file"
-                                                        // onChange={(e) => setImage(e.target.value)}
                                                         onChange={(e) => {
                                                             setImage(e.target.files[0]);
                                                         }}
@@ -305,10 +348,7 @@ const AddProduct = () => {
                                             </div>
                                         </from>
                                     </div>
-                                    <div
-                                        className="card-body shadow-sm"
-                                        style={{ marginTop: '10px', border: '1px solid #ccc' }}
-                                    >
+                                    <div className="card-body mt-1 border ">
                                         <div className="row">
                                             <div className="col-md-4 col-lg-4">
                                                 {errorOption && (
@@ -388,18 +428,20 @@ const AddProduct = () => {
                                                     </thead>
                                                     {/* Table Data */}
                                                     <tbody>
-                                                        {productOption?.optionColor &&
-                                                            productOption?.optionColor?.map((option, index) => (
-                                                                <tr key={index}>
-                                                                    <td>{index + 1}</td>
-                                                                    <td>
-                                                                        <b>{option.color}</b>
-                                                                    </td>
-                                                                    <td>
-                                                                        <span>{option.countInStock}</span>
-                                                                    </td>
-                                                                </tr>
-                                                            ))}
+                                                        {stateProductEdit?.product?.optionColor &&
+                                                            stateProductEdit?.product?.optionColor?.map(
+                                                                (option, index) => (
+                                                                    <tr key={index}>
+                                                                        <td>{index + 1}</td>
+                                                                        <td>
+                                                                            <b>{option.color}</b>
+                                                                        </td>
+                                                                        <td>
+                                                                            <span>{option.countInStock}</span>
+                                                                        </td>
+                                                                    </tr>
+                                                                ),
+                                                            )}
                                                     </tbody>
                                                 </table>
                                             </div>

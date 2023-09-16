@@ -32,6 +32,7 @@ export const logout = () => (dispatch) => {
     dispatch({ type: types.USER_DETAILS_RESET });
     dispatch({ type: ORDER_LIST_MY_RESET });
     dispatch({ type: CART_LIST_MY_RESET });
+    dispatch({ type: types.USER_REGISTER_RESET });
 };
 
 // REGISTER
@@ -48,7 +49,6 @@ export const register = (name, email, phone, password) => async (dispatch) => {
         const { data } = await axios.post(`/api/users`, { name, email, phone, password }, config);
         dispatch({ type: types.USER_REGISTER_SUCCESS, payload: data });
         dispatch({ type: types.USER_LOGIN_SUCCESS, payload: data });
-
         localStorage.setItem('userInfo', JSON.stringify(data));
     } catch (error) {
         dispatch({
@@ -104,7 +104,6 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
         const { data } = await axios.put(`/api/users/profile`, user, config);
         dispatch({ type: types.USER_UPDATE_PROFILE_SUCCESS, payload: data });
         dispatch({ type: types.USER_LOGIN_SUCCESS, payload: data });
-
         // localStorage.removeItem('userInfo');
         localStorage.setItem('userInfo', JSON.stringify(data));
     } catch (error) {
@@ -119,9 +118,10 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
     }
 };
 
-export const updateUserPassword = (user) => async (dispatch, getState) => {
+export const updateUserPasswordAction = (dataReceived) => async (dispatch, getState) => {
+    const { password, oldPassword } = dataReceived;
     try {
-        dispatch({ type: types.USER_UPDATE_PROFILE_REQUEST });
+        dispatch({ type: types.USER_UPDATE_PASSWORD_REQUEST });
 
         const {
             userLogin: { userInfo },
@@ -133,37 +133,15 @@ export const updateUserPassword = (user) => async (dispatch, getState) => {
                 Authorization: `Bearer ${userInfo.token}`,
             },
         };
-
-        const { data } = await axios.put(`/api/users/profile`, user, config);
+        const { data } = await axios.put(`/api/users/updatePassword`, { password, oldPassword }, config);
         dispatch({ type: types.USER_UPDATE_PASSWORD_SUCCESS, payload: data });
-        dispatch({ type: types.USER_LOGIN_SUCCESS, payload: data });
-
-        localStorage.setItem('userInfo', JSON.stringify(data));
     } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;
         if (message === 'Not authorized, token failed') {
             dispatch(logout());
         }
         dispatch({
-            type: types.USER_UPDATE_PROFILE_FAIL,
-            payload: message,
-        });
-    }
-};
-// ALL USER
-export const listUser = () => async (dispatch) => {
-    try {
-        dispatch({ type: types.USER_LIST_REQUEST });
-        const { data } = await axios.get(`/api/users/all`);
-
-        dispatch({ type: types.USER_LIST_SUCCESS, payload: data });
-    } catch (error) {
-        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
-        if (message === 'Not authorized, token failed') {
-            dispatch(logout());
-        }
-        dispatch({
-            type: types.USER_LIST_FAIL,
+            type: types.USER_UPDATE_PASSWORD_FAIL,
             payload: message,
         });
     }
@@ -225,64 +203,62 @@ export const ListAvatar = () => async (dispatch) => {
     }
 };
 
-export const ForgotPassWord = (email) => async (dispatch) => {
-    try {
-        dispatch({ type: types.FORGOT_PASS_WORD_REQUEST });
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                'Access-Control-Allow-Origin': '*',
-            },
-        };
-        const { data } = await axios.post(`/api/forgotPass/forgotPassword`, email, config);
-        dispatch({ type: types.FORGOT_PASS_WORD_SUCCESS, payload: data });
-    } catch (error) {
+export const ForgotPassWordAction = (dataReceived) => async (dispatch) => {
+    const { email } = dataReceived;
+    if (email) {
+        try {
+            dispatch({ type: types.FORGOT_PASS_WORD_REQUEST });
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                },
+            };
+            const { data } = await axios.post(`/api/forgotPass/forgotPassword`, { email }, config);
+            dispatch({ type: types.FORGOT_PASS_WORD_SUCCESS, payload: data });
+        } catch (error) {
+            dispatch({
+                type: types.FORGOT_PASS_WORD_FAIL,
+                payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+            });
+        }
+    } else {
         dispatch({
             type: types.FORGOT_PASS_WORD_FAIL,
-            payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+            payload: 'Bạn chưa nhập email',
         });
     }
 };
 
-export const VerifyResetPassWordAction = (verifyData) => async (dispatch) => {
-    let dataReturn;
-    try {
-        dispatch({ type: types.VERIFY_RESET_PASS_WORD_REQUEST });
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                'Access-Control-Allow-Origin': '*',
-            },
-        };
-        const { data } = await axios.post(`/api/forgotPass/verify-reset-password`, verifyData, config);
-        dataReturn = data;
-        dispatch({ type: types.VERIFY_RESET_PASS_WORD_SUCCESS, payload: data });
-    } catch (error) {
-        dispatch({
-            type: types.VERIFY_RESET_PASS_WORD_FAIL,
-            payload: error.response.data.message,
-        });
-    }
-};
-
-export const ResetPassWordAction = (newPassword) => async (dispatch) => {
-    try {
-        dispatch({ type: types.RESET_PASS_WORD_REQUEST });
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                'Access-Control-Allow-Origin': '*',
-            },
-        };
-        const { data } = await axios.post(`/api/forgotPass/reset-password`, newPassword, config);
-        dispatch({ type: types.RESET_PASS_WORD_SUCCESS, payload: data });
-    } catch (error) {
+export const resetPassWordAction = (dataReceived) => async (dispatch) => {
+    const { newPassword, id, token, newConfirmPassword } = dataReceived;
+    if (newPassword != newConfirmPassword) {
         dispatch({
             type: types.RESET_PASS_WORD_FAIL,
-            payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+            payload: 'Mật khẩu và xác nhận mật khẩu không trùng khớp',
         });
+    } else {
+        try {
+            dispatch({ type: types.RESET_PASS_WORD_REQUEST });
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                },
+            };
+            const { data } = await axios.post(
+                `/api/forgotPass/reset-password`,
+                { newPassword, id, token, newConfirmPassword },
+                config,
+            );
+            dispatch({ type: types.RESET_PASS_WORD_SUCCESS, payload: data });
+        } catch (error) {
+            dispatch({
+                type: types.RESET_PASS_WORD_FAIL,
+                payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+            });
+        }
     }
 };

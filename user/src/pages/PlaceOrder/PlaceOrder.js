@@ -4,7 +4,6 @@ import { Link, useNavigate, redirect, Navigate } from 'react-router-dom';
 import { message, Select } from 'antd';
 import { listCart } from '~/redux/Actions/cartActions';
 import { createOrder, calculate_fee_ship_action } from '~/redux/Actions/OrderActions';
-import { getUserDetails } from '~/redux/Actions/userActions';
 import { ORDER_CREATE_RESET } from '~/redux/Constants/OrderConstants';
 
 import ModalDaiSyUI from '~/components/Modal/ModalDaiSyUI';
@@ -18,7 +17,7 @@ import LoadingLarge from '~/components/LoadingError/LoadingLarge';
 import { usersRemainingSelector } from '~/redux/Selector/usersSelector';
 
 function PlaceOrder() {
-    const [paymentMethodState, setPaymentMethodState] = useState('pay-with-momo');
+    const [paymentMethodState, setPaymentMethodState] = useState('pay-with-cash');
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -58,9 +57,8 @@ function PlaceOrder() {
                 name: pro.product.name,
                 color: pro.color,
                 quantity: pro.qty,
-                image: pro.product.image[0].urlImage,
+                image: pro.product.image[0],
                 price: pro.product.price,
-                id_product: pro.id_product,
                 product: pro.product._id,
             });
             return arr;
@@ -90,7 +88,6 @@ function PlaceOrder() {
             dispatch({ type: ORDER_CREATE_RESET });
         }
         if (success) {
-            console.log('order = ', order);
             if (order?.newOrder?.payment?.payUrl) {
                 window.location.href = `${order.newOrder.payment.payUrl}`;
                 return;
@@ -114,13 +111,13 @@ function PlaceOrder() {
                     postalCode: '',
                 },
                 paymentMethod: paymentMethodState,
-                itemsPrice: cart.itemsPrice,
                 shippingPrice: cart.shippingPrice,
-                totalPrice: cart.totalPrice,
                 phone: user?.phone,
                 name: user?.name,
                 email: user?.email,
-                address_shop: user?.address_shop,
+                // itemsPrice: cart.itemsPrice,
+                // totalPrice: cart.totalPrice,
+                // address_shop: user?.address_shop,
             }),
         );
     };
@@ -140,11 +137,11 @@ function PlaceOrder() {
                 )}
                 {findCart?.countInStock < item?.qty ? (
                     <div className="col-lg-3">
-                        <img className="h-[100px]" src={`${item.product?.image[0]?.urlImage}`} alt={item.name} />
+                        <img className="h-[100px]" src={`${item.product?.image[0]}`} alt={item.name} />
                     </div>
                 ) : (
                     <div className="col-lg-2">
-                        <img className="h-[100px]" src={`${item.product?.image[0]?.urlImage}`} alt={item.name} />
+                        <img className="h-[100px]" src={`${item.product?.image[0]}`} alt={item.name} />
                     </div>
                 )}
                 <div className="col-lg-2 flex items-center">
@@ -260,6 +257,10 @@ function PlaceOrder() {
                                                 defaultValue={paymentMethodState}
                                                 options={[
                                                     {
+                                                        value: 'pay-with-cash',
+                                                        label: 'Thanh toán bằng tiền mặt',
+                                                    },
+                                                    {
                                                         value: 'pay-with-momo',
                                                         label: 'Thanh toán qua momo',
                                                     },
@@ -267,17 +268,13 @@ function PlaceOrder() {
                                                         value: 'pay-with-atm',
                                                         label: 'Thanh toán bằng ATM',
                                                     },
-                                                    {
-                                                        value: 'pay-with-paypal',
-                                                        label: 'Thanh toán qua paypal',
-                                                    },
+                                                    // {
+                                                    //     value: 'pay-with-paypal',
+                                                    //     label: 'Thanh toán qua paypal',
+                                                    // },
                                                     {
                                                         value: 'pay-with-credit-card',
                                                         label: 'Thanh toán qua thẻ Visa',
-                                                    },
-                                                    {
-                                                        value: 'pay-with-cash',
-                                                        label: 'Thanh toán bằng tiền mặt',
                                                     },
                                                 ]}
                                             />

@@ -31,7 +31,7 @@ export const listCart = () => async (dispatch, getState) => {
     }
 };
 //ADD TO CART NEW
-// productId, id_product, color, qty
+// productId, color, qty
 export const addToCart = (data_post) => async (dispatch, getState) => {
     try {
         dispatch({ type: types.CART_CREATE_REQUEST });

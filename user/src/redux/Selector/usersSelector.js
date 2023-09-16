@@ -4,11 +4,9 @@ export const userDetails = (state) => state.userDetails;
 export const userLogin = (state) => state.userLogin;
 export const userRegister = (state) => state.userRegister;
 export const userUpdateProfile = (state) => state.userUpdateProfile;
-export const userAll = (state) => state.userAll;
 export const provincesVietNam = (state) => state.provincesVietNam;
 export const avatarLoad = (state) => state.avatarLoad;
 export const forgotPassWordState = (state) => state.forgotPassWordState;
-export const verifyState = (state) => state.verifyState;
 export const resetPasswordState = (state) => state.resetPasswordState;
 
 export const usersRemainingSelector = createSelector(
@@ -16,22 +14,18 @@ export const usersRemainingSelector = createSelector(
     userLogin,
     userRegister,
     userUpdateProfile,
-    userAll,
     provincesVietNam,
     avatarLoad,
     forgotPassWordState,
-    verifyState,
     resetPasswordState,
     (
         userDetails,
         userLogin,
         userRegister,
         userUpdateProfile,
-        userAll,
         provincesVietNam,
         avatarLoad,
         forgotPassWordState,
-        verifyState,
         resetPasswordState,
     ) => {
         return {
@@ -39,11 +33,9 @@ export const usersRemainingSelector = createSelector(
             userLogin,
             userRegister,
             userUpdateProfile,
-            userAll,
             provincesVietNam,
             avatarLoad,
             forgotPassWordState,
-            verifyState,
             resetPasswordState,
         };
     },

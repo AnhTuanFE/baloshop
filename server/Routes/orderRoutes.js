@@ -1,6 +1,7 @@
 import express from 'express';
 import asyncHandler from 'express-async-handler';
-import { admin, protect } from '../middleware/AuthMiddleware.js';
+// import { admin, protect } from '../middleware/AuthMiddleware.js';
+import { admin, protect } from '../middleware/authMiddleware.js';
 import Product from '../models/ProductModel.js';
 import Order from '../models/OrderModel.js';
 import Payment from '../models/PaymentModel.js';
@@ -10,7 +11,7 @@ import axios from 'axios';
 const orderRouter = express.Router();
 
 orderRouter.post('/', protect, asyncHandler(orderController.createOrder));
-orderRouter.post('/:id/poductReview', protect, asyncHandler(orderController.productReview));
+// orderRouter.post('/:id/poductReview', protect, asyncHandler(orderController.productReview));
 
 // orderRouter.get('/:id/address', protect, asyncHandler(orderController.getAddress));
 orderRouter.get('/all', protect, admin, asyncHandler(orderController.getOrderAll));

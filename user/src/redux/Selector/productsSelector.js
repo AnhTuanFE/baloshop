@@ -7,7 +7,6 @@ export const productDetails = (state) => state.productDetails;
 export const productList = (state) => state.productList;
 export const productAll = (state) => state.productAll;
 export const getAllCommentsProduct = (state) => state.getAllCommentsProduct;
-export const getAllReviewsProduct = (state) => state.getAllReviewsProduct;
 export const CategoryList = (state) => state.CategoryList;
 
 export const productsRemainingSelector = createSelector(
@@ -18,7 +17,6 @@ export const productsRemainingSelector = createSelector(
     productList,
     productAll,
     getAllCommentsProduct,
-    getAllReviewsProduct,
     CategoryList,
     (
         productReviewCreate,
@@ -28,7 +26,6 @@ export const productsRemainingSelector = createSelector(
         productList,
         productAll,
         getAllCommentsProduct,
-        getAllReviewsProduct,
         CategoryList,
     ) => {
         return {
@@ -39,7 +36,6 @@ export const productsRemainingSelector = createSelector(
             productList,
             productAll,
             getAllCommentsProduct,
-            getAllReviewsProduct,
             CategoryList,
         };
     },

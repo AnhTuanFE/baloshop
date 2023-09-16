@@ -4,7 +4,6 @@ import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 // import UserInFor from '../Models/userDetails.js';
 import User from '../models/UserModel.js';
-import baseURL from '../baseURL/baseURL.js';
 
 const forgotPassRouter = express.Router();
 
@@ -15,16 +14,17 @@ forgotPassRouter.post('/forgotPassword', async (req, res) => {
     try {
         const oldUser = await User.findOne({ email });
         if (!oldUser) {
-            return res.json({ status: 'Email chưa được đăng ký, vui lòng kiểm tra lại' });
+            return res
+                .status(404)
+                .json({ status: 'failed', message: 'Email chưa được đăng ký, vui lòng kiểm tra lại' });
         }
         const secret = JWT_SECRET1 + oldUser.password;
         const token1 = jwt.sign({ email: oldUser.email, id: oldUser._id }, secret, {
             expiresIn: '30m',
         });
-        // const link = `${baseURL.urlUser}/api/forgotPass/reset-password/${oldUser._id}/${token1}`;
-        const link = `${process.env.CLIENT_URL}/verify-reset-password/${oldUser._id}/${token1}`;
+        const link = `${process.env.CLIENT_URL}/reset-password/${oldUser._id}/${token1}/${oldUser.email}`;
 
-        var transporter = nodemailer.createTransport({
+        let transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
                 user: 'balostore.owner@gmail.com',
@@ -32,10 +32,10 @@ forgotPassRouter.post('/forgotPassword', async (req, res) => {
             },
         });
 
-        var mailOptions = {
+        let mailOptions = {
             from: 'balostore.owner@gmail.com',
             to: oldUser.email,
-            subject: 'BaloStore kính chào quý khách, quý khách hãy nhấp vào đường link bên dưới để đặt lại mật khẩu',
+            subject: 'BaloShop kính chào quý khách, quý khách hãy nhấp vào đường link bên dưới để đặt lại mật khẩu',
             text: link,
         };
 
@@ -46,82 +46,63 @@ forgotPassRouter.post('/forgotPassword', async (req, res) => {
                 // console.log('Email sent: ' + info.response);
             }
         });
-        res.json({ status: 'Link đặt lại mật khẩu đã được gửi qua email, vui lòng kiểm tra hòm thư của bạn' });
-        // console.log(link);
+        res.json({
+            status: 'success',
+            message: 'Link đặt lại mật khẩu đã được gửi qua email, vui lòng kiểm tra hòm thư của bạn',
+        });
+        console.log(link);
     } catch (error) {}
-});
-
-//   xác thực
-forgotPassRouter.post('/verify-reset-password', async (req, res) => {
-    const { id, token } = req?.body;
-    // console.log('req.body = ', req?.body);
-    try {
-        if (id) {
-            const oldUser = await User.findOne({ _id: id });
-            const email = oldUser.email;
-            if (!oldUser) {
-                return res.json({ status: 'User Not Exists!!' });
-            }
-            if (token) {
-                const secret = JWT_SECRET1 + oldUser.password;
-                try {
-                    const verify = jwt.verify(token, secret);
-                    // console.log('verify = ', verify);
-                    return res.status(200).json({ status: 'Verified Account', id, token, email });
-                } catch (error) {
-                    res.status(200).json({ status: 'Not verified', error });
-                }
-            }
-            res.status(404).json({
-                message: 'Không thể xác thực tài khoản, vui lòng kiểm tra lại link đặt lại mật khẩu',
-            });
-        } else {
-            res.status(404).json({
-                message: 'Không thể xác thực tài khoản, vui lòng kiểm tra lại link đặt lại mật khẩu',
-            });
-        }
-    } catch (error) {
-        res.status(404).json({ message: 'Không thể xác thực tài khoản, vui lòng kiểm tra lại link đặt lại mật khẩu' });
-    }
 });
 
 // thay đổi mật khẩu
 forgotPassRouter.post('/reset-password', async (req, res) => {
-    // const { id, token } = req.params;
-    // console.log('req?.body = ', req?.body);
-    const { newPassword, id, token } = req?.body;
+    const { newPassword, id, token, newConfirmPassword } = req?.body;
+    if (newPassword != newConfirmPassword) {
+        res.status(404).json({ status: 'Mật khẩu và xác nhận mật khẩu không trùng khớp!!' });
+    }
 
     try {
         if (id && token && newPassword) {
             const oldUser = await User.findOne({ _id: id });
             if (!oldUser) {
-                return res.json({ status: 'User Not Exists!!' });
+                return res.status(404).json({ status: 'User Not Exists!!' });
             }
             const secret = JWT_SECRET1 + oldUser.password;
             try {
                 const verify = jwt.verify(token, secret);
-                const encryptedPassword = await bcrypt.hash(newPassword, 10);
-                await User.updateOne(
-                    {
-                        _id: id,
-                    },
-                    {
-                        $set: {
-                            password: encryptedPassword,
+                if (verify.id == id) {
+                    const encryptedPassword = await bcrypt.hash(newPassword, 10);
+                    await User.updateOne(
+                        {
+                            _id: id,
                         },
-                    },
-                );
-                res.json({ status: 'Password updated' });
-            } catch (error) {
-                res.json({ status: 'Something Went Wrong' });
+                        {
+                            $set: {
+                                password: encryptedPassword,
+                            },
+                        },
+                    );
+                    res.json({ status: 'success', message: 'Đã cập nhập mật khẩu thành công' });
+                } else {
+                    res.status(404).json({ status: 'success', message: 'Lỗi xác thực token' });
+                }
+            } catch (err) {
+                res.status(404).json({
+                    status: 'success',
+                    message: 'Lỗi xác thực, mỗi link xác thực chỉ có thể dặt lại mật khẩu 1 lần',
+                });
             }
         } else {
             res.status(404).json({
+                status: 'failed',
                 message: 'Không thể xác thực tài khoản, vui lòng kiểm tra lại link đặt lại mật khẩu',
             });
         }
     } catch (error) {
-        res.status(404).json({ message: 'Không thể xác thực tài khoản, vui lòng kiểm tra lại link đặt lại mật khẩu' });
+        res.status(404).json({
+            status: 'failed',
+            message: 'Không thể xác thực tài khoản, vui lòng kiểm tra lại link đặt lại mật khẩu',
+        });
     }
 });
 

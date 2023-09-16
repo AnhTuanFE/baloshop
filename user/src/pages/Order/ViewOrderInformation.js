@@ -25,7 +25,6 @@ function ViewOrderInformation({ id_Ghtk }) {
 
     // const getData = async () => {
     //     const { data } = await axios.post(`/api/ghtk/get_label_order_by_id`, { id_Ghtk });
-    //     console.log('data axios = ', data);
     //     setData(data);
     // };
     const getData = async () => {
@@ -42,7 +41,6 @@ function ViewOrderInformation({ id_Ghtk }) {
         });
 
         const blob = await response.blob();
-        console.log('blob = ', blob);
         // const link = document.createElement('a');
         // link.href = window.URL.createObjectURL(blob);
         // link.download = 'file.pdf';
@@ -66,8 +64,6 @@ function ViewOrderInformation({ id_Ghtk }) {
             // URL.revokeObjectURL(url);
         };
     }, [data]);
-
-    console.log('typeOf data = ', typeof data);
 
     return (
         <div className="block w-full">

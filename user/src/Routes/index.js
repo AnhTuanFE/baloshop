@@ -13,24 +13,22 @@ import Order from '~/pages/Order';
 import Profile from '~/pages/Profile/Profile';
 import PurchaseHistory from '~/pages/PurchaseHistory';
 import ResetPasswordRequest from '~/pages/ResetPasswordRequest/ResetPasswordRequest';
-import VerifyResetPassWord from '~/pages/VerifyResetPassWord/VerifyResetPassWord';
 import ResetPassword from '~/pages/ResetPassword/ResetPassword';
-import Header2 from '~/layouts/headerMUI/Header2';
 import NotFound from '~/pages/NotFound/NotFound';
 import Test from '~/pages/Test/Test';
 
 const publicRoutes = [
     { path: '/', component: Home },
-    { path: '/search/:keyword/sortProducts/:sortProducts/rating/:rating/page/:pageNumber', component: Home },
+    { path: '/search/:keyword/sortBy/:sortBy/rating/:rating/page/:pageNumber', component: Home },
     { path: '/search/:keyword/page/:pageNumber', component: Home },
     { path: '/search/:keyword', component: Home },
 
-    { path: '/category/:category/sortProducts/:sortProducts/rating/:rating/page/:pageNumber', component: Home },
+    { path: '/category/:category/sortBy/:sortBy/rating/:rating/page/:pageNumber', component: Home },
     { path: '/category/:category/page/:pageNumber', component: Home },
     { path: '/category/:category', component: Home },
 
-    { path: '/sortProducts/:sortProducts/rating/:rating/page/:pageNumber', component: Home },
-    { path: '/sortProducts/:sortProducts/page/:pageNumber', component: Home },
+    { path: '/sortBy/:sortBy/rating/:rating/page/:pageNumber', component: Home },
+    { path: '/sortBy/:sortBy/page/:pageNumber', component: Home },
 
     { path: '/page/:pageNumber', component: Home },
     { path: '/rating/:rating/page/:pageNumber', component: Home },
@@ -40,10 +38,8 @@ const publicRoutes = [
     { path: '/login', component: Login, layout: HeaderOnly },
     { path: '/register', component: Register, layout: HeaderOnly },
     { path: '/resetpassword-request', component: ResetPasswordRequest, layout: HeaderOnly },
-    { path: '/verify-reset-password/:id/:token', component: VerifyResetPassWord, layout: HeaderOnly },
 
-    { path: '/resetpassword', component: ResetPassword, layout: HeaderOnly },
-    { path: '/header2', component: Header2, layout: null },
+    { path: '/reset-password/:id/:token/:email', component: ResetPassword, layout: HeaderOnly },
     { path: '/test', component: Test, layout: null },
 
     { path: '*', component: NotFound, layout: HeaderOnly },

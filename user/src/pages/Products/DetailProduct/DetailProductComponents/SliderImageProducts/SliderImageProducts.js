@@ -4,7 +4,7 @@ function SliderImageProducts({ images }) {
     const [imageOne, setImageOne] = useState();
     useEffect(() => {
         if (images) {
-            setImageOne(images[0].urlImage);
+            setImageOne(images[0]);
         }
     }, [images]);
     return (
@@ -15,7 +15,7 @@ function SliderImageProducts({ images }) {
                         className="d-block max-md:h-[200px] md:h-[400px] "
                         src={imageOne !== undefined ? `${imageOne}` : ''}
                         alt=""
-                    ></img>
+                    />
                 </div>
                 {images?.map((product) => {
                     return (

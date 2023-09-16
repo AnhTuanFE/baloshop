@@ -102,11 +102,7 @@ const UsersScreen = () => {
                                         <div className="card-header">
                                             <img
                                                 className={`img-md img-avatar ${user.disabled ? 'opacity-25' : ''}`}
-                                                src={
-                                                    user?.image === undefined
-                                                        ? imageDefaul
-                                                        : `${user?.image?.urlImageCloudinary}`
-                                                }
+                                                src={user?.image === undefined ? imageDefaul : `${user?.image}`}
                                                 alt="User pic"
                                             />
                                         </div>

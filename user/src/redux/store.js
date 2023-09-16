@@ -10,8 +10,8 @@ import {
     productListReducer,
     productListAllReducer,
     getAllCommentsReducer,
-    getAllReviewsReducer,
     categoryListReducer,
+    listProductSimilarReducer,
 } from './Reducers/ProductReducers';
 import { cartReducer, CreateCartReducer, DeleteCartReducer } from './Reducers/CartReducers';
 import {
@@ -19,25 +19,23 @@ import {
     userLoginReducer,
     userRegisterReducer,
     userUpdateProfileReducer,
-    userListReducer,
     ProvinceReducer,
     Avatarload,
     userForgotPassWord,
-    userVerifyResetPassWordReducer,
     ResetPassWordReducer,
+    userUpdatePasswordReducer,
 } from './Reducers/userReducers';
 import {
     orderAddressMyReducer,
-    orderCancelReducer,
     orderCreateReducer,
     orderDetailsReducer,
     orderListMyReducer,
     orderPayReducer,
     productbestseller,
-    orderCreateReviewReducer,
-    orderCompleteReducer,
     PaypalReducer,
     GHTK_Reducer,
+    updateStatusOrderUserReducer,
+    userRequestConfirmPaidMOMOReducer,
 } from './Reducers/OrderReducres';
 import { Sliderload } from './Reducers/SliderReducer';
 import { getNewsReducer, newsListReducer } from './Reducers/NewsReducer';
@@ -47,10 +45,10 @@ const reducer = combineReducers({
     productList: productListReducer,
     productAll: productListAllReducer,
     productDetails: productDetailsReducer,
+    listProductSimilar: listProductSimilarReducer,
     productReviewCreate: productCreateReviewReducer,
     productCommentCreate: productCreateCommentReducer,
     productCommentChildCreate: productCreateCommentChildReducer,
-    getAllReviewsProduct: getAllReviewsReducer,
     getAllCommentsProduct: getAllCommentsReducer,
     cart: cartReducer,
     cartCreate: CreateCartReducer,
@@ -59,16 +57,15 @@ const reducer = combineReducers({
     userRegister: userRegisterReducer,
     userDetails: userDetailsReducer,
     userUpdateProfile: userUpdateProfileReducer,
-    userAll: userListReducer,
+    stateUserUpdatePassword: userUpdatePasswordReducer,
     orderCreate: orderCreateReducer,
     orderDetails: orderDetailsReducer,
     orderAddress: orderAddressMyReducer,
     orderPay: orderPayReducer,
     orderListMy: orderListMyReducer,
-    orderCancel: orderCancelReducer,
-    orderCreateReviewsRetult: orderCreateReviewReducer,
-    orderGetComplete: orderCompleteReducer,
     order_ghtk_state: GHTK_Reducer,
+    stateUpdateStatusOrderUser: updateStatusOrderUserReducer,
+    stateUserRequestConfirmPaidMOMO: userRequestConfirmPaidMOMOReducer,
     paypalstate: PaypalReducer,
     sliderLoad: Sliderload,
     CategoryList: categoryListReducer,
@@ -77,7 +74,6 @@ const reducer = combineReducers({
     listNews: newsListReducer,
     getDetailNews: getNewsReducer,
     forgotPassWordState: userForgotPassWord,
-    verifyState: userVerifyResetPassWordReducer,
     resetPasswordState: ResetPassWordReducer,
 });
 

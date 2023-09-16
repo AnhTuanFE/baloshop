@@ -41,6 +41,9 @@ const UpdateCategory = ({ currentCategory }) => {
         setName(categories[currentCategory]?.name);
         setDescription(categories[currentCategory]?.description);
     }, [currentCategory]);
+    const handleCreateCategory1 = (e) => {
+        window.location.reload();
+    };
     return (
         <>
             <Toast />
@@ -69,6 +72,9 @@ const UpdateCategory = ({ currentCategory }) => {
                             placeholder="Type here"
                             className="form-control"
                             rows="4"
+                            style={{
+                                resize: 'none',
+                            }}
                             value={description}
                             onChange={(e) => {
                                 setDescription(e.target.value);
@@ -76,9 +82,12 @@ const UpdateCategory = ({ currentCategory }) => {
                         ></textarea>
                     </div>
 
-                    <div className="d-grid">
-                        <button className="btn btn-primary py-3" onClick={handleCreateCategory}>
+                    <div className="d-flex justify-content-end warn">
+                        <button className="btn btn-primary mx-2" onClick={handleCreateCategory}>
                             Cập nhật
+                        </button>
+                        <button className="btn btn-danger" onClick={handleCreateCategory1}>
+                            Hủy
                         </button>
                     </div>
                 </form>

@@ -4,11 +4,12 @@ import { logout } from './userActions';
 
 // PRODUCT LIST ALL
 
-export const ListProductAll = () => async (dispatch) => {
+export const ListProductLatestAction = () => async (dispatch) => {
     try {
+        const valueSort = 'newest';
         dispatch({ type: types.PRODUCT_LIST_ALL_REQUEST });
-        const { data } = await axios.get(`/api/products/ProductAll`);
-        dispatch({ type: types.PRODUCT_LIST_ALL_SUCCESS, payload: data });
+        const { data } = await axios.get(`/api/products?&sortBy=${valueSort}&limit=${12}`);
+        dispatch({ type: types.PRODUCT_LIST_ALL_SUCCESS, payload: data.products });
     } catch (error) {
         dispatch({
             type: types.PRODUCT_LIST_ALL_FAIL,
@@ -16,16 +17,15 @@ export const ListProductAll = () => async (dispatch) => {
         });
     }
 };
-
-// PRODUCT LIST ALL REVIEW
-export const getAllReviews = (productId) => async (dispatch) => {
+export const ListProductSimilarAction = (prop) => async (dispatch) => {
+    const { category } = prop;
     try {
-        dispatch({ type: types.PRODUCT_ALL_REVIEW_REQUEST });
-        const { data } = await axios.get(`/api/products/${productId}/onlyProduct/allReview`);
-        dispatch({ type: types.PRODUCT_ALL_REVIEW_SUCCESS, payload: data });
+        dispatch({ type: types.LIST_PRODUCT_SIMILAR_REQUEST });
+        const { data } = await axios.get(`/api/products?&limit=${18}&category=${category}`);
+        dispatch({ type: types.LIST_PRODUCT_SIMILAR_SUCCESS, payload: data.products });
     } catch (error) {
         dispatch({
-            type: types.PRODUCT_ALL_REVIEW_FAIL,
+            type: types.LIST_PRODUCT_SIMILAR_FAIL,
             payload: error.response && error.response.data.message ? error.response.data.message : error.message,
         });
     }
@@ -46,26 +46,28 @@ export const getAllComments = (productId) => async (dispatch) => {
 };
 
 // PRODUCT LIST
-export const listProduct =
-    (category = '', keyword = '', pageNumber = '', rating = '', minPrice = '', maxPrice = '', sortProducts = '1') =>
-    async (dispatch) => {
-        try {
-            dispatch({ type: types.PRODUCT_LIST_REQUEST });
-            const { data } = await axios.get(
-                `/api/products?&category=${category}&keyword=${keyword}&pageNumber=${pageNumber}&rating=${rating}
-        &minPrice=${minPrice}&maxPrice=${maxPrice}&sortProducts=${sortProducts}`,
-            );
-            dispatch({ type: types.PRODUCT_LIST_SUCCESS, payload: data });
-        } catch (error) {
-            dispatch({
-                type: types.PRODUCT_LIST_FAIL,
-                payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-            });
-        }
-    };
+export const listProduct = (dataReceived) => async (dispatch) => {
+    // category = '', keyword = '', pageNumber = '', rating = '', minPrice = '', maxPrice = '', sortBy = '1'
+    const { category, keyword, pageNumber, rating, sortBy, minPrice, maxPrice } = dataReceived;
+    const limit = 12;
+    try {
+        dispatch({ type: types.PRODUCT_LIST_REQUEST });
+        const { data } = await axios.get(
+            `/api/products?&category=${category}&keyword=${keyword}&page=${pageNumber}&rating=${rating}
+    &minPrice=${minPrice}&maxPrice=${maxPrice}&sortBy=${sortBy}&limit=${limit}`,
+        );
+        dispatch({ type: types.PRODUCT_LIST_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({
+            type: types.PRODUCT_LIST_FAIL,
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+        });
+    }
+};
 
 // SINGLE PRODUCT
-export const listProductDetails = (id) => async (dispatch) => {
+export const productDetailAction = (dataReceived) => async (dispatch) => {
+    const { id } = dataReceived;
     try {
         dispatch({ type: types.PRODUCT_DETAILS_REQUEST });
         const { data } = await axios.get(`/api/products/${id}`);
@@ -79,7 +81,8 @@ export const listProductDetails = (id) => async (dispatch) => {
 };
 
 // PRODUCT REVIEW CREATE
-export const createProductReview = (productId, rating, color, comment, name) => async (dispatch, getState) => {
+export const createProductReview = (dataReceived) => async (dispatch, getState) => {
+    const { productId, rating, comment } = dataReceived;
     try {
         dispatch({ type: types.PRODUCT_CREATE_REVIEW_REQUEST });
 
@@ -94,8 +97,8 @@ export const createProductReview = (productId, rating, color, comment, name) => 
             },
         };
 
-        await axios.post(`/api/products/${productId}/review`, { rating, color, comment, name }, config);
-        dispatch({ type: types.PRODUCT_CREATE_REVIEW_SUCCESS });
+        const { data } = await axios.post(`/api/products/${productId}/review`, { rating, comment }, config);
+        dispatch({ type: types.PRODUCT_CREATE_REVIEW_SUCCESS, payload: data });
     } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;
         if (message === 'Not authorized, token failed') {
@@ -109,37 +112,47 @@ export const createProductReview = (productId, rating, color, comment, name) => 
 };
 
 // PRODUCT COMMENT CREATE
-export const createProductComment = (productId, comments) => async (dispatch, getState) => {
-    try {
-        dispatch({ type: types.PRODUCT_CREATE_COMMENT_REQUEST });
-
-        const {
-            userLogin: { userInfo },
-        } = getState();
-
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${userInfo.token}`,
-            },
-        };
-
-        await axios.post(`/api/products/${productId}/comment`, comments, config);
-        dispatch({ type: types.PRODUCT_CREATE_COMMENT_SUCCESS });
-    } catch (error) {
-        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
-        if (message === 'Not authorized, token failed') {
-            dispatch(logout());
-        }
+export const createProductComment = (dataReceived) => async (dispatch, getState) => {
+    const { productId, nameProduct, imageProduct, question } = dataReceived;
+    const comments = { nameProduct, imageProduct, question };
+    if (question == '') {
         dispatch({
             type: types.PRODUCT_CREATE_COMMENT_FAIL,
-            payload: message,
+            payload: 'Bạn chưa nhập câu hỏi',
         });
+    } else {
+        try {
+            dispatch({ type: types.PRODUCT_CREATE_COMMENT_REQUEST });
+
+            const {
+                userLogin: { userInfo },
+            } = getState();
+
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${userInfo.token}`,
+                },
+            };
+
+            const { data } = await axios.post(`/api/products/${productId}/comment`, comments, config);
+            dispatch({ type: types.PRODUCT_CREATE_COMMENT_SUCCESS, payload: data });
+        } catch (error) {
+            const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+            if (message === 'Not authorized, token failed') {
+                dispatch(logout());
+            }
+            dispatch({
+                type: types.PRODUCT_CREATE_COMMENT_FAIL,
+                payload: message,
+            });
+        }
     }
 };
 
 // PRODUCT COMMENTCHILDS CREATE
-export const createProductCommentChild = (productId, question) => async (dispatch, getState) => {
+export const createProductCommentChild = (dataReceived) => async (dispatch, getState) => {
+    const { productId, questionChild, idComment } = dataReceived;
     try {
         dispatch({ type: types.PRODUCT_CREATE_COMMENTCHILD_REQUEST });
 
@@ -154,8 +167,12 @@ export const createProductCommentChild = (productId, question) => async (dispatc
             },
         };
 
-        await axios.post(`/api/products/${productId}/commentchild`, question, config);
-        dispatch({ type: types.PRODUCT_CREATE_COMMENTCHILD_SUCCESS });
+        const { data } = await axios.post(
+            `/api/products/${productId}/commentchild`,
+            { questionChild, idComment },
+            config,
+        );
+        dispatch({ type: types.PRODUCT_CREATE_COMMENTCHILD_SUCCESS, payload: data });
     } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;
         if (message === 'Not authorized, token failed') {

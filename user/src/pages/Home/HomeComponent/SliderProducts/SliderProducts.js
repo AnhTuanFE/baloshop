@@ -69,7 +69,7 @@ export default function SliderProducts({ products, labelSlider }) {
                                     <div className="mx-2 bg-white py-3">
                                         <div className="hover:-translate-y-4 hover:transform hover:transition hover:duration-200 hover:ease-linear">
                                             <img
-                                                src={`${product?.image[0].urlImage}`}
+                                                src={`${product?.image}`}
                                                 className="filter-[brightness(1)] m-auto h-[200px]"
                                                 alt=""
                                             />

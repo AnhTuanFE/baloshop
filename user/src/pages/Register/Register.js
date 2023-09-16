@@ -30,16 +30,15 @@ function Register() {
     } = useForm();
 
     const dispatch = useDispatch();
-    const redirect = location.search ? location.search.split('=')[1] : '/';
-
     const userRegister = useSelector((state) => state.userRegister);
-    const { error, loading, userInfo } = userRegister;
+    const { error, loading, userInfo: userInfoRegister } = userRegister;
+    const userInfo = localStorage.getItem('userInfo');
 
     useEffect(() => {
-        if (userInfo) {
-            navigate(redirect);
+        if (userInfo || userInfoRegister) {
+            navigate('/');
         }
-    }, [userInfo, navigate, redirect]);
+    }, [userInfo, navigate]);
 
     const submitHandler = (data) => {
         const { name, email, phone, password } = data;
@@ -56,7 +55,7 @@ function Register() {
                     >
                         {error && <Message variant="alert-danger block">{error}</Message>}
                         {loading && <Loading />}
-                        <div className="mb-2 text-center text-xl font-semibold"> Đăng ký tài khoản</div>
+                        <div className="mb-3 mt-2 text-center text-xl font-semibold"> Đăng ký tài khoản</div>
                         <div className=" ">
                             <Controller
                                 name="name"

@@ -20,8 +20,8 @@ const CategoriesScreen = () => {
                 </div>
 
                 <div className="card shadow-sm">
-                    <div className="card-body">
-                        <div className="row">
+                    <div className="card-body" style={{ height: '74vh' }}>
+                        <div className="row ">
                             {editInfo ? <UpdateCategory currentCategory={currentCategory} /> : <CreateCategory />}
                             <CategoriesTable
                                 handleCurrentCategory={handleCurrentCategory}

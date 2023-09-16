@@ -1,18 +1,12 @@
-import { useEffect, useState, useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate, useParams, Navigate } from 'react-router-dom';
-import { message, Select } from 'antd';
-import { listCart } from '~/redux/Actions/cartActions';
-import { ORDER_CREATE_RESET, ORDER_PAY_RESET } from '~/redux/Constants/OrderConstants';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { message } from 'antd';
 
-import ModalDaiSyUI from '~/components/Modal/ModalDaiSyUI';
-import Message from '~/components/LoadingError/Error';
-import Loading from '~/components/LoadingError/Loading';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
-import { ordersRemainingSelector } from '~/redux/Selector/ordersSelector';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPhone, faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import { cancelOrder, getOrderDetails, createOrderReview, completeOrder } from '~/redux/Actions/OrderActions';
+import { getOrderDetails } from '~/redux/Actions/OrderActions';
 
 function PaymentPaypal() {
     const navigate = useNavigate();

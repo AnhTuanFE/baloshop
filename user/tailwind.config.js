@@ -19,7 +19,6 @@ module.exports = {
                 // max
                 destop: '1200px',
                 //min
-
                 use400: '400px',
                 use600: '600px',
                 use700: '700px',

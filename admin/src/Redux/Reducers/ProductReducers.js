@@ -9,6 +9,7 @@ import {
     PRODUCT_EDIT_FAIL,
     PRODUCT_EDIT_REQUEST,
     PRODUCT_EDIT_SUCCESS,
+    PRODUCT_EDIT_RESET,
     PRODUCT_LIST_FAIL,
     PRODUCT_LIST_REQUEST,
     PRODUCT_LIST_SUCCESS,
@@ -64,7 +65,7 @@ export const productListReducer = (state = { products: [] }, action) => {
                 pages: action.payload.pages,
                 page: action.payload.page,
                 products: action.payload.products,
-                countProducts: action.payload.countProducts,
+                total: action.payload.total,
             };
         case PRODUCT_LIST_FAIL:
             return { loading: false, error: action.payload };
@@ -136,14 +137,16 @@ export const optionColorCreateReducer = (state = {}, action) => {
 };
 
 // EDIT PRODUCT
-export const productEditReducer = (state = { product: { reviews: [] } }, action) => {
+export const productEditReducer = (state = { stateProductEdit: {} }, action) => {
     switch (action.type) {
         case PRODUCT_EDIT_REQUEST:
             return { ...state, loading: true };
         case PRODUCT_EDIT_SUCCESS:
-            return { loading: false, product: action.payload };
+            return { loading: false, stateProductEdit: action.payload };
         case PRODUCT_EDIT_FAIL:
             return { loading: false, error: action.payload };
+        case PRODUCT_EDIT_RESET:
+            return { state };
         default:
             return state;
     }

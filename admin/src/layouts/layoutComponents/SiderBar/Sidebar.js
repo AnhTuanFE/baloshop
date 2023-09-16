@@ -1,9 +1,11 @@
 import { Link, NavLink } from 'react-router-dom';
 import { logoDefaul } from '~/data/data';
+import './SideBar.css';
+
 const Sidebar = () => {
     return (
-        <aside className="navbar-aside border-none shadow-none">
-            <div className="aside-top  bg-blue-100" style={{ padding: '0.65rem 0.5rem' }}>
+        <aside className="navbar-aside shadow-none">
+            <div className="aside-top" style={{ padding: '11px' }}>
                 <Link to="/" className="brand-wrap">
                     <img
                         src={logoDefaul}
@@ -15,50 +17,50 @@ const Sidebar = () => {
             </div>
 
             <nav>
-                <ul className="menu-aside mt-7">
-                    <li className="menu-item">
-                        <NavLink activeClassName="active" className="menu-link bg-blue-900" to="/" exact={true}>
+                <ul className="menu-aside mt-7 ">
+                    <li className="menu-item ">
+                        <NavLink activeClassName="active" className="menu-link " to="/" exact={true}>
                             <i className="icon fas fa-home"></i>
-                            <span className="text text-white">Trang chủ</span>
+                            <span className="text ">Trang chủ</span>
                         </NavLink>
                     </li>
                     <li className="menu-item ">
-                        <NavLink activeClassName="active" className="menu-link bg-blue-900" to="/products">
+                        <NavLink activeClassName="active" className="menu-link " to="/products">
                             <i className="icon fas fa-shopping-bag"></i>
-                            <span className="text text-white">Sản phẩm</span>
+                            <span className="text ">Sản phẩm</span>
                         </NavLink>
                     </li>
                     <li className="menu-item">
-                        <NavLink activeClassName="active" className="menu-link bg-blue-900" to="/addproduct">
+                        <NavLink activeClassName="active" className="menu-link " to="/addproduct">
                             <i className="icon fas fa-cart-plus"></i>
-                            <span className="text text-white">Thêm sản phẩm</span>
+                            <span className="text">Thêm sản phẩm</span>
                         </NavLink>
                     </li>
                     <li className="menu-item">
-                        <NavLink activeClassName="active" className="menu-link bg-blue-900" to="/category">
+                        <NavLink activeClassName="active" className="menu-link " to="/category">
                             <i className="icon fas fa-list"></i>
-                            <span className="text text-white">Danh mục sản phẩm</span>
+                            <span className="text ">Danh mục sản phẩm</span>
                         </NavLink>
                     </li>
                     <li className="menu-item">
-                        <NavLink activeClassName="active" className="menu-link bg-blue-900" to="/orders">
+                        <NavLink activeClassName="active" className="menu-link " to="/orders">
                             <i className="icon fas fa-bags-shopping"></i>
-                            <span className="text text-white">Đơn hàng</span>
+                            <span className="text ">Đơn hàng</span>
                         </NavLink>
                     </li>
                     <li className="menu-item">
-                        <NavLink activeClassName="active" className="menu-link bg-blue-900" to="/users">
+                        <NavLink activeClassName="active" className="menu-link " to="/users">
                             <i className="icon fas fa-user"></i>
-                            <span className="text text-white">Người dùng</span>
+                            <span className="text ">Người dùng</span>
                         </NavLink>
                     </li>
                     <li className="menu-item">
-                        <NavLink activeClassName="active" className="menu-link bg-blue-900" to="/comment">
+                        <NavLink activeClassName="active" className="menu-link " to="/comment">
                             <i class="icon fas fa-comments"></i>
-                            <span className="text text-white">Bình luận</span>
+                            <span className="text ">Bình luận</span>
                         </NavLink>
                     </li>
-                    <li className="menu-item">
+                    {/* <li className="menu-item">
                         <NavLink activeClassName="active" className="menu-link bg-blue-900" to="/news">
                             <i class="icon fas fa-newspaper"></i>
                             <span className="text text-white">Tin tức</span>
@@ -69,11 +71,11 @@ const Sidebar = () => {
                             <i class="icon fas fa-newspaper"></i>
                             <span className="text text-white">Thêm tin tức</span>
                         </NavLink>
-                    </li>
+                    </li> */}
                     <li className="menu-item">
-                        <NavLink activeClassName="active" className="menu-link bg-blue-900" to="/slider">
+                        <NavLink activeClassName="active" className="menu-link " to="/slider">
                             <i className="icon fas fa-store-alt"></i>
-                            <span className="text text-white">Ảnh Bìa</span>
+                            <span className="text ">Ảnh Bìa</span>
                         </NavLink>
                     </li>
                 </ul>

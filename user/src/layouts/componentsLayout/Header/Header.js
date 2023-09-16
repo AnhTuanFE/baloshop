@@ -141,7 +141,6 @@ function Header(props) {
             logoutHandler();
             navigate('/');
         }
-        console.log('e = ', e);
     };
     const UILogined = () => {
         return (

@@ -6,7 +6,7 @@ const Pagination = (props) => {
     return (
         pages > 1 && (
             <nav
-                className="col-lg-12 col-md-12 mt-4"
+                className="col-lg-12 col-md-12 my-0.5"
                 aria-label="Page navigation"
                 style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
             >

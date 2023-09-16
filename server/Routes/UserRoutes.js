@@ -1,7 +1,7 @@
 import express from 'express';
 import asyncHandler from 'express-async-handler';
 import multer from 'multer';
-import { protect, admin } from '../middleware/AuthMiddleware.js';
+import { protect, admin, protectUpdatePassword } from '../middleware/authMiddleware.js';
 import userController from '../controllers/userController.js';
 
 // UPDATE PROFILE
@@ -30,6 +30,7 @@ userRouter.post('/', asyncHandler(userController.register));
 userRouter.get('/user', protect, asyncHandler(userController.getProfile));
 
 userRouter.put('/profile', protect, upload, asyncHandler(userController.updateProfile));
+userRouter.put('/updatePassword', protectUpdatePassword, asyncHandler(userController.updatePassword));
 
 // GET ALL USER ADMIN
 userRouter.get('/', protect, admin, asyncHandler(userController.getAllUser));

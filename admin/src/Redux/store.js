@@ -20,14 +20,10 @@ import {
     productDeleteCommentsChildReducer,
 } from './Reducers/ProductReducers';
 import {
-    orderCancelReducer,
-    orderDeliveredReducer,
     orderDetailsReducer,
     orderListReducer,
-    orderPaidReducer,
-    ordercompleteAdminReducer,
-    orderwaitConfirmationReducer,
     orderListCompleteReducer,
+    updateStatusOrderAdminReducer,
 } from './Reducers/OrderReducres';
 import { sliderCreateReducer, sliderDeleteReducer, sliderListReducer } from './Reducers/SliderListReducers';
 import {
@@ -64,12 +60,8 @@ const reducer = combineReducers({
     productDeleteCommentsChild: productDeleteCommentsChildReducer,
     orderList: orderListReducer,
     orderDetails: orderDetailsReducer,
-    orderDeliver: orderDeliveredReducer,
-    orderPaid: orderPaidReducer,
-    orderCancel: orderCancelReducer,
-    orderwaitGetConfirmation: orderwaitConfirmationReducer,
-    orderGetcompleteAdmin: ordercompleteAdminReducer,
     orderListComplete: orderListCompleteReducer,
+    stateUpdateStatusOrderAdmin: updateStatusOrderAdminReducer,
     sliderList: sliderListReducer,
     deleteSlider: sliderDeleteReducer,
     sliderCreate: sliderCreateReducer,

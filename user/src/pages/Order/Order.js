@@ -1,29 +1,29 @@
 import { React, useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
-import { Button, notification, Modal } from 'antd';
-import { cancelOrder, getOrderDetails, createOrderReview, completeOrder } from '~/redux/Actions/OrderActions';
+import { Button, notification } from 'antd';
+import {
+    getOrderDetails,
+    updateStatusOrderUserAction,
+    userRequestConfirmPaidMOMOAction,
+} from '~/redux/Actions/OrderActions';
 import { createProductReview } from '~/redux/Actions/ProductActions';
 import { PRODUCT_CREATE_REVIEW_RESET } from '~/redux/Constants/ProductConstants';
-import {
-    ORDER_CREATE_REVIEW_RESET,
-    ORDER_COMPLETE_USER_RESET,
-    ORDER_CANCEL_RESET,
-    ORDER_PAY_RESET,
-} from '~/redux/Constants/OrderConstants';
+import { ORDER_PAY_RESET, UPDATE_STATUS_ORDER_USER_RESET } from '~/redux/Constants/OrderConstants';
 import { listCart } from '~/redux/Actions/cartActions';
 import Loading from '~/components/LoadingError/Loading';
 import Message from '~/components/LoadingError/Error';
 import Steppers from './custom_stepper_MUI/Steppers';
 import InfoPayer from './InfoPayer';
-import ViewOrderInformation from './ViewOrderInformation';
 import ModalDaiSyUI from '~/components/Modal/ModalDaiSyUI';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
+import { ordersRemainingSelector } from '~/redux/Selector/ordersSelector';
+import { HandleShowButton } from './handleShowButton/HandleShowButton';
 
 const labels = {
     1: 'Không hài lòng',
@@ -46,8 +46,32 @@ function Order() {
         });
     };
     const params = useParams();
-    const orderId = params.id;
+    const location = useLocation();
 
+    const orderId = params.id;
+    const searchParams = new URLSearchParams(location.search);
+    const partnerCode = searchParams.get('partnerCode');
+    const idOrderParams = searchParams.get('orderId');
+    const requestId = searchParams.get('requestId');
+    const amount = searchParams.get('amount');
+    const orderInfo = searchParams.get('orderInfo');
+    const orderType = searchParams.get('orderType');
+    const transId = searchParams.get('transId');
+    const resultCode = searchParams.get('resultCode');
+    const message = searchParams.get('message');
+    const payType = searchParams.get('payType');
+    const responseTime = searchParams.get('responseTime');
+    const extraData = searchParams.get('extraData');
+    const signature = searchParams.get('signature');
+
+    const { stateUpdateStatusOrderUser, stateUserRequestConfirmPaidMOMO, orderDetails } =
+        useSelector(ordersRemainingSelector);
+    const { success: successConfirmPaid } = stateUserRequestConfirmPaidMOMO;
+    const {
+        loading: loadingUpdateOrder,
+        success: successUpdateOrder,
+        data: dataUpdateOrder,
+    } = stateUpdateStatusOrderUser;
     const [productId, setProductId] = useState('');
     // ======================
     const [rating, setRating] = useState(0);
@@ -55,113 +79,82 @@ function Order() {
     // ======================
     const [comment, setComment] = useState('');
     const [product, setProduct] = useState('');
-    const [bulean, setBulean] = useState(false);
-    const [orderItemId, setOrderItemId] = useState('');
     const dispatch = useDispatch();
 
-    const orderDetails = useSelector((state) => state.orderDetails);
+    // const  = useSelector((state) => state.orderDetails);
     const { order, loading, error } = orderDetails;
-    const dataOrder = order?.order;
-    const orderPay = useSelector((state) => state.orderPay);
-    const { loading: loadingPay, success: successPay } = orderPay;
 
-    const orderCancel = useSelector((state) => state.orderCancel);
-    const { loading: loadingCancel, success: successCancel, error: errorCancel } = orderCancel;
     const reviews = useSelector((state) => state.productReviewCreate);
-    const { success: successReview, error: errorReview } = reviews;
-    const orderGetComplete = useSelector((state) => state.orderGetComplete);
-    const { success: successComplete } = orderGetComplete;
-
+    const { success: successReview, error: errorReview, data } = reviews;
     useEffect(() => {
-        dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
-        setProductId('');
-        setRating('');
-        setComment('');
-        setBulean('');
-    }, [bulean]);
-    const cancelOrderHandler = () => {
-        dispatch(cancelOrder(order));
-    };
-
-    useEffect(() => {
-        if (errorCancel === 'account lock up') {
-            dispatch({ type: ORDER_CANCEL_RESET });
-            openNotification('top', 'Tài khoản của bạn đã bị khóa', 'error');
+        if (successReview) {
+            openNotification('top', 'Đã đánh giá Thành công', 'success');
+            dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
+            setProductId('');
+            setRating('');
+            setComment('');
         }
-    }, [errorCancel]);
+    }, [reviews]);
 
-    //gọi thêm userLogin để lấy số điện thoại
-    const orderCreateReviewsRetult = useSelector((state) => state.orderCreateReviewsRetult);
-    const { success: successReviewOrder, orderReview } = orderCreateReviewsRetult;
+    const cancelOrderHandler = () => {
+        dispatch(updateStatusOrderUserAction({ id: order?.order?._id, status: 'cancel' }));
+    };
 
     useEffect(() => {
         if (orderId) {
             dispatch(listCart());
         }
-    }, [orderId, successReviewOrder]);
-    useEffect(() => {
-        if (successReviewOrder) {
-            dispatch({ type: ORDER_CREATE_REVIEW_RESET });
-            return;
-        }
-        if (successComplete) {
-            dispatch({ type: ORDER_COMPLETE_USER_RESET });
-            dispatch(getOrderDetails(orderId));
-            return;
-        }
-    }, [successReviewOrder, successComplete]);
-
-    if (!loading) {
-        const addDecimals = (num) => {
-            return (Math.round(num * 100) / 100).toFixed(0);
-        };
-
-        // order.itemsPrice = addDecimals(order?.orderItems?.reduce((acc, item) => acc + item.price * item.quantity, 0));
-    }
-    useEffect(() => {
-        // if (!order || successPay) {
-        //     dispatch({ type: ORDER_PAY_RESET });
-        //     dispatch(getOrderDetails(orderId));
-        // }
-        dispatch({ type: ORDER_PAY_RESET });
-        dispatch(getOrderDetails(orderId));
     }, [orderId]);
 
-    // const handlerSuccessCart = () => {
-    //     const arrItemOrder = order?.orderItems;
-    //     const filterCart = arrItemOrder.filter((item) => item.productReview?.length === 0);
-    //     if (filterCart.length === 0) {
-    //         if (window.confirm('Cảm ơn bạn đã mua hàng chúc bạn một ngày tốt lành!')) {
-    //             dispatch(completeOrder(orderId));
-    //         }
-    //     } else {
-    //         if (window.confirm('Bạn cần đánh giá hết sản phẩm để hoàn tất đơn hàng')) {
-    //         }
-    //     }
-    // };
-    // ==========================================
-    const [open, setOpen] = useState(false);
-    const showModal = () => {
-        setOpen(true);
-    };
-    const handleOk = () => {
-        setOpen(false);
-    };
-    const handleCancel = () => {
-        setOpen(false);
+    useEffect(() => {
+        dispatch({ type: ORDER_PAY_RESET });
+        dispatch(getOrderDetails(orderId));
+        if (successUpdateOrder) {
+            if (dataUpdateOrder?.message) {
+                openNotification('top', `${dataUpdateOrder?.message}`, 'success');
+            }
+            dispatch({ type: UPDATE_STATUS_ORDER_USER_RESET });
+        }
+    }, [orderId, successUpdateOrder, successConfirmPaid, successReview]);
+
+    useEffect(() => {
+        if (
+            order != undefined &&
+            !order?.order.payment.paid &&
+            partnerCode &&
+            orderType &&
+            message &&
+            payType &&
+            resultCode == '0' &&
+            Object.keys(stateUserRequestConfirmPaidMOMO).length == 0
+        ) {
+            const dataMomoReturn = {
+                partnerCode: partnerCode,
+                orderId: idOrderParams,
+                requestId: requestId,
+                amount: amount,
+                orderInfo: orderInfo,
+                orderType: orderType,
+                transId: transId,
+                resultCode: resultCode,
+                message: message,
+                payType: payType,
+                responseTime: responseTime,
+                extraData: extraData,
+                signature: signature,
+            };
+            dispatch(userRequestConfirmPaidMOMOAction(dataMomoReturn));
+        }
+    }, [order]);
+
+    const handleUpdateStatusOrder = () => {
+        dispatch(updateStatusOrderUserAction({ id: order?.order?._id, status: 'received' }));
     };
     return (
         <>
             <div className="mx-auto my-auto max-w-screen-2xl">
-                <ModalDaiSyUI
-                    Title="Hủy đơn hàng"
-                    Body="Bạn xác nhận hủy đơn hàng này?"
-                    HandleSubmit={cancelOrderHandler}
-                />
                 <div className="mx-10 pb-10">
                     {contextHolder}
-
-                    {loadingCancel && <Loading />}
                     {loading ? (
                         <Loading />
                     ) : error ? (
@@ -188,7 +181,7 @@ function Order() {
                                                         <img src={item.image} alt={item.name} />
                                                     </div>
                                                     <div className="m-auto text-center">
-                                                        <Link to={`/products/${item.product}`}>
+                                                        <Link to={`/product/${item.product}`}>
                                                             <h6 className="text-base font-semibold">{item.name}</h6>
                                                         </Link>
                                                     </div>
@@ -206,23 +199,21 @@ function Order() {
                                                             {(item.quantity * item.price)?.toLocaleString('de-DE')}đ
                                                         </h6>
                                                     </div>
-                                                    {order?.isPaid &&
-                                                        order?.orderItems[index]?.productReview?.length === 0 && (
-                                                            <div className="m-auto text-center">
-                                                                <Button
-                                                                    type="default"
-                                                                    className="bg-[var(--main-color2)] text-base font-semibold text-white"
-                                                                    onClick={() => {
-                                                                        setProduct(item);
-                                                                        setProductId(item.product);
-                                                                        setOrderItemId(item._id);
-                                                                        window.my_modal_2.showModal();
-                                                                    }}
-                                                                >
-                                                                    Đánh giá
-                                                                </Button>
-                                                            </div>
-                                                        )}
+                                                    {item.isAbleToReview && (
+                                                        <div className="m-auto text-center">
+                                                            <Button
+                                                                type="default"
+                                                                className="bg-[var(--main-color2)] text-base font-semibold text-white"
+                                                                onClick={() => {
+                                                                    setProduct(item);
+                                                                    setProductId(item.product);
+                                                                    window.my_modal_2.showModal();
+                                                                }}
+                                                            >
+                                                                Đánh giá
+                                                            </Button>
+                                                        </div>
+                                                    )}
                                                 </div>
                                             ))}
                                         </>
@@ -257,167 +248,159 @@ function Order() {
                                             </tr>
                                         </tbody>
                                     </table>
-
-                                    {order?.cancel === 1 && (
-                                        <div className="bg-dark col-12 fs-6 rounded-md p-2 text-center text-white">
-                                            Đơn hàng này đã bị hủy bỏ
-                                        </div>
-                                    )}
-                                    {/* <div className="mx-2 mb-2 cursor-pointer rounded-md bg-[var(--main-color)] py-1 text-center text-fuchsia-50 ">
-                                        <button onClick={showModal}>Chi tiết đơn hàng</button>
-
-                                        <Modal title="Title" open={open} onOk={handleOk} onCancel={handleCancel}>
-                                            <ViewOrderInformation id_Ghtk={order?.label_id_GiaoHangTK} />
-                                        </Modal>
-                                    </div> */}
-                                    <div className="mx-2  cursor-pointer rounded-md">
-                                        {order?.paymentMethod == 'pay-with-momo' && order?.isPaid ? (
-                                            <div>
-                                                <button className="w-full rounded bg-[var(--main-color)] px-2 py-2 font-bold text-white hover:bg-[var(--main-color-hover)]">
-                                                    Thanh toán ngay
-                                                </button>
-                                            </div>
-                                        ) : (
-                                            ''
-                                        )}
-                                    </div>
-                                    {order?.isPaid && order?.isDelivered && order?.completeUser !== true && (
-                                        <div className="">
-                                            <div className="">
-                                                <button
-                                                    className=" mb-2 w-full cursor-pointer rounded-lg bg-success px-1 py-2 text-base font-semibold uppercase text-white"
-                                                    // onClick={handlerSuccessCart}
-                                                >
-                                                    Hoàn tất đơn hàng
-                                                </button>
-                                                <a
-                                                    className="mt-3  cursor-pointer rounded-lg bg-red-600 py-2 text-center text-white"
-                                                    href="https://m.me/balostore.owner"
-                                                >
-                                                    <button className="w-full text-lg font-semibold uppercase">
-                                                        Trả hàng
-                                                    </button>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    )}
-                                    {!order?.waitConfirmation && (
-                                        <div className="mx-2 pt-2">
-                                            <button
-                                                onClick={() => window.my_modal_1.showModal()}
-                                                className=" w-full cursor-pointer rounded-lg bg-red-600 py-1 text-sm font-semibold uppercase text-white"
-                                                disabled={order?.isPaid || order?.cancel == 1}
-                                            >
-                                                HỦY ĐƠN HÀNG
-                                            </button>
-                                        </div>
-                                    )}
+                                    {HandleShowButton(order?.order)}
                                 </div>
                             </div>
                             {/* ====================================================================================================== */}
                             {/* MODAL */}
-                            <dialog id="my_modal_2" className="modal">
-                                <form method="dialog" className="modal-box">
-                                    <h3 className="text-center text-lg font-bold">Đánh giá sản phẩm!</h3>
-                                    <div className="my-4">
-                                        {errorReview && (
-                                            <Message variant="alert-danger text-center fs-6">{errorReview}</Message>
-                                        )}
-                                        {successReview && (
-                                            <Message variant="alert-primary text-center fs-6">
-                                                Cảm ơn bạn đã đánh giá
-                                            </Message>
-                                        )}
-                                    </div>
-                                    <form>
-                                        <div>
-                                            <img
-                                                src={`${product?.image}`}
-                                                className="m-auto h-32 w-32 items-center"
-                                                alt="hình ảnh"
-                                            ></img>
-                                            <p className="text-center">{product?.name}</p>
-                                            <div className="flex justify-center text-base">
-                                                <p className="pr-1">
-                                                    Giá: {Number(product?.price)?.toLocaleString('de-DE')}đ
-                                                </p>
-                                                <p className="pr-1">Màu: {product?.color}</p>
+                            <>
+                                <ModalDaiSyUI
+                                    Title="Hủy đơn hàng"
+                                    Body="Bạn xác nhận hủy đơn hàng này?"
+                                    HandleSubmit={cancelOrderHandler}
+                                />
+                                <div>
+                                    <dialog
+                                        id="my_modal_3"
+                                        className="col-lg-5 modal modal-top m-auto mt-5 w-[400px] rounded-lg"
+                                    >
+                                        <form method="dialog" className="modal-box">
+                                            <div className="rounded-md text-center">
+                                                <h3 className="text-lg font-bold">Hoàn tất đơn hàng!</h3>
                                             </div>
-                                            <div className="flex justify-center">
-                                                <Box>
-                                                    <Rating
-                                                        name="hover-feedback"
-                                                        value={rating}
-                                                        size="large"
-                                                        getLabelText={getLabelText}
-                                                        onChange={(event, newValue) => {
-                                                            setRating(newValue);
-                                                        }}
-                                                        onChangeActive={(event, newHover) => {
-                                                            setHover(newHover);
-                                                        }}
-                                                        emptyIcon={
-                                                            <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
-                                                        }
-                                                    />
-                                                    <div className="min-h-[40px]">
-                                                        {rating !== null && (
-                                                            <Box className="text-center">
-                                                                {labels[hover !== -1 ? hover : rating]}
-                                                            </Box>
-                                                        )}
-                                                    </div>
-                                                </Box>
+                                            <p className="py-4">Bạn đã nhận được hàng và thanh toán</p>
+                                            <div className="modal-action">
+                                                <button className="btn">Hủy</button>
+                                                <button
+                                                    className="btn bg-[var(--main-color2)] text-white"
+                                                    onClick={handleUpdateStatusOrder}
+                                                >
+                                                    Đồng ý
+                                                </button>
                                             </div>
-                                        </div>
+                                        </form>
+                                    </dialog>
+                                </div>
+
+                                <div>
+                                    <dialog
+                                        id="my_modal_4"
+                                        className="col-lg-5 modal modal-top m-auto mt-5 w-[400px] rounded-lg"
+                                    >
+                                        <form method="dialog" className="modal-box">
+                                            <div className="rounded-md text-center">
+                                                <h3 className="text-lg font-bold">Trả hàng!</h3>
+                                            </div>
+                                            <p className="py-4">Bạn cần liên hệ với shop để yêu cầu trả hàng</p>
+                                            <div className="modal-action">
+                                                <button className="btn">Hủy</button>
+                                                <button
+                                                    className="btn bg-[var(--main-color2)] text-white"
+                                                    onClick={() => {
+                                                        window.location.href = `https://m.me/balostore.owner`;
+                                                    }}
+                                                >
+                                                    Đồng ý
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </dialog>
+                                </div>
+
+                                <dialog id="my_modal_2" className="modal">
+                                    <form method="dialog" className="modal-box">
+                                        <h3 className="text-center text-lg font-bold">Đánh giá sản phẩm!</h3>
                                         <div className="my-4">
-                                            <p className="text-center text-lg font-semibold">Nội dung</p>
-                                            <textarea
-                                                row="3"
-                                                value={comment}
-                                                onChange={(e) => setComment(e.target.value)}
-                                                className="col-12 mt-2 rounded border-0 bg-[#e9eaed80] p-3 text-sm"
-                                            ></textarea>
+                                            {errorReview && (
+                                                <Message variant="alert-danger text-center fs-6">{errorReview}</Message>
+                                            )}
+                                            {successReview && (
+                                                <Message variant="alert-primary text-center fs-6">
+                                                    Cảm ơn bạn đã đánh giá
+                                                </Message>
+                                            )}
                                         </div>
-                                        <div className="my-3">
-                                            <button
-                                                className="col-12 bg-orange rounded border-0 bg-[var(--main-color)] px-3 py-2 text-white"
-                                                type="button"
-                                                data-bs-dismiss={successReviewOrder === true ? 'modal' : ''}
-                                                onClick={() => {
-                                                    dispatch(
-                                                        createProductReview(
-                                                            productId,
-                                                            rating,
-                                                            product.color,
-                                                            comment,
-                                                            order.name,
-                                                        ),
-                                                        setRating(''),
-                                                        setComment(''),
-                                                    );
-                                                    dispatch(
-                                                        createOrderReview(
-                                                            orderId,
-                                                            orderItemId,
-                                                            rating,
-                                                            comment,
-                                                            order.name,
-                                                        ),
-                                                        setRating(''),
-                                                        setComment(''),
-                                                    );
-                                                }}
-                                            >
-                                                <p>Gửi đánh giá</p>
-                                            </button>
+                                        <form>
+                                            <div>
+                                                <img
+                                                    src={`${product?.image}`}
+                                                    className="m-auto h-32 w-32 items-center"
+                                                    alt="hình ảnh"
+                                                />
+                                                <p className="text-center">{product?.name}</p>
+                                                <div className="flex justify-center text-base">
+                                                    <p className="pr-1">
+                                                        Giá: {Number(product?.price)?.toLocaleString('de-DE')}đ
+                                                    </p>
+                                                    <p className="pr-1">Màu: {product?.color}</p>
+                                                </div>
+                                                <div className="flex justify-center">
+                                                    <Box>
+                                                        <Rating
+                                                            name="hover-feedback"
+                                                            value={rating}
+                                                            size="large"
+                                                            getLabelText={getLabelText}
+                                                            onChange={(event, newValue) => {
+                                                                setRating(newValue);
+                                                            }}
+                                                            onChangeActive={(event, newHover) => {
+                                                                setHover(newHover);
+                                                            }}
+                                                            emptyIcon={
+                                                                <StarIcon
+                                                                    style={{ opacity: 0.55 }}
+                                                                    fontSize="inherit"
+                                                                />
+                                                            }
+                                                        />
+                                                        <div className="min-h-[40px]">
+                                                            {rating !== null && (
+                                                                <Box className="text-center">
+                                                                    {labels[hover !== -1 ? hover : rating]}
+                                                                </Box>
+                                                            )}
+                                                        </div>
+                                                    </Box>
+                                                </div>
+                                            </div>
+                                            <div className="my-4">
+                                                <p className="text-center text-lg font-semibold">Nội dung</p>
+                                                <textarea
+                                                    row="3"
+                                                    value={comment}
+                                                    onChange={(e) => setComment(e.target.value)}
+                                                    className="col-12 mt-2 rounded border-0 bg-[#e9eaed80] p-3 text-sm"
+                                                ></textarea>
+                                            </div>
+                                            <div className="my-3">
+                                                <button
+                                                    className="col-12 bg-orange rounded border-0 bg-[var(--main-color)] px-3 py-2 text-white"
+                                                    type="button"
+                                                    // data-bs-dismiss={ true ? 'modal' : ''}
+                                                    data-bs-dismiss={''}
+                                                    onClick={() => {
+                                                        dispatch(
+                                                            createProductReview({
+                                                                productId: productId,
+                                                                rating: rating,
+                                                                comment: comment,
+                                                            }),
+                                                            // setRating(''),
+                                                            // setComment(''),
+                                                        );
+                                                    }}
+                                                >
+                                                    <p>Gửi đánh giá</p>
+                                                </button>
+                                            </div>
+                                        </form>
+                                        <div className="modal-action">
+                                            <button className="btn">Đóng</button>
                                         </div>
                                     </form>
-                                    <div className="modal-action">
-                                        <button className="btn">Đóng</button>
-                                    </div>
-                                </form>
-                            </dialog>
+                                </dialog>
+                            </>
                         </>
                     )}
                 </div>

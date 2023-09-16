@@ -4,7 +4,7 @@ import { memo } from 'react';
 
 function DefaulLayout({ children }) {
     return (
-        <div className="Wrapper">
+        <div className="">
             <Sidebar />
             <div className="main-wrap">
                 <Header />

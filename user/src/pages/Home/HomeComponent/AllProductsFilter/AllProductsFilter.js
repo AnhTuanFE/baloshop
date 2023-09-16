@@ -1,4 +1,3 @@
-import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,49 +12,48 @@ import { productsRemainingSelector } from '~/redux/Selector/productsSelector';
 import { Divider, Chip } from '@mui/material';
 
 const AllProductsFilter = (props) => {
-    const { category, keyword, pageNumber, sortProducts, rating } = props;
+    const { category, keyword, pageNumber, sortBy, rating } = props;
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const { productList } = useSelector(productsRemainingSelector);
     const { loading, error, products, page, pages } = productList;
-    console.log('products all = ', products);
 
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
 
     useEffect(() => {
         dispatch(listCart());
-        dispatch(listProduct(category, keyword, pageNumber, rating, minPrice, maxPrice, sortProducts));
-    }, [dispatch, category, keyword, pageNumber, rating, minPrice, maxPrice, sortProducts]);
+        dispatch(listProduct({ category, keyword, minPrice, maxPrice, pageNumber, rating, sortBy }));
+    }, [dispatch, category, keyword, pageNumber, minPrice, maxPrice, rating, sortBy]);
 
     const handlerSort = (value) => {
-        if (rating === undefined && keyword === undefined && category === undefined) {
-            navigate(`/sortProducts/${value}/page/${'1'}`);
+        if (rating === '' && keyword === '' && category === '') {
+            navigate(`/sortBy/${value}/page/${'1'}`);
         }
-        if (rating !== undefined && keyword === undefined && category === undefined) {
-            navigate(`/sortProducts/${value}/rating/${rating}/page/${'1'}`);
+        if (rating !== '' && keyword === '' && category === '') {
+            navigate(`/sortBy/${value}/rating/${rating}/page/${'1'}`);
         }
-        if (keyword !== undefined && category === undefined) {
-            navigate(`/search/${keyword}/sortProducts/${value}/rating/${rating}/page/${'1'}`);
+        if (keyword !== '' && category === '') {
+            navigate(`/search/${keyword}/sortBy/${value}/rating/${rating}/page/${'1'}`);
         }
-        if (keyword === undefined && category !== undefined) {
-            navigate(`/category/${category}/sortProducts/${value}/rating/${rating}/page/${'1'}`);
+        if (keyword === '' && category !== '') {
+            navigate(`/category/${category}/sortBy/${value}/rating/${rating}/page/${'1'}`);
         }
     };
 
     const handlerRating = (value) => {
-        if (rating === undefined && keyword === undefined && category === undefined) {
+        if (rating === '' && keyword === '' && category === '') {
             navigate(`/rating/${value}/page/${'1'}`);
         }
-        if (sortProducts !== undefined && keyword === undefined && category === undefined) {
-            navigate(`/sortProducts/${sortProducts}/rating/${value}/page/${'1'}`);
+        if (sortBy !== '' && keyword === '' && category === '') {
+            navigate(`/sortBy/${sortBy}/rating/${value}/page/${'1'}`);
         }
-        if (keyword !== undefined && category === undefined) {
-            navigate(`/search/${keyword}/sortProducts/${sortProducts}/rating/${value}/page/${'1'}`);
+        if (keyword !== '' && category === '') {
+            navigate(`/search/${keyword}/sortBy/${sortBy}/rating/${value}/page/${'1'}`);
         }
-        if (keyword === undefined && category !== undefined) {
-            navigate(`/category/${category}/sortProducts/${sortProducts}/rating/${value}/page/${'1'}`);
+        if (keyword === '' && category !== '') {
+            navigate(`/category/${category}/sortBy/${sortBy}/rating/${value}/page/${'1'}`);
         }
     };
 
@@ -79,19 +77,27 @@ const AllProductsFilter = (props) => {
                             <div className="">
                                 <select
                                     className="form-select"
-                                    value={sortProducts === undefined ? '1' : sortProducts}
+                                    value={sortBy === undefined ? 'newest' : sortBy}
                                     onChange={(e) => {
                                         handlerSort(e.target.value);
                                     }}
                                 >
-                                    <option className="text-sm font-medium" value="1">
+                                    {/* asc
+                                        desc
+                                        newest
+                                        latest
+                                        total_sales */}
+                                    <option className="text-sm font-medium" value="newest">
                                         Sản phẩm mới
                                     </option>
-                                    <option className="text-sm font-medium" value="3">
+                                    <option className="text-sm font-medium" value="asc">
                                         Giá tăng dần
                                     </option>
-                                    <option className="text-sm font-medium" value="4">
+                                    <option className="text-sm font-medium" value="desc">
                                         Giá giảm dần
+                                    </option>
+                                    <option className="text-sm font-medium" value="total_sales">
+                                        Bán chạy
                                     </option>
                                 </select>
                             </div>
@@ -148,7 +154,7 @@ const AllProductsFilter = (props) => {
                                                             <Link to={`/product/${product?._id}`}>
                                                                 <div className="hover:-translate-y-4 hover:transform hover:transition hover:duration-200 hover:ease-linear">
                                                                     <img
-                                                                        src={`${product?.image[0].urlImage}`}
+                                                                        src={`${product?.image}`}
                                                                         alt={product?.name}
                                                                         className="filter-[brightness(1)] m-auto max-md:h-[150px] md:h-[200px]"
                                                                     />
@@ -191,7 +197,7 @@ const AllProductsFilter = (props) => {
                                 page={page}
                                 category={category ? category : ''}
                                 keyword={keyword ? keyword : ''}
-                                sortProducts={sortProducts ? sortProducts : ''}
+                                sortBy={sortBy ? sortBy : ''}
                                 rating={rating ? rating : ''}
                             />
                         ) : (

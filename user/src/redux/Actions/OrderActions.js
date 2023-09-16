@@ -1,6 +1,5 @@
 import * as types from '../Constants/OrderConstants';
 import axios from 'axios';
-import { CART_CLEAR_ITEMS } from '../Constants/CartConstants';
 import { logout } from './userActions';
 
 //CALCULATE FEE SHIP
@@ -53,40 +52,6 @@ export const createOrder = (order) => async (dispatch, getState) => {
         }
         dispatch({
             type: types.ORDER_CREATE_FAIL,
-            payload: message,
-        });
-    }
-};
-
-// CREATE ORDER REVIEW
-export const createOrderReview = (orderId, orderItemId, rating, comment, name) => async (dispatch, getState) => {
-    try {
-        dispatch({ type: types.ORDER_CREATE_REVIEW_REQUEST });
-
-        const {
-            userLogin: { userInfo },
-        } = getState();
-
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${userInfo.token}`,
-            },
-        };
-
-        const { data } = await axios.post(
-            `/api/orders/${orderId}/poductReview`,
-            { orderItemId, rating, comment, name },
-            config,
-        );
-        dispatch({ type: types.ORDER_CREATE_REVIEW_SUCCESS, payload: data });
-    } catch (error) {
-        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
-        if (message === 'Not authorized, token failed') {
-            dispatch(logout());
-        }
-        dispatch({
-            type: types.ORDER_CREATE_REVIEW_FAIL,
             payload: message,
         });
     }
@@ -210,77 +175,16 @@ export const orderGetAddress = () => async (dispatch, getState) => {
 };
 
 // ODERS LIST ALL
-export const listAllOrderAction = () => async (dispatch) => {
+export const listProductsBestSellingAction = () => async (dispatch) => {
     try {
+        const valueSort = 'total_sales';
         dispatch({ type: types.ORDER_LIST_ALL_REQUEST });
-        const { data } = await axios.get(`/api/orders/productbestseller`);
-        dispatch({ type: types.ORDER_LIST_ALL_SUCCESS, payload: data });
+        const { data } = await axios.get(`/api/products?&sortBy=${valueSort}&limit=${12}`);
+        dispatch({ type: types.ORDER_LIST_ALL_SUCCESS, payload: data?.products });
     } catch (error) {
         dispatch({
             type: types.ORDER_LIST_ALL_FAIL,
             payload: error.response && error.response.data.message ? error.response.data.message : error.message,
-        });
-    }
-};
-
-export const cancelOrder = (order) => async (dispatch, getState) => {
-    try {
-        dispatch({ type: types.ORDER_CANCEL_REQUEST });
-
-        const {
-            userLogin: { userInfo },
-        } = getState();
-
-        const config = {
-            headers: {
-                Authorization: `Bearer ${userInfo.token}`,
-            },
-        };
-
-        const { data } = await axios.put(
-            `/api/orders/${order?.order._id}/cancel`,
-            { descripetion: 'Muốn mua sp khác' },
-            config,
-        );
-        dispatch({ type: types.ORDER_CANCEL_SUCCESS, payload: data });
-    } catch (error) {
-        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
-        if (message === 'Not authorized, token failed') {
-            dispatch(logout());
-        }
-        dispatch({
-            type: types.ORDER_CANCEL_FAIL,
-            payload: message,
-        });
-    }
-};
-
-// COMPLETE ORDER PUT
-export const completeOrder = (id) => async (dispatch, getState) => {
-    try {
-        dispatch({ type: types.ORDER_COMPLETE_USER_REQUEST });
-
-        const {
-            userLogin: { userInfo },
-        } = getState();
-
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${userInfo.token}`,
-            },
-        };
-
-        const { data } = await axios.put(`/api/orders/${id}/completeUser`, {}, config);
-        dispatch({ type: types.ORDER_COMPLETE_USER_SUCCESS, payload: data });
-    } catch (error) {
-        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
-        if (message === 'Not authorized, token failed') {
-            dispatch(logout());
-        }
-        dispatch({
-            type: types.ORDER_COMPLETE_USER_FAIL,
-            payload: message,
         });
     }
 };
@@ -348,7 +252,6 @@ export const paypalConfirmPaidOrderAction = (orderID) => async (dispatch, getSta
 
 export const getLabelOrderGHTKAction = (id_Ghtk) => async (dispatch, getState) => {
     const apiBase = 'https://services-staging.ghtklab.com';
-    // console.log('id_Ghtk = ', id_Ghtk);
     try {
         dispatch({ type: types.GET_LABEL_ORDER_GHTK_REQUEST });
 
@@ -374,6 +277,93 @@ export const getLabelOrderGHTKAction = (id_Ghtk) => async (dispatch, getState) =
         dispatch({
             type: types.GET_LABEL_ORDER_GHTK_FAIL,
             payload: message,
+        });
+    }
+};
+
+export const updateStatusOrderUserAction = (data) => async (dispatch, getState) => {
+    const { id, status } = data;
+    let description = '';
+
+    try {
+        if (status == 'cancel') {
+            description = 'Muốn mua SP khác';
+        }
+        dispatch({ type: types.UPDATE_STATUS_ORDER_USER_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        const { data } = await axios.put(`/api/orders/${id}/${status}`, { description }, config);
+        dispatch({ type: types.UPDATE_STATUS_ORDER_USER_SUCCESS, payload: data });
+    } catch (error) {
+        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+        if (message === 'Not authorized, token failed') {
+            dispatch(logout());
+        }
+        dispatch({
+            type: types.UPDATE_STATUS_ORDER_USER_FAIL,
+            payload: message,
+        });
+    }
+};
+
+export const userRequestConfirmPaidMOMOAction = (dataMomo) => async (dispatch, getState) => {
+    const {
+        partnerCode,
+        orderId,
+        requestId,
+        amount,
+        orderInfo,
+        orderType,
+        transId,
+        resultCode,
+        message,
+        payType,
+        responseTime,
+        extraData,
+        signature,
+    } = dataMomo;
+    if (
+        partnerCode === 'MOMO' &&
+        message === 'Thành công.' &&
+        orderType === 'momo_wallet' &&
+        payType === 'qr' &&
+        resultCode == '0'
+    ) {
+        try {
+            dispatch({ type: types.USER_REQUEST_CONFIRM_PAID_REQUEST });
+            const {
+                userLogin: { userInfo },
+            } = getState();
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${userInfo.token}`,
+                },
+            };
+            const { data } = await axios.post(`/api/payments/user-notification-paid-from-momo`, dataMomo, config);
+            dispatch({ type: types.USER_REQUEST_CONFIRM_PAID_SUCCESS, payload: data });
+        } catch (error) {
+            const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+            if (message === 'Not authorized, token failed') {
+                dispatch(logout());
+            }
+            dispatch({
+                type: types.USER_REQUEST_CONFIRM_PAID_FAIL,
+                payload: message,
+            });
+        }
+    } else {
+        dispatch({
+            type: types.USER_REQUEST_CONFIRM_PAID_FAIL,
+            payload: 'Thông tin yêu cầu không hợp lệ',
         });
     }
 };

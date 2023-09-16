@@ -1,11 +1,14 @@
 import { Box, Typography, TextField, Autocomplete, Button, Stack } from '@mui/material';
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { getListProvincesAction } from '~/redux/Actions/userActions';
-import { updateUserProfile } from '~/redux/Actions/userActions';
+import { getListProvincesAction, updateUserProfile } from '~/redux/Actions/userActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
 import moment from 'moment';
+import { notification } from 'antd';
+import Loading from '~/components/LoadingError/Loading';
+import Message from '~/components/LoadingError/Error';
+import { USER_UPDATE_PROFILE_RESET } from '~/redux/Constants/UserContants';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -32,6 +35,14 @@ TabPanel.propTypes = {
 
 function Detail_infor_account({ user }) {
     const dispatch = useDispatch();
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (placement, notify, type) => {
+        api[type]({
+            message: `Thông báo `,
+            description: `${notify}`,
+            placement,
+        });
+    };
     const {
         register,
         watch,
@@ -52,12 +63,20 @@ function Detail_infor_account({ user }) {
     }, [setValue, user]);
 
     const listProvince = useSelector((state) => state.provincesVietNam);
+    const stateUserUpdateProfile = useSelector((state) => state.userUpdateProfile);
+    const { loading, success, error } = stateUserUpdateProfile;
 
     useEffect(() => {
         dispatch(getListProvincesAction());
     }, []);
+    useEffect(() => {
+        if (success) {
+            openNotification('top', 'Cập nhập thông tin thành công', 'success');
+            dispatch({ type: USER_UPDATE_PROFILE_RESET });
+        }
+    }, [success]);
 
-    const DataProvinces = listProvince.province;
+    const DataProvinces = listProvince?.province;
 
     const submitUpdateProfile = (data) => {
         const { name, dateOfBirth, phone, address, city, district, ward } = data;
@@ -74,6 +93,7 @@ function Detail_infor_account({ user }) {
 
         dispatch(updateUserProfile(userInforNeedUpdate));
     };
+
     // =========================================================================
     const optionsMUI_city = [];
     const optionsMUI_district = [];
@@ -142,229 +162,236 @@ function Detail_infor_account({ user }) {
 
     return (
         <>
-            <form onSubmit={handleSubmit(submitUpdateProfile)}>
-                <Stack>
-                    <Box className="mb-1 flex">
-                        <Typography className="w-40 pr-2">Họ tên</Typography>
-                        <Controller
-                            name="name"
-                            control={control}
-                            rules={{
-                                required: 'Bạn chưa nhập họ và tên',
-                            }}
-                            render={({ field }) => (
-                                <TextField
-                                    type="text"
-                                    size="small"
-                                    className="w-full"
-                                    hiddenLabel
-                                    {...field}
-                                    placeholder="Họ tên"
-                                />
-                            )}
-                        />
-                    </Box>
-                    <Box className="min-h-[28px]">
-                        {errors.name && errors.name.type === 'required' ? (
-                            <p className="mb-2 text-red-600">{errors.name.message}</p>
-                        ) : null}
-                    </Box>
-                    <Box className="mb-1 flex">
-                        <Typography className="w-40 pr-2">Ngày sinh</Typography>
-                        <Controller
-                            name="dateOfBirth"
-                            control={control}
-                            rules={{
-                                required: 'Bạn chưa nhập ngày sinh',
-                            }}
-                            render={({ field }) => (
-                                <TextField
-                                    type="date"
-                                    className="w-full "
-                                    size="small"
-                                    hiddenLabel
-                                    {...field}
-                                    placeholder="Ngày sinh"
-                                />
-                            )}
-                        />
-                    </Box>
-                    <Box className="min-h-[28px]">
-                        {errors.name && errors.name.type === 'required' ? (
-                            <p className="mb-2 text-red-600">{errors.name.message}</p>
-                        ) : null}
-                    </Box>
-                    <Box className="mb-1 flex">
-                        <Typography className="w-40 pr-2">Email</Typography>
-                        <TextField size="small" className="w-full " hiddenLabel value={user.email} disabled />
-                    </Box>
-                    <Box className="min-h-[28px]"></Box>
-                    <Box className="mb-1 flex">
-                        <Typography className="w-40 pr-2">Số điện thoại</Typography>
-                        <Controller
-                            name="phone"
-                            control={control}
-                            rules={{
-                                required: 'Bạn chưa nhập số điện thoại',
-                            }}
-                            render={({ field }) => (
-                                <TextField
-                                    type="text"
-                                    size="small"
-                                    className="w-full"
-                                    hiddenLabel
-                                    {...field}
-                                    placeholder="Số điện thoại"
-                                />
-                            )}
-                        />
-                    </Box>
-                    <Box className="min-h-[28px]">
-                        {errors.phone && errors.phone.type === 'required' ? (
-                            <p className="mb-2 text-red-600">{errors.phone.message}</p>
-                        ) : null}
-                    </Box>
-                    <Box className="mb-1 flex">
-                        <Typography className="w-40 pr-2">Tỉnh/Thành phố</Typography>
-                        <Controller
-                            name="city"
-                            control={control}
-                            rules={{
-                                required: 'Bạn chưa nhập tên tỉnh, thành phố',
-                            }}
-                            render={({ field }) => (
-                                <Autocomplete
-                                    noOptionsText="Không tìm thấy kết quả"
-                                    loadingText="Đang tải"
-                                    className="w-full "
-                                    size="small"
-                                    disablePortal
-                                    // id="combo-box-demo"
-                                    {...field}
-                                    placeholder="Tỉnh/Thành phố"
-                                    onChange={(e) => {
-                                        onChange_city(e.target.outerText);
-                                    }}
-                                    options={optionsMUI_city}
-                                    renderInput={(params) => <TextField {...params} />}
-                                />
-                            )}
-                        />
-                    </Box>
-                    <Box className="min-h-[28px]">
-                        {errors.name && errors.name.type === 'required' ? (
-                            <p className="mb-2 text-red-600">{errors.name.message}</p>
-                        ) : null}
-                    </Box>
-                    <Box className="mb-1 flex">
-                        <Typography className="w-40 pr-2">Quận/Huyện</Typography>
-                        <Controller
-                            name="district"
-                            control={control}
-                            rules={{
-                                required: 'Bạn chưa nhập tên quận, huyện',
-                            }}
-                            render={({ field }) => (
-                                <Autocomplete
-                                    noOptionsText="Không tìm thấy kết quả"
-                                    loadingText="Đang tải"
-                                    className="w-full "
-                                    disablePortal
-                                    size="small"
-                                    id="combo-box-demo"
-                                    {...field}
-                                    placeholder="Quận/huyện"
-                                    onChange={(e) => {
-                                        onChange_district(e.target.outerText);
-                                    }}
-                                    options={optionsMUI_district}
-                                    renderInput={(params) => <TextField {...params} />}
-                                />
-                            )}
-                        />
-                    </Box>
-                    <Box className="min-h-[28px]">
-                        {errors.name && errors.name.type === 'required' ? (
-                            <p className="mb-2 text-red-600">{errors.name.message}</p>
-                        ) : null}
-                    </Box>
+            {contextHolder}
+            {loading ? (
+                <Loading />
+            ) : error ? (
+                <Message variant="alert-danger">{error}</Message>
+            ) : (
+                <form onSubmit={handleSubmit(submitUpdateProfile)}>
+                    <Stack>
+                        <Box className="mb-1 flex">
+                            <Typography className="w-40 pr-2">Họ tên</Typography>
+                            <Controller
+                                name="name"
+                                control={control}
+                                rules={{
+                                    required: 'Bạn chưa nhập họ và tên',
+                                }}
+                                render={({ field }) => (
+                                    <TextField
+                                        type="text"
+                                        size="small"
+                                        className="w-full"
+                                        hiddenLabel
+                                        {...field}
+                                        placeholder="Họ tên"
+                                    />
+                                )}
+                            />
+                        </Box>
+                        <Box className="min-h-[28px]">
+                            {errors.name && errors.name.type === 'required' ? (
+                                <p className="mb-2 text-red-600">{errors.name.message}</p>
+                            ) : null}
+                        </Box>
+                        <Box className="mb-1 flex">
+                            <Typography className="w-40 pr-2">Ngày sinh</Typography>
+                            <Controller
+                                name="dateOfBirth"
+                                control={control}
+                                rules={{
+                                    required: 'Bạn chưa nhập ngày sinh',
+                                }}
+                                render={({ field }) => (
+                                    <TextField
+                                        type="date"
+                                        className="w-full "
+                                        size="small"
+                                        hiddenLabel
+                                        {...field}
+                                        placeholder="Ngày sinh"
+                                    />
+                                )}
+                            />
+                        </Box>
+                        <Box className="min-h-[28px]">
+                            {errors.name && errors.name.type === 'required' ? (
+                                <p className="mb-2 text-red-600">{errors.name.message}</p>
+                            ) : null}
+                        </Box>
+                        <Box className="mb-1 flex">
+                            <Typography className="w-40 pr-2">Email</Typography>
+                            <TextField size="small" className="w-full " hiddenLabel value={user.email} disabled />
+                        </Box>
+                        <Box className="min-h-[28px]"></Box>
+                        <Box className="mb-1 flex">
+                            <Typography className="w-40 pr-2">Số điện thoại</Typography>
+                            <Controller
+                                name="phone"
+                                control={control}
+                                rules={{
+                                    required: 'Bạn chưa nhập số điện thoại',
+                                }}
+                                render={({ field }) => (
+                                    <TextField
+                                        type="text"
+                                        size="small"
+                                        className="w-full"
+                                        hiddenLabel
+                                        {...field}
+                                        placeholder="Số điện thoại"
+                                    />
+                                )}
+                            />
+                        </Box>
+                        <Box className="min-h-[28px]">
+                            {errors.phone && errors.phone.type === 'required' ? (
+                                <p className="mb-2 text-red-600">{errors.phone.message}</p>
+                            ) : null}
+                        </Box>
+                        <Box className="mb-1 flex">
+                            <Typography className="w-40 pr-2">Tỉnh/Thành phố</Typography>
+                            <Controller
+                                name="city"
+                                control={control}
+                                rules={{
+                                    required: 'Bạn chưa nhập tên tỉnh, thành phố',
+                                }}
+                                render={({ field }) => (
+                                    <Autocomplete
+                                        noOptionsText="Không tìm thấy kết quả"
+                                        loadingText="Đang tải"
+                                        className="w-full "
+                                        size="small"
+                                        disablePortal
+                                        // id="combo-box-demo"
+                                        {...field}
+                                        placeholder="Tỉnh/Thành phố"
+                                        onChange={(e) => {
+                                            onChange_city(e.target.outerText);
+                                        }}
+                                        options={optionsMUI_city}
+                                        renderInput={(params) => <TextField {...params} />}
+                                    />
+                                )}
+                            />
+                        </Box>
+                        <Box className="min-h-[28px]">
+                            {errors.name && errors.name.type === 'required' ? (
+                                <p className="mb-2 text-red-600">{errors.name.message}</p>
+                            ) : null}
+                        </Box>
+                        <Box className="mb-1 flex">
+                            <Typography className="w-40 pr-2">Quận/Huyện</Typography>
+                            <Controller
+                                name="district"
+                                control={control}
+                                rules={{
+                                    required: 'Bạn chưa nhập tên quận, huyện',
+                                }}
+                                render={({ field }) => (
+                                    <Autocomplete
+                                        noOptionsText="Không tìm thấy kết quả"
+                                        loadingText="Đang tải"
+                                        className="w-full "
+                                        disablePortal
+                                        size="small"
+                                        id="combo-box-demo"
+                                        {...field}
+                                        placeholder="Quận/huyện"
+                                        onChange={(e) => {
+                                            onChange_district(e.target.outerText);
+                                        }}
+                                        options={optionsMUI_district}
+                                        renderInput={(params) => <TextField {...params} />}
+                                    />
+                                )}
+                            />
+                        </Box>
+                        <Box className="min-h-[28px]">
+                            {errors.name && errors.name.type === 'required' ? (
+                                <p className="mb-2 text-red-600">{errors.name.message}</p>
+                            ) : null}
+                        </Box>
 
-                    <Box className="mb-1 flex">
-                        <Typography className="w-40 pr-2">Xã/Phường</Typography>
-                        <Controller
-                            name="ward"
-                            control={control}
-                            rules={{
-                                required: 'Bạn chưa nhập tên xã, phường',
+                        <Box className="mb-1 flex">
+                            <Typography className="w-40 pr-2">Xã/Phường</Typography>
+                            <Controller
+                                name="ward"
+                                control={control}
+                                rules={{
+                                    required: 'Bạn chưa nhập tên xã, phường',
+                                }}
+                                render={({ field }) => (
+                                    <Autocomplete
+                                        noOptionsText="Không tìm thấy kết quả"
+                                        loadingText="Đang tải"
+                                        className="w-full "
+                                        disablePortal
+                                        size="small"
+                                        id="combo-box-demo"
+                                        placeholder="Quận/huyện"
+                                        {...field}
+                                        onChange={(e) => {
+                                            onChange_ward(e.target.outerText);
+                                        }}
+                                        options={optionsMUI_ward}
+                                        renderInput={(params) => <TextField {...params} />}
+                                    />
+                                )}
+                            />
+                        </Box>
+                        <Box className="min-h-[28px]">
+                            {errors.name && errors.name.type === 'required' ? (
+                                <p className="mb-2 text-red-600">{errors.name.message}</p>
+                            ) : null}
+                        </Box>
+                        <Box className="mb-1 flex">
+                            <Typography className="w-40 pr-2">Đường Hẻm/Thôn</Typography>
+                            <Controller
+                                name="address"
+                                control={control}
+                                rules={{
+                                    required: 'Bạn chưa nhập tên đường/thôn/phường',
+                                }}
+                                render={({ field }) => (
+                                    <TextField
+                                        type="text"
+                                        size="small"
+                                        className="w-full py-1 "
+                                        hiddenLabel
+                                        {...field}
+                                        placeholder="Đường/hẻm/thôn"
+                                    />
+                                )}
+                            />
+                        </Box>
+                        <Box className="min-h-[28px]">
+                            {errors.address && errors.address.type === 'required' ? (
+                                <p className="mb-2 text-red-600">{errors.address.message}</p>
+                            ) : null}
+                        </Box>
+                        <Button
+                            variant="contained"
+                            type="submit"
+                            sx={{
+                                width: '100%',
+                                margin: 'auto',
+                                padding: '8px 0px',
+                                borderRadius: '6px',
+                                fontSize: '16px',
+                                background: 'var(--main-color)',
+                                '&:hover': {
+                                    background: 'var(--main-color-hover)',
+                                },
                             }}
-                            render={({ field }) => (
-                                <Autocomplete
-                                    noOptionsText="Không tìm thấy kết quả"
-                                    loadingText="Đang tải"
-                                    className="w-full "
-                                    disablePortal
-                                    size="small"
-                                    id="combo-box-demo"
-                                    placeholder="Quận/huyện"
-                                    {...field}
-                                    onChange={(e) => {
-                                        onChange_ward(e.target.outerText);
-                                    }}
-                                    options={optionsMUI_ward}
-                                    renderInput={(params) => <TextField {...params} />}
-                                />
-                            )}
-                        />
-                    </Box>
-                    <Box className="min-h-[28px]">
-                        {errors.name && errors.name.type === 'required' ? (
-                            <p className="mb-2 text-red-600">{errors.name.message}</p>
-                        ) : null}
-                    </Box>
-                    <Box className="mb-1 flex">
-                        <Typography className="w-40 pr-2">Đường Hẻm/Thôn</Typography>
-                        <Controller
-                            name="address"
-                            control={control}
-                            rules={{
-                                required: 'Bạn chưa nhập tên đường/thôn/phường',
-                            }}
-                            render={({ field }) => (
-                                <TextField
-                                    type="text"
-                                    size="small"
-                                    className="w-full py-1 "
-                                    hiddenLabel
-                                    {...field}
-                                    placeholder="Đường/hẻm/thôn"
-                                />
-                            )}
-                        />
-                    </Box>
-                    <Box className="min-h-[28px]">
-                        {errors.address && errors.address.type === 'required' ? (
-                            <p className="mb-2 text-red-600">{errors.address.message}</p>
-                        ) : null}
-                    </Box>
-                    <Button
-                        variant="contained"
-                        type="submit"
-                        sx={{
-                            width: '100%',
-                            margin: 'auto',
-                            padding: '8px 0px',
-                            borderRadius: '6px',
-                            fontSize: '16px',
-                            background: 'var(--main-color)',
-                            '&:hover': {
-                                background: 'var(--main-color-hover)',
-                            },
-                        }}
-                    >
-                        Cập nhật thông tin
-                    </Button>
-                </Stack>
-            </form>
+                        >
+                            Cập nhật thông tin
+                        </Button>
+                    </Stack>
+                </form>
+            )}
         </>
     );
 }

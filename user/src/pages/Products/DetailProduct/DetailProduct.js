@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
-// component child
 import Loading from '~/components/LoadingError/Loading';
 import Message from '~/components/LoadingError/Error';
 import Rating from '~/components/Rating/Rating';
@@ -10,13 +9,12 @@ import SliderImageProducts from './DetailProductComponents/SliderImageProducts/S
 import AskAndAnswer from './DetailProductComponents/AskAndAnswer/AskAndAnswer';
 import EvaluateProduct from './DetailProductComponents/EvaluateProduct/EvaluateProduct';
 
-// redux
-import { listProductDetails, listProduct } from '~/redux/Actions/ProductActions';
+import { productDetailAction } from '~/redux/Actions/ProductActions';
 import { CART_CREATE_RESET } from '~/redux/Constants/CartConstants';
 import { addToCart, listCart } from '~/redux/Actions/cartActions';
 
 import SimilarProducts from './DetailProductComponents/SimilarProducts/SimilarProducts';
-import { notification } from 'antd';
+import { Radio, notification, ConfigProvider } from 'antd';
 import LoadingLarge from '~/components/LoadingError/LoadingLarge';
 import './DetailProduct.css';
 
@@ -34,95 +32,80 @@ function DetailProduct() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    // state
     const [qty, setQty] = useState(1);
-    const [category, setCategory] = useState('');
-    const [keyword, setKeyword] = useState('');
-    const [pageNumber, setPageNumber] = useState('');
-    const [minPrice, setMinPrice] = useState('');
-    const [maxPrice, setMaxPrice] = useState('');
-    const [sortProducts, setSortProducts] = useState('3');
-
     const [optionIndex, setOptionIndex] = useState(0);
-    const [optionsArrColor, setOptionArrColor] = useState('');
+    const [optionsArrColor, setOptionArrColor] = useState({});
     const [color, setColor] = useState('');
-    // const [rating, setRating] = useState(0);
 
-    // Lấy state từ store redux
     const productDetail = useSelector((state) => state.productDetails);
-    const { loading, error, product } = productDetail;
+    const { loading, error, data } = productDetail;
+    const { product } = data;
+    // start state component com dùng để re-render khi cần
+    const reviews = useSelector((state) => state.productReviewCreate);
+    const {
+        loading: loadingCreateReview,
+        error: errorCreateReview,
+        success: successCreateReview,
+        data: dataCreateReview,
+    } = reviews;
+    const productCommentCreate = useSelector((state) => state.productCommentCreate); //comment
+    const {
+        loading: loadingCreateComment,
+        error: errorCreateComment,
+        success: successCreateComment,
+    } = productCommentCreate;
+
+    const productCommentChildCreate = useSelector((state) => state.productCommentChildCreate); //comment child
+    const {
+        loading: loadingCreateCommentChild,
+        error: errorCreateCommentChild,
+        success: successCreateCommentChild,
+    } = productCommentChildCreate;
+    // end state component com dùng để re-render khi cần
 
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
 
-    // start chức năng khác
-    const productList = useSelector((state) => state.productList);
-    const { products, page, pages } = productList;
-
-    // end chức năng khác
-
     const cartCreate = useSelector((state) => state.cartCreate);
     const { success: successAddCart, loading: loadingAddCart, error: errorAddCart } = cartCreate;
-
-    const optionColor = product?.optionColor?.sort(({ color: b }, { color: a }) => (a > b ? 1 : a < b ? -1 : 0));
+    // antd
+    const [selected, setSelected] = useState('');
+    const handleSelectedChange = (e) => {
+        setSelected(e.target.value);
+    };
+    //
+    useEffect(() => {
+        dispatch(productDetailAction({ id: productId }));
+    }, [productId, successCreateReview, successCreateComment, successCreateCommentChild]);
 
     useEffect(() => {
-        dispatch(listProductDetails(productId));
-    }, [dispatch, productId]);
-
-    useEffect(() => {
-        if (optionColor) {
-            setColor(optionColor[0]?.color);
+        if (data.product) {
+            setColor(data.product.optionColor[optionIndex]?.color);
+            setSelected(data.product.optionColor[optionIndex]?.color);
+            setOptionArrColor(data.product.optionColor[optionIndex]);
         }
-    }, [optionColor]);
-
-    useEffect(() => {
-        setOptionArrColor(() => {
-            if (optionColor !== undefined && optionIndex !== undefined) {
-                let x = optionColor[optionIndex];
-                return x;
-            }
-        });
-    }, [optionIndex, optionColor]);
-
-    useEffect(() => {
-        if (product._id !== undefined) {
-            setCategory(product.category);
-            setMinPrice(Math.floor(product.price / 2));
-            setMaxPrice(Math.round(product.price * 2));
-        }
-    }, [product._id]);
-
-    useEffect(() => {
-        if (product !== undefined && maxPrice) {
-            dispatch(listProduct(category, keyword, pageNumber, minPrice, maxPrice, sortProducts)); // rating,
-        }
-    }, [category, maxPrice]);
+    }, [data, optionIndex]);
 
     useEffect(() => {
         if (successAddCart) {
             openNotification('top', 'Thêm sản phẩm vào giỏ hàng Thành công', 'success');
             dispatch({ type: CART_CREATE_RESET });
+            // cập nhập số lượng sản phẩm trong giỏ hàng
+            dispatch(listCart());
             // navigate(`/cart/${productId}?qty=${qty}?color=${color}`);
         }
         if (errorAddCart) {
             openNotification('top', 'Thêm sản phẩm vào giỏ hàng thất bại', 'error');
-
             dispatch({ type: CART_CREATE_RESET });
         }
     }, [dispatch, successAddCart, errorAddCart]);
 
     const AddToCartHandle = (e) => {
         e.preventDefault();
-        const id_product = product?.id_product || 151138769223;
         if (userInfo) {
-            dispatch(addToCart({ productId, color, id_product, qty, _id: userInfo._id }));
+            dispatch(addToCart({ productId, color, qty, _id: userInfo._id }));
         } else navigate('/login');
     };
-    useEffect(() => {
-        // cập nhập số lượng sản phẩm trong giỏ hàng
-        dispatch(listCart());
-    }, [successAddCart]);
     const handleRender = () => {
         return (
             <div className="mx-auto my-auto max-w-screen-2xl">
@@ -133,13 +116,13 @@ function DetailProduct() {
                             <div className="row">
                                 <div className="col-md-5">
                                     <div className="flex justify-center bg-white max-md:h-[200px] md:h-[400px]">
-                                        <SliderImageProducts images={product.image} />
+                                        <SliderImageProducts images={product?.image} />
                                     </div>
                                 </div>
                                 <div className="col-md-7">
                                     <div className="">
                                         <div className="w-full text-center">
-                                            <div className="mb-2 text-xl font-semibold">{product.name}</div>
+                                            <div className="mb-2 text-xl font-semibold">{product?.name}</div>
                                         </div>
                                         <div className="product-baner">
                                             <img
@@ -166,26 +149,51 @@ function DetailProduct() {
                                             <div className=" d-flex justify-content-between align-items-center px-6 py-2">
                                                 <h6 className="text-base font-semibold">Đánh giá</h6>
                                                 <Rating
-                                                    value={product.rating}
-                                                    text={`(${product.numReviews}) đánh giá`}
+                                                    value={product?.rating}
+                                                    text={`(${product?.numReviews}) đánh giá`}
                                                 />
                                             </div>
                                             <div className=" d-flex justify-content-between align-items-center px-6 py-2">
                                                 <h6 className="text-base font-semibold">Màu sắc</h6>
                                                 <div>
-                                                    {optionColor?.map((option, index) => (
-                                                        <button
-                                                            type="button"
-                                                            key={option._id}
-                                                            onClick={() => {
-                                                                setOptionIndex(index);
-                                                                setColor(option.color);
-                                                            }}
-                                                            className="mt-2 rounded bg-[var(--blue-color)] px-3 py-1 text-white"
-                                                        >
-                                                            {option.color}
-                                                        </button>
-                                                    ))}
+                                                    <ConfigProvider
+                                                        theme={{
+                                                            token: {
+                                                                // Seed Token
+                                                                colorPrimary: '#e83781',
+                                                                borderRadius: 2,
+                                                                // Alias Token
+                                                                // colorBgContainer: '#f6ffed',
+                                                            },
+                                                        }}
+                                                    >
+                                                        <Radio.Group value={selected} onChange={handleSelectedChange}>
+                                                            {product?.optionColor?.map((option, index) => (
+                                                                // <button
+                                                                //     type="button"
+                                                                //     key={option._id}
+                                                                //     onClick={() => {
+                                                                //         setOptionIndex(index);
+                                                                //         setColor(option.color);
+                                                                //     }}
+                                                                //     className="mr-1 mt-2 rounded bg-[var(--blue-color)] px-2 py-1 text-white"
+                                                                // >
+                                                                //     {option.color}
+                                                                // </button>
+                                                                <Radio.Button
+                                                                    key={option._id}
+                                                                    onClick={() => {
+                                                                        setOptionIndex(index);
+                                                                        setColor(option.color);
+                                                                    }}
+                                                                    value={option.color}
+                                                                    className=""
+                                                                >
+                                                                    {option.color}
+                                                                </Radio.Button>
+                                                            ))}
+                                                        </Radio.Group>
+                                                    </ConfigProvider>
                                                 </div>
                                             </div>
 
@@ -231,16 +239,20 @@ function DetailProduct() {
                                     </h2>
                                     <div
                                         className="product-description"
-                                        dangerouslySetInnerHTML={{ __html: product.description }}
+                                        dangerouslySetInnerHTML={{ __html: product?.description }}
                                     ></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="mx-2">
-                        <EvaluateProduct productId={productId} />
-                        <AskAndAnswer productId={productId} />
-                        <SimilarProducts products={products} />
+                        {data?.product && (
+                            <>
+                                <EvaluateProduct product={data?.product} userInfo={userInfo} />
+                                <AskAndAnswer product={data?.product} userInfo={userInfo} />
+                                <SimilarProducts category={data?.product?.category} />
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
@@ -250,7 +262,7 @@ function DetailProduct() {
     let content;
     if (loading) {
         content = (
-            <div className="min-h-[100vh]">
+            <div className="">
                 <LoadingLarge content={'Đang load thông tin'} />
             </div>
         );

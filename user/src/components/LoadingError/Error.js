@@ -1,5 +1,5 @@
 const Message = ({ variant, children }) => {
-    return <div className={`alert ${variant} text-center text-red-600`}>{children}</div>;
+    return <div className={`${variant} text-center text-red-600`}>{children}</div>;
 };
 
 Message.defaultProps = {

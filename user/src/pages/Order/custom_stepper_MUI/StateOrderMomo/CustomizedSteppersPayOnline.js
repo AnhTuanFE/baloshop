@@ -74,23 +74,7 @@ function ColorlibStepIcon(props) {
         </ColorlibStepIconRoot>
     );
 }
-
-/*
-    'placed';
-    'confirm';
-    'delivering';
-    'delivered';
-    'cancelled';
-    'completed';
-
-    - Trước tiên thì cần có một khung của trạng thái, dựa vào history status
-    - đầu tiên cần xử lý các trạng thái đơn hàng
-    - Dựa vào trạng thái hiện tại rồi đánh dấu trạng thái đơn hàng
-    - nếu trạng thái hiện tại là place thì set cái trạng thái trước đó của nó là content (làm đậm) 
-       và cái đằng sau cho nó hiển thị label (làm mờ)
-    - Nếu đơn hàng bị hủy thì sau đó sẽ ẩn những cái đằng sau đi vẫn làm đậm cái trước
-    */
-export default function CustomizedSteppersMoney({ order }) {
+export default function CustomizedSteppersPayOnline({ order }) {
     const { statusHistory } = order;
     const [actiStep, setActiStep] = useState(0);
 
@@ -99,7 +83,16 @@ export default function CustomizedSteppersMoney({ order }) {
             return {
                 iconNumber: 1,
                 content: 'Đã đặt hàng',
-                label: 'Chờ đặt hàng',
+                label: 'Đã đặt hàng',
+                createdAt: date,
+                description: description,
+            };
+        }
+        if (status == 'paid') {
+            return {
+                iconNumber: 2,
+                content: 'Đã thanh toán',
+                label: 'Thanh toán',
                 createdAt: date,
                 description: description,
             };
@@ -107,8 +100,8 @@ export default function CustomizedSteppersMoney({ order }) {
         if (status == 'confirm') {
             return {
                 iconNumber: 3,
-                content: 'Đã xác nhận đơn hàng',
-                label: 'Chờ xác nhận đơn hàng',
+                content: 'Xác nhận đơn hàng',
+                label: 'Chờ xác nhận',
                 createdAt: date,
                 description: description,
             };
@@ -117,25 +110,24 @@ export default function CustomizedSteppersMoney({ order }) {
             return {
                 iconNumber: 4,
                 content: 'Đang giao',
-                label: 'Chờ giao hàng',
+                label: 'Giao hàng',
                 createdAt: date,
                 description: description,
             };
         }
         if (status == 'delivered') {
             return {
-                iconNumber: 2,
-                content: 'Đã giao và thanh toán',
-                label: 'Chờ nhận hàng và thanh toán',
+                iconNumber: 4,
+                content: 'Đã giao hàng',
+                label: 'Chờ giao hàng',
                 createdAt: date,
-                description: description,
             };
         }
         if (status == 'completed') {
             return {
                 iconNumber: 6,
                 content: 'Đã hoàn thành',
-                label: 'Xác nhận hoàn thành đơn hàng',
+                label: 'Hoàn thành',
                 createdAt: date,
                 description: description,
             };
@@ -153,7 +145,7 @@ export default function CustomizedSteppersMoney({ order }) {
     };
     const arrayStatusHistory = [];
     statusHistory.map((item) => {
-        arrayStatusHistory.push(handleConfigContent(item.status, item.updatedAt, item.description));
+        arrayStatusHistory.push(handleConfigContent(item.status, item.createdAt));
     });
 
     useEffect(() => {
@@ -162,17 +154,20 @@ export default function CustomizedSteppersMoney({ order }) {
                 if (order?.status == 'placed') {
                     setActiStep(0);
                 }
-                if (order?.status == 'confirm') {
+                if (order?.status == 'paid') {
                     setActiStep(1);
                 }
-                if (order?.status == 'delivering') {
+                if (order?.status == 'confirm') {
                     setActiStep(2);
                 }
-                if (order?.status == 'delivered') {
+                if (order?.status == 'delivering') {
                     setActiStep(3);
                 }
-                if (order?.status == 'completed') {
+                if (order?.status == 'delivered') {
                     setActiStep(4);
+                }
+                if (order?.status == 'completed') {
+                    setActiStep(5);
                 }
                 if (order?.status == 'cancelled') {
                     setActiStep(Number(arrayStatusHistory.length) - 1);

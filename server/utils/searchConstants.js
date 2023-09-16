@@ -1,18 +1,17 @@
 const productQueryParams = {
     sort: {
-        asc: { priceSale: 'asc' },
-        desc: { priceSale: 'desc' },
+        asc: { price: 'asc' },
+        desc: { price: 'desc' },
         newest: { createdAt: 'desc' },
         latest: { createdAt: 'asc' },
         total_sales: { totalSales: 'desc' },
         default: { totalSales: 'desc' },
     },
     status: {
-        deleted: { deleted: true },
-        disabled: { disabled: true, deleted: false },
-        not_disabled: { disabled: false, deleted: false },
-        all: { deleted: false },
-        default: { disabled: false, deleted: false },
+        disabled: { disabled: true },
+        not_disabled: { disabled: false },
+        all: {},
+        default: { disabled: false },
     },
 };
 
@@ -74,6 +73,17 @@ const userQueryParams = {
         default: { isDisabled: false },
     },
 };
+const priceRangeFilter = (minPrice, maxPrice) => {
+    if (minPrice >= 0 && maxPrice > 0) {
+        if (minPrice > maxPrice) {
+            const temp = minPrice;
+            minPrice = maxPrice;
+            maxPrice = temp;
+        }
+        return { priceSale: { $gte: minPrice, $lte: maxPrice } };
+    }
+    return {};
+};
 const validateConstants = function (reference, constant, constantField) {
     constantField = constantField ? constantField.toString().trim().toLowerCase() : '';
     return reference[constant].hasOwnProperty(constantField)
@@ -81,4 +91,11 @@ const validateConstants = function (reference, constant, constantField) {
         : reference[constant]['default'];
 };
 
-export { productQueryParams, orderQueryParams, categoryQueryParams, userQueryParams, validateConstants };
+export {
+    productQueryParams,
+    orderQueryParams,
+    categoryQueryParams,
+    userQueryParams,
+    validateConstants,
+    priceRangeFilter,
+};

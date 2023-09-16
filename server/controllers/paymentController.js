@@ -160,8 +160,7 @@ const paymentNotificationFromMomo = async (req, res) => {
 
     const createSignature = crypto.createHmac('sha256', process.env.MOMO_SECRET_KEY).update(rawSignature).digest('hex');
 
-    console.log('createSignature');
-    console.log(createSignature);
+    console.log('createSignature = ', createSignature);
 
     if (signature == createSignature) {
         console.log('Chữ ký hợp lệ');
@@ -185,13 +184,13 @@ const paymentNotificationFromMomo = async (req, res) => {
                 res.status(400);
                 throw new Error('Đơn hàng không tồn tại');
             }
+            order.status = 'paid';
+            order.statusHistory[1] = { status: 'paid', description: '', updateBy: req.user._id };
             order.payment.paid = true;
-
-            order.payment.paidAt = new Date();
-            order.payment.message = message;
+            // order.payment.paidAt = new Date();
+            // order.payment.message = message;
             order.payment.status = PAYMENT_SUCCESS;
             order.payment.paymentTransaction = { ...paymentTransaction };
-            order.statusHistory.push({ status: 'paid', description: '', updateBy: order.user });
             await order.payment.save();
             await order.save();
 
@@ -206,13 +205,15 @@ const paymentNotificationFromMomo = async (req, res) => {
             console.log(order);
 
             order.payment.paid = false;
-            order.payment.message = message;
+            // order.payment.message = message;
             order.payment.status = PAYMENT_FAILED;
             order.payment.paymentTransaction = { ...paymentTransaction };
             await order.payment.save();
 
             order.status = 'canceled';
-            order.statusHistory.push({ status: 'canceled', description: message });
+            order.statusHistory.splice(1, 4);
+            order.statusHistory[1] = { status: 'canceled', description: message };
+
             await order.save();
             res.status(204);
         }
@@ -283,9 +284,117 @@ const getOrderPaypal = async (req, res) => {
         }
     });
 };
+const paymentUserNotificationPaidFromMomo = async (req, res) => {
+    console.log('user thông báo thanh toán từ momo');
+    // console.log(JSON.stringify(req.body));
+    const {
+        partnerCode,
+        requestId,
+        amount,
+        orderId,
+        resultCode,
+        message,
+        responseTime,
+        extraData,
+        signature,
+        orderInfo,
+        orderType,
+        payType,
+        transId,
+    } = req.body;
+    console.log('req.body = ', req.body);
+
+    const rawSignature =
+        'accessKey=' +
+        process.env.MOMO_ACCESS_KEY +
+        '&amount=' +
+        amount +
+        '&extraData=' +
+        extraData +
+        '&message=' +
+        message +
+        '&orderId=' +
+        orderId +
+        '&orderInfo=' +
+        orderInfo +
+        '&orderType=' +
+        orderType +
+        '&partnerCode=' +
+        partnerCode +
+        '&payType=' +
+        payType +
+        '&requestId=' +
+        requestId +
+        '&responseTime=' +
+        responseTime +
+        '&resultCode=' +
+        resultCode +
+        '&transId=' +
+        transId;
+
+    const createSignature = crypto.createHmac('sha256', process.env.MOMO_SECRET_KEY).update(rawSignature).digest('hex');
+
+    if (signature == createSignature) {
+        console.log('Chữ ký hợp lệ');
+        const paymentTransaction = {
+            partnerCode,
+            requestId,
+            amount,
+            orderId,
+            resultCode,
+            message,
+            extraData,
+            orderInfo,
+            orderType,
+            payType,
+            transId,
+        };
+        if (resultCode == 0) {
+            let order = await Order.findOne({ _id: orderId }).populate('payment');
+            console.log('order resultCode = ', order);
+            if (!order) {
+                res.status(400);
+                throw new Error('Đơn hàng không tồn tại');
+            }
+            order.status = 'paid';
+            order.statusHistory[1] = { status: 'paid', description: '', updateBy: req.user._id };
+            order.payment.paid = true;
+            // order.payment.paidAt = new Date();
+            // order.payment.message = message;
+            order.payment.status = PAYMENT_SUCCESS;
+            order.payment.momoPaymentTransaction = { ...paymentTransaction };
+            await order.payment.save();
+            await order.save();
+
+            res.status(204);
+        } else {
+            console.log('chạy vào else resultCode = ');
+            let order = await Order.findOne({ _id: orderId }).populate('payment');
+            if (!order) {
+                res.status(400);
+                throw new Error('Đơn hàng không tồn tại');
+            }
+            order.payment.paid = false;
+            // order.payment.message = message;
+            order.payment.status = PAYMENT_FAILED;
+            order.payment.momoPaymentTransaction = { ...paymentTransaction };
+            await order.payment.save();
+
+            order.status = 'canceled';
+            order.statusHistory.splice(1, 4);
+            order.statusHistory[1] = { status: 'canceled', description: message };
+            await order.save();
+            res.status(204);
+        }
+    } else {
+        console.log('Chữ ký không hợp lệ');
+        throw new Error('Thanh toán thất bại. Chữ ký không hợp lệ.');
+    }
+};
 const paymentController = {
     paymentOrder,
     paymentNotificationFromMomo,
+    paymentUserNotificationPaidFromMomo,
     paymentNotificationFromPaypal,
     refundTrans,
     getOrderPaypal,

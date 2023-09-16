@@ -87,7 +87,6 @@ function Cart() {
                                             {
                                                 productId: item?.product._id,
                                                 color: item?.color,
-                                                id_product: cartItems.id_product,
                                                 qty: true,
                                                 _id: userInfo._id,
                                             },
@@ -165,7 +164,6 @@ function Cart() {
                                 addToCart({
                                     productId: item?.product._id,
                                     color: item?.color,
-                                    id_product: cartItems.id_product,
                                     qty: value,
                                     _id: userInfo._id,
                                 }),
@@ -226,7 +224,7 @@ function Cart() {
                                         <div className=" flex flex-col justify-center">
                                             <img
                                                 className=" h-[100px] object-contain"
-                                                src={`${item.product?.image[0]?.urlImage}`}
+                                                src={`${item.product?.image[0]}`}
                                                 alt={item.product?.name}
                                             />
                                         </div>
