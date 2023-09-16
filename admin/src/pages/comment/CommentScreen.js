@@ -289,7 +289,7 @@ const CommentScreen = () => {
                                             >
                                                 <textarea
                                                     className="question-product"
-                                                    placeholder="Xin mời để lại câu hỏi, BaloStore sẽ trả lời lại trong 1h, các câu hỏi sau 22h - 8h sẽ được trả lời vào sáng hôm sau"
+                                                    placeholder="Trả lời bình luận"
                                                     value={questionChild}
                                                     onChange={(e) => {
                                                         setQuestionChild(e.target.value);

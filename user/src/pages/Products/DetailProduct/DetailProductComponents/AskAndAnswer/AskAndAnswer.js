@@ -89,7 +89,7 @@ function AskAndAnswer(props) {
                             <textarea
                                 value={question}
                                 className="h-20 w-full rounded-xl border px-2 py-1 text-base shadow-sm"
-                                placeholder="Xin mời để lại câu hỏi, BaloStore sẽ trả lời lại trong 1h, các câu hỏi sau 22h - 8h sẽ được trả lời vào sáng hôm sau"
+                                placeholder="Xin mời để lại câu hỏi, BaloShop sẽ trả lời lại trong 1h, các câu hỏi sau 22h - 8h sẽ được trả lời vào sáng hôm sau"
                                 onChange={(e) => {
                                     setQuestion(e.target.value);
                                 }}
