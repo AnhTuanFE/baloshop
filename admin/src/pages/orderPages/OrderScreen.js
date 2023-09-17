@@ -7,7 +7,6 @@ const OrderScreen = () => {
     const keyword = params.keyword || '';
     const pageNumber = params.pageNumber || 1;
     const status = params.status || '';
-    console.log('params = ', params);
     return (
         <section className="content-main">
             <div className="content-header">

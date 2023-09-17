@@ -12,7 +12,7 @@ function Home() {
     const keyword = params.keyword || '';
     const pageNumber = params.pageNumber || 1;
     const category = params.category || '';
-    const rating = params.rating || '';
+    const rating = params.rating || '0';
     const sortBy = params.sortBy || 1;
 
     return (

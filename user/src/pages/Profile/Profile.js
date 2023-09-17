@@ -24,7 +24,6 @@ export default function Profile() {
 
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
-    // console.log('userInfo = ', userInfo);
 
     const items = [
         {

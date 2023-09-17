@@ -28,23 +28,6 @@ const AllProductsFilter = (props) => {
     }, [dispatch, category, keyword, pageNumber, minPrice, maxPrice, rating, sortBy]);
 
     const handlerSort = (value) => {
-        console.log('value handle sort = ', value);
-        console.log('props = ', props);
-        // if(category !== '') {
-        //     if(rating === "" && keyword === "")
-        //     {
-        //         // navigate(`/category/${category}/sortBy/${value}/rating/${rating}/page/${'1'}`);
-        //         navigate(`/category/${category}/sortBy/${value}/page/${'1'}`);
-        //     }
-        //     if(rating === "") {
-        //         // navigate(`/category/${category}/sortBy/${value}/rating/${rating}/page/${'1'}`);
-
-        //         navigate(`/category/${category}/sortBy/${value}/rating/${rating}/page/${'1'}`);
-
-        //     }
-        //     if()
-
-        // }
         if (rating === '' && keyword === '' && category === '') {
             navigate(`/sortBy/${value}/page/${'1'}`);
         }
@@ -60,8 +43,6 @@ const AllProductsFilter = (props) => {
     };
 
     const handlerRating = (value) => {
-        console.log('value handle rating = ', value);
-
         if (rating === '' && keyword === '' && category === '') {
             navigate(`/rating/${value}/page/${'1'}`);
         }
@@ -129,16 +110,16 @@ const AllProductsFilter = (props) => {
                                     5 sao
                                 </option>
                                 <option className="text-sm font-medium" value="4">
-                                    4 sao
+                                    4 sao trở lên
                                 </option>
                                 <option className="text-sm font-medium" value="3">
-                                    3 sao
+                                    3 sao trở lên
                                 </option>
                                 <option className="text-sm font-medium" value="2">
-                                    2 sao
+                                    2 sao trở lên
                                 </option>
                                 <option className="text-sm font-medium" value="1">
-                                    1 sao
+                                    1 sao trở lên
                                 </option>
                             </select>
                         </div>
@@ -182,7 +163,7 @@ const AllProductsFilter = (props) => {
                                                                     </h3>
                                                                     <Rating
                                                                         value={product?.rating}
-                                                                        text={`(${product?.numReviews})`}
+                                                                        text={`(${product?.reviews.length})`}
                                                                     />
                                                                 </div>
                                                             </Link>

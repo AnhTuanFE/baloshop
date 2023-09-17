@@ -168,7 +168,6 @@ const AddProduct = () => {
         setDisabledOptionColor(false);
         setDisabledProduct(true);
     };
-    console.log('stateProductEdit = ', stateProductEdit);
     return (
         <>
             <Toast />
@@ -179,10 +178,7 @@ const AddProduct = () => {
                             <h2 className="content-title">Thêm sản phẩm</h2>
                         </div>
                         <div>
-                            <button
-                                onClick={handleResetForAddProductOther}
-                                className="btn btn-primary color-orange mr-5 py-2"
-                            >
+                            <button onClick={handleResetForAddProductOther} className="btn btn-success mr-5 py-2">
                                 Thêm sản phẩm khác
                             </button>
                         </div>

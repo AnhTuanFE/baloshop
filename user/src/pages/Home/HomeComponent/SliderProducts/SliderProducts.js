@@ -85,7 +85,10 @@ export default function SliderProducts({ products, labelSlider }) {
                                                     {product?.price?.toLocaleString('de-DE')}đ
                                                 </p>
                                                 <div>
-                                                    <Rating value={product.rating} text={`(${product.numReviews})`} />
+                                                    <Rating
+                                                        value={product.rating}
+                                                        text={`(${product.reviews.length})`}
+                                                    />
                                                 </div>
                                             </div>
                                         </div>

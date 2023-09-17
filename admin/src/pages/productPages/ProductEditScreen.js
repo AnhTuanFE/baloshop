@@ -138,12 +138,6 @@ const ProductEditScreen = () => {
 
     const handleUpdateProduct = (e) => {
         e.preventDefault();
-        console.log('productId = ', productId);
-        console.log('name = ', name);
-        console.log('price = ', price);
-        console.log('category = ', category);
-        console.log('description = ', description);
-        console.log('image = ', image);
         let formData = new FormData();
         formData.append('id', productId);
         formData.append('name', name);

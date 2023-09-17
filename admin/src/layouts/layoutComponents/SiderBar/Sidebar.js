@@ -1,5 +1,15 @@
 import { Link, NavLink } from 'react-router-dom';
 import { logoDefaul } from '~/data/data';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    faHouse,
+    faUsers,
+    faCartShopping,
+    faCartPlus,
+    faRectangleList,
+    faBagShopping,
+    faImages,
+} from '@fortawesome/free-solid-svg-icons';
 import './SideBar.css';
 
 const Sidebar = () => {
@@ -20,37 +30,37 @@ const Sidebar = () => {
                 <ul className="menu-aside mt-7 ">
                     <li className="menu-item ">
                         <NavLink activeClassName="active" className="menu-link " to="/" exact={true}>
-                            <i className="icon fas fa-home"></i>
+                            <FontAwesomeIcon className="icon" icon={faHouse} />
                             <span className="text ">Trang chủ</span>
                         </NavLink>
                     </li>
                     <li className="menu-item ">
                         <NavLink activeClassName="active" className="menu-link " to="/products">
-                            <i className="icon fas fa-shopping-bag"></i>
+                            <FontAwesomeIcon className="icon" icon={faCartShopping} />
                             <span className="text ">Sản phẩm</span>
                         </NavLink>
                     </li>
                     <li className="menu-item">
                         <NavLink activeClassName="active" className="menu-link " to="/addproduct">
-                            <i className="icon fas fa-cart-plus"></i>
+                            <FontAwesomeIcon className="icon" icon={faCartPlus} />
                             <span className="text">Thêm sản phẩm</span>
                         </NavLink>
                     </li>
                     <li className="menu-item">
                         <NavLink activeClassName="active" className="menu-link " to="/category">
-                            <i className="icon fas fa-list"></i>
+                            <FontAwesomeIcon className="icon" icon={faRectangleList} />
                             <span className="text ">Danh mục sản phẩm</span>
                         </NavLink>
                     </li>
                     <li className="menu-item">
                         <NavLink activeClassName="active" className="menu-link " to="/orders">
-                            <i className="icon fas fa-bags-shopping"></i>
+                            <FontAwesomeIcon className="icon" icon={faBagShopping} />
                             <span className="text ">Đơn hàng</span>
                         </NavLink>
                     </li>
                     <li className="menu-item">
                         <NavLink activeClassName="active" className="menu-link " to="/users">
-                            <i className="icon fas fa-user"></i>
+                            <FontAwesomeIcon className="icon" icon={faUsers} />
                             <span className="text ">Người dùng</span>
                         </NavLink>
                     </li>
@@ -74,7 +84,7 @@ const Sidebar = () => {
                     </li> */}
                     <li className="menu-item">
                         <NavLink activeClassName="active" className="menu-link " to="/slider">
-                            <i className="icon fas fa-store-alt"></i>
+                            <FontAwesomeIcon className="icon" icon={faImages} />
                             <span className="text ">Ảnh Bìa</span>
                         </NavLink>
                     </li>

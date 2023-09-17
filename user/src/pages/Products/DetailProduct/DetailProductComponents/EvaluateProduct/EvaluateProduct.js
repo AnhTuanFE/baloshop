@@ -14,6 +14,7 @@ import Box from '@mui/material/Box';
 import { Rating as RatingMUI } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import './EvaluateProduct.css';
+import { underscore } from 'i/lib/methods';
 
 const labels = {
     1: 'Không hài lòng',
@@ -95,6 +96,13 @@ function EvaluateProduct(props) {
             dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
         }
     }, [successCreateReview, errorCreateReview]);
+    const handleReturnImage = (ItemReview) => {
+        if (ItemReview.user.image != undefined) {
+            return ItemReview.user.image;
+        } else {
+            return imageDefaul;
+        }
+    };
     return (
         <>
             {contextHolder}
@@ -113,7 +121,7 @@ function EvaluateProduct(props) {
                                     <div className="mx-1 mt-1 text-sm">
                                         <Rating value={product?.rating} />
                                     </div>
-                                    <p className="text-xl">{product?.numReviews} đánh giá và nhận xét</p>
+                                    <p className="text-xl">{product?.reviews.length} đánh giá và nhận xét</p>
                                 </div>
                                 <div className="col-md-8 col-sm-7">
                                     <div className=" px-4 py-1 max-md:mt-2">
@@ -294,8 +302,8 @@ function EvaluateProduct(props) {
                                     <div className="flex items-center">
                                         <div className="flex items-center">
                                             <img
-                                                src={`${review?.user?.image}` || imageDefaul} // upload ảnh
-                                                alt=""
+                                                src={handleReturnImage(review)}
+                                                alt="User"
                                                 className="fix-none mr-1 h-10 w-10 rounded-[50%] object-cover"
                                             />
                                             <div className="review-rating">

@@ -25,8 +25,8 @@ const getProducts = async (req, res) => {
         search.category = req.query.category;
     }
     if (rating) {
-        // search.rating = { $gte: rating };
-        search.rating = req.query.rating;
+        search.rating = { $gte: rating };
+        // search.rating = req.query.rating;
     }
 
     const productFilter = {
@@ -154,6 +154,7 @@ const reviewProduct = async (req, res) => {
         user: req.user._id,
     };
     product.reviews.push(review);
+    product.numReviews = product.numReviews + 1;
     product.rating =
         product.reviews.reduce((previousValue, currentReview) => previousValue + currentReview.rating, 0) /
         product.reviews.length;

@@ -1,14 +1,33 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUsers, faMoneyCheckDollar, faChartLine } from '@fortawesome/free-solid-svg-icons';
+
 const TopTotal = (props) => {
     const { dataOrders, countProducts, countUsers } = props;
 
     return (
         <div className="row col-lg-12">
             <div className="col-lg-3">
-                <div className="card card-body boder-dabost mb-4 bg-blue-50 shadow-sm ">
+                <div
+                    style={{
+                        backgroundColor: '#bae6ff',
+                    }}
+                    className="card card-body boder-dabost mb-4 shadow-sm "
+                >
                     <article className="icontext">
                         <div className="d-flex justify-content-between align-items-center">
-                            <span className="icon icon-sm rounded-circle alert-primary">
-                                <i className="text-primary fas fa-usd-circle"></i>
+                            <span
+                                style={{
+                                    backgroundColor: '#ffff',
+                                }}
+                                className="icon icon-sm rounded-circle "
+                            >
+                                <FontAwesomeIcon
+                                    style={{
+                                        color: '#2196f3',
+                                    }}
+                                    className=""
+                                    icon={faChartLine}
+                                />
                             </span>
                             <div>
                                 <h6 className="fs-5 mb-1">Doanh số</h6>
@@ -27,11 +46,16 @@ const TopTotal = (props) => {
                 </div>
             </div>
             <div className="col-lg-3">
-                <div className="card card-body boder-dabost mb-4 bg-green-50 shadow-sm">
+                <div
+                    style={{
+                        backgroundColor: '#a0f3d0',
+                    }}
+                    className="card card-body boder-dabost mb-4 shadow-sm"
+                >
                     <article className="icontext">
                         <div className="d-flex justify-content-between align-items-center">
-                            <span className="icon icon-sm rounded-circle alert-success">
-                                <i className="text-success fas fa-bags-shopping"></i>
+                            <span className="icon icon-sm rounded-circle bg-white">
+                                <FontAwesomeIcon className="text-success" icon={faMoneyCheckDollar} />
                             </span>
                             <h6 className="fs-5 mb-1">Đơn đã thanh toán</h6>
                         </div>
@@ -43,13 +67,17 @@ const TopTotal = (props) => {
                 </div>
             </div>
             <div className="col-lg-3">
-                <div className="card card-body boder-dabost mb-4 bg-yellow-50 shadow-sm">
+                <div
+                    style={{
+                        backgroundColor: '#ffe8c7',
+                    }}
+                    className="card card-body boder-dabost mb-4 shadow-sm"
+                >
                     <article className="icontext">
                         <div className="d-flex justify-content-between align-items-center">
-                            <span className="icon icon-sm rounded-circle alert-warning">
+                            <span className="icon icon-sm rounded-circle bg-white ">
                                 <i className="text-warning fad fa-shopping-cart"></i>
                             </span>
-
                             <h6 className="fs-5 mb-1">Sản phẩm</h6>
                         </div>
                     </article>
@@ -59,11 +87,16 @@ const TopTotal = (props) => {
                 </div>
             </div>
             <div className="col-lg-3">
-                <div className="card card-body boder-dabost mb-4 bg-red-50 shadow-sm">
+                <div
+                    style={{
+                        backgroundColor: '#ffd5d6',
+                    }}
+                    className="card card-body boder-dabost mb-4  shadow-sm"
+                >
                     <article className="icontext">
                         <div className="d-flex justify-content-between align-items-center">
-                            <span className="icon icon-sm rounded-circle alert-danger">
-                                <i className="text-danger fas fa-user-alt"></i>
+                            <span className="icon icon-sm rounded-circle bg-white">
+                                <FontAwesomeIcon className="text-danger" icon={faUsers} />
                             </span>
                             <h6 className="fs-5 mb-1">Tài khoản</h6>
                         </div>

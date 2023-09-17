@@ -1,3 +1,5 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUsers, faMoneyCheckDollar, faChartLine, faDollarSign } from '@fortawesome/free-solid-svg-icons';
 import { handleChangePayMethod } from '~/useHooks/HandleChangeMethod';
 const OrderDetailInfo = (props) => {
     const { order } = props;
@@ -5,8 +7,18 @@ const OrderDetailInfo = (props) => {
         <div className="row order-info-wrap mb-5">
             <div className="col-md-6 col-lg-4">
                 <article className="icontext align-items-start">
-                    <span className="icon icon-sm rounded-circle alert-success">
-                        <i className="text-success fas fa-user"></i>
+                    <span
+                        style={{
+                            backgroundColor: '#fcd6e6',
+                        }}
+                        className="icon icon-sm rounded-circle"
+                    >
+                        <i
+                            style={{
+                                color: '#e85d97',
+                            }}
+                            className="fas fa-user"
+                        ></i>
                     </span>
                     <div className="text">
                         <div className="mb-1">
@@ -20,14 +32,27 @@ const OrderDetailInfo = (props) => {
                             <div>
                                 <b>Số điện thoại: </b> {order?.order.phone}
                             </div>
+                            <div>
+                                <b>Email: </b> {order?.order.email}
+                            </div>
                         </div>
                     </div>
                 </article>
             </div>
             <div className="col-md-6 col-lg-4">
                 <article className="icontext align-items-start">
-                    <span className="icon icon-sm rounded-circle alert-success">
-                        <i className="text-success fas fa-map-marker-alt"></i>
+                    <span
+                        style={{
+                            backgroundColor: '#fcd6e6',
+                        }}
+                        className="icon icon-sm rounded-circle"
+                    >
+                        <i
+                            style={{
+                                color: '#e85d97',
+                            }}
+                            className="fas fa-map-marker-alt"
+                        ></i>
                     </span>
                     <div className="text">
                         <p className="mb-1">
@@ -42,8 +67,19 @@ const OrderDetailInfo = (props) => {
             </div>
             <div className="col-md-6 col-lg-4">
                 <article className="icontext " style={{ display: 'flex', alignItems: 'center' }}>
-                    <span className="icon icon-sm rounded-circle alert-success">
-                        <i className="text-success fab fa-paypal"></i>
+                    <span
+                        style={{
+                            backgroundColor: '#fcd6e6',
+                        }}
+                        className="icon icon-sm rounded-circle"
+                    >
+                        <FontAwesomeIcon
+                            style={{
+                                color: '#e85d97',
+                            }}
+                            className=""
+                            icon={faDollarSign}
+                        />
                     </span>
                     <div className="text">
                         <p className="mb-1">

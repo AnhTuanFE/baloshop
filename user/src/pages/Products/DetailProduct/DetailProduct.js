@@ -127,7 +127,7 @@ function DetailProduct() {
                                         <div className="product-baner">
                                             <img
                                                 className=" w-full max-md:h-[100px] md:h-[200px]"
-                                                src="https://res.cloudinary.com/tlsbaloshop/image/upload/v1685002777/baloshopSlider/ant_index_bottom_banner_big_2_isoowv.jpg"
+                                                src="https://res.cloudinary.com/dt0iazjvh/image/upload/v1694970082/banner-balo-balovietnamdotcom-1605_wjennv.png"
                                                 alt=""
                                             />
                                         </div>

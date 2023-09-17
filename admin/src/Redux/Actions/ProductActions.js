@@ -227,7 +227,6 @@ export const editProduct = (id) => async (dispatch) => {
 // UPDATE PRODUCT
 export const updateProduct = (dataReceived) => async (dispatch, getState) => {
     const { formData, id } = dataReceived;
-    console.log('product gửi cho action', dataReceived);
     try {
         dispatch({ type: PRODUCT_UPDATE_REQUEST });
 
