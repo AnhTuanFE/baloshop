@@ -12,9 +12,6 @@ import paypalRouter from './paypalRouter.js';
 import GHTK_Router from './GHTK_Router.js';
 import paymentRouter from './paymentRoutes.js';
 const routes = (app) => {
-    app.get('/', (req, res) => {
-        res.json('Hello World');
-    });
     app.use('/api/cart', cartRoutes);
     app.use('/api/slider', SliderRouter);
     app.use('/api/news', newsRouter);

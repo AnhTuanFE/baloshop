@@ -40,7 +40,11 @@ app.use((req, res, next) => {
     next();
 });
 app.get('/', (req, res) => {
-    res.json('Hello World');
+    try {
+        res.json('Hello World');
+    } catch (error) {
+        console.log('error', error);
+    }
 });
 
 //handle route for api v1.0
