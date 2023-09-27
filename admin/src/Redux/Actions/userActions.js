@@ -95,7 +95,6 @@ export const listUser = () => async (dispatch, getState) => {
 // ALL USER
 export const disabledUser = (dataReceived) => async (dispatch, getState) => {
     const { id, disabled } = dataReceived;
-    console.log('dataReceived = ', dataReceived);
     try {
         dispatch({ type: USER_DISABLED_REQUEST });
 

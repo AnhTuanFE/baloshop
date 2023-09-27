@@ -80,13 +80,13 @@ productRoute.put(
             throw new Error('Price or Count in stock is not valid, please correct it and try again');
         }
         if (product) {
-            cloudinary.uploader.destroy(nameImage, function (error, result) {
-                try {
-                    console.log('result = ', result, 'error = ', error);
-                } catch (err) {
-                    console.log('lỗi = '.err);
-                }
-            });
+            // cloudinary.uploader.destroy(nameImage, function (error, result) {
+            //     try {
+            //         console.log('result = ', result, 'error = ', error);
+            //     } catch (err) {
+            //         console.log('lỗi = '.err);
+            //     }
+            // });
             // ===================
             cloudinary.v2.uploader.upload(imagePath, { folder: 'baloshopImage' }, async function (err, result) {
                 if (err) {

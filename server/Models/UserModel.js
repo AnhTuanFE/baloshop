@@ -56,11 +56,7 @@ const userSchema = mongoose.Schema(
 );
 
 userSchema.methods.matchPassword = async function (enterPassword) {
-    console.log('enterPassword = ', enterPassword);
-    console.log('this so sánh = ', this);
-    console.log('this.password so sánh = ', this.password);
     const sosanhpass = await bcrypt.compare(enterPassword, this.password);
-    console.log('sosanhpass = ', sosanhpass);
     return sosanhpass;
 };
 

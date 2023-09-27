@@ -20,7 +20,6 @@ const UsersScreen = () => {
 
     const userList = useSelector((state) => state.userList);
     const { loading, error, users } = userList;
-    console.log('userList = ', userList);
     const userdisabled = useSelector((state) => state.userdisabled);
     const { userNoti, error: errorDisabled } = userdisabled;
     useEffect(() => {
