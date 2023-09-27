@@ -11,7 +11,11 @@ import createUserRouter from './createUserRouter.js';
 import paypalRouter from './paypalRouter.js';
 import GHTK_Router from './GHTK_Router.js';
 import paymentRouter from './paymentRoutes.js';
+import { errorHandler, notFound } from '../middleware/Errors.js';
 const routes = (app) => {
+    app.use('/', () => {
+        return null;
+    });
     app.use('/api/cart', cartRoutes);
     app.use('/api/slider', SliderRouter);
     app.use('/api/news', newsRouter);
@@ -29,5 +33,8 @@ const routes = (app) => {
     app.use('/api/forgotPass', forgotPassRouter);
     app.use('/api/verifiedEmail', createUserRouter);
     app.use('/api/paypal', paypalRouter);
+    // ERROR HANDLER
+    app.use(notFound);
+    app.use(errorHandler);
 };
 export default routes;
