@@ -1,13 +1,13 @@
-import mongoose from 'mongoose';
+// import mongoose from 'mongoose';
+// import Payment from '../Models/PaymentModel.js';
 import Order from '../Models/OrderModel.js';
-import Payment from '../Models/PaymentModel.js';
 import momoService from '../utils/momoService.js';
 import crypto from 'crypto';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 import { PAYMENT_FAILED, PAYMENT_SUCCESS } from '../config/paymentMethodConfig.js';
 // import paypal from 'paypal-rest-sdk';
-const { PAYPAL_CLIENT_ID, PAYPAL_APP_SECRET } = process.env;
+// const { PAYPAL_CLIENT_ID, PAYPAL_APP_SECRET } = process.env;
 
 const paymentOrder = async (req, res) => {
     let hostName = req.get('host');
