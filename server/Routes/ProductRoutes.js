@@ -36,7 +36,7 @@ productRoute.get('/ProductCommentAll', asyncHandler(productController.getAllProd
 // productRoute.get('/:id/onlyProduct/allComments', asyncHandler(productController.getProductComment));
 
 // GET ALL REVIEW ONLY ONE PRODUCT
-productRoute.get('/:id/onlyProduct/allReview', asyncHandler(productController.getAllReview));
+// productRoute.get('/:id/onlyProduct/allReview', asyncHandler(productController.getAllReview));
 
 // ADMIN GET ALL PRODUCT WITHOUT SEARCH AND PEGINATION
 productRoute.get('/admin', protect, admin, asyncHandler(productController.getProductsByAdmin));
@@ -65,62 +65,63 @@ productRoute.post('/', protect, admin, upload.single('image'), asyncHandler(prod
 productRoute.post('/:id', protect, admin, asyncHandler(productController.addProductOption));
 
 // UPDATE PRODUCT
-productRoute.put(
-    '/:id',
-    protect,
-    admin,
-    upload.single('image'),
-    asyncHandler(async (req, res) => {
-        const { id, name, price, description, category, nameImage } = req?.body;
-        const imagePath = req?.file?.path;
+// productRoute.put(
+//     '/:id',
+//     protect,
+//     admin,
+//     upload.single('image'),
+//     asyncHandler(async (req, res) => {
+//         const { id, name, price, description, category, nameImage } = req?.body;
+//         const imagePath = req?.file?.path;
 
-        const product = await Product.findById(id);
+//         const product = await Product.findById(id);
 
-        if (price <= 0) {
-            res.status(400);
-            throw new Error('Price or Count in stock is not valid, please correct it and try again');
-        }
-        if (product) {
-            // cloudinary.uploader.destroy(nameImage, function (error, result) {
-            //     try {
-            //         console.log('result = ', result, 'error = ', error);
-            //     } catch (err) {
-            //         console.log('lỗi = '.err);
-            //     }
-            // });
-            // ===================
-            cloudinary.v2.uploader.upload(imagePath, { folder: 'baloshopImage' }, async function (err, result) {
-                if (err) {
-                    req.json(err.message);
-                }
-                const urlImageCloudinary = result.secure_url;
-                const nameImageCloudinary = result.public_id; //name image trong cloudinary
-                // ======================
-                const filter = { _id: id };
-                const update = {
-                    $set: {
-                        name: name,
-                        price: price,
-                        description: description,
-                        category: category,
-                        image: [
-                            {
-                                urlImage: urlImageCloudinary,
-                                nameCloudinary: nameImageCloudinary,
-                            },
-                        ],
-                    },
-                };
-                const updataStatus = await Product.updateOne(filter, update);
-                // ======================
-                res.json(updataStatus);
-            });
-        } else {
-            res.status(404);
-            throw new Error('Product not found');
-        }
-    }),
-);
+//         if (price <= 0) {
+//             res.status(400);
+//             throw new Error('Price or Count in stock is not valid, please correct it and try again');
+//         }
+//         if (product) {
+//             // cloudinary.uploader.destroy(nameImage, function (error, result) {
+//             //     try {
+//             //         console.log('result = ', result, 'error = ', error);
+//             //     } catch (err) {
+//             //         console.log('lỗi = '.err);
+//             //     }
+//             // });
+//             // ===================
+//             cloudinary.v2.uploader.upload(imagePath, { folder: 'baloshopImage' }, async function (err, result) {
+//                 if (err) {
+//                     req.json(err.message);
+//                 }
+//                 const urlImageCloudinary = result.secure_url;
+//                 const nameImageCloudinary = result.public_id; //name image trong cloudinary
+//                 // ======================
+//                 const filter = { _id: id };
+//                 const update = {
+//                     $set: {
+//                         name: name,
+//                         price: price,
+//                         description: description,
+//                         category: category,
+//                         image: [
+//                             {
+//                                 urlImage: urlImageCloudinary,
+//                                 nameCloudinary: nameImageCloudinary,
+//                             },
+//                         ],
+//                     },
+//                 };
+//                 const updataStatus = await Product.updateOne(filter, update);
+//                 // ======================
+//                 res.json(updataStatus);
+//             });
+//         } else {
+//             res.status(404);
+//             throw new Error('Product not found');
+//         }
+//     }),
+// );
+productRoute.put('/:id', protect, admin, upload.single('image'), asyncHandler(productController.updateProduct));
 
 // UPDATE OPTION COLOR AND AMOUNT PRODUCT
 productRoute.put('/:id/option', protect, admin, asyncHandler(productController.updateProductOption));

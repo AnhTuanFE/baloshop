@@ -306,7 +306,7 @@ const updateProduct = async (req, res) => {
     const imagePath = req?.file?.path;
 
     const product = await Product.findById(id);
-    console.log('req?.body = ', req?.body);
+    // console.log('req?.body = ', req?.body);
     if (price <= 0) {
         res.status(400);
         throw new Error('Price or Count in stock is not valid, please correct it and try again');
