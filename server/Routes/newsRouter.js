@@ -1,6 +1,6 @@
 import express from 'express';
 import asyncHandler from 'express-async-handler';
-import { admin, protect } from '../middleware/AuthMiddleware.js';
+import { admin, protect } from '../Middleware/AuthMiddleware.js';
 import newsController from '../controllers/newsController.js';
 const newsRouter = express.Router();
 //GET ALL NEWS

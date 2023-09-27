@@ -1,6 +1,6 @@
-import Product from '../models/ProductModel.js';
-import Order from '../models/OrderModel.js';
-import Cart from '../models/CartModel.js';
+import Product from '../Models/ProductModel.js';
+import Order from '../Models/OrderModel.js';
+import Cart from '../Models/CartModel.js';
 import cloudinary from 'cloudinary';
 import { v4 as uuidv4 } from 'uuid';
 import { validateConstants, productQueryParams, priceRangeFilter } from '../utils/searchConstants.js';

@@ -1,4 +1,4 @@
-import news from '../models/NewsModel.js';
+import news from '../Models/NewsModel.js';
 
 const getListNews = async (req, res) => {
     const News = await news.find({}).sort({ _id: -1 });

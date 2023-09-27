@@ -1,4 +1,4 @@
-import slider from '../models/SliderModel.js';
+import slider from '../Models/SliderModel.js';
 
 const getSlider = async (req, res) => {
     const Slider = await slider.find({}).sort({ _id: -1 });

@@ -1,10 +1,10 @@
 import express from 'express';
 import asyncHandler from 'express-async-handler';
-import { admin, protect } from '../middleware/AuthMiddleware.js';
+import { admin, protect } from '../Middleware/AuthMiddleware.js';
 import path from 'path';
 import multer from 'multer';
 // import fs from 'fs';
-// import Product from '../models/ProductModel.js';
+// import Product from '../Models/ProductModel.js';
 import productController from '../controllers/productController.js';
 
 const __dirname = path.resolve();

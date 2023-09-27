@@ -1,6 +1,6 @@
-import Cart from '../models/CartModel.js';
-import { admin, protect } from '../middleware/AuthMiddleware.js';
-import Product from '../models/ProductModel.js';
+import Cart from '../Models/CartModel.js';
+import { admin, protect } from '../Middleware/AuthMiddleware.js';
+import Product from '../Models/ProductModel.js';
 
 const getCartById = async (req, res) => {
     const cart = await Cart.findOne({ user: req.params.id }).populate('cartItems.product');

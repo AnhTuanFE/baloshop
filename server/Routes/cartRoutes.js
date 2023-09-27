@@ -1,5 +1,5 @@
 import express from 'express';
-import { admin, protect } from '../middleware/AuthMiddleware.js';
+import { admin, protect } from '../Middleware/AuthMiddleware.js';
 import asyncHandler from 'express-async-handler';
 import cartController from '../controllers/cartController.js';
 

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import Order from '../models/OrderModel.js';
-import Payment from '../models/PaymentModel.js';
+import Order from '../Models/OrderModel.js';
+import Payment from '../Models/PaymentModel.js';
 import momoService from '../utils/momoService.js';
 import crypto from 'crypto';
 import { v4 as uuidv4 } from 'uuid';

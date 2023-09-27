@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
-import Order from '../models/OrderModel.js';
-import Product from '../models/ProductModel.js';
-import Payment from '../models/PaymentModel.js';
-import Cart from '../models/CartModel.js';
+import Order from '../Models/OrderModel.js';
+import Product from '../Models/ProductModel.js';
+import Payment from '../Models/PaymentModel.js';
+import Cart from '../Models/CartModel.js';
 import momoService from '../utils/momoService.js';
 import axios from 'axios';
 import {

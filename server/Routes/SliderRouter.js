@@ -1,6 +1,6 @@
 import express from 'express';
 import asyncHandler from 'express-async-handler';
-import { admin, protect } from '../middleware/AuthMiddleware.js';
+import { admin, protect } from '../Middleware/AuthMiddleware.js';
 import sliderController from '../controllers/sliderController.js';
 
 const SliderRouter = express.Router();

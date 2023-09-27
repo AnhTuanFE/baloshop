@@ -1,6 +1,6 @@
 import generateToken from '../utils/generateToken.js';
 import cloudinary from 'cloudinary';
-import User from '../models/UserModel.js';
+import User from '../Models/UserModel.js';
 
 const userLogin = async (req, res) => {
     const { email, password } = req.body;

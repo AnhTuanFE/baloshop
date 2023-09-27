@@ -1,5 +1,5 @@
-import Category from '../models/CategoryModel.js';
-import Product from '../models/ProductModel.js';
+import Category from '../Models/CategoryModel.js';
+import Product from '../Models/ProductModel.js';
 
 const getListCategory = async (req, res) => {
     const categories = await Category.find({}).sort({ _id: -1 });

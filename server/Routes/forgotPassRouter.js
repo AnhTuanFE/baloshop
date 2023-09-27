@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 // import UserInFor from '../Models/userDetails.js';
-import User from '../models/UserModel.js';
+import User from '../Models/UserModel.js';
 
 const forgotPassRouter = express.Router();
 
