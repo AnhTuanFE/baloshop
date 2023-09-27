@@ -38,7 +38,7 @@
         "nodemon": "^2.0.20",
         "paypal-rest-sdk": "^1.8.1",
         "slug": "^8.2.2",
-        "uuid": "^9.0.0",
+        "uuid": "^9.0.1",
         "yamljs": "^0.3.0"
     },
     "devDependencies": {
