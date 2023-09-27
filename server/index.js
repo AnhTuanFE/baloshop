@@ -40,8 +40,8 @@ app.use((req, res, next) => {
     next();
 });
 // // ERROR HANDLER
-app.use(notFound);
-app.use(errorHandler);
+// app.use(notFound);
+// app.use(errorHandler);
 //handle route for api v1.0
 routes(app);
 
