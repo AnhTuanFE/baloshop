@@ -60,8 +60,8 @@ routes(app);
 // app.use('/api/paypal', paypalRouter);
 
 // // ERROR HANDLER
-// app.use(notFound);
-// app.use(errorHandler);
+app.use(notFound);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 1000;
 
