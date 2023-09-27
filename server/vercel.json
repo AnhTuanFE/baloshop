@@ -11,9 +11,5 @@
             "src": "/(.*)",
             "dest": "/"
         }
-    ],
-    "github": {
-        "auto_alias": true,
-        "silent": true
-    }
+    ]
 }
