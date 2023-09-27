@@ -1,7 +1,6 @@
 import express from 'express';
 import asyncHandler from 'express-async-handler';
-// import { admin, protect } from '../middleware/AuthMiddleware.js';
-import { admin, protect } from '../middleware/authMiddleware.js';
+import { admin, protect } from '../middleware/AuthMiddleware.js';
 import Product from '../models/ProductModel.js';
 import Order from '../models/OrderModel.js';
 import Payment from '../models/PaymentModel.js';
