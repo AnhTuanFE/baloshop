@@ -14,7 +14,7 @@ import paymentRouter from './paymentRoutes.js';
 import { errorHandler, notFound } from '../middleware/Errors.js';
 const routes = (app) => {
     app.use('/', () => {
-        return null;
+        return {};
     });
     app.use('/api/cart', cartRoutes);
     app.use('/api/slider', SliderRouter);

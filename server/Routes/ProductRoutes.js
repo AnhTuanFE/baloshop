@@ -5,6 +5,7 @@ import { admin, protect } from '../middleware/AuthMiddleware.js';
 import fs from 'fs';
 import path from 'path';
 import multer from 'multer';
+import Product from '../models/ProductModel.js';
 import productController from '../controllers/productController.js';
 
 const __dirname = path.resolve();
@@ -28,11 +29,11 @@ const productRoute = express.Router();
 productRoute.get('/', asyncHandler(productController.getProducts));
 
 // GET ALL PRODUCT
-productRoute.get('/ProductAll', asyncHandler(productController.getAllProduct));
+// productRoute.get('/ProductAll', asyncHandler(productController.getAllProduct));
 //GET ALL COMMENT
 productRoute.get('/ProductCommentAll', asyncHandler(productController.getAllProductComment));
 // GET ALL COMMENTS ONLY ONE PRODUCT
-productRoute.get('/:id/onlyProduct/allComments', asyncHandler(productController.getProductComment));
+// productRoute.get('/:id/onlyProduct/allComments', asyncHandler(productController.getProductComment));
 
 // GET ALL REVIEW ONLY ONE PRODUCT
 productRoute.get('/:id/onlyProduct/allReview', asyncHandler(productController.getAllReview));
