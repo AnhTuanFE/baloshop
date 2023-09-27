@@ -20,11 +20,13 @@ const UsersScreen = () => {
 
     const userList = useSelector((state) => state.userList);
     const { loading, error, users } = userList;
+    console.log('userList = ', userList);
     const userdisabled = useSelector((state) => state.userdisabled);
     const { userNoti, error: errorDisabled } = userdisabled;
     useEffect(() => {
         dispatch(listUser());
     }, [dispatch]);
+
     useEffect(() => {
         if (userNoti?.disabled) {
             toast.success('Bạn đã khóa tài khoản thành công', ToastObjects);
@@ -48,12 +50,12 @@ const UsersScreen = () => {
 
     const onDisabled = (id, disabled) => {
         if (window.confirm('Bạn có muốn khóa tài khoản này không')) {
-            dispatch(disabledUser(id, disabled));
+            dispatch(disabledUser({ id: id, disabled: disabled }));
         }
     };
     const offDisabled = (id, disabled) => {
         if (window.confirm('Bạn có muốn mở khóa tài khoản này không')) {
-            dispatch(disabledUser(id, disabled));
+            dispatch(disabledUser({ id: id, disabled: disabled }));
         }
     };
     return (

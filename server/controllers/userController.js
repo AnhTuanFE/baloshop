@@ -289,25 +289,33 @@ const getAllUser = async (req, res) => {
 
 const disableUser = async (req, res) => {
     const { disabled } = req.body;
-    // const user = await User.findById(req.params.id);
-    // console.log('req.user = ', req?.user._id);
-    const user = req?.user;
-    if (user.isAdmin) {
+    const { id } = req.params;
+    const userClient = await User.findById(id);
+    const userAdmin = req?.user;
+
+    if (userClient.isAdmin) {
         res.status(400);
-        throw new Error('error');
+        throw new Error('Không thể khóa tài khoản admin !!!');
     }
-    if (disabled == user.disabled) {
+    // if (userClient.disabled === true) {
+    //     res.status(400).json({ message: 'Tài khoản đã bị khóa trước đó' });
+    // }
+    // userClient.disabled = disabled;
+    // const retult = await userClient.save();
+    // res.status(200).json(retult);
+
+    if (disabled == userClient.disabled) {
         if (disabled == true) {
             res.status(400);
-            throw new Error(disabled);
+            throw new Error('Tài khoản đã bị khóa trước đó');
         } else {
             res.status(400);
-            throw new Error(disabled);
+            throw new Error('Tài khoản chưa bị khóa hoặc đã mở trước đó');
         }
     }
-    if (user) {
-        user.disabled = disabled;
-        const retult = await user.save();
+    if (userClient) {
+        userClient.disabled = disabled;
+        const retult = await userClient.save();
         res.status(201).json(retult);
     }
 };
