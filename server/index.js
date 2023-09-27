@@ -1,6 +1,5 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import { errorHandler, notFound } from './middleware/Errors.js';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import connectDatabase from './config/mongoDb.js';
@@ -39,20 +38,9 @@ app.use((req, res, next) => {
 
     next();
 });
-app.get('/', (req, res) => {
-    try {
-        res.json('Hello World');
-    } catch (error) {
-        console.log('error', error);
-    }
-});
 
 //handle route for api v1.0
 routes(app);
-
-// ERROR HANDLER
-app.use(notFound);
-app.use(errorHandler);
 
 const PORT = process.env.PORT || 1000;
 
