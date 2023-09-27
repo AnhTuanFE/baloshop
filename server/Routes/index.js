@@ -13,6 +13,9 @@ import GHTK_Router from './GHTK_Router.js';
 import paymentRouter from './paymentRoutes.js';
 import { errorHandler, notFound } from '../middleware/Errors.js';
 const routes = (app) => {
+    app.get('/', (req, res) => {
+        res.json('Hello World');
+    });
     app.use('/api/cart', cartRoutes);
     app.use('/api/slider', SliderRouter);
     app.use('/api/news', newsRouter);
