@@ -11,7 +11,7 @@ import createUserRouter from './createUserRouter.js';
 import paypalRouter from './paypalRouter.js';
 import GHTK_Router from './GHTK_Router.js';
 import paymentRouter from './paymentRoutes.js';
-import { notFound, errorHandler } from '../middleware/Errors.js';
+import { notFound, errorHandler } from '../Middleware/Errors.js';
 
 const routes = (app) => {
     app.get('/', (req, res) => {
