@@ -30,8 +30,5 @@ const routes = (app) => {
     app.use('/api/forgotPass', forgotPassRouter);
     app.use('/api/verifiedEmail', createUserRouter);
     app.use('/api/paypal', paypalRouter);
-    // ERROR HANDLER
-    app.use(notFound);
-    app.use(errorHandler);
 };
 export default routes;
