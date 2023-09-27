@@ -6,7 +6,7 @@ import connectDatabase from './config/MongoDb.js';
 import cloudinaryConfig from './config/CloudinaryConfig.js';
 // import paypalConfig from './config/paypalConfig.js';
 import cors from 'cors';
-import routes from './routes/index.js';
+import routes from './Routes/index.js';
 dotenv.config();
 
 connectDatabase();
