@@ -39,6 +39,21 @@ app.use((req, res, next) => {
 
     next();
 });
+// Định tuyến cho các API chưa được định nghĩa
+app.use((req, res, next) => {
+    const error = new Error('API not found');
+    error.status = 404;
+    next(error);
+});
+
+// Xử lý lỗi và phản hồi
+app.use((error, req, res, next) => {
+    res.status(error.status || 500).json({
+        error: {
+            message: error.message || 'Internal Server Error',
+        },
+    });
+});
 // // ERROR HANDLER
 // app.use(notFound);
 // app.use(errorHandler);
