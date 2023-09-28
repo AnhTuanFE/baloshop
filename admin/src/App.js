@@ -3,7 +3,7 @@ import axios from 'axios';
 import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { privateRoutes, publicRoutes } from './Routes';
-import DefaulLayout from './layouts/DefaulLayout/DefaulLayout';
+import DefaulLayout from './layouts/DefaulLayout';
 import RouteConfirmation from './Routes/RouteConfirmation';
 
 import './App.css';
