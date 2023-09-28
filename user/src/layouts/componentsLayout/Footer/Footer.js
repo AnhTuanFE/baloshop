@@ -1,6 +1,5 @@
 import { memo } from 'react';
-import { faPhone, faLocationDot, faEnvelope, faMailBulk, faMailForward } from '@fortawesome/free-solid-svg-icons';
-import { faFacebook, faInstagramSquare } from '@fortawesome/free-brands-svg-icons';
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const arrayInfo = [

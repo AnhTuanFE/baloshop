@@ -1,6 +1,6 @@
-import { memo } from 'react';
-import Header from '../componentsLayout/Header';
+// import { memo } from 'react';
 import Footer from '../componentsLayout/Footer';
+import Header from '../componentsLayout/Header';
 function DefaulLayout({ children }) {
     return (
         <div className="Wrapper bg-[var(--content-color)]">
@@ -10,4 +10,5 @@ function DefaulLayout({ children }) {
         </div>
     );
 }
-export default memo(DefaulLayout);
+// export default memo(DefaulLayout);
+export default DefaulLayout;
