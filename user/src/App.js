@@ -2,7 +2,8 @@ import axios from 'axios';
 import { Fragment } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { publicRoutes, privateRoutes } from './Routes';
-import DefaulLayout from '~/layouts/DefaulLayout';
+// import DefaulLayout from '~/layouts/DefaulLayout';
+import DefaultLayout from './layouts/defaultLayoutNew/DefaultLayout';
 import RouteConfirmation from './Routes/RouteConfirmation';
 import './App.css';
 
@@ -15,7 +16,7 @@ function App() {
                 <div className="App">
                     <Routes>
                         {publicRoutes.map((route, index) => {
-                            let Layout = DefaulLayout;
+                            let Layout = DefaultLayout;
                             if (route.layout) {
                                 Layout = route.layout;
                             } else if (route.layout === null) {
@@ -36,7 +37,7 @@ function App() {
                         })}
 
                         {privateRoutes.map((route, index) => {
-                            let Layout = DefaulLayout;
+                            let Layout = DefaultLayout;
                             if (route.layout) {
                                 Layout = route.layout;
                             } else if (route.layout === null) {
