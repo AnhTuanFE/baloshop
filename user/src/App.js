@@ -2,7 +2,8 @@ import axios from 'axios';
 import { Fragment } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { publicRoutes, privateRoutes } from './Routes';
-import DefaulLayout from './layouts/DefaulLayout';
+// import DefaulLayout from './layouts/DefaulLayout';
+import DefaulLayout from '~/layouts/DefaulLayout';
 import RouteConfirmation from './Routes/RouteConfirmation';
 import './App.css';
 
