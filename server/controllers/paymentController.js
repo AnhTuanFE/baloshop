@@ -1,4 +1,5 @@
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
+import { nanoid } from 'nanoid';
 import Order from '../Models/OrderModel.js';
 import momoService from '../utils/momoService.js';
 import crypto from 'crypto';
@@ -24,7 +25,7 @@ const paymentOrder = async (req, res) => {
     const redirectUrl = process.env.CLIENT_URL + '/product/' + order._id;
     // const ipnUrl = process.env.API_URL + '/api/payment/notification';
     const ipnUrl = hostName + '/api/payment/notification-from-momo';
-    const requestId = uuidv4();
+    const requestId = nanoid(36);
     const orderInfo = 'Thanh toán đơn hàng tại Balo Shop';
     const lang = 'vi';
     const extraData = '';

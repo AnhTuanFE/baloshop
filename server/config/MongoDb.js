@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-
 mongoose.set('strictQuery', false);
 const connectDatabase = async () => {
     try {
@@ -7,7 +6,6 @@ const connectDatabase = async () => {
             useUnifiedTopology: true,
             useNewUrlParser: true,
         });
-
         console.log(`MongoDB Connected`);
     } catch (error) {
         console.error(`Error: ${error.message}`);

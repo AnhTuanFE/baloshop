@@ -1,5 +1,6 @@
+// import { v4 as uuidv4 } from 'uuid';
+import { nanoid } from 'nanoid';
 import mongoose from 'mongoose';
-import { v4 as uuidv4 } from 'uuid';
 import Order from '../Models/OrderModel.js';
 import Product from '../Models/ProductModel.js';
 import Payment from '../Models/PaymentModel.js';
@@ -175,7 +176,7 @@ const createOrder = async (req, res, next) => {
                 const amount = Number(orderInfo.totalPrice);
                 const redirectUrl = `${process.env.CLIENT_URL}/order/${orderInfo._id}`;
                 const ipnUrl = `${hostName}/api/payments/notification-from-momo`;
-                const requestId = uuidv4();
+                const requestId = nanoid(36);
                 const orderInformation = 'Thanh toán đơn hàng tại Balo Shop';
                 const lang = 'vi';
                 const extraData = '';
@@ -896,8 +897,8 @@ const cancelOrder = async (req, res, next) => {
                     order.paymentMethod == PAY_WITH_CREDIT_CARD)
             ) {
                 const lang = 'vi';
-                const requestId = uuidv4();
-                const orderId = uuidv4();
+                const requestId = nanoid(36);
+                const orderId = nanoid(36);
                 const { amount, transId } = order.payment.momoPaymentTransaction;
                 const requestBody = momoService.buildRefundRequest(
                     orderId,
