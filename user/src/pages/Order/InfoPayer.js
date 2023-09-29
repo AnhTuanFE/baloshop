@@ -5,8 +5,8 @@ import { handleChangePayMethod } from '~/hooks/HandleChangeMethod';
 
 function InfoPayer({ order }) {
     return (
-        <div className="mb-4 rounded bg-white px-5 py-1 shadow-custom-shadow">
-            <div className="row col-lg-12 my-3 rounded-md pt-3">
+        <div className="mb-4 rounded bg-white py-1 shadow-custom-shadow max-sm:px-2 sm:px-5">
+            <div className="row col-lg-12 rounded-md pt-3 max-sm:my-1 sm:my-3">
                 <div className="col-lg-3 flex px-2">
                     <div className="mr-2 px-2">
                         <AccountCircleSharpIcon className="text-[var(--main-color)]" fontSize="large" />

@@ -1,4 +1,4 @@
-import { useEffect, useState, useLayoutEffect } from 'react';
+import { useEffect, useState, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, redirect, Navigate } from 'react-router-dom';
 import { message, Select } from 'antd';
@@ -125,9 +125,9 @@ function PlaceOrder() {
     function findCartCountInStock(item) {
         const findCart = item?.product?.optionColor?.find((option) => option.color === item.color);
         return (
-            <div className="col-lg-12 row py-2">
+            <div className="col-lg-12 col-md-12 sm:row py-2 max-sm:flex max-sm:flex-grow">
                 {findCart?.countInStock < item?.qty ? (
-                    <div className="col-lg-2">
+                    <div className="col-lg-2 col-md-2">
                         <span className="text-xs text-red-600">
                             Sản phẩm không đủ đáp ứng bạn cần điều chỉnh lại số lượng
                         </span>
@@ -135,30 +135,24 @@ function PlaceOrder() {
                 ) : (
                     <div className="col-lg-1"></div>
                 )}
-                {findCart?.countInStock < item?.qty ? (
-                    <div className="col-lg-3">
-                        <img className="h-[100px]" src={`${item.product?.image[0]}`} alt={item.name} />
-                    </div>
-                ) : (
-                    <div className="col-lg-2">
-                        <img className="h-[100px]" src={`${item.product?.image[0]}`} alt={item.name} />
-                    </div>
-                )}
-                <div className="col-lg-2 flex items-center">
+                <div className="col-lg-2 col-md-2">
+                    <img className="h-[100px]" src={`${item.product?.image[0]}`} alt={item.name} />
+                </div>
+                <div className="col-lg-2 col-md-2 flex items-center">
                     <Link to={`/products/${item.product}`}>
                         <h6>{item.product.name}</h6>
                     </Link>
                 </div>
-                <div className="col-lg-2 mt-3 flex flex-col items-center justify-center ">
-                    <h4 className="text-lg font-semibold">Màu sắc</h4>
+                <div className="col-lg-2 col-md-2 mt-3 flex flex-col items-center justify-center">
+                    <h4 className="text-lg font-bold">Màu sắc</h4>
                     <h6>{item?.color}</h6>
                 </div>
-                <div className="col-lg-2 mt-3 flex flex-col items-center justify-center ">
-                    <h4 className="text-base font-semibold">Số lượng</h4>
+                <div className="col-lg-2 col-md-2 mt-3 flex flex-col items-center justify-center">
+                    <h4 className="text-base font-bold">Số lượng</h4>
                     <h6>{item?.qty}</h6>
                 </div>
-                <div className="col-lg-2 mt-3 flex flex-col items-end justify-center ">
-                    <h4 className="text-base font-semibold">Giá</h4>
+                <div className="col-lg-2 col-md-2 mt-3 flex flex-col items-end justify-center">
+                    <h4 className="text-base font-bold">Giá</h4>
                     <h6>{(item?.qty * item?.product?.price)?.toLocaleString('de-DE')}đ</h6>
                 </div>
             </div>
@@ -211,7 +205,7 @@ function PlaceOrder() {
             {loading && <LoadingLarge content={'Đang tạo đơn hàng'} />}
             {contextHolder}
             <div className="mx-auto my-auto max-w-screen-2xl">
-                <div className="mx-10 pb-20 ">
+                <div className=" pb-20 max-sm:mx-4 sm:mx-10 ">
                     <div className="m-auto  ">
                         <ModalDaiSyUI
                             Title="Mua hàng"
@@ -219,9 +213,9 @@ function PlaceOrder() {
                             HandleSubmit={placeOrderHandler}
                         ></ModalDaiSyUI>
 
-                        <div className=" row mb-2 rounded bg-white px-4 shadow-custom-shadow">
+                        <div className=" row mb-2 rounded bg-white shadow-custom-shadow max-sm:px-0 sm:px-4">
                             <div className="row col-lg-12 my-3 rounded-md pt-3">
-                                <div className="col-lg-3 flex px-2">
+                                <div className="col-lg-3 col-sm-3 flex px-2">
                                     <div className="mr-2 px-2">
                                         <AccountCircleSharpIcon className="text-[var(--main-color)]" fontSize="large" />
                                     </div>
@@ -292,7 +286,7 @@ function PlaceOrder() {
                                 {cart.cartItems
                                     .filter((item) => item.isBuy == true)
                                     .map((item, index) => (
-                                        <div className="row rounded bg-white" key={index}>
+                                        <div className="row bg-white" key={index}>
                                             {findCartCountInStock(item)}
                                         </div>
                                     ))}

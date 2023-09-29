@@ -153,7 +153,7 @@ function Order() {
     return (
         <>
             <div className="mx-auto my-auto max-w-screen-2xl">
-                <div className="mx-10 pb-10">
+                <div className="pb-10 max-sm:mx-2 sm:mx-10">
                     {contextHolder}
                     {loading ? (
                         <Loading />
@@ -163,15 +163,15 @@ function Order() {
                         <>
                             <InfoPayer order={order?.order} />
                             <Steppers order={order?.order} />
-                            <div className="flex justify-around rounded bg-white px-4 pb-10 pt-3">
-                                <div className="mr-5 flex-[3]">
+                            <div className="row col-lg-12 rounded bg-white pb-10 pt-3 max-sm:px-1 sm:px-4">
+                                <div className="col-lg-8">
                                     {order?.order.orderItems?.length === 0 ? (
                                         <Message variant="alert-info mt-5">Đơn đặt hàng của bạn trống</Message>
                                     ) : (
                                         <>
                                             {order?.order.orderItems?.map((item, index) => (
                                                 <div
-                                                    className="mb-2 flex justify-around rounded px-4"
+                                                    className="mb-2 flex justify-around rounded max-sm:px-1 sm:px-4"
                                                     style={{
                                                         border: '1px solid #dad8d8',
                                                     }}
@@ -186,7 +186,7 @@ function Order() {
                                                         </Link>
                                                     </div>
                                                     <div className="m-auto text-center">
-                                                        <h4 className="text-base font-semibold">Phân loại hàng</h4>
+                                                        <h4 className="text-base font-semibold">Màu sắc</h4>
                                                         <h6>{item?.color}</h6>
                                                     </div>
                                                     <div className="m-auto text-center">
@@ -219,7 +219,7 @@ function Order() {
                                         </>
                                     )}
                                 </div>
-                                <div className=" flex-[1] items-center">
+                                <div className="col-lg-4 items-center">
                                     <table className="table-bordered table">
                                         <tbody>
                                             <tr>
