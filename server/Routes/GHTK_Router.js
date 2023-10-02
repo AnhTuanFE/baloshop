@@ -48,7 +48,7 @@ GHTK_Router.post(
                 weight,
                 value,
             } = req?.body;
-            const url = `${apiBase}/services/shipment/fee`;
+            const url = `https://services.giaohangtietkiem.vn/services/shipment/fee`;
             const config = {
                 headers: {
                     'Content-Type': 'application/json',

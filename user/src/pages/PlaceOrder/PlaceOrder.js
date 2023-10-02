@@ -82,6 +82,7 @@ function PlaceOrder() {
     );
     cart.shippingPrice = addDecimals(cart.itemsPrice > 0 ? fee_VC : 30000);
     cart.totalPrice = (Number(cart.itemsPrice) + Number(cart.shippingPrice)).toFixed(0);
+
     useEffect(() => {
         if (error) {
             errorPlaceholder('Đặt hàng thất bại, vui lòng thử lại sau');
@@ -125,33 +126,33 @@ function PlaceOrder() {
     function findCartCountInStock(item) {
         const findCart = item?.product?.optionColor?.find((option) => option.color === item.color);
         return (
-            <div className="col-lg-12 col-md-12 sm:row py-2 max-sm:flex max-sm:flex-grow">
+            <div className="col-lg-12 col-md-12 col-sm-12 row py-2 max-sm:flex max-sm:flex-grow">
                 {findCart?.countInStock < item?.qty ? (
-                    <div className="col-lg-2 col-md-2">
+                    <div className="col-lg-2 col-md-2 col-sm-2">
                         <span className="text-xs text-red-600">
                             Sản phẩm không đủ đáp ứng bạn cần điều chỉnh lại số lượng
                         </span>
                     </div>
                 ) : (
-                    <div className="col-lg-1"></div>
+                    <div className="col-lg-1 col-md-1 col-sm-1"></div>
                 )}
-                <div className="col-lg-2 col-md-2">
+                <div className="col-lg-2 col-md-2 col-sm-2">
                     <img className="h-[100px]" src={`${item.product?.image[0]}`} alt={item.name} />
                 </div>
-                <div className="col-lg-2 col-md-2 flex items-center">
+                <div className="col-lg-2 col-md-2 col-sm-2 flex items-center">
                     <Link to={`/products/${item.product}`}>
                         <h6>{item.product.name}</h6>
                     </Link>
                 </div>
-                <div className="col-lg-2 col-md-2 mt-3 flex flex-col items-center justify-center">
+                <div className="col-lg-2 col-md-2 col-sm-2 mt-3 flex flex-col items-center justify-center">
                     <h4 className="text-lg font-bold">Màu sắc</h4>
                     <h6>{item?.color}</h6>
                 </div>
-                <div className="col-lg-2 col-md-2 mt-3 flex flex-col items-center justify-center">
+                <div className="col-lg-2 col-md-2 col-sm-2 mt-3 flex flex-col items-center justify-center">
                     <h4 className="text-base font-bold">Số lượng</h4>
                     <h6>{item?.qty}</h6>
                 </div>
-                <div className="col-lg-2 col-md-2 mt-3 flex flex-col items-end justify-center">
+                <div className="col-lg-2 col-md-2 col-sm-2 mt-3 flex flex-col items-end justify-center">
                     <h4 className="text-base font-bold">Giá</h4>
                     <h6>{(item?.qty * item?.product?.price)?.toLocaleString('de-DE')}đ</h6>
                 </div>
@@ -173,7 +174,8 @@ function PlaceOrder() {
     }, []);
 
     useEffect(() => {
-        if (cartItems?.length != 0 && Object.keys(order_ghtk_state).length === 0) {
+        //  && Object.keys(order_ghtk_state).length === 0
+        if (cartItems?.length != 0) {
             dispatch(
                 calculate_fee_ship_action({
                     pick_province: userInfo?.address_shop.city,
@@ -184,9 +186,8 @@ function PlaceOrder() {
                     district: userInfo?.district,
                     ward: userInfo?.ward,
                     address: userInfo?.address,
-                    // weight: 1000, // đơn vị gam
-                    weight: Number(cartItems?.length) * 1000,
-                    value: cart?.totalPrice, // giá trị đơn hàng để tính bảo hiểm
+                    weight: Number(cartItems?.length) * 1000, // đơn vị gam
+                    value: cart?.itemsPrice, // giá trị đơn hàng để tính bảo hiểm
                     transport: 'road',
                     deliver_option: 'none',
                     // tags: [1, 7],
