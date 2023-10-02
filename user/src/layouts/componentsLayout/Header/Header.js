@@ -195,116 +195,122 @@ function Header(props) {
             className="fixed left-0 right-0 top-0 z-10 bg-[var(--content-color)]"
         >
             <ContactInformation />
-            <div className="relative flex justify-between pt-2 max-md:px-5 md:px-20 ">
-                <div className="hidden max-sm:block">
-                    <FontAwesomeIcon
-                        className="absolute left-3 cursor-pointer pl-2 pt-2 text-2xl "
-                        onClick={showDrawer}
-                        icon={faBars}
-                    />
-                </div>
-                <div className="">
-                    <Link to={'/'}>
-                        <img
-                            alt="Logo"
-                            src={logoDefaul}
-                            className="max-sm:ml-5 max-sm:h-[40px] max-sm:w-[80px] sm:h-[50px] sm:w-[140px]"
+            <div className="relative">
+                <div className="flex justify-around pt-2 max-md:px-5 md:px-20 ">
+                    <div className="hidden max-sm:block">
+                        <FontAwesomeIcon
+                            className="absolute left-3 cursor-pointer pl-2 pt-2 text-2xl "
+                            onClick={showDrawer}
+                            icon={faBars}
                         />
-                    </Link>
-                    <div className="">
-                        <Drawer
-                            className="[&_.ant-drawer-body]:px-2 [&_.ant-drawer-body]:py-3"
-                            placement="left"
-                            closable={false}
-                            onClose={onClose}
-                            open={open}
-                            getContainer={false}
-                        >
-                            <div className="flex">
-                                <form className="ml-8 mr-4" onSubmit={submitHandler}>
-                                    <div className="flex justify-center">
-                                        <Autocomplete
-                                            disablePortal
-                                            id="combo-box-demo"
-                                            options={key}
-                                            size="small"
-                                            className="w-[240px]"
-                                            onChange={(e) => {
-                                                setKeyword(e.target.outerText);
-                                            }}
-                                            renderInput={(params) => (
-                                                <TextField
-                                                    onChange={(e) => {
-                                                        setKeyword(e.target.value);
-                                                    }}
-                                                    className="bg-[var(--white-color)]"
-                                                    {...params}
-                                                    label="Tìm kiếm"
-                                                />
-                                            )}
-                                        />
-                                        <button
-                                            type="submit"
-                                            style={{
-                                                borderRadius: '0px 4px 4px 0px',
-                                            }}
-                                            className="bg-[var(--main-color)] px-3.5 text-white hover:bg-[var(--main-color-hover)]"
-                                        >
-                                            <FontAwesomeIcon className="text-xl" icon={faMagnifyingGlass} />
-                                        </button>
-                                    </div>
-                                </form>
-                                <div className="absolute right-[-10px] pt-2.5">
-                                    <FontAwesomeIcon
-                                        className="cursor-pointer rounded-[50%] bg-white px-1.5 py-1 text-gray-600 shadow-custom-shadow"
-                                        onClick={onClose}
-                                        icon={faChevronLeft}
-                                    />
-                                </div>
-                            </div>
-                        </Drawer>
                     </div>
-                </div>
-                <div className="max-sm:hidden">
-                    <form onSubmit={submitHandler}>
-                        <div className="flex justify-center">
-                            <Autocomplete
-                                disablePortal
-                                id="combo-box-demo"
-                                options={key}
-                                size="small"
-                                className="w-[200px]  max-use400:w-[150px] sm:w-[200px] md:w-[300px] lg:w-[400px]"
-                                onChange={(e) => {
-                                    setKeyword(e.target.outerText);
-                                }}
-                                renderInput={(params) => (
-                                    <TextField
-                                        onChange={(e) => {
-                                            setKeyword(e.target.value);
-                                        }}
-                                        className="bg-[var(--white-color)]"
-                                        {...params}
-                                        label="Tìm kiếm"
-                                    />
-                                )}
+                    <div className="">
+                        <Link to={'/'}>
+                            <img
+                                alt="Logo"
+                                src={logoDefaul}
+                                className="max-sm:ml-5 max-sm:h-[40px] max-sm:w-[80px] sm:h-[50px] sm:w-[140px]"
                             />
-                            <button
-                                type="submit"
-                                style={{
-                                    borderRadius: '0px 4px 4px 0px',
-                                }}
-                                className="bg-[var(--main-color)] px-3.5 text-white hover:bg-[var(--main-color-hover)]"
+                        </Link>
+                        <div className="">
+                            <Drawer
+                                className="[&_.ant-drawer-body]:px-2 [&_.ant-drawer-body]:py-3"
+                                placement="left"
+                                closable={false}
+                                onClose={onClose}
+                                open={open}
+                                getContainer={false}
                             >
-                                <FontAwesomeIcon className="text-xl" icon={faMagnifyingGlass} />
-                            </button>
+                                <div className="flex">
+                                    <form className="ml-8 mr-4" onSubmit={submitHandler}>
+                                        <div className="flex justify-center">
+                                            <Autocomplete
+                                                disablePortal
+                                                id="combo-box-demo"
+                                                options={key}
+                                                size="small"
+                                                className="w-[240px]"
+                                                onChange={(e) => {
+                                                    setKeyword(e.target.outerText);
+                                                }}
+                                                renderInput={(params) => (
+                                                    <TextField
+                                                        onChange={(e) => {
+                                                            setKeyword(e.target.value);
+                                                        }}
+                                                        className="bg-[var(--white-color)]"
+                                                        {...params}
+                                                        label="Tìm kiếm"
+                                                    />
+                                                )}
+                                            />
+                                            <button
+                                                type="submit"
+                                                style={{
+                                                    borderRadius: '0px 4px 4px 0px',
+                                                }}
+                                                className="bg-[var(--main-color)] px-3.5 text-white hover:bg-[var(--main-color-hover)]"
+                                            >
+                                                <FontAwesomeIcon className="text-xl" icon={faMagnifyingGlass} />
+                                            </button>
+                                        </div>
+                                    </form>
+                                    <div className="absolute right-[-10px] pt-2.5">
+                                        <FontAwesomeIcon
+                                            className="cursor-pointer rounded-[50%] bg-white px-1.5 py-1 text-gray-600 shadow-custom-shadow"
+                                            onClick={onClose}
+                                            icon={faChevronLeft}
+                                        />
+                                    </div>
+                                </div>
+                            </Drawer>
                         </div>
-                    </form>
+                    </div>
+                    <div className="max-sm:hidden">
+                        <form onSubmit={submitHandler}>
+                            <div className="flex justify-center">
+                                <Autocomplete
+                                    disablePortal
+                                    id="combo-box-demo"
+                                    options={key}
+                                    size="small"
+                                    className="w-[200px]  max-use400:w-[150px] sm:w-[200px] md:w-[300px] lg:w-[400px]"
+                                    onChange={(e) => {
+                                        setKeyword(e.target.outerText);
+                                    }}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            onChange={(e) => {
+                                                setKeyword(e.target.value);
+                                            }}
+                                            className="bg-[var(--white-color)]"
+                                            {...params}
+                                            label="Tìm kiếm"
+                                        />
+                                    )}
+                                />
+                                <button
+                                    type="submit"
+                                    style={{
+                                        borderRadius: '0px 4px 4px 0px',
+                                    }}
+                                    className="bg-[var(--main-color)] px-3.5 text-white hover:bg-[var(--main-color-hover)]"
+                                >
+                                    <FontAwesomeIcon className="text-xl" icon={faMagnifyingGlass} />
+                                </button>
+                            </div>
+                        </form>
+                        <div className="flex justify-center">
+                            <NavBar />
+                        </div>
+                    </div>
+                    <Box>{userInfo ? <UILogined /> : <UINotLogin />}</Box>
+                </div>
+                <div className=" block sm:hidden">
                     <div className="flex justify-center">
                         <NavBar />
                     </div>
                 </div>
-
-                <Box>{userInfo ? <UILogined /> : <UINotLogin />}</Box>
             </div>
         </Box>
     );

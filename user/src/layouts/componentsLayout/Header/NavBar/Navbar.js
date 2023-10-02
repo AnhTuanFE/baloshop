@@ -17,7 +17,7 @@ export default function NavBar() {
     }, []);
     return (
         <>
-            <div className="w-[200px] max-use400:w-[150px] sm:w-[200px] md:w-[400px]">
+            <div className="max-sm:w-[250px] sm:w-[400px]">
                 <Menu
                     mode="horizontal"
                     className="bg-[#f4f4f4] [&_.ant-menu-overflow-item]:leading-7 max-use400:[&_.ant-menu-overflow-item]:leading-5 "

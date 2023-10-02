@@ -263,7 +263,7 @@ function Cart() {
                         <div className="row col-lg-12 mt-3 flex flex-wrap items-center justify-center bg-white py-3">
                             <div className="col-lg-5 flex justify-center">
                                 <span className="mr-5 pt-1 text-xl text-[#8c8c8c] ">Tổng tiền:</span>
-                                <span className="text-2xl font-bold text-red-500">
+                                <span className="font-bold text-red-500 max-sm:text-xl sm:text-2xl">
                                     {Number(total)?.toLocaleString('de-DE')}đ
                                 </span>
                             </div>

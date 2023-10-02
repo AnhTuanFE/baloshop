@@ -15,6 +15,7 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import { ordersRemainingSelector } from '~/redux/Selector/ordersSelector';
 import LoadingLarge from '~/components/LoadingError/LoadingLarge';
 import { usersRemainingSelector } from '~/redux/Selector/usersSelector';
+import { truncateString } from '~/hooks/truncateString';
 
 function PlaceOrder() {
     const [paymentMethodState, setPaymentMethodState] = useState('pay-with-cash');
@@ -126,7 +127,7 @@ function PlaceOrder() {
     function findCartCountInStock(item) {
         const findCart = item?.product?.optionColor?.find((option) => option.color === item.color);
         return (
-            <div className="col-lg-12 col-md-12 col-sm-12 row py-2 max-sm:flex max-sm:flex-grow">
+            <div className="col-lg-12 col-md-12 col-sm-12 flex py-2">
                 {findCart?.countInStock < item?.qty ? (
                     <div className="col-lg-2 col-md-2 col-sm-2">
                         <span className="text-xs text-red-600">
@@ -141,7 +142,7 @@ function PlaceOrder() {
                 </div>
                 <div className="col-lg-2 col-md-2 col-sm-2 flex items-center">
                     <Link to={`/products/${item.product}`}>
-                        <h6>{item.product.name}</h6>
+                        <h6>{truncateString(item.product.name, 12)}</h6>
                     </Link>
                 </div>
                 <div className="col-lg-2 col-md-2 col-sm-2 mt-3 flex flex-col items-center justify-center">
@@ -174,8 +175,7 @@ function PlaceOrder() {
     }, []);
 
     useEffect(() => {
-        //  && Object.keys(order_ghtk_state).length === 0
-        if (cartItems?.length != 0) {
+        if (cartItems?.length != 0 && Object.keys(order_ghtk_state).length === 0) {
             dispatch(
                 calculate_fee_ship_action({
                     pick_province: userInfo?.address_shop.city,
@@ -216,17 +216,17 @@ function PlaceOrder() {
 
                         <div className=" row mb-2 rounded bg-white shadow-custom-shadow max-sm:px-0 sm:px-4">
                             <div className="row col-lg-12 my-3 rounded-md pt-3">
-                                <div className="col-lg-3 col-sm-3 flex px-2">
+                                <div className="col-lg-3 flex">
                                     <div className="mr-2 px-2">
                                         <AccountCircleSharpIcon className="text-[var(--main-color)]" fontSize="large" />
                                     </div>
                                     <div className="">
-                                        <p>
+                                        <div className="">
                                             <span className="font-semibold">Họ tên:</span> {user?.name}
-                                        </p>
-                                        <p>
+                                        </div>
+                                        <div className="">
                                             <span className="font-semibold">Số điện thoại:</span> {user?.phone}
-                                        </p>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="col-lg-5 flex px-2">
@@ -332,13 +332,13 @@ function PlaceOrder() {
                                                 Tổng thanh toán: {moneyNeedPaid} USD
                                             </div>
                                         ) : (
-                                            <div className="col-lg-6 pt-3 text-center  text-xl font-bold uppercase">
+                                            <div className="col-lg-6 pt-3 text-center text-xl font-bold uppercase">
                                                 Tổng thanh toán: {Number(cart.totalPrice)?.toLocaleString('de-DE')} VNĐ
                                             </div>
                                         )}
                                         <button
                                             type="submit"
-                                            className="col-lg-6 rounded-lg bg-[var(--main-color)] px-1 py-3 uppercase text-fuchsia-50 hover:bg-[var(--main-color-hover)]"
+                                            className="col-lg-6 rounded-lg bg-[var(--main-color)] px-1 py-2 uppercase text-fuchsia-50 hover:bg-[var(--main-color-hover)]"
                                             onClick={() => window.my_modal_1.showModal()}
                                         >
                                             Đặt hàng
