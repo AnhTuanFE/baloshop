@@ -117,8 +117,8 @@ function PlaceOrder() {
                 phone: user?.phone,
                 name: user?.name,
                 email: user?.email,
-                // itemsPrice: cart.itemsPrice,
-                // totalPrice: cart.totalPrice,
+                itemsPrice: cart.itemsPrice,
+                totalPrice: cart.totalPrice,
                 // address_shop: user?.address_shop,
             }),
         );

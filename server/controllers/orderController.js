@@ -52,7 +52,9 @@ const handleConfigProducts = (orderItems) => {
 };
 
 const createOrder = async (req, res, next) => {
-    const { orderItems, shippingAddress, paymentMethod, shippingPrice, phone, name, email } = req.body;
+    const { orderItems, shippingAddress, paymentMethod, shippingPrice, phone, name, email, itemsPrice, totalPrice } =
+        req.body;
+    console.log('orderItems = ', orderItems);
 
     if (!orderItems && orderItems.length <= 0) {
         res.status(400);
@@ -95,6 +97,8 @@ const createOrder = async (req, res, next) => {
                     } else {
                         orderedProduct.optionColor[optionIndex].countInStock -= Number(orderItem.quantity);
                         totalProductPrice += orderedProduct.price;
+                        console.log('orderedProduct = ', orderedProduct);
+
                         orderItemIds.push(orderedProduct._id);
                         dataOrderItems.push({
                             ...orderItem,
@@ -122,8 +126,8 @@ const createOrder = async (req, res, next) => {
                 paymentMethod: paymentMethod,
                 shippingAddress: shippingAddress,
                 shippingPrice: shippingPrice,
-                totalProductPrice: totalProductPrice,
-                totalPrice: totalPrice,
+                totalProductPrice: itemsPrice,
+                totalPrice: Number(itemsPrice) + Number(shippingPrice),
                 status: 'placed',
                 statusHistory: [],
             });
