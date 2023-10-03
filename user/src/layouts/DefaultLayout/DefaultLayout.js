@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import Footer from '../componentsLayout/footer';
+import Footer from '../componentsLayout/Footer';
 import Header from '../componentsLayout/Header';
 function DefaultLayout({ children }) {
     return (
