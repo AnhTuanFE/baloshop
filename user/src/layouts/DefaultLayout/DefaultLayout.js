@@ -1,7 +1,7 @@
-// import { memo } from 'react';
+import { memo } from 'react';
 import Footer from '../componentsLayout/footer';
 import Header from '../componentsLayout/Header';
-function DefaulLayout({ children }) {
+function DefaultLayout({ children }) {
     return (
         <div className="Wrapper bg-[var(--content-color)]">
             <Header />
@@ -10,5 +10,4 @@ function DefaulLayout({ children }) {
         </div>
     );
 }
-// export default memo(DefaulLayout);
-export default DefaulLayout;
+export default memo(DefaultLayout);

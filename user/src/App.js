@@ -2,14 +2,12 @@ import axios from 'axios';
 import { Fragment } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { publicRoutes, privateRoutes } from './Routes';
-// import DefaulLayout from '~/layouts/DefaulLayout';
-import DefaultLayout from './layouts/defaultLayoutNew/DefaultLayout';
+import DefaultLayout from './layouts/DefaultLayout';
 import RouteConfirmation from './Routes/RouteConfirmation';
 import './App.css';
 
 axios.defaults.baseURL = 'https://baloshop-api.vercel.app/';
 // axios.defaults.baseURL = 'http://localhost:5000/';
-
 
 function App() {
     return (
