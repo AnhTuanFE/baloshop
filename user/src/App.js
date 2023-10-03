@@ -7,8 +7,8 @@ import DefaultLayout from './layouts/defaultLayoutNew/DefaultLayout';
 import RouteConfirmation from './Routes/RouteConfirmation';
 import './App.css';
 
-// axios.defaults.baseURL = 'https://baloshop-api.vercel.app/';
-axios.defaults.baseURL = 'http://localhost:5000/';
+axios.defaults.baseURL = 'https://baloshop-api.vercel.app/';
+// axios.defaults.baseURL = 'http://localhost:5000/';
 
 
 function App() {

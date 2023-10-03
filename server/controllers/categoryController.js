@@ -17,10 +17,10 @@ const deleteCategory = async (req, res) => {
         const cateInProduct = await Product.findOne({ category: categories._id });
         if (cateInProduct) {
             res.status(404);
-            throw new Error('Exit products of category');
+            throw new Error('Không thể xóa danh mục khi vẫn còn sản phẩm nằm trong đó');
         }
         await categories.remove();
-        res.json({ message: 'Category deleted' });
+        res.json({ message: 'Đã xóa danh mục sản phẩm' });
     } else {
         res.status(404);
         throw new Error('Can delete category');

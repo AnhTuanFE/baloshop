@@ -14,8 +14,15 @@ const renderError = (errors) => {
     const message = errors.find((error) => error?.error)?.message;
     if (message)
         return (
-            <div className="min-h-[28px]">
-                <span className="mt-1 text-[red]">{message}</span>
+            <div className="d-flex justify-content-center min-h-[28px] ">
+                <span
+                    style={{
+                        color: '#ff0000',
+                    }}
+                    className="mt-1 "
+                >
+                    {message}
+                </span>
             </div>
         );
     return <div className="min-h-[28px]"></div>;
@@ -56,7 +63,7 @@ const Login = () => {
                                 src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
                                 class="img-fluid"
                                 alt="Sample image"
-                            ></img>
+                            />
                         </div>
                         <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1 wrap_form_login bg-cyan-100 shadow">
                             <h1 className="card-title text-bold fw-bold mb-4 mt-4 text-center uppercase">
@@ -132,8 +139,18 @@ const Login = () => {
                                             )}
                                         />
                                     </div>
-                                    <div className="d-flex mb-4 justify-center">
-                                        <button type="submit" className="btn fw-bold bg-sky-600 text-white ">
+                                    <div className="d-flex justify-content-center mb-4">
+                                        <button
+                                            type="submit"
+                                            style={{
+                                                backgroundColor: '#37c871',
+                                                padding: '8px 0px',
+                                                ':hover': {
+                                                    backgroundColor: '#3abff8',
+                                                },
+                                            }}
+                                            className="btn fw-bold w-full text-white "
+                                        >
                                             Đăng nhập
                                         </button>
                                     </div>
